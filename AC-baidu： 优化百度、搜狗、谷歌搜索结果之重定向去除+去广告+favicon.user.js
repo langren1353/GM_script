@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name AC-baidu£º ÓÅ»¯°Ù¶È¡¢ËÑ¹·¡¢¹È¸èËÑË÷½á¹ûÖ®ÖØ¶¨ÏòÈ¥³ı+È¥¹ã¸æ+favicon
+// @name AC-baiduï¼š ä¼˜åŒ–ç™¾åº¦ã€æœç‹—ã€è°·æ­Œæœç´¢ç»“æœä¹‹é‡å®šå‘å»é™¤+å»å¹¿å‘Š+favicon
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @grant		    GM_xmlhttpRequest
 // @author          AC
@@ -19,53 +19,53 @@
 // @home-url        https://greasyfork.org/zh-TW/scripts/14178
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
-// @description     1.À@ß^°Ù¶È¡¢ËÑ¹·ËÑË÷½Y¹ûÖĞµÄ×Ô¼ºµÄÌøŞDæœ½Ó£¬Ö±½ÓÔL†–Ô­Ê¼¾Wí“-·´Õı¶¼ÄÜ¿´¶® 2.È¥³ı°Ù¶ÈµÄ¶àÓà¹ã¸æ 3.Ìí¼ÓFaviconÏÔÊ¾ 4.Ìí¼Ó¼ÆÊı 5.¿ª¹ØÑ¡ÔñÒÔÉÏ¹¦ÄÜ
+// @description     1.ç¹éç™¾åº¦ã€æœç‹—æœç´¢çµæœä¸­çš„è‡ªå·±çš„è·³è½‰éˆæ¥ï¼Œç›´æ¥è¨ªå•åŸå§‹ç¶²é -åæ­£éƒ½èƒ½çœ‹æ‡‚ 2.å»é™¤ç™¾åº¦çš„å¤šä½™å¹¿å‘Š 3.æ·»åŠ Faviconæ˜¾ç¤º 4.æ·»åŠ è®¡æ•° 5.å¼€å…³é€‰æ‹©ä»¥ä¸ŠåŠŸèƒ½
 // @lastmodified    2017-08-04
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
-// @note            2017.08.06-V11.5 ĞŞ¸´£¬±£´æÒì³££»Ô¤ÆÚÖ®ºó»áÌí¼Ó°Ù¶ÈËÑË÷Ò³ÃæµÄ´óµ÷Õû
-// @note            2017.08.05-V11.4 ĞÂÔö£º·´À¡ºÍ½¨ÒéµØÖ·Ôö¼Ó
-// @note            2017.08.04-V11.3 ĞŞ¸´£ºÓÉÓÚÓ¢Óï²»ºÃµ¼ÖÂµÄÆ´Ğ´´íÎó£¬¸ĞĞ»shjĞÖµÜÖ¸³ö
-// @note            2017.08.03-V11.2 ĞÂÔö£º¹È¸èÁ´½ÓĞÂ±êÇ©´ò¿ª; ÒÆ³ıËÑË÷½á¹ûÁ´½ÓµÄÏÂ»®Ïß
-// @note            2017.07.22-V11.1 ĞÂÔöÁË¿ª¹ØÄ£Ê½£¬¿ÉÒÔ¿ªÆô»òÕß¹Ø±ÕÄ³Ğ©×Ô¼º²»Ï²»¶µÄ¹¦ÄÜ£¬¿ª¹ØÔÚÓÒÉÏ½Ç£¬ºÍSuperPreload¹²ÓÃ
-// @note            2017.06.25-V10.1 ĞŞ¸´ÉÏ´Î¸üĞÂµ¼ÖÂµÄ°Ù¶ÈÈ¥¹ã¸æµÄÎÊÌâ
-// @note            2017.06.25-V10.0 ĞŞ¸´ÉÏ´Î¸üĞÂµ¼ÖÂµÄ°Ù¶ÈÖªµÀÔÙ´Î³öÏÖÀÏÎÊÌâ
-// @note            2017.06.24-V9.9 ¸üĞÂÁË·­Ò³µÄÎÊÌâ£¬¾­¹ı¶à´ÎµÄ³¢ÊÔÓ¦¸ÃÃ»ÓĞÌ«´óÎÊÌâÁË
-// @note            2017.06.24-V9.8 ¸üĞÂÁËbingÉÏµÄÍ¼Æ¬faviconµØÖ·;²¢ÇÒ¾¡Á¿¼õÉÙÁËMO´¥·¢´ÎÊı£¬±ÜÃâÒ³Ãæ¿¨¶Ù;ĞŞ¸´ËÑ¹·µÄÖØ¶¨ÏòÎÊÌâ
-// @note            2017.06.23-V9.7 ÉÏ´«´íÁË~ÖØĞÂÀ´£¬Ë³´ø´¦ÀíÁË¹È¸èfaviconÎÊÌâ
-// @note            2017.06.23-V9.6 ĞŞ¸´ÁË¹È¸èÖØ¶¨ÏòµÄÎÊÌâ~~ÎÒµÄ¹ø
-// @note            2017.06.11-V9.5 ²»ÔÙÊ¹ÓÃDOM·½Ê½À´¼àÌıÒ³ÃæÁË£¬Ê¹ÓÃtimer+MOÀ´´¦Àí£¬¼«´ó¼õÉÙÁËcpuÕ¼ÓÃÊ±¼äºÍË²Ê±ÍøËÙÕ¼ÓÃ
-// @note            2017.05.26-V9.4 »Ö¸´faviconÄ£Ê½£¬ÏÖÔÚÕâ¸ö½Å±¾»ù±¾ÉÏÈ«ÁË£¬ÓĞĞèÒªÒÔºóÔÙËµ
-// @note            2017.05.15-V9.3 ÔİÊ±ÒÆ³ı°Ù¶ÈÓÒ±ß²àÀ¸µÄ¹ã¸æÒÆ³ıÄ£Ê½£¬×¼±¸ÏÂ´ÎÓÅ»¯ºÃÁËÔÙ¼ÌĞø
-// @note            2017.05.12-V9.2 ÔİÊ±ÒÆ³ı¹È¸èµÄ°²È«ËÑË÷Ä£Ê½£¬ÒòÎªºÜ¸´ÔÓµÄÔ­Òò
-// @note            2017.05.12-V9.1 ÔİÊ±ÒÆ³ıFaviconµÄÏÔÊ¾£¬ÒòÎªÕâÑù¾ÍÔÓÁË£¬ÓĞĞèÒªµÄÈË×Ô¼ºÈ¥×°Õâ¸ö½Å±¾°É£¬±£Áô°Ù¶ÈÈ¥¹ã¸æ
-// @note            2017.05.12-V9.0 ¼¯ºÏÁËÈ¥ÖØ¶¨Ïò+È¥¹ã¸æ+FaviconÏÔÊ¾
-// @note            2017.05.12-V8.7 ¼¯ºÏÁËÈ¥¹ã¸æµÄ½Å±¾£¬ÒÔÇ°µÄÄÇ¸öÈ¥¹ã¸æµÄ½Å±¾¾Í²»ÓÃÁË
-// @note            2017.05.12-V8.6 ĞŞ¸´¹È¸è°²È«ËÑË÷µÄBUG V2
-// @note            2017.05.12-V8.4 ĞÂÔö£ºÄ¬ÈÏÆÁ±Î¹È¸èµÄ°²È«ËÑË÷¹¦ÄÜ
-// @note            2017.05.05-V8.3 ĞŞ¸´include·¶Î§Ì«Ğ¡µ¼ÖÂµÄ°Ù¶ÈÖªµÀµÄÆÁ±ÎÎÊÌâ
-// @note            2017.05.04-V8.2 ÖÕÓÚĞŞ¸´ÁË°Ù¶ÈÖªµÀÍ¼Æ¬Ìæ»»ÁËÎÄ×ÖµÄÕâ¸ö´óBUG; Ë³±ã´¦ÀíÁËsuperapi.zhidao.baidu.com; ĞÂÔö¹È¸èËÑË÷½á¹ûÖØ¶¨ÏòÈ¥³ı
-// @note            2017.05.04-V8.1 ÖÕÓÚĞŞ¸´ÁË°Ù¶ÈÖªµÀÍ¼Æ¬Ìæ»»ÁËÎÄ×ÖµÄÕâ¸ö´óBUG£¬Ë³±ã´¦ÀíÁËsuperapi.zhidao.baidu.com
-// @note            2017.05.04-V8.0 ÖÕÓÚĞŞ¸´ÁË°Ù¶ÈÖªµÀÍ¼Æ¬Ìæ»»ÁËÎÄ×ÖµÄÕâ¸ö´óBUG£¬´ı²âÊÔ
-// @note            2017.03.28-V7.6 ĞŞ¸´ÔÚViolentMonkeyÉÏµÄ²»Ö§³ÖµÄÎÊÌâ
-// @note            2017.03.28-V7.5 ³¢ÊÔĞŞ¸´chromeÉÏµÄÎÊÌâ
-// @note            2017.03.21-V7.4 ³¢ÊÔ´¦ÀíEdgeÉÏ²»Ö§³ÖµÄÎÊÌâ£¬½á¹û·¢ÏÖÊÇEdge±¾ÉíµÄTamperMonkeyÖ§³ÖÓĞÎÊÌâ
-// @note            2017.03.19-V7.3 ĞŞ¸´´ò¿ª°Ù¶ÈÖ®ºóÔÙ´Îµã»÷¡°°Ù¶ÈÒ»ÏÂ¡±µ¼ÖÂµÄÎŞ·¨¸üĞÂÖØ¶¨ÏòÎÊÌâ
-// @note            2017.03.19-V7.2 Î´ÖªÔ­ÒòchromeµÄMutationObserverÎŞ·¨Ê¹ÓÃÁË£¬¼ÌĞø»Ø¹éÒÔÇ°µÄDOMNodeInserted
-// @note            2017.02.17-V7.0 ĞŞ¸´ËÑ¹·µÄËÑË÷½á¹ûÖØ¶¨ÏòÎÊÌâ+¸Ä¸öÃû×Ö
-// @note            2017.02.17-V6.9 ĞŞ¸´ËÑ¹·µÄËÑË÷½á¹ûÖØ¶¨ÏòÎÊÌâ
+// @note            2017.08.06-V11.5 ä¿®å¤ï¼Œä¿å­˜å¼‚å¸¸ï¼›é¢„æœŸä¹‹åä¼šæ·»åŠ ç™¾åº¦æœç´¢é¡µé¢çš„å¤§è°ƒæ•´
+// @note            2017.08.05-V11.4 æ–°å¢ï¼šåé¦ˆå’Œå»ºè®®åœ°å€å¢åŠ 
+// @note            2017.08.04-V11.3 ä¿®å¤ï¼šç”±äºè‹±è¯­ä¸å¥½å¯¼è‡´çš„æ‹¼å†™é”™è¯¯ï¼Œæ„Ÿè°¢shjå…„å¼ŸæŒ‡å‡º
+// @note            2017.08.03-V11.2 æ–°å¢ï¼šè°·æ­Œé“¾æ¥æ–°æ ‡ç­¾æ‰“å¼€; ç§»é™¤æœç´¢ç»“æœé“¾æ¥çš„ä¸‹åˆ’çº¿
+// @note            2017.07.22-V11.1 æ–°å¢äº†å¼€å…³æ¨¡å¼ï¼Œå¯ä»¥å¼€å¯æˆ–è€…å…³é—­æŸäº›è‡ªå·±ä¸å–œæ¬¢çš„åŠŸèƒ½ï¼Œå¼€å…³åœ¨å³ä¸Šè§’ï¼Œå’ŒSuperPreloadå…±ç”¨
+// @note            2017.06.25-V10.1 ä¿®å¤ä¸Šæ¬¡æ›´æ–°å¯¼è‡´çš„ç™¾åº¦å»å¹¿å‘Šçš„é—®é¢˜
+// @note            2017.06.25-V10.0 ä¿®å¤ä¸Šæ¬¡æ›´æ–°å¯¼è‡´çš„ç™¾åº¦çŸ¥é“å†æ¬¡å‡ºç°è€é—®é¢˜
+// @note            2017.06.24-V9.9 æ›´æ–°äº†ç¿»é¡µçš„é—®é¢˜ï¼Œç»è¿‡å¤šæ¬¡çš„å°è¯•åº”è¯¥æ²¡æœ‰å¤ªå¤§é—®é¢˜äº†
+// @note            2017.06.24-V9.8 æ›´æ–°äº†bingä¸Šçš„å›¾ç‰‡faviconåœ°å€;å¹¶ä¸”å°½é‡å‡å°‘äº†MOè§¦å‘æ¬¡æ•°ï¼Œé¿å…é¡µé¢å¡é¡¿;ä¿®å¤æœç‹—çš„é‡å®šå‘é—®é¢˜
+// @note            2017.06.23-V9.7 ä¸Šä¼ é”™äº†~é‡æ–°æ¥ï¼Œé¡ºå¸¦å¤„ç†äº†è°·æ­Œfaviconé—®é¢˜
+// @note            2017.06.23-V9.6 ä¿®å¤äº†è°·æ­Œé‡å®šå‘çš„é—®é¢˜~~æˆ‘çš„é”…
+// @note            2017.06.11-V9.5 ä¸å†ä½¿ç”¨DOMæ–¹å¼æ¥ç›‘å¬é¡µé¢äº†ï¼Œä½¿ç”¨timer+MOæ¥å¤„ç†ï¼Œæå¤§å‡å°‘äº†cpuå ç”¨æ—¶é—´å’Œç¬æ—¶ç½‘é€Ÿå ç”¨
+// @note            2017.05.26-V9.4 æ¢å¤faviconæ¨¡å¼ï¼Œç°åœ¨è¿™ä¸ªè„šæœ¬åŸºæœ¬ä¸Šå…¨äº†ï¼Œæœ‰éœ€è¦ä»¥åå†è¯´
+// @note            2017.05.15-V9.3 æš‚æ—¶ç§»é™¤ç™¾åº¦å³è¾¹ä¾§æ çš„å¹¿å‘Šç§»é™¤æ¨¡å¼ï¼Œå‡†å¤‡ä¸‹æ¬¡ä¼˜åŒ–å¥½äº†å†ç»§ç»­
+// @note            2017.05.12-V9.2 æš‚æ—¶ç§»é™¤è°·æ­Œçš„å®‰å…¨æœç´¢æ¨¡å¼ï¼Œå› ä¸ºå¾ˆå¤æ‚çš„åŸå› 
+// @note            2017.05.12-V9.1 æš‚æ—¶ç§»é™¤Faviconçš„æ˜¾ç¤ºï¼Œå› ä¸ºè¿™æ ·å°±æ‚äº†ï¼Œæœ‰éœ€è¦çš„äººè‡ªå·±å»è£…è¿™ä¸ªè„šæœ¬å§ï¼Œä¿ç•™ç™¾åº¦å»å¹¿å‘Š
+// @note            2017.05.12-V9.0 é›†åˆäº†å»é‡å®šå‘+å»å¹¿å‘Š+Faviconæ˜¾ç¤º
+// @note            2017.05.12-V8.7 é›†åˆäº†å»å¹¿å‘Šçš„è„šæœ¬ï¼Œä»¥å‰çš„é‚£ä¸ªå»å¹¿å‘Šçš„è„šæœ¬å°±ä¸ç”¨äº†
+// @note            2017.05.12-V8.6 ä¿®å¤è°·æ­Œå®‰å…¨æœç´¢çš„BUG V2
+// @note            2017.05.12-V8.4 æ–°å¢ï¼šé»˜è®¤å±è”½è°·æ­Œçš„å®‰å…¨æœç´¢åŠŸèƒ½
+// @note            2017.05.05-V8.3 ä¿®å¤includeèŒƒå›´å¤ªå°å¯¼è‡´çš„ç™¾åº¦çŸ¥é“çš„å±è”½é—®é¢˜
+// @note            2017.05.04-V8.2 ç»ˆäºä¿®å¤äº†ç™¾åº¦çŸ¥é“å›¾ç‰‡æ›¿æ¢äº†æ–‡å­—çš„è¿™ä¸ªå¤§BUG; é¡ºä¾¿å¤„ç†äº†superapi.zhidao.baidu.com; æ–°å¢è°·æ­Œæœç´¢ç»“æœé‡å®šå‘å»é™¤
+// @note            2017.05.04-V8.1 ç»ˆäºä¿®å¤äº†ç™¾åº¦çŸ¥é“å›¾ç‰‡æ›¿æ¢äº†æ–‡å­—çš„è¿™ä¸ªå¤§BUGï¼Œé¡ºä¾¿å¤„ç†äº†superapi.zhidao.baidu.com
+// @note            2017.05.04-V8.0 ç»ˆäºä¿®å¤äº†ç™¾åº¦çŸ¥é“å›¾ç‰‡æ›¿æ¢äº†æ–‡å­—çš„è¿™ä¸ªå¤§BUGï¼Œå¾…æµ‹è¯•
+// @note            2017.03.28-V7.6 ä¿®å¤åœ¨ViolentMonkeyä¸Šçš„ä¸æ”¯æŒçš„é—®é¢˜
+// @note            2017.03.28-V7.5 å°è¯•ä¿®å¤chromeä¸Šçš„é—®é¢˜
+// @note            2017.03.21-V7.4 å°è¯•å¤„ç†Edgeä¸Šä¸æ”¯æŒçš„é—®é¢˜ï¼Œç»“æœå‘ç°æ˜¯Edgeæœ¬èº«çš„TamperMonkeyæ”¯æŒæœ‰é—®é¢˜
+// @note            2017.03.19-V7.3 ä¿®å¤æ‰“å¼€ç™¾åº¦ä¹‹åå†æ¬¡ç‚¹å‡»â€œç™¾åº¦ä¸€ä¸‹â€å¯¼è‡´çš„æ— æ³•æ›´æ–°é‡å®šå‘é—®é¢˜
+// @note            2017.03.19-V7.2 æœªçŸ¥åŸå› chromeçš„MutationObserveræ— æ³•ä½¿ç”¨äº†ï¼Œç»§ç»­å›å½’ä»¥å‰çš„DOMNodeInserted
+// @note            2017.02.17-V7.0 ä¿®å¤æœç‹—çš„æœç´¢ç»“æœé‡å®šå‘é—®é¢˜+æ”¹ä¸ªåå­—
+// @note            2017.02.17-V6.9 ä¿®å¤æœç‹—çš„æœç´¢ç»“æœé‡å®šå‘é—®é¢˜
 // @note            2016.12.10-V6.8 ***
-// @note            2016.10.27-V6.7 ĞŞ¸´ÁËÒÔÇ°µÄÖØ¸´ÇëÇó£¬ÏÖÔÚµÄÇëÇóÊıÓ¦¸ÃĞ¡ÁËºÜ¶à£¬ÍøÂçÒ²¾Í²»¿¨ÁË£¬¸Ğ¾õÃÈÃÈßÕ
-// @note            2016.04.24-V6.6 »Ö¸´ÒÔÇ°µÄ°æ±¾£¬ÒòÎª¼æÈİĞÔÎÊÌâ
-// @note            2015.12.01-V5.0 ¼ÓÈëËÑ¹·µÄÖ§³Ö£¬µ«ÊÇÖ§³ö²»ÊÇºÜºÃ
-// @note            2015.11.25-V2.0 ÓÅ»¯£¬ÒÑ¾­ÊÇÕæÊµµØÖ·µÄ²»ÔÙ³¢ÊÔ»ñÈ¡
-// @note            2015.11.25-V1.0 Íê³ÉÈ¥µô°Ù¶ÈÖØ¶¨ÏòµÄ¹¦ÄÜ
+// @note            2016.10.27-V6.7 ä¿®å¤äº†ä»¥å‰çš„é‡å¤è¯·æ±‚ï¼Œç°åœ¨çš„è¯·æ±‚æ•°åº”è¯¥å°äº†å¾ˆå¤šï¼Œç½‘ç»œä¹Ÿå°±ä¸å¡äº†ï¼Œæ„Ÿè§‰èŒèŒå“’
+// @note            2016.04.24-V6.6 æ¢å¤ä»¥å‰çš„ç‰ˆæœ¬ï¼Œå› ä¸ºå…¼å®¹æ€§é—®é¢˜
+// @note            2015.12.01-V5.0 åŠ å…¥æœç‹—çš„æ”¯æŒï¼Œä½†æ˜¯æ”¯å‡ºä¸æ˜¯å¾ˆå¥½
+// @note            2015.11.25-V2.0 ä¼˜åŒ–ï¼Œå·²ç»æ˜¯çœŸå®åœ°å€çš„ä¸å†å°è¯•è·å–
+// @note            2015.11.25-V1.0 å®Œæˆå»æ‰ç™¾åº¦é‡å®šå‘çš„åŠŸèƒ½
 // @grant           GM_getValue
 // @grant           GM_setValue
 // @grant           GM_addStyle
 // ==/UserScript==
 
-// ³õ´Î£º»¹ÊÇ²ÉÓÃÁËsetIntervalÀ´´¦Àí£¬¸Ğ¾õÕâÑùµÄ»°ËÙ¶ÈÓ¦¸Ã±ÈDom¿ì£¬Ò²±ÈMOÊÊÓÃ£¬ÒòÎªMOĞèÒªÔÚ×îºó²ÅÄÜµ÷ÓÃ£¬ÊµÓÃĞÔ»¹²»Èçtimer
-// Ö®ºó£º»¹ÊÇ²ÉÓÃMOµÄ·½Ê½À´´¦Àí
+// åˆæ¬¡ï¼šè¿˜æ˜¯é‡‡ç”¨äº†setIntervalæ¥å¤„ç†ï¼Œæ„Ÿè§‰è¿™æ ·çš„è¯é€Ÿåº¦åº”è¯¥æ¯”Domå¿«ï¼Œä¹Ÿæ¯”MOé€‚ç”¨ï¼Œå› ä¸ºMOéœ€è¦åœ¨æœ€åæ‰èƒ½è°ƒç”¨ï¼Œå®ç”¨æ€§è¿˜ä¸å¦‚timer
+// ä¹‹åï¼šè¿˜æ˜¯é‡‡ç”¨MOçš„æ–¹å¼æ¥å¤„ç†
 (function(){
     var fatherName = new Array(
         "c-container", //baidu1
@@ -79,10 +79,10 @@
     var isAdsEnable = true;
     var isFaviconEnable = true;
     var isCounterEnable = false;
-    LoadSetting(); // ¶ÁÈ¡¸öÈËÉèÖÃĞÅÏ¢
-    var Stype; // È¥ÖØ¶¨ÏòµÄÑ¡Ôñ
-    var Ftype; // faviconµÄÑ¡Ôñ
-    var Ctype; // CounterµÄÑ¡Ôñ
+    LoadSetting(); // è¯»å–ä¸ªäººè®¾ç½®ä¿¡æ¯
+    var Stype; // å»é‡å®šå‘çš„é€‰æ‹©
+    var Ftype; // faviconçš„é€‰æ‹©
+    var Ctype; // Counterçš„é€‰æ‹©
     var maxOneHtmlHeight=2500;
     var ACMO = window.MutationObserver||window.WebKitMutationObserver||window.MozMutationObserver;
     var option = {'childList':true,'subtree':true};
@@ -91,20 +91,20 @@
             if(records.length<100){
                 if(records.length > 5 || document.body.scrollHeight > 4000){
                     setTimeout(function(){
-                        // Èç¹ûÃ»ÓĞSuperPreloadµÄ»°ÄÇÃ´¾Í»á×Ô¶¯µ÷ÓÃÕâ¸ö
+                        // å¦‚æœæ²¡æœ‰SuperPreloadçš„è¯é‚£ä¹ˆå°±ä¼šè‡ªåŠ¨è°ƒç”¨è¿™ä¸ª
                         ShowSetting();
                     }, 3000);
                     ACHandle();
                 }
                 if(isAdsEnable){
-                    removeAD_baidu_sogou(); // ÒÆ³ı°Ù¶È¹ã¸æ
+                    removeAD_baidu_sogou(); // ç§»é™¤ç™¾åº¦å¹¿å‘Š
                 }
             }
         }catch(e){}
     });
     document.addEventListener('DOMContentLoaded', function(e) {
         setTimeout(function(){
-            // Èç¹ûÃ»ÓĞSuperPreloadµÄ»°ÄÇÃ´¾Í»á×Ô¶¯µ÷ÓÃÕâ¸ö
+            // å¦‚æœæ²¡æœ‰SuperPreloadçš„è¯é‚£ä¹ˆå°±ä¼šè‡ªåŠ¨è°ƒç”¨è¿™ä¸ª
             ShowSetting();
         }, 3000);
     }, false);
@@ -133,32 +133,32 @@
         addStyle(".word-replace{display: none  !important;}");
         return;
     }
-    addStyle("a{text-decoration:none}"); // ÒÆ³ıÕâĞ©¸öÏÂ»®Ïß
+    addStyle("a{text-decoration:none}"); // ç§»é™¤è¿™äº›ä¸ªä¸‹åˆ’çº¿
     function ShowSetting(){
-        // Èç¹û²»´æÔÚµÄ»°£¬ÄÇÃ´×Ô¼º´´½¨Ò»¸ö-copy from superPreload
+        // å¦‚æœä¸å­˜åœ¨çš„è¯ï¼Œé‚£ä¹ˆè‡ªå·±åˆ›å»ºä¸€ä¸ª-copy from superPreload
         if(document.querySelector("#sp-fw-container") == null){
             GM_addStyle('#sp-fw-container{z-index:999999!important;text-align:left!important;}#sp-fw-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-fw-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;}#sp-fw-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-fw-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-fw-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-fw-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-fw-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-fw-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-fw-container fieldset>ul{padding:0!important;margin:0!important;}#sp-fw-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-fw-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}');
         var acSettingForm = document.createElement('div');
         acSettingForm.id = 'sp-fw-container';
         acSettingForm.innerHTML = "<div id='sp-fw-container' style='position: fixed; top: 20px; right: 38px;'>\n" +
-                    "    <div id='sp-ac-rect' style='background-color: rgb(3, 139, 0);' title='·­Ò³×´Ì¬'>\n" +
+                    "    <div id='sp-ac-rect' style='background-color: rgb(3, 139, 0);' title='ç¿»é¡µçŠ¶æ€'>\n" +
                     "        <div id='sp-ac-dot' style='display: block; background-color: rgb(0, 255, 5);'></div>\n" +
                     "    </div>\n" +
                     "    <div id='sp-ac-content' style='display: none;'>\n" +
                     "        <div id='sp-ac-main'>\n" +
                     "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
-                    "            <legend title='×Ô¶¯·­Ò³Ä£Ê½µÄÏà¹ØÉèÖÃ' style='color: red !important;'>AC-ÖØ¶¨ÏòÉèÖÃ</legend>\n" +
+                    "            <legend title='è‡ªåŠ¨ç¿»é¡µæ¨¡å¼çš„ç›¸å…³è®¾ç½®' style='color: red !important;'>AC-é‡å®šå‘è®¾ç½®</legend>\n" +
                     "            <ul>\n" +
-                    "                <li><input title='AC-ÖØ¶¨Ïò' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-ÖØ¶¨Ïò' type='checkbox' "+(isRedirectEnable?'checked':'')+">Ö÷¹¦ÄÜ-ÖØ¶¨Ïò¹¦ÄÜ\n" +
+                    "                <li><input title='AC-é‡å®šå‘' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-é‡å®šå‘' type='checkbox' "+(isRedirectEnable?'checked':'')+">ä¸»åŠŸèƒ½-é‡å®šå‘åŠŸèƒ½\n" +
                     "                </li>\n" +
-                    "                <li><input title='AC-È¥¹ã¸æ' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' "+(isAdsEnable?'checked':'')+">¸½¼Ó1-È¥¹ã¸æ¹¦ÄÜ\n" +
+                    "                <li><input title='AC-å»å¹¿å‘Š' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' "+(isAdsEnable?'checked':'')+">é™„åŠ 1-å»å¹¿å‘ŠåŠŸèƒ½\n" +
                     "                </li>\n" +
-                    "                <li><input title='AC-Ìí¼ÓFavicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">¸½¼Ó2-Favicon¹¦ÄÜ\n" +
+                    "                <li><input title='AC-æ·»åŠ Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">é™„åŠ 2-FaviconåŠŸèƒ½\n" +
                     "                </li>\n" +
-                    "                <li><input title='AC-Ìí¼Ó±àºÅ' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">¸½¼Ó3-±àºÅ¹¦ÄÜ</li>\n" +
-                    "                <li><a href='http://wpa.qq.com/msgrd?v=1&uin=1353464539&site=qq&menu=yes' style='color:red !important;'>Ìá½¨Òé£¬Ñ°Çó°ïÖú£¬½Å±¾¶¨ÖÆµãÎÒ</a></li>"+
+                    "                <li><input title='AC-æ·»åŠ ç¼–å·' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">é™„åŠ 3-ç¼–å·åŠŸèƒ½</li>\n" +
+                    "                <li><a href='http://wpa.qq.com/msgrd?v=1&uin=1353464539&site=qq&menu=yes' style='color:red !important;'>æå»ºè®®ï¼Œå¯»æ±‚å¸®åŠ©ï¼Œè„šæœ¬å®šåˆ¶ç‚¹æˆ‘</a></li>"+
                     "            </ul>\n" +
-                    "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton' title='±£´æÉèÖÃ' style='position: relative !important;float: right !important;'>±£´æ</span>\n" +
+                    "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton' title='ä¿å­˜è®¾ç½®' style='position: relative !important;float: right !important;'>ä¿å­˜</span>\n" +
                     "        </fieldset>\n" +
                     "        </div>\n" +
                     "    </div>\n" +
@@ -189,21 +189,21 @@
             acSettingInner.id = 'sp-ac-content';
             acSettingInner.style = 'display: none;';
             acSettingInner.innerHTML =
-                        "            <legend title='×Ô¶¯·­Ò³Ä£Ê½µÄÏà¹ØÉèÖÃ' style='color: red !important;'>AC-ÖØ¶¨ÏòÉèÖÃ</legend>\n" +
+                        "            <legend title='è‡ªåŠ¨ç¿»é¡µæ¨¡å¼çš„ç›¸å…³è®¾ç½®' style='color: red !important;'>AC-é‡å®šå‘è®¾ç½®</legend>\n" +
                         "            <ul>\n" +
-                        "                <li><input title='AC-ÖØ¶¨Ïò' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-ÖØ¶¨Ïò' type='checkbox' "+(isRedirectEnable?'checked':'')+">Ö÷¹¦ÄÜ-ÖØ¶¨Ïò¹¦ÄÜ\n" +
+                        "                <li><input title='AC-é‡å®šå‘' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-é‡å®šå‘' type='checkbox' "+(isRedirectEnable?'checked':'')+">ä¸»åŠŸèƒ½-é‡å®šå‘åŠŸèƒ½\n" +
                         "                </li>\n" +
-                        "                <li><input title='AC-È¥¹ã¸æ' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' "+(isAdsEnable?'checked':'')+">¸½¼Ó1-È¥¹ã¸æ¹¦ÄÜ\n" +
+                        "                <li><input title='AC-å»å¹¿å‘Š' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' "+(isAdsEnable?'checked':'')+">é™„åŠ 1-å»å¹¿å‘ŠåŠŸèƒ½\n" +
                         "                </li>\n" +
-                        "                <li><input title='AC-Ìí¼ÓFavicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">¸½¼Ó2-Favicon¹¦ÄÜ\n" +
+                        "                <li><input title='AC-æ·»åŠ Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">é™„åŠ 2-FaviconåŠŸèƒ½\n" +
                         "                </li>\n" +
-                        "                <li><input title='AC-Ìí¼Ó±àºÅ' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">¸½¼Ó3-±àºÅ¹¦ÄÜ</li>\n" +
+                        "                <li><input title='AC-æ·»åŠ ç¼–å·' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">é™„åŠ 3-ç¼–å·åŠŸèƒ½</li>\n" +
                         "            </ul>\n" +
-                        "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton' title='±£´æÉèÖÃ' style='position: relative !important;float: right !important;'>±£´æ</span>\n";
+                        "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton' title='ä¿å­˜è®¾ç½®' style='position: relative !important;float: right !important;'>ä¿å­˜</span>\n";
             document.querySelector("#sp-fw-main").appendChild(acSettingInner);
         }
         document.querySelector("#sp-ac-savebutton").addEventListener('click', function(e) {
-            // ±£´æ¹¦ÄÜ
+            // ä¿å­˜åŠŸèƒ½
             GM_setValue("isRedirectEnable", document.querySelector("#sp-ac-redirect").checked);
             GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
             GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
@@ -221,9 +221,9 @@
         var tt = setInterval(function(){
             if(document.querySelector("#content_left")){
                 clearInterval(tt);
-                /***×îºó±ØĞëÒªÉèÖÃºÃMO¼ÌĞø¼àÌıÒ³ÃæÊı¾İ--×Ô¶¯¼ÓÔØÏÂÒ»Ò³µÄÎÊÌâ***/
+                /***æœ€åå¿…é¡»è¦è®¾ç½®å¥½MOç»§ç»­ç›‘å¬é¡µé¢æ•°æ®--è‡ªåŠ¨åŠ è½½ä¸‹ä¸€é¡µçš„é—®é¢˜***/
                 observer.observe(document.querySelector("#wrapper_wrapper"), option);
-                // ´¦Àíµ±Ç°-¿ÉÒÔ¿ªÊ¼ÉèÖÃÄÇ¸öxxxÁË
+                // å¤„ç†å½“å‰-å¯ä»¥å¼€å§‹è®¾ç½®é‚£ä¸ªxxxäº†
                 ACHandle();
             }
         }, 200);
@@ -234,11 +234,11 @@
     function ACHandle(){
         if(isRedirectEnable){
             if(Stype != null && Stype != "")
-                resetURL(document.querySelectorAll(Stype)); // °Ù¶ÈÈ¥ÖØ¶¨Ïò
-            removeOnMouseDownFunc(); // ÒÆ³ıonMouseDownÊÂ¼ş£¬¹È¸èÈ¥ÖØ¶¨Ïò
+                resetURL(document.querySelectorAll(Stype)); // ç™¾åº¦å»é‡å®šå‘
+            removeOnMouseDownFunc(); // ç§»é™¤onMouseDownäº‹ä»¶ï¼Œè°·æ­Œå»é‡å®šå‘
         }
         if(isFaviconEnable){
-            addFavicon(document.querySelectorAll(Ftype)); // Ìí¼ÓFaviconÏÔÊ¾
+            addFavicon(document.querySelectorAll(Ftype)); // æ·»åŠ Faviconæ˜¾ç¤º
         }
         if(isCounterEnable){
             addCounter(document.querySelectorAll(Ctype));
@@ -247,12 +247,12 @@
     function removeOnMouseDownFunc(){
         try{
             document.querySelectorAll(".g .rc .r a").forEach(function(one){
-               one.setAttribute("onmousedown", ""); // ¹È¸èÈ¥ÖØ¶¨Ïò¸ÉÈÅ
-               one.setAttribute("target", "_blank"); // ¹È¸èÁ´½ÓĞÂ±êÇ©´ò¿ª
+               one.setAttribute("onmousedown", ""); // è°·æ­Œå»é‡å®šå‘å¹²æ‰°
+               one.setAttribute("target", "_blank"); // è°·æ­Œé“¾æ¥æ–°æ ‡ç­¾æ‰“å¼€
             });
         }catch(e){}
     }
-    function addStyle(css) { //Ìí¼ÓCSSµÄ´úÂë--copyµÄ
+    function addStyle(css) { //æ·»åŠ CSSçš„ä»£ç --copyçš„
         var pi = document.createProcessingInstruction(
             'xml-stylesheet',
             'type="text/css" href="data:text/css;utf-8,' + encodeURIComponent(css) + '"'
@@ -261,8 +261,8 @@
     }
     function resetURL(list){
         for(var i = 0; i < list.length; i++){
-            // ´Ë·½·¨ÊÇÒì²½£¬¹ÊÔÚ½áÊøµÄÊ±ºòÊ¹ÓÃi»á³öÎÊÌâ-ÑÏÖØ!
-            // ²ÉÓÃ±Õ°üµÄ·½·¨À´½øĞĞÊı¾İµÄ´«µİ
+            // æ­¤æ–¹æ³•æ˜¯å¼‚æ­¥ï¼Œæ•…åœ¨ç»“æŸçš„æ—¶å€™ä½¿ç”¨iä¼šå‡ºé—®é¢˜-ä¸¥é‡!
+            // é‡‡ç”¨é—­åŒ…çš„æ–¹æ³•æ¥è¿›è¡Œæ•°æ®çš„ä¼ é€’
             var curhref = list[i].href;
             if(list[i]!= null && list[i].getAttribute("ac_redirectStatus") == null){
                 list[i].setAttribute("ac_redirectStatus", "0");
@@ -282,35 +282,35 @@
                             }
                         });
                     },100);
-                  })(curhref); //´«µİ¾ÉµÄÍøÖ·¹ıÈ¥£¬¶Á×÷c_curhref
+                  })(curhref); //ä¼ é€’æ—§çš„ç½‘å€è¿‡å»ï¼Œè¯»ä½œc_curhref
                 }else if(curhref.indexOf("/interstitial") > -1){
                 }else{
                 }
             }
         }
     }
-    function DealResult(response, c_curhref){ // Êı¾İ»ñÈ¡³É¹¦£¬Ìæ»»Ò³ÃæµØÖ·ÎªÕæÊµµØÖ·
+    function DealResult(response, c_curhref){ // æ•°æ®è·å–æˆåŠŸï¼Œæ›¿æ¢é¡µé¢åœ°å€ä¸ºçœŸå®åœ°å€
         var resultURL = response.finalUrl;
         if(Stype.length > 10){
-            //Èç¹ûÊÇËÑ¹·µÄ½á¹û
+            //å¦‚æœæ˜¯æœç‹—çš„ç»“æœ
             var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
             if(resultResponseUrl != null)
                 resultURL = resultResponseUrl;
         }
         //console.log(resultURL);
-        var indexhref = Reg_Get(c_curhref, "((?:http)[^&]+)");// ±ØĞëÒªÌáÈ¡²¿·ÖÊı¾İ£¬ÒòÎªÖ®ºóµÄÄªÃû¼ÓÁËÆäËû²ÎÊıck=0.0.0.0.....
+        var indexhref = Reg_Get(c_curhref, "((?:http)[^&]+)");// å¿…é¡»è¦æå–éƒ¨åˆ†æ•°æ®ï¼Œå› ä¸ºä¹‹åçš„è«ååŠ äº†å…¶ä»–å‚æ•°ck=0.0.0.0.....
         var ccnode = document.querySelectorAll("h3>[href*='"+indexhref+"']")[0];
         if(ccnode != null){
             ccnode.href = resultURL;
         }else{
-            //console.log("¸ÃÁ´½ÓÒÑ¾­±»ÆäËû½Å±¾¸ÉµôÁËÅ¶"+resultURL);
+            //console.log("è¯¥é“¾æ¥å·²ç»è¢«å…¶ä»–è„šæœ¬å¹²æ‰äº†å“¦"+resultURL);
         }
     }
     function Reg_Get(HTML, reg){
         var RegE = new RegExp(reg);
         try{return RegE.exec(HTML)[1];}catch(e){return"";}
     }
-    function removeAD_baidu_sogou(){ // ÒÆ³ı°Ù¶È×ÔÓĞ¹ã¸æ
+    function removeAD_baidu_sogou(){ // ç§»é™¤ç™¾åº¦è‡ªæœ‰å¹¿å‘Š
         if(location.host == "www.baidu.com"){
             if(document.querySelectorAll("#content_left")[0] != null){
                 var fathers = document.querySelectorAll("#content_left")[0].childNodes;
@@ -319,21 +319,21 @@
                     var currentNode = fathers[i];
                     if(fathers[i].tagName=="DIV" && fathers[i].getAttribute("dealAD") == null){
                         if(null == currentNode.id || "" == currentNode.id){
-                            // Ã×ÓĞIDµÄÃ²ËÆ¶¼ÊÇ¹ã¸æ
-                            console.log("ÒÆ³ı¹ã¸æ CLASS="+currentNode.className);
+                            // ç±³æœ‰IDçš„è²Œä¼¼éƒ½æ˜¯å¹¿å‘Š
+                            console.log("ç§»é™¤å¹¿å‘Š CLASS="+currentNode.className);
                             currentNode.remove();
                         } else if(currentNode.id == "clone"){
-                            // ID ÏÔÊ¾ÎªCLONEµÄÒ²ÊÇ¹ã¸æ
-                            console.log("ÒÆ³ı¹ã¸æ ID="+currentNode.id);
+                            // ID æ˜¾ç¤ºä¸ºCLONEçš„ä¹Ÿæ˜¯å¹¿å‘Š
+                            console.log("ç§»é™¤å¹¿å‘Š ID="+currentNode.id);
                             currentNode.remove();
                         } else if(currentNode.className.indexOf("result") != 0 && /^\d+$/.test(currentNode.id)){
-                            // class²»ÊÇresult...µÄ£¬²¢ÇÒidÊÇ´¿´âÊı×ÖµÄ(ºÜ´ó)
-                            console.log("ÒÆ³ı¹ã¸æ ID="+currentNode.id);
+                            // classä¸æ˜¯result...çš„ï¼Œå¹¶ä¸”idæ˜¯çº¯ç²¹æ•°å­—çš„(å¾ˆå¤§)
+                            console.log("ç§»é™¤å¹¿å‘Š ID="+currentNode.id);
                             currentNode.remove();
                         } else{
                             var node = currentNode.querySelectorAll(".f13>span")[0];
-                            if(node != null && node.innerHTML == "¹ã¸æ"){
-                                console.log("ÒÆ³ı¹ã¸æ ID="+currentNode.id);
+                            if(node != null && node.innerHTML == "å¹¿å‘Š"){
+                                console.log("ç§»é™¤å¹¿å‘Š ID="+currentNode.id);
                                 currentNode.remove();
                             }
                         }
@@ -349,7 +349,7 @@
         }
     }
     function addCounter(citeList){
-        var cssText="display:inline-block;background:#FD9999;color:#D7D7D7;font-family:'Î¢ÈíÑÅºÚ';font-size:16px;text-align:center;width:20px;line-height:20px;border-radius:50%;float:left;";
+        var cssText="display:inline-block;background:#FD9999;color:#D7D7D7;font-family:'å¾®è½¯é›…é»‘';font-size:16px;text-align:center;width:20px;line-height:20px;border-radius:50%;float:left;";
         var div = document.createElement('div');
         for(var i=0;i<citeList.length;i++){
             if(citeList[i].getAttribute('sortIndex')){
@@ -368,7 +368,7 @@
             //console.log(index+"."+url);
             if(null == citeList[index].getAttribute("ac_faviconStatus")){
                 if(url == ""){
-                    console.log("ÎŞĞ§µØÖ·£º"+citeList[index].innerHTML);
+                    console.log("æ— æ•ˆåœ°å€ï¼š"+citeList[index].innerHTML);
                     citeList[index].setAttribute("ac_faviconStatus", "-1");
                     continue;
                 }
@@ -389,21 +389,21 @@
                         &tmpHTML.indexOf("img_fav rms_img")
                         &tmpHTML.indexOf("c-tool-")
                         &tmpHTML.indexOf("span class=\"c-icon c-icon-");
-                    //Ëû×Ô¼ºÒÑ¾­×öÁËfaviconÁË
+                    //ä»–è‡ªå·±å·²ç»åšäº†faviconäº†
                     if(pos > -1){
-                        console.log("ÒÑÓĞÍ¼Æ¬£º"+faviconUrl);
+                        console.log("å·²æœ‰å›¾ç‰‡ï¼š"+faviconUrl);
                         citeList[index].setAttribute("ac_faviconStatus", "-2");
                         continue;
                     }
-                    //https://api.byi.pw/favicon/?url=???? ²»ÎÈ¶¨
-                    //http://"+faviconUrl+"/cdn.ico?defaulticon=http://soz.im/favicon.ico ²»ÎÈ¶¨
-                    //https://www.xtwind.com/api/index.php?url=???? ¹ÒÁË¡£¡£¡£
+                    //https://api.byi.pw/favicon/?url=???? ä¸ç¨³å®š
+                    //http://"+faviconUrl+"/cdn.ico?defaulticon=http://soz.im/favicon.ico ä¸ç¨³å®š
+                    //https://www.xtwind.com/api/index.php?url=???? æŒ‚äº†ã€‚ã€‚ã€‚
                     //https://statics.dnspod.cn/proxy_favicon/_/favicon?domain=sina.cn
-                    //Èç¹ûµØÖ·²»ÕıÈ·£¬ÄÇÃ´¶ªÆú
+                    //å¦‚æœåœ°å€ä¸æ­£ç¡®ï¼Œé‚£ä¹ˆä¸¢å¼ƒ
                     var host = faviconUrl.replace(/[^.]+\.([^.]+)\.([^.]+)/, "$1.$2");
                     if(curNode.querySelector(".faviconT") == null && host.length>3){
                         var insNode = document.createElement("img");
-                        curNode = curNode.children[0]; //firstChildÈİÒ×Óöµ½text¶ÔÏó
+                        curNode = curNode.children[0]; //firstChildå®¹æ˜“é‡åˆ°textå¯¹è±¡
                         citeList[index].setAttribute("ac_faviconStatus", "1");
                         curNode.insertBefore(insNode, curNode.firstChild);
                         insNode.className = "faviconT";
@@ -412,7 +412,7 @@
                         insNode.setAttribute("faviconID", "0");
                         insNode.onload = function(){
                             if(insNode.naturalWidth < 16){
-                                //console.log("Ê§°Ü2£º"+faviconUrl+"ÔİÊ±ÎŞ½â");
+                                //console.log("å¤±è´¥2ï¼š"+faviconUrl+"æš‚æ—¶æ— è§£");
                                 insNode.src = "http://code.taobao.org/svn/zb227IMG/favicon.ico";
                             }
                         };
@@ -424,7 +424,7 @@
             var send;
             var result = sbefore.split('-');
             if(location.hostname.indexOf("sogou") > -1 && location.href.indexOf("sogou") < 20){
-                // --ËÑ¹·×¨ÓÃ£»Èç¹ûµÚÒ»¸öÊÇÖĞÎÄµÄ»°£¬µØÖ·¾ÍÊÇµÚ¶ş¸ö
+                // --æœç‹—ä¸“ç”¨ï¼›å¦‚æœç¬¬ä¸€ä¸ªæ˜¯ä¸­æ–‡çš„è¯ï¼Œåœ°å€å°±æ˜¯ç¬¬äºŒä¸ª
                 sbefore = result[1];
             }
             send = sbefore.replace(/(\/[^/]*|\s*)/ ,"").replace(/<[^>]*>/g, "").replace(/https?:\/\//g,"").replace(/<\/?strong>/g,"").replace(/<\/?b>/g,"").replace(/<?>?/g,"").replace(/( |\/).*/g,"");

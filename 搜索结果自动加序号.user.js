@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name                ËÑË÷½á¹û×Ô¶¯¼ÓĞòºÅ
+// @name                æœç´¢ç»“æœè‡ªåŠ¨åŠ åºå·
 // @author              burningall
-// @description         ¸ø°Ù¶È\¹È¸è\±ØÓ¦µÈËÑË÷½á¹û¼ÓÉÏĞòºÅ
+// @description         ç»™ç™¾åº¦\è°·æ­Œ\å¿…åº”ç­‰æœç´¢ç»“æœåŠ ä¸Šåºå·
 // @version             2017.7.21
 // @include             *www.baidu.com*
 // @include             *news.baidu.com*
@@ -18,7 +18,7 @@
 // @include             *bbs.kafan.cn*
 // @contributionURL     troy450409405@gmail.com
 // @namespace           https://greasyfork.org/zh-CN/users/3400-axetroy
-// @note                Edit from axetroy ¸ĞĞ»axetroy´óÉñµÄ½Å±¾£¬ÎÒÖ»ÊÇ»ùÓÚ´óÉñµÄ½Å±¾£¬½øĞĞÁË¼òµ¥µÄĞŞ¸´
+// @note                Edit from axetroy æ„Ÿè°¢axetroyå¤§ç¥çš„è„šæœ¬ï¼Œæˆ‘åªæ˜¯åŸºäºå¤§ç¥çš„è„šæœ¬ï¼Œè¿›è¡Œäº†ç®€å•çš„ä¿®å¤
 // ==/UserScript==
 (function(){
     var macthList=[{
@@ -71,7 +71,7 @@
     function addEvent(obj, event, fn) {
         return obj.addEventListener ? obj.addEventListener(event, fn, false) : obj.attachEventListener('on' + event, fn);
     };
-    var cssText="display:inline-block;background:#FD9999;color:#D7D7D7;font-family:'Î¢ÈíÑÅºÚ';font-size:16px;text-align:center;width:20px;line-height:20px;border-radius:50%;float:left;";
+    var cssText="display:inline-block;background:#FD9999;color:#D7D7D7;font-family:'å¾®è½¯é›…é»‘';font-size:16px;text-align:center;width:20px;line-height:20px;border-radius:50%;float:left;";
     var div = document.createElement('div');
     function show(){
         var list=getRule();

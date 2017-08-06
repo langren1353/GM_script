@@ -1,17 +1,17 @@
 // ==UserScript==
-// @name  AC-ÓĞµÀÈ¡´Ê+·­Òë
+// @name  AC-æœ‰é“å–è¯+ç¿»è¯‘
 // @version 0.8
 // @namespace youdao
-// @author  AC -modified from £ºLiu Yuyang(sa@linuxer.me)
-// @description Ò»¸ö¿ÉÒÔÔÚä¯ÀÀÆ÷ÖĞ×ÔÓÉÊ¹ÓÃµÄÆÁÄ»È¡´Ê½Å±¾-alt+Êó±ê·­Òë£¬»òÕßÑ¡ÖĞ°´Q·­Òë
+// @author  AC -modified from ï¼šLiu Yuyang(sa@linuxer.me)
+// @description ä¸€ä¸ªå¯ä»¥åœ¨æµè§ˆå™¨ä¸­è‡ªç”±ä½¿ç”¨çš„å±å¹•å–è¯è„šæœ¬-alt+é¼ æ ‡ç¿»è¯‘ï¼Œæˆ–è€…é€‰ä¸­æŒ‰Qç¿»è¯‘
 // @include *
-// @note 2017-2-21 ĞŞÕıÁËÓÉÓÚz-index¹ıµÍµ¼ÖÂµÄÌÔ±¦Ò³Ãæ·­Òë¹ıÓÚµ×²ã¶ø¿´²»¼û
-// @note 2016-9-29 ĞŞÕıÁË²¿·Ö¸ñÊ½´íÎó£¬»»ĞĞµÄÊ±ºòÉÔÎ¢ºÃÁËµã
-// @note 2016-1-12 ÖÕÓÚĞŞÕıÁË£¬Ö®Ç°Ö»¸ÄÁË¾ä×Ó·­ÒëÖĞµÄÎÄ×ÖÑÕÉ«£¬²Å·¢ÏÖµ¥´Ê·­ÒëºóµÄÑÕÉ«¼òÖ±¿´²»Çå¡£¡£¡£
-// @note 2016-1-9 ĞŞ¸ÄÄ¬ÈÏ±³¾°É«
-// @note 2016-1-8 ĞŞÕıchromeµÄÖ§³Ö
-// @note 2016-1-8 ĞŞ¸Ä´°ÌåÄ¬ÈÏ´óĞ¡£¬¾¡¿ÉÄÜµÄÏÔÊ¾»Ø³µ¹¦ÄÜ£¬±ÜÃâÁËÒÔÇ°µÄÈ«²¿ÏÔÊ¾ÔÚÍ¬Ò»ĞĞ--ÒÀ¾ÉÓĞbug
-// @note 2015-11-26 ĞŞ¸Ä²¿·ÖµØ·½ÊÊºÏ×Ô¼ºÊ¹ÓÃ£¬Ñ¡ÖĞÎÄ×Ö£¬°´ÏÂQ·­Òë£¬»òÕßalt+Êó±êÑ¡ÖĞ£¬×Ô¶¯·­Òë
+// @note 2017-2-21 ä¿®æ­£äº†ç”±äºz-indexè¿‡ä½å¯¼è‡´çš„æ·˜å®é¡µé¢ç¿»è¯‘è¿‡äºåº•å±‚è€Œçœ‹ä¸è§
+// @note 2016-9-29 ä¿®æ­£äº†éƒ¨åˆ†æ ¼å¼é”™è¯¯ï¼Œæ¢è¡Œçš„æ—¶å€™ç¨å¾®å¥½äº†ç‚¹
+// @note 2016-1-12 ç»ˆäºä¿®æ­£äº†ï¼Œä¹‹å‰åªæ”¹äº†å¥å­ç¿»è¯‘ä¸­çš„æ–‡å­—é¢œè‰²ï¼Œæ‰å‘ç°å•è¯ç¿»è¯‘åçš„é¢œè‰²ç®€ç›´çœ‹ä¸æ¸…ã€‚ã€‚ã€‚
+// @note 2016-1-9 ä¿®æ”¹é»˜è®¤èƒŒæ™¯è‰²
+// @note 2016-1-8 ä¿®æ­£chromeçš„æ”¯æŒ
+// @note 2016-1-8 ä¿®æ”¹çª—ä½“é»˜è®¤å¤§å°ï¼Œå°½å¯èƒ½çš„æ˜¾ç¤ºå›è½¦åŠŸèƒ½ï¼Œé¿å…äº†ä»¥å‰çš„å…¨éƒ¨æ˜¾ç¤ºåœ¨åŒä¸€è¡Œ--ä¾æ—§æœ‰bug
+// @note 2015-11-26 ä¿®æ”¹éƒ¨åˆ†åœ°æ–¹é€‚åˆè‡ªå·±ä½¿ç”¨ï¼Œé€‰ä¸­æ–‡å­—ï¼ŒæŒ‰ä¸‹Qç¿»è¯‘ï¼Œæˆ–è€…alt+é¼ æ ‡é€‰ä¸­ï¼Œè‡ªåŠ¨ç¿»è¯‘
 // @icon    https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @grant GM_xmlhttpRequest
 // ==/UserScript==
@@ -50,7 +50,7 @@ function translate() {
     if (word == "") {
       return;
     }
-    word = word.replace(new RegExp('(\r\n)+', 'g'), 'QWER');// ÌØÊâ±ê¼Ç±ãÓÚÌæ»»
+    word = word.replace(new RegExp('(\r\n)+', 'g'), 'QWER');// ç‰¹æ®Šæ ‡è®°ä¾¿äºæ›¿æ¢
     var ts = new Date().getTime();
     var mx = curX;
     var my = curY;
@@ -74,7 +74,7 @@ function translate() {
       sentence();
     }
     // main window
-    // first insert into dom then there is offsetHeight£¡IMPORTANT£¡
+    // first insert into dom then there is offsetHeightï¼IMPORTANTï¼
     document.body.appendChild(youdaoWindow);
     youdaoWindow.style.color = "#000000";
     youdaoWindow.style.textAlign = "left";
@@ -201,8 +201,8 @@ function translate() {
         trans = trans.replaceAll('QWER', '\n');
         console.log(trans);
         var reg = new RegExp("\n","gm");
-        while(reg.exec(trans) != null){// Èç¹ûÕÒ²»µ½»Ø³µÁË£¬ÄÇÃ´×îºóÖØ¸´Ò»´ÎĞÂ½¨<p>
-            //ÕÒµ½Ò»¸ö»Ø³µ£¬ÄÇÃ´Ìí¼ÓÒ»¸öĞÂµÄ<p>£¬ÄÚÈİÎª£ºtrans.sub(0, ?); trans = trans.sub(?);
+        while(reg.exec(trans) != null){// å¦‚æœæ‰¾ä¸åˆ°å›è½¦äº†ï¼Œé‚£ä¹ˆæœ€åé‡å¤ä¸€æ¬¡æ–°å»º<p>
+            //æ‰¾åˆ°ä¸€ä¸ªå›è½¦ï¼Œé‚£ä¹ˆæ·»åŠ ä¸€ä¸ªæ–°çš„<p>ï¼Œå†…å®¹ä¸ºï¼štrans.sub(0, ?); trans = trans.sub(?);
             var newNode = document.createElement("li");
             newNode.style.listStyle = "none";
             newNode.style.margin = "0";
@@ -246,6 +246,6 @@ function translate() {
     });
   }
   String.prototype.replaceAll = function(s1,s2){
-¡¡¡¡return this.replace(new RegExp(s1,"gm"),s2);
-¡¡}
+ã€€ã€€return this.replace(new RegExp(s1,"gm"),s2);
+ã€€}
 }
