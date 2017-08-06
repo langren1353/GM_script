@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         11.4
+// @version         11.5
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -22,6 +22,7 @@
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.添加计数 5.开关选择以上功能
 // @lastmodified    2017-08-04
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.08.06-V11.5 修复，保存异常；预期之后会添加百度搜索页面的大调整
 // @note            2017.08.05-V11.4 新增：反馈和建议地址增加
 // @note            2017.08.04-V11.3 修复：由于英语不好导致的拼写错误，感谢shj兄弟指出
 // @note            2017.08.03-V11.2 新增：谷歌链接新标签打开; 移除搜索结果链接的下划线
@@ -155,7 +156,7 @@
                     "                <li><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">附加2-Favicon功能\n" +
                     "                </li>\n" +
                     "                <li><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">附加3-编号功能</li>\n" +
-                    "                <li><a href='http://wpa.qq.com/msgrd?v=1&uin=1353464539&site=qq&menu=yes' style='color:red !important;'>提建议，寻求帮助，脚本定制点我</li>"+
+                    "                <li><a href='http://wpa.qq.com/msgrd?v=1&uin=1353464539&site=qq&menu=yes' style='color:red !important;'>提建议，寻求帮助，脚本定制点我</a></li>"+
                     "            </ul>\n" +
                     "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton' title='保存设置' style='position: relative !important;float: right !important;'>保存</span>\n" +
                     "        </fieldset>\n" +
