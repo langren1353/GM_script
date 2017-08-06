@@ -1,12 +1,19 @@
 // ==UserScript==
-// @name           æœ‰é“å–è¯ç¿»è¯‘
-// @version        0.1
-// @namespace      youdao
-// @author         AC -modified from ï¼šLiu Yuyang(sa@linuxer.me)
-// @description    ä¸€ä¸ªå¯ä»¥åœ¨æµè§ˆå™¨ä¸­è‡ªç”±ä½¿ç”¨çš„å±å¹•å–è¯è„šæœ¬-alt+é¼ æ ‡ç¿»è¯‘ï¼Œæˆ–è€…é€‰ä¸­æŒ‰Qç¿»è¯‘
-// @include        *
-// @note           2015-11-26 ä¿®æ”¹éƒ¨åˆ†åœ°æ–¹é€‚åˆè‡ªå·±ä½¿ç”¨ï¼Œé€‰ä¸­æ–‡å­—ï¼ŒæŒ‰ä¸‹Qç¿»è¯‘ï¼Œæˆ–è€…alt+é¼ æ ‡é€‰ä¸­ï¼Œè‡ªåŠ¨ç¿»è¯‘
-// @grant          GM_xmlhttpRequest
+// @name  AC-ÓÐµÀÈ¡´Ê+·­Òë
+// @version 0.8
+// @namespace youdao
+// @author  AC -modified from £ºLiu Yuyang(sa@linuxer.me)
+// @description Ò»¸ö¿ÉÒÔÔÚä¯ÀÀÆ÷ÖÐ×ÔÓÉÊ¹ÓÃµÄÆÁÄ»È¡´Ê½Å±¾-alt+Êó±ê·­Òë£¬»òÕßÑ¡ÖÐ°´Q·­Òë
+// @include *
+// @note 2017-2-21 ÐÞÕýÁËÓÉÓÚz-index¹ýµÍµ¼ÖÂµÄÌÔ±¦Ò³Ãæ·­Òë¹ýÓÚµ×²ã¶ø¿´²»¼û
+// @note 2016-9-29 ÐÞÕýÁË²¿·Ö¸ñÊ½´íÎó£¬»»ÐÐµÄÊ±ºòÉÔÎ¢ºÃÁËµã
+// @note 2016-1-12 ÖÕÓÚÐÞÕýÁË£¬Ö®Ç°Ö»¸ÄÁË¾ä×Ó·­ÒëÖÐµÄÎÄ×ÖÑÕÉ«£¬²Å·¢ÏÖµ¥´Ê·­ÒëºóµÄÑÕÉ«¼òÖ±¿´²»Çå¡£¡£¡£
+// @note 2016-1-9 ÐÞ¸ÄÄ¬ÈÏ±³¾°É«
+// @note 2016-1-8 ÐÞÕýchromeµÄÖ§³Ö
+// @note 2016-1-8 ÐÞ¸Ä´°ÌåÄ¬ÈÏ´óÐ¡£¬¾¡¿ÉÄÜµÄÏÔÊ¾»Ø³µ¹¦ÄÜ£¬±ÜÃâÁËÒÔÇ°µÄÈ«²¿ÏÔÊ¾ÔÚÍ¬Ò»ÐÐ--ÒÀ¾ÉÓÐbug
+// @note 2015-11-26 ÐÞ¸Ä²¿·ÖµØ·½ÊÊºÏ×Ô¼ºÊ¹ÓÃ£¬Ñ¡ÖÐÎÄ×Ö£¬°´ÏÂQ·­Òë£¬»òÕßalt+Êó±êÑ¡ÖÐ£¬×Ô¶¯·­Òë
+// @icon    https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
+// @grant GM_xmlhttpRequest
 // ==/UserScript==
 
 window.document.body.addEventListener("mousemove", function(e){curX = e.clientX; curY = e.clientY;}, false);
@@ -17,7 +24,7 @@ var curX;
 var curY;
 var timeout;
 function callbackWrapper(e) {
-    if(e.key == "q" || e.type == "mouseup"){
+     if(e.charCode == 113  || e.type == "mouseup"){ //Q
           // remove previous .youdaoPopup if exists
           var previous = document.querySelector(".youdaoPopup");
           if (previous) {
@@ -36,27 +43,18 @@ function callbackWrapper(e) {
 }
 
 function translate() {
-  //console.log("translate start");
   var selectObj = document.getSelection()
 
-  // if #text node
   if (selectObj.anchorNode.nodeType == 3) {
-    //GM_log(selectObj.anchorNode.nodeType.toString());
     var word = selectObj.toString();
     if (word == "") {
       return;
     }
-    // linebreak wordwrap, optimize for pdf.js
-    word = word.replace('-\n','');
-    // multiline selection, optimize for pdf.js
-    word = word.replace('\n', ' ');
-    //console.log("word:", word);
+    word = word.replace(new RegExp('(\r\n)+', 'g'), 'QWER');// ÌØÊâ±ê¼Ç±ãÓÚÌæ»»
     var ts = new Date().getTime();
-    //console.log("time: ", ts);
     var mx = curX;
     var my = curY;
     translate(word, ts);
-
   }
 
   function popup(mx, my, result) {
@@ -76,29 +74,30 @@ function translate() {
       sentence();
     }
     // main window
-    // first insert into dom then there is offsetHeightï¼IMPORTANTï¼
+    // first insert into dom then there is offsetHeight£¡IMPORTANT£¡
     document.body.appendChild(youdaoWindow);
-    youdaoWindow.style.color = "black";
+    youdaoWindow.style.color = "#000000";
     youdaoWindow.style.textAlign = "left";
     youdaoWindow.style.display = "block";
     youdaoWindow.style.position = "fixed";
-    youdaoWindow.style.background = "lightblue";
-    youdaoWindow.style.borderRadius = "5px";
+    youdaoWindow.style.background = "#FFFFE1";
+    youdaoWindow.style.borderRadius = "3px";
     youdaoWindow.style.boxShadow = "0 0 5px 0"
-    youdaoWindow.style.opacity = "0.9"
-    youdaoWindow.style.width = "200px";
+    youdaoWindow.style.opacity = "1"
+    youdaoWindow.style.width = "500px";
     youdaoWindow.style.wordWrap = "break-word";
     youdaoWindow.style.left = mx + 10 + "px";
     if (mx + 200 + 30 >= window.innerWidth) {
       youdaoWindow.style.left = parseInt(youdaoWindow.style.left) - 200 + "px";
     }
+    //alert(window.innerHeight);
     if (my + youdaoWindow.offsetHeight + 30 >= window.innerHeight) {
       youdaoWindow.style.bottom = "20px";
     } else {
-      youdaoWindow.style.top = my + 10 + "px";
+      youdaoWindow.style.top = my + "px";
     }
-    youdaoWindow.style.padding = "5px";
-    youdaoWindow.style.zIndex = '999999'
+    youdaoWindow.style.padding = "3px";
+    youdaoWindow.style.zIndex = '9999999999'
 
     function word() {
 
@@ -136,7 +135,7 @@ function translate() {
       }
 
       var basic = dictJSON['basic'];
-      var header = document.createElement('p');
+      var header = document.createElement('div');
       // header 
       var span = document.createElement('span')
       span.innerHTML = query;
@@ -156,7 +155,7 @@ function translate() {
           e.stopPropagation();
           play(query)}, false);
       }
-      header.style.color = "darkBlue";
+      header.style.color = "black";
       header.style.margin = "0";
       header.style.padding = "0";
       span.style.fontweight = "900";
@@ -179,7 +178,7 @@ function translate() {
         li.style.margin = "0";
         li.style.padding = "0";
         li.style.background = "none";
-        li.style.color = "inherit";
+        li.style.color = "#0000FF";
         li.appendChild(document.createTextNode(trans));
         ul.appendChild(li);
       })
@@ -198,8 +197,27 @@ function translate() {
         li.style.margin = "0";
         li.style.padding = "0";
         li.style.background = "none";
-        li.style.color = "inherit";
-        li.appendChild(document.createTextNode(trans));
+        li.style.color = "#0000FF";
+        trans = trans.replaceAll('QWER', '\n');
+        console.log(trans);
+        var reg = new RegExp("\n","gm");
+        while(reg.exec(trans) != null){// Èç¹ûÕÒ²»µ½»Ø³µÁË£¬ÄÇÃ´×îºóÖØ¸´Ò»´ÎÐÂ½¨<p>
+            //ÕÒµ½Ò»¸ö»Ø³µ£¬ÄÇÃ´Ìí¼ÓÒ»¸öÐÂµÄ<p>£¬ÄÚÈÝÎª£ºtrans.sub(0, ?); trans = trans.sub(?);
+            var newNode = document.createElement("li");
+            newNode.style.listStyle = "none";
+            newNode.style.margin = "0";
+            newNode.style.padding = "0";
+            newNode.style.background = "none";
+            newNode.style.color = "#0000FF";
+            newNode.style.fontweight = "900";
+            newNode.innerHTML = trans.substring(0, reg.lastIndex-2);
+            li.appendChild(newNode);
+            trans = trans.substring(reg.lastIndex);
+        }
+        var newNode = document.createElement("div");
+        newNode.innerHTML = trans;
+        newNode.style.color = "#0000FF";
+        li.appendChild(newNode);
         ul.appendChild(li);
       })
       youdaoWindow.appendChild(ul);
@@ -209,7 +227,7 @@ function translate() {
 
   function translate(word, ts) {
     var reqUrl = `http://fanyi.youdao.com/openapi.do?type=data&doctype=json&version=1.1&relatedUrl=http%3A%2F%2Ffanyi.youdao.com%2F%23&keyfrom=fanyiweb&key=null&translate=on&q=${word}&ts=${ts}`
-    //console.log("request url: ", reqUrl);
+    console.log("request url: ", reqUrl);
     var ret = GM_xmlhttpRequest({
       method: "GET",
       url: reqUrl,
@@ -227,4 +245,7 @@ function translate() {
       }
     });
   }
+  String.prototype.replaceAll = function(s1,s2){
+¡¡¡¡return this.replace(new RegExp(s1,"gm"),s2);
+¡¡}
 }
