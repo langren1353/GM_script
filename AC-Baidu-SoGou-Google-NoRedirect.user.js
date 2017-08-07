@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         11.5
+// @version         11.6
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -22,6 +22,7 @@
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.添加计数 5.开关选择以上功能
 // @lastmodified    2017-08-04
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.08.07-V11.6 调整：移除小绿点，换为点击Favicon或者是计数器弹出窗口，更换为加群链接
 // @note            2017.08.06-V11.5 修复，保存异常；预期之后会添加百度搜索页面的大调整
 // @note            2017.08.05-V11.4 新增：反馈和建议地址增加
 // @note            2017.08.04-V11.3 修复：由于英语不好导致的拼写错误，感谢shj兄弟指出
@@ -136,71 +137,47 @@
     addStyle("a{text-decoration:none}"); // 移除这些个下划线
     function ShowSetting(){
         // 如果不存在的话，那么自己创建一个-copy from superPreload
-        if(document.querySelector("#sp-fw-container") == null){
-            GM_addStyle('#sp-fw-container{z-index:999999!important;text-align:left!important;}#sp-fw-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-fw-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;}#sp-fw-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-fw-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-fw-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-fw-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-fw-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-fw-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-fw-container fieldset>ul{padding:0!important;margin:0!important;}#sp-fw-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-fw-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}');
-        var acSettingForm = document.createElement('div');
-        acSettingForm.id = 'sp-fw-container';
-        acSettingForm.innerHTML = "<div id='sp-fw-container' style='position: fixed; top: 20px; right: 38px;'>\n" +
-                    "    <div id='sp-ac-rect' style='background-color: rgb(3, 139, 0);' title='翻页状态'>\n" +
-                    "        <div id='sp-ac-dot' style='display: block; background-color: rgb(0, 255, 5);'></div>\n" +
-                    "    </div>\n" +
+        if(document.querySelector("#sp-ac-container") == null){
+            GM_addStyle('#sp-ac-container{z-index:999999!important;text-align:left!important;}#sp-ac-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-ac-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;}#sp-ac-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-ac-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-ac-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-ac-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-ac-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-ac-container fieldset>ul{padding:0!important;margin:0!important;}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}');
+            var Container = document.createElement('div');
+            Container.id = "sp-ac-container";
+            Container.style = "position: fixed; top: 40%; left: 45%;";
+            Container.innerHTML =
                     "    <div id='sp-ac-content' style='display: none;'>\n" +
                     "        <div id='sp-ac-main'>\n" +
                     "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
                     "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置</legend>\n" +
                     "            <ul>\n" +
-                    "                <li><input title='AC-重定向' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-重定向' type='checkbox' "+(isRedirectEnable?'checked':'')+">主功能-重定向功能\n" +
+                    "                <li><label><input title='AC-重定向' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-重定向' type='checkbox' "+(isRedirectEnable?'checked':'')+">主功能-重定向功能</label>\n" +
                     "                </li>\n" +
-                    "                <li><input title='AC-去广告' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' "+(isAdsEnable?'checked':'')+">附加1-去广告功能\n" +
+                    "                <li><label><input title='AC-去广告' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' "+(isAdsEnable?'checked':'')+">附加1-去广告功能</label>\n" +
                     "                </li>\n" +
-                    "                <li><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">附加2-Favicon功能\n" +
+                    "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">附加2-Favicon功能</label>\n" +
                     "                </li>\n" +
-                    "                <li><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">附加3-编号功能</li>\n" +
-                    "                <li><a href='http://wpa.qq.com/msgrd?v=1&uin=1353464539&site=qq&menu=yes' style='color:red !important;'>提建议，寻求帮助，脚本定制点我</a></li>"+
+                    "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">附加3-编号功能</label></li>\n" +
+                    "                <li><a href='https://shang.qq.com/wpa/qunwpa?idkey=5bbfe9de1e81a0930bd053f3157aad2dbb3fa7b991ac9f22ea9f2e2f53efde80' style='color:red !important;'>联系作者,提建议,寻求帮助,脚本定制点我</a></li>"+
                     "            </ul>\n" +
+                    "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton' title='取消' style='position: relative !important;float: left !important;'>取消</span>\n" +
                     "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton' title='保存设置' style='position: relative !important;float: right !important;'>保存</span>\n" +
                     "        </fieldset>\n" +
                     "        </div>\n" +
-                    "    </div>\n" +
-                    "</div>";
-            document.body.appendChild(acSettingForm);
-            var rectt1, rectt2;
-            document.querySelector("#sp-ac-rect").addEventListener('mouseover', function(e) {
-                rectt1 = setTimeout(function(){
-                    document.querySelector("#sp-ac-content").style.display = 'block';
-                }, 100);
-            }, false);
-            document.querySelector("#sp-ac-rect").addEventListener('mouseout', function(e) {
-                clearTimeout(rectt1);
-            }, false);
-
-            acSettingForm.addEventListener('mouseover', function(e) {
-                clearTimeout(rectt2);
-            }, false);
-
-            acSettingForm.addEventListener('mouseout', function(e) {
-                if (e.relatedTarget && e.relatedTarget.disabled) return; //for firefox and chrome
-                rectt2 = setTimeout(function(){
-                    document.querySelector("#sp-ac-content").style.display = 'none';
-                }, 288);
-            }, false);
-        }else if(document.querySelector("#sp-ac-content") == null){
-            var acSettingInner = document.createElement('fieldset');
-            acSettingInner.id = 'sp-ac-content';
-            acSettingInner.style = 'display: none;';
-            acSettingInner.innerHTML =
-                        "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置</legend>\n" +
-                        "            <ul>\n" +
-                        "                <li><input title='AC-重定向' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-重定向' type='checkbox' "+(isRedirectEnable?'checked':'')+">主功能-重定向功能\n" +
-                        "                </li>\n" +
-                        "                <li><input title='AC-去广告' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' "+(isAdsEnable?'checked':'')+">附加1-去广告功能\n" +
-                        "                </li>\n" +
-                        "                <li><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">附加2-Favicon功能\n" +
-                        "                </li>\n" +
-                        "                <li><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">附加3-编号功能</li>\n" +
-                        "            </ul>\n" +
-                        "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton' title='保存设置' style='position: relative !important;float: right !important;'>保存</span>\n";
-            document.querySelector("#sp-fw-main").appendChild(acSettingInner);
+                    "    </div>";
+            document.body.appendChild(Container);
+        }
+        var allNodes = document.querySelectorAll(".faviconT, .CounterT");
+        for(var i=0; i<allNodes.length; i++){
+            if(allNodes[i].getAttribute('acClick')==null){
+                allNodes[i].setAttribute('acClick', '1')
+                allNodes[i].addEventListener('click', function(e) {
+                    setTimeout(function(){
+                        if(document.querySelector("#sp-ac-content").style.display == 'block')
+                            document.querySelector("#sp-ac-content").style.display = 'none';
+                        else
+                            document.querySelector("#sp-ac-content").style.display = 'block';
+                    }, 100);
+                    return false;
+                }, true);
+            }
         }
         document.querySelector("#sp-ac-savebutton").addEventListener('click', function(e) {
             // 保存功能
@@ -209,6 +186,9 @@
             GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
             GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
             window.location.reload();
+        }, false);
+        document.querySelector("#sp-ac-cancelbutton").addEventListener('click', function(e) {
+            document.querySelector("#sp-ac-content").style.display = 'none';
         }, false);
     }
     function LoadSetting(){
@@ -357,7 +337,7 @@
             }else{
                 citeList[i].setAttribute('sortIndex',i);
                 citeList[i].inner=citeList[i].innerHTML;
-                div.innerHTML='<div style=' + cssText + '>' + (i+1) + '</div>';
+                div.innerHTML="<div class='CounterT' style=" + cssText + ">" + (i+1) + "</div>";
                 citeList[i].innerHTML=div.innerHTML+citeList[i].inner;
             };
         };
