@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         11.6
+// @version         11.7
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -16,12 +16,14 @@
 // @include         /^https?\:\/\/www.google.[^\/]+/
 // @include         https://*.zhidao.baidu.com/*
 // @include         https://zhidao.baidu.com/*
+// @include         *.zhihu.com/*
 // @home-url        https://greasyfork.org/zh-TW/scripts/14178
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.添加计数 5.开关选择以上功能
-// @lastmodified    2017-08-04
+// @lastmodified    2017-08-29
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.08.29-V11.7 方便朋友们-移除知乎重定向
 // @note            2017.08.07-V11.6 调整：移除小绿点，换为点击Favicon或者是计数器弹出窗口，更换为加群链接
 // @note            2017.08.06-V11.5 修复，保存异常；预期之后会添加百度搜索页面的大调整
 // @note            2017.08.05-V11.4 新增：反馈和建议地址增加
@@ -85,6 +87,7 @@
     var Ftype; // favicon的选择
     var Ctype; // Counter的选择
     var maxOneHtmlHeight=2500;
+    var isZhiHuHandled = false;
     var ACMO = window.MutationObserver||window.WebKitMutationObserver||window.MozMutationObserver;
     var option = {'childList':true,'subtree':true};
     var observer = new ACMO(function(records){
@@ -130,7 +133,28 @@
         Ctype = "#b_results>li[class~=b_ans],#b_results>li[class~=b_algo],#b_results>li[class~=b_algo]";
         srartOthers();
         maxOneHtmlHeight = 4000;
-    } else {
+    } else if(location.host.indexOf("zhihu.com") > -1){
+        // code from https://greasyfork.org/zh-TW/scripts/20431 thanks fo 胡中元
+        if(location.host==='link.zhihu.com') {
+            let regRet = location.search.match(/target=(.+?)(&|$)/);
+            if(regRet && regRet.length==3)
+                location.href = decodeURIComponent(regRet[1]);
+        } else{
+            window.addEventListener('click', function(e){
+                let dom = e.target, max_times = 3;
+                while(dom && max_times--) {
+                    if(dom.nodeName.toUpperCase()==='A') {
+                        let regRet = dom.search.match(/target=(.+?)(&|$)/);
+                        if(regRet && regRet.length==3)
+                            dom.href = decodeURIComponent(regRet[1]);
+                        return;
+                    } else{
+                        dom = dom.parentNode;
+                    } 
+                }
+            });
+        } 
+    }else {
         addStyle(".word-replace{display: none  !important;}");
         return;
     }
