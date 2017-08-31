@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         11.8
+// @version         11.9
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -21,8 +21,9 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.添加计数 5.开关选择以上功能
-// @lastmodified    2017-08-30
+// @lastmodified    2017-09-01
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.09.09-V11.9 修复上次更新导致的百度去广告不灵的问题
 // @note            2017.08.30-V11.8 新增：1.GM设置栏目中加入设置 2.baidu-使用HEAD方式获取，减少数据传输，搜狗特殊，继续GET方式
 // @note            2017.08.29-V11.7 方便朋友们-移除知乎重定向
 // @note            2017.08.07-V11.6 调整：移除小绿点，换为点击Favicon或者是计数器弹出窗口，更换为加群链接
@@ -137,7 +138,7 @@
         maxOneHtmlHeight = 4000;
     } else if(location.host.indexOf("zhihu.com") > -1){
         // code from https://greasyfork.org/zh-TW/scripts/20431 thanks fo 胡中元
-        if(location.host==='link.zhihu.com') {
+        if(location.host=='link.zhihu.com') {
             let regRet = location.search.match(/target=(.+?)(&|$)/);
             if(regRet && regRet.length==3)
                 location.href = decodeURIComponent(regRet[1]);
@@ -145,7 +146,7 @@
             window.addEventListener('click', function(e){
                 let dom = e.target, max_times = 3;
                 while(dom && max_times--) {
-                    if(dom.nodeName.toUpperCase()==='A') {
+                    if(dom.nodeName.toUpperCase()=='A') {
                         let regRet = dom.search.match(/target=(.+?)(&|$)/);
                         if(regRet && regRet.length==3)
                             dom.href = decodeURIComponent(regRet[1]);
@@ -166,7 +167,7 @@
     addStyle("a{text-decoration:none}"); // 移除这些个下划线
     function ShowSetting(){
         // 如果不存在的话，那么自己创建一个-copy from superPreload
-        if(document.querySelector("#sp-ac-container") === null){
+        if(document.querySelector("#sp-ac-container") == null){
             GM_addStyle('#sp-ac-container{z-index:999999!important;text-align:left!important;}#sp-ac-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-ac-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;}#sp-ac-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-ac-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-ac-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-ac-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-ac-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-ac-container fieldset>ul{padding:0!important;margin:0!important;}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}');
             var Container = document.createElement('div');
             Container.id = "sp-ac-container";
@@ -195,7 +196,7 @@
         }
         var allNodes = document.querySelectorAll(".faviconT, .CounterT");
         for(var i=0; i<allNodes.length; i++){
-            if(allNodes[i].getAttribute('acClick')===null){
+            if(allNodes[i].getAttribute('acClick')==null){
                 allNodes[i].setAttribute('acClick', '1');
                 allNodes[i].addEventListener('click', function(e) {
                     setTimeout(function(){
@@ -273,7 +274,7 @@
             // 此方法是异步，故在结束的时候使用i会出问题-严重!
             // 采用闭包的方法来进行数据的传递
             var curhref = list[i].href;
-            if(list[i]!== null && list[i].getAttribute("ac_redirectStatus") === null){
+            if(list[i]!= null && list[i].getAttribute("ac_redirectStatus") == null){
                 list[i].setAttribute("ac_redirectStatus", "0");
                 if(curhref.indexOf("baidu.com") > -1 || curhref.indexOf("sogou.com") > -1){
                   (function(c_curhref){
@@ -303,13 +304,13 @@
         if(Stype.length > 10){
             //如果是搜狗的结果
             var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
-            if(resultResponseUrl !== null)
+            if(resultResponseUrl != null)
                 resultURL = resultResponseUrl;
         }
         //console.log(resultURL);
         var indexhref = Reg_Get(c_curhref, "((?:http)[^&]+)");// 必须要提取部分数据，因为之后的莫名加了其他参数ck=0.0.0.0.....
         var ccnode = document.querySelectorAll("h3>[href*='"+indexhref+"']")[0];
-        if(ccnode !== null){
+        if(ccnode != null){
             ccnode.href = resultURL;
         }else{
             //console.log("该链接已经被其他脚本干掉了哦"+resultURL);
@@ -321,13 +322,13 @@
     }
     function removeAD_baidu_sogou(){ // 移除百度自有广告
         if(location.host == "www.baidu.com"){
-            if(document.querySelectorAll("#content_left")[0] !== null){
+            if(document.querySelectorAll("#content_left")[0] != null){
                 var fathers = document.querySelectorAll("#content_left")[0].childNodes;
                 var lastId = 0;
                 for(var i = 0; i < fathers.length; i++){
                     var currentNode = fathers[i];
-                    if(fathers[i].tagName==="DIV" && fathers[i].getAttribute("dealAD") === null){
-                        if(null === currentNode.id || "" === currentNode.id){
+                    if(fathers[i].tagName=="DIV" && fathers[i].getAttribute("dealAD") == null){
+                        if(null == currentNode.id || "" == currentNode.id){
                             // 米有ID的貌似都是广告
                             console.log("移除广告 CLASS="+currentNode.className);
                             currentNode.remove();
@@ -335,13 +336,13 @@
                             // ID 显示为CLONE的也是广告
                             console.log("移除广告 ID="+currentNode.id);
                             currentNode.remove();
-                        } else if(currentNode.className.indexOf("result") !== 0 && /^\d+$/.test(currentNode.id)){
+                        } else if(currentNode.className.indexOf("result") != 0 && /^\d+$/.test(currentNode.id)){
                             // class不是result...的，并且id是纯粹数字的(很大)
                             console.log("移除广告 ID="+currentNode.id);
                             currentNode.remove();
                         } else{
                             var node = currentNode.querySelectorAll(".f13>span")[0];
-                            if(node !== null && node.innerHTML === "广告"){
+                            if(node != null && node.innerHTML == "广告"){
                                 console.log("移除广告 ID="+currentNode.id);
                                 currentNode.remove();
                             }
@@ -375,8 +376,8 @@
         for (var index = 0; index < citeList.length; index++) {
             var url = replaceAll(citeList[index].innerHTML);
             //console.log(index+"."+url);
-            if(null === citeList[index].getAttribute("ac_faviconStatus")){
-                if(url === ""){
+            if(null == citeList[index].getAttribute("ac_faviconStatus")){
+                if(url == ""){
                     console.log("无效地址："+citeList[index].innerHTML);
                     citeList[index].setAttribute("ac_faviconStatus", "-1");
                     continue;
@@ -410,7 +411,7 @@
                     //https://statics.dnspod.cn/proxy_favicon/_/favicon?domain=sina.cn
                     //如果地址不正确，那么丢弃
                     var host = faviconUrl.replace(/[^.]+\.([^.]+)\.([^.]+)/, "$1.$2");
-                    if(curNode.querySelector(".faviconT") === null && host.length>3){
+                    if(curNode.querySelector(".faviconT") == null && host.length>3){
                         var insNode = document.createElement("img");
                         curNode = curNode.children[0]; //firstChild容易遇到text对象
                         citeList[index].setAttribute("ac_faviconStatus", "1");
