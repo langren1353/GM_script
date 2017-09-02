@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         11.9
+// @version         11.10
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -21,9 +21,10 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.添加计数 5.开关选择以上功能
-// @lastmodified    2017-09-01
+// @lastmodified    2017-09-02
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
-// @note            2017.09.09-V11.9 修复上次更新导致的百度去广告不灵的问题
+// @note            2017.09.02-V11.10 添加两个选项，可以选择性移除部分设置
+// @note            2017.09.01-V11.9 修复上次更新导致的百度去广告不灵的问题
 // @note            2017.08.30-V11.8 新增：1.GM设置栏目中加入设置 2.baidu-使用HEAD方式获取，减少数据传输，搜狗特殊，继续GET方式
 // @note            2017.08.29-V11.7 方便朋友们-移除知乎重定向
 // @note            2017.08.07-V11.6 调整：移除小绿点，换为点击Favicon或者是计数器弹出窗口，更换为加群链接
@@ -83,14 +84,17 @@
     );
     var isRedirectEnable = true;
     var isAdsEnable = true;
+    var isAdsRemoveRight = true;
+    var isAdsExpandMain = true;
     var isFaviconEnable = true;
     var isCounterEnable = false;
     LoadSetting(); // 读取个人设置信息
+    var isFirstLoad_Main = true;
+    var isFirstLoad_Right = true;
     var Stype; // 去重定向的选择
     var Ftype; // favicon的选择
     var Ctype; // Counter的选择
     var maxOneHtmlHeight=2500;
-    var isZhiHuHandled = false;
     var ACMO = window.MutationObserver||window.WebKitMutationObserver||window.MozMutationObserver;
     var option = {'childList':true,'subtree':true};
     var observer = new ACMO(function(records){
@@ -139,15 +143,15 @@
     } else if(location.host.indexOf("zhihu.com") > -1){
         // code from https://greasyfork.org/zh-TW/scripts/20431 thanks fo 胡中元
         if(location.host=='link.zhihu.com') {
-            let regRet = location.search.match(/target=(.+?)(&|$)/);
+            var regRet = location.search.match(/target=(.+?)(&|$)/);
             if(regRet && regRet.length==3)
                 location.href = decodeURIComponent(regRet[1]);
         } else{
             window.addEventListener('click', function(e){
-                let dom = e.target, max_times = 3;
+                var dom = e.target, max_times = 3;
                 while(dom && max_times--) {
                     if(dom.nodeName.toUpperCase()=='A') {
-                        let regRet = dom.search.match(/target=(.+?)(&|$)/);
+                        var regRet = dom.search.match(/target=(.+?)(&|$)/);
                         if(regRet && regRet.length==3)
                             dom.href = decodeURIComponent(regRet[1]);
                         return;
@@ -164,7 +168,11 @@
     GM_registerMenuCommand('AC-重定向脚本设置', function(){
         document.querySelector("#sp-ac-content").style.display = 'block';
     });
-    addStyle("a{text-decoration:none}"); // 移除这些个下划线
+    addStyle(
+        "a{text-decoration:none}" + // 移除这些个下划线
+        ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
+        ".res_top_banner{display:none}" // 移除可能的百度HTTPS劫持显示问题
+    );
     function ShowSetting(){
         // 如果不存在的话，那么自己创建一个-copy from superPreload
         if(document.querySelector("#sp-ac-container") == null){
@@ -173,25 +181,28 @@
             Container.id = "sp-ac-container";
             Container.style = "position: fixed; top: 40%; left: 45%;";
             Container.innerHTML =
-                    "    <div id='sp-ac-content' style='display: none;'>\n" +
-                    "        <div id='sp-ac-main'>\n" +
-                    "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
-                    "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置</legend>\n" +
-                    "            <ul>\n" +
-                    "                <li><label><input title='AC-重定向' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-重定向' type='checkbox' "+(isRedirectEnable?'checked':'')+">主功能-重定向功能</label>\n" +
-                    "                </li>\n" +
-                    "                <li><label><input title='AC-去广告' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' "+(isAdsEnable?'checked':'')+">附加1-去广告功能</label>\n" +
-                    "                </li>\n" +
-                    "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">附加2-Favicon功能</label>\n" +
-                    "                </li>\n" +
-                    "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">附加3-编号功能</label></li>\n" +
-                    "                <li><a href='https://shang.qq.com/wpa/qunwpa?idkey=5bbfe9de1e81a0930bd053f3157aad2dbb3fa7b991ac9f22ea9f2e2f53efde80' style='color:red !important;'>联系作者,提建议,寻求帮助,脚本定制点我</a></li>"+
-                    "            </ul>\n" +
-                    "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton' title='取消' style='position: relative !important;float: left !important;'>取消</span>\n" +
-                    "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton' title='保存设置' style='position: relative !important;float: right !important;'>保存</span>\n" +
-                    "        </fieldset>\n" +
-                    "        </div>\n" +
-                    "    </div>";
+                "    <div id='sp-ac-content' style='display: none;'>\n" +
+                "        <div id='sp-ac-main'>\n" +
+                "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
+                "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置</legend>\n" +
+                "            <ul>\n" +
+                "                <li><label><input title='AC-重定向' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-重定向' type='checkbox' "+(isRedirectEnable?'checked':'')+">主功能-重定向功能</label>\n" +
+                "                </li>\n" +
+                "                <li><label><input title='AC-去广告' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' "+(isAdsEnable?'checked':'')+">附加1-去广告功能</label>\n" +
+                "                </li>\n" +
+                "                <li>&nbsp;&nbsp;&nbsp;&nbsp;<label><input title='去广告-拉长主界面' id='sp-ac-ads-expandMain' name='sp-ac-a_force' type='checkbox' " + (isAdsExpandMain?'checked':'')+">去广告-拉长主界面</label>"+
+                "                    <label><input title='去广告-移除最右边' id='sp-ac-ads-removeRight' name='sp-ac-a_force' type='checkbox' "+(isAdsRemoveRight?'checked':'')+">去广告-移除最右边</label>" +
+                "                </li>\n" +
+                "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' "+(isFaviconEnable?'checked':'')+">附加2-Favicon功能</label>\n" +
+                "                </li>\n" +
+                "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' "+(isCounterEnable?'checked':'')+">附加3-编号功能</label></li>\n" +
+                "                <li><a target='_blank' href='https://shang.qq.com/wpa/qunwpa?idkey=5bbfe9de1e81a0930bd053f3157aad2dbb3fa7b991ac9f22ea9f2e2f53efde80' style='color:red !important;'>联系作者,提建议,寻求帮助,脚本定制点我</a></li>"+
+                "            </ul>\n" +
+                "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton' title='取消' style='position: relative !important;float: left !important;'>取消</span>\n" +
+                "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton' title='保存设置' style='position: relative !important;float: right !important;'>保存</span>\n" +
+                "        </fieldset>\n" +
+                "        </div>\n" +
+                "    </div>";;
             document.body.appendChild(Container);
         }
         var allNodes = document.querySelectorAll(".faviconT, .CounterT");
@@ -213,6 +224,8 @@
             // 保存功能
             GM_setValue("isRedirectEnable", document.querySelector("#sp-ac-redirect").checked);
             GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
+            GM_setValue("isAdsRemoveRight", document.querySelector("#sp-ac-ads-removeRight").checked);
+            GM_setValue("isAdsExpandMain", document.querySelector("#sp-ac-ads-expandMain").checked);
             GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
             GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
             window.location.reload();
@@ -224,6 +237,8 @@
     function LoadSetting(){
         isRedirectEnable = GM_getValue("isRedirectEnable",  true);
         isAdsEnable      = GM_getValue("isAdsEnable",  true);
+        isAdsRemoveRight = GM_getValue("isAdsRemoveRight",  true);
+        isAdsExpandMain  = GM_getValue("isAdsExpandMain",  true);
         isFaviconEnable  = GM_getValue("isFaviconEnable",  true);
         isCounterEnable  = GM_getValue("isCounterEnable",  false);
     }
@@ -257,8 +272,8 @@
     function removeOnMouseDownFunc(){
         try{
             document.querySelectorAll(".g .rc .r a").forEach(function(one){
-               one.setAttribute("onmousedown", ""); // 谷歌去重定向干扰
-               one.setAttribute("target", "_blank"); // 谷歌链接新标签打开
+                one.setAttribute("onmousedown", ""); // 谷歌去重定向干扰
+                one.setAttribute("target", "_blank"); // 谷歌链接新标签打开
             });
         }catch(e){}
     }
@@ -277,22 +292,22 @@
             if(list[i]!= null && list[i].getAttribute("ac_redirectStatus") == null){
                 list[i].setAttribute("ac_redirectStatus", "0");
                 if(curhref.indexOf("baidu.com") > -1 || curhref.indexOf("sogou.com") > -1){
-                  (function(c_curhref){
-                    setTimeout(function(){
-                        GM_xmlhttpRequest({
-                            url: c_curhref,
-                            headers: {
-                                "Accept": "text/html"
-                            },
-                            method: curhref.indexOf("baidu.com")>-1?"HEAD":"GET",
-                            onreadystatechange:function(response) {
-                                if(response.status==200){
-                                    DealResult(response, c_curhref);
+                    (function(c_curhref){
+                        setTimeout(function(){
+                            GM_xmlhttpRequest({
+                                url: c_curhref,
+                                headers: {
+                                    "Accept": "text/html"
+                                },
+                                method: curhref.indexOf("baidu.com")>-1?"HEAD":"GET",
+                                onreadystatechange:function(response) {
+                                    if(response.status==200){
+                                        DealResult(response, c_curhref);
+                                    }
                                 }
-                            }
-                        });
-                    },100);
-                  })(curhref); //传递旧的网址过去，读作c_curhref
+                            });
+                        },100);
+                    })(curhref); //传递旧的网址过去，读作c_curhref
                 }else if(curhref.indexOf("/interstitial") > -1){
                 }else{
                 }
@@ -322,6 +337,24 @@
     }
     function removeAD_baidu_sogou(){ // 移除百度自有广告
         if(location.host == "www.baidu.com"){
+            if(isAdsRemoveRight){
+                try{document.querySelector("#content_right").remove();}catch (e){}
+            }else{
+                if(isFirstLoad_Right){
+                    isFirstLoad_Right = false;
+                    addStyle("#content_right{margin-right: -270px;}");
+                }
+            }
+            if(isAdsExpandMain && isFirstLoad_Main){
+                isFirstLoad_Main = false;
+                addStyle(
+                    "#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px black;background:rgba(230,230,230,0.3)!important;transition:all 0.5s;}\n" +
+                    "#content_left .result,#content_left .result-op{padding:8px 14px!important;background:transparent!important;transition:all 0.1s;}\n" +
+                    "#content_left .result,#content_left .result-op{width:900px!important;margin-bottom:14px!important;}\n" +
+                    "#content_left{width: 940px!important;}\n" +
+                    ".c-span18{width:760px!important;}\n" +
+                    ".c-span24{width: auto!important;}  #content_left .result,#content_left .result-op,#content_right{background:rgba(255,255,255,0.5)!important;padding:8px 14px!important;box-shadow:0 0 2px gray;}");
+            }
             if(document.querySelectorAll("#content_left")[0] != null){
                 var fathers = document.querySelectorAll("#content_left")[0].childNodes;
                 var lastId = 0;
@@ -330,21 +363,25 @@
                     if(fathers[i].tagName=="DIV" && fathers[i].getAttribute("dealAD") == null){
                         if(null == currentNode.id || "" == currentNode.id){
                             // 米有ID的貌似都是广告
-                            console.log("移除广告 CLASS="+currentNode.className);
+                            console.log("移除广告1 CLASS="+currentNode.className);
                             currentNode.remove();
+                            i--; // 动态移除导致的i必须下降
                         } else if(currentNode.id == "clone"){
                             // ID 显示为CLONE的也是广告
-                            console.log("移除广告 ID="+currentNode.id);
+                            console.log("移除广告2 ID="+currentNode.id);
                             currentNode.remove();
+                            i--; // 动态移除导致的i必须下降
                         } else if(currentNode.className.indexOf("result") != 0 && /^\d+$/.test(currentNode.id)){
                             // class不是result...的，并且id是纯粹数字的(很大)
-                            console.log("移除广告 ID="+currentNode.id);
+                            console.log("移除广告3 ID="+currentNode.id);
                             currentNode.remove();
+                            i--; // 动态移除导致的i必须下降
                         } else{
                             var node = currentNode.querySelectorAll(".f13>span")[0];
                             if(node != null && node.innerHTML == "广告"){
-                                console.log("移除广告 ID="+currentNode.id);
+                                console.log("移除广告4 ID="+currentNode.id);
                                 currentNode.remove();
+                                i--; // 动态移除导致的i必须下降
                             }
                         }
                         currentNode.setAttribute("dealAD", 1);
