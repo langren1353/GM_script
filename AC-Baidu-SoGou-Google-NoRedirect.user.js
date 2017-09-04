@@ -537,19 +537,19 @@
             },
             //加载普通样式
             loadCommonStyle: function () {
-                this.importStyle("https://ntaow.com/ACFile/CSS/AC_Baidu/baiduCommonStyle.css", "baiduCommonStyle");
+                this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduCommonStyle.css", "baiduCommonStyle");
             },
             //加载自定义菜单样式
             loadMyMenuStyle: function () {
-                this.importStyle("https://ntaow.com/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css", "baiduMyMenuStyle");
+                this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css", "baiduMyMenuStyle");
             },
             //加载单页样式
             loadOnePageStyle: function () {
-                this.importStyle("https://ntaow.com/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css", "baiduOnePageStyle");
+                this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css", "baiduOnePageStyle");
             },
             //加载双页样式
             loadTwoPageStyle: function () {
-                this.importStyle("https://ntaow.com/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css", "baiduTwoPageStyle");
+                this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css", "baiduTwoPageStyle");
             },
             loadExpandOneStyle:function () {
                 AC_addStyle(
