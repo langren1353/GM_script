@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         12.1
+// @version         12.2
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -23,6 +23,7 @@
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
 // @lastmodified    2017-09-04
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.09.04-V12.2 特意修复在ViolentMonkey上的设置无效的问题以及在360浏览器上的设置不显示问题
 // @note            2017.09.04-V12.1 百度页面直接添加设置入口；360浏览器设置可能在底部页面；支持单列和双列模式，界面更美观from浮生@未歇；可能是最近一段时间的最后版本了，要开学了~~
 // @note            2017.09.02-V11.10 添加两个选项，可以选择性移除部分设置
 // @note            2017.09.01-V11.9 修复上次更新导致的百度去广告不灵的问题
@@ -238,12 +239,15 @@
         }
         document.querySelector("#sp-ac-savebutton").addEventListener('click', function (e) {
             // 保存功能
+            console.log("SAVE:" + document.querySelector('input[name="sp-ac-a_force_style"]:checked').value);
             GM_setValue("isRedirectEnable", document.querySelector("#sp-ac-redirect").checked);
             GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
             GM_setValue("AdsStyleMode", document.querySelector('input[name="sp-ac-a_force_style"]:checked').value);
             GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
             GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
-            window.location.reload();
+            setTimeout(function () {
+                window.location.reload();
+            },200);
         }, false);
         document.querySelector("#sp-ac-cancelbutton").addEventListener('click', function (e) {
             document.querySelector("#sp-ac-content").style.display = 'none';
@@ -533,23 +537,23 @@
                 ssNode.className = toClassName;
                 ssNode.media = "screen";
                 ssNode.href = fileUrl;
-                document.body.appendChild(ssNode);
+                try{document.body.appendChild(ssNode);}catch (e){}
             },
             //加载普通样式
             loadCommonStyle: function () {
-                this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduCommonStyle.css", "baiduCommonStyle");
+                this.importStyle("https://ntaow.com/ACFile/CSS/AC_Baidu/baiduCommonStyle.css", "baiduCommonStyle");
             },
             //加载自定义菜单样式
             loadMyMenuStyle: function () {
-                this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css", "baiduMyMenuStyle");
+                this.importStyle("https://ntaow.com/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css", "baiduMyMenuStyle");
             },
             //加载单页样式
             loadOnePageStyle: function () {
-                this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css", "baiduOnePageStyle");
+                this.importStyle("https://ntaow.com/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css", "baiduOnePageStyle");
             },
             //加载双页样式
             loadTwoPageStyle: function () {
-                this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css", "baiduTwoPageStyle");
+                this.importStyle("https://ntaow.com/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css", "baiduTwoPageStyle");
             },
             loadExpandOneStyle:function () {
                 AC_addStyle(
