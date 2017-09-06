@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         12.3
+// @version         12.4
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -23,6 +23,7 @@
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
 // @lastmodified    2017-09-06
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.09.06-V12.4 修复上个版本更新导致的百度知道再次异常问题;更新知乎上的重定向问题-自己的脚本
 // @note            2017.09.06-V12.3 修复双列的模式的显示问题，如果有问题希望反馈一下，顺便切换css来源
 // @note            2017.09.04-V12.2 特意修复在ViolentMonkey上的设置无效的问题以及在360浏览器上的设置不显示问题
 // @note            2017.09.04-V12.1 百度页面直接添加设置入口；360浏览器设置可能在底部页面；支持单列和双列模式，界面更美观from浮生@未歇；可能是最近一段时间的最后版本了，要开学了~~
@@ -71,7 +72,7 @@
 // @grant           GM_getValue
 // @grant           GM_setValue
 // @grant           GM_registerMenuCommand
-// @require      https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
+// @require         https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // ==/UserScript==
 
 // 初次：还是采用了setInterval来处理，感觉这样的话速度应该比Dom快，也比MO适用，因为MO需要在最后才能调用，实用性还不如timer
@@ -94,24 +95,12 @@
     var Stype; // 去重定向的选择
     var Ftype; // favicon的选择
     var Ctype; // Counter的选择
-    var maxOneHtmlHeight = 2500;
     var ACMO = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
     var option = {'childList': true, 'subtree': true};
     var observer = new ACMO(function (records) {
         try {
-            if (records.length < 100) {
-                if (records.length > 5 || document.body.scrollHeight > 4000) {
-                    setTimeout(function () {
-                        // 如果没有SuperPreload的话那么就会自动调用这个
-                        ShowSetting();
-                    }, 3000);
-                    ACHandle();
-                }
-                if (isAdsEnable) {
-                    FSBaidu();
-                    removeAD_baidu_sogou(); // 移除百度广告
-                }
-            }
+            ShowSetting();
+            ACHandle();
         } catch (e) {
         }
     });
@@ -125,48 +114,29 @@
         Stype = "h3.t>a";
         Ftype = ".result-op, .c-showurl";
         Ctype = "#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]";
-        startBaidu();
+        startSelect("#content_left", "#wrapper_wrapper", option);
     } else if (location.host.indexOf("sogou") > -1) {
         Stype = "h3.pt>a, h3.vrTitle>a";
         Ftype = "cite[id*='cacheresult_info_']";
         Ctype = ".results>div";
-        srartOthers();
+        startSelect("body", "body", option);
     } else if (location.host.indexOf("google") > -1) {
         Stype = "";
         Ftype = "._Rm";
         Ctype = ".srg>div[class~=g] *[class~=r],._yE>div[class~=_kk]";
-        srartOthers();
+        startSelect("body", "body", option);
     } else if (location.host.indexOf("bing") > -1) {
         Stype = "";
         Ftype = ".b_attribution>cite";
         Ctype = "#b_results>li[class~=b_ans],#b_results>li[class~=b_algo],#b_results>li[class~=b_algo]";
-        srartOthers();
+        startSelect("body", "body", option);
     } else if (location.host.indexOf("zhihu.com") > -1) {
-        // code from https://greasyfork.org/zh-TW/scripts/20431 thanks fo 胡中元
-        if (location.host == 'link.zhihu.com') {
-            var regRet = location.search.match(/target=(.+?)(&|$)/);
-            if (regRet && regRet.length == 3)
-                location.href = decodeURIComponent(regRet[1]);
-        } else {
-            window.addEventListener('click', function (e) {
-                var dom = e.target, max_times = 3;
-                while (dom && max_times--) {
-                    if (dom.nodeName.toUpperCase() == 'A') {
-                        var regRet = dom.search.match(/target=(.+?)(&|$)/);
-                        if (regRet && regRet.length == 3)
-                            dom.href = decodeURIComponent(regRet[1]);
-                        return;
-                    } else {
-                        dom = dom.parentNode;
-                    }
-                }
-            });
-        }
+        startSelect(".Card .List", ".Card .List", option);
     } else {
+        // console.log("in 百度知道");
         AC_addStyle(".word-replace{display: none  !important;}");
-        return;
     }
-    FSBaidu();
+    FSBaidu(); // 添加设置项-单双列显示
     GM_registerMenuCommand('AC-重定向脚本设置', function () {
         document.querySelector("#sp-ac-content").style.display = 'block';
     });
@@ -186,12 +156,17 @@
         return false;
     }
     function AC_addStyle(css, className){
-        try{document.querySelector("."+className).remove();}catch (e){};
-        var cssNode = document.createElement("style");
-        if(className != null)
-            cssNode.className = className;
-        cssNode.innerHTML = css;
-        try{document.body.appendChild(cssNode);}catch (e){console.log(e.message);}
+        var tout = setInterval(function(){
+            if(document.body != null){
+                clearInterval(tout);
+                try{document.querySelector("."+className).remove();}catch (e){};
+                var cssNode = document.createElement("style");
+                if(className != null)
+                    cssNode.className = className;
+                cssNode.innerHTML = css;
+                try{document.body.appendChild(cssNode);}catch (e){console.log(e.message);}
+            }
+        }, 200);
     }
     function ShowSetting() {
         // 如果不存在的话，那么自己创建一个-copy from superPreload
@@ -262,28 +237,23 @@
         isFaviconEnable = GM_getValue("isFaviconEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
     }
-
-    function startBaidu() {
+    function startSelect(checkNode, selector, option) {
         var tt = setInterval(function () {
-            if (document.querySelector("#content_left")) {
+            if (document.querySelector(checkNode)) {
                 clearInterval(tt);
                 /***最后必须要设置好MO继续监听页面数据--自动加载下一页的问题***/
-                observer.observe(document.querySelector("#wrapper_wrapper"), option);
-                // 处理当前-可以开始设置那个xxx了
-                ACHandle();
+                observer.observe(document.querySelector(selector), option);
             }
         }, 200);
     }
-
-    function srartOthers() {
-        observer.observe(document, option);
-    }
-
     function ACHandle() {
         if (isRedirectEnable) {
             if (Stype != null && Stype != "")
                 resetURL(document.querySelectorAll(Stype)); // 百度去重定向
-            removeOnMouseDownFunc(); // 移除onMouseDown事件，谷歌去重定向
+            if(location.host.indexOf("google") > -1)
+                removeOnMouseDownFunc(); // 移除onMouseDown事件，谷歌去重定向
+            if(location.host.indexOf("zhihu.com") > -1)
+                removeLinkTarget(); // 移除知乎的重定向问题
         }
         if (isFaviconEnable) {
             addFavicon(document.querySelectorAll(Ftype)); // 添加Favicon显示
@@ -291,8 +261,11 @@
         if (isCounterEnable) {
             addCounter(document.querySelectorAll(Ctype));
         }
+        if (isAdsEnable) {
+            FSBaidu();
+            removeAD_baidu_sogou(); // 移除百度广告
+        }
     }
-
     function removeOnMouseDownFunc() {
         try {
             document.querySelectorAll(".g .rc .r a").forEach(function (one) {
@@ -300,6 +273,14 @@
                 one.setAttribute("target", "_blank"); // 谷歌链接新标签打开
             });
         } catch (e) {
+        }
+    }
+    function removeLinkTarget() {
+        // console.log("移除知乎重定向问题");
+        var nodes = document.querySelectorAll(".Card .List .RichContent a[href*='https://link.zhihu.com/?target']");
+        for(var i=0; i<nodes.length; i++){
+            var url = decodeURIComponent(nodes[i].href.replace("https://link.zhihu.com/?target=", ""));
+            nodes[i].href = url;
         }
     }
     function resetURL(list) {
@@ -526,10 +507,7 @@
                 }
             }
         };
-
-        //样式管理
         var StyleManger = {
-            //导入 CSS 样式
             importStyle: function (fileUrl, toClassName) {
                 if($("."+toClassName).length>0) return;
                 var ssNode = document.createElement("link");
@@ -563,19 +541,13 @@
                     ".c-span18{width:78%!important;min-width:550px;}\n" +
                     ".c-span24{width: auto!important;}", "loadExpandOneStyle");
             },
-            //初始化
             init: function () {
-                // console.log("StyleManager");
-                // this.loadCommonStyle();
                 this.loadMyMenuStyle();
             },
-            //导入一次CSS
             importOnceCSS: function () {
                 this.init();
             }
         };
-
-        //控制管理
         var ControlManager = {
             //插入自定义菜单
             inserCustomMenu: function () {
@@ -593,13 +565,11 @@
                     document.querySelector("#container").insertBefore(nullRSNode, document.querySelector("#container #rs"));
                 }
             },
-            //双页显示
             twoPageDisplay: function () {
                 var $div = $("<div id='double'></div>");
                 var $double = null;
                 var $parent = null;
                 var $selector = null;
-
                 //文档加载完成再运行
                 $(document).ready(function () {
                     if ($("#content_left>#double").length < 1) {
@@ -616,9 +586,7 @@
                         $div.after($parent);
                         $parent.remove();
                         $selector.appendTo($("#double"));
-
                     }
-
                 });
             },
             //居中显示
@@ -636,67 +604,40 @@
                     StyleManger.loadTwoPageStyle();
                     this.twoPageDisplay();
                 }
-
             },
-            //初始化
             init: function () {
-                // console.log("ControltManager");
                 this.centerDisplay();
                 this.inserCustomMenu();
             }
         };
-
-        /************************* 执行函数 *************************************/
-        // 动态加载函数
         function mutationfunc() {
-            //如果网址匹配
             if (Check.matchURL()) {
-                //样式初始化
                 StyleManger.init();
-                //控制管理初始
                 ControlManager.init();
             }
             if($("#double").length > 0){
-                setTimeout(function(){
+                setTimeout(function(){ // 动态设置底部推荐关键字的marginTop属性
                     document.querySelector("#container #rs").style.marginTop = Math.max($("#double").height(), $("#content_left").height())-$("#content_left").height()+"px";
                 }, 200);
             }
         }
-        /************************* 启动控制 *************************************/
-        //第一次启动,如果网址匹配
         if (Check.matchURL()) {
-            //样式加载一次
             StyleManger.importOnceCSS();
-            //控制管理初始
             ControlManager.centerDisplay();
         }
-
-        //文档加载完成再运行
-        $(document).ready(function () {
-            // 动态加载函数
+        try{
             mutationfunc();
-        });
-
+        }catch (e){}
         try {
-            //动态监视DOM树的变化
-            if (ACMO) {
-                var observer = new ACMO(mutationfunc);
-                var wrapper = document.querySelector("#wrapper");
-                observer.observe(wrapper, {
-                    "attributes": false,
-                    "characterData": false,
-                    "subtree": true,
-                    "attributesFilter": ["class"],
-                });
-                // 动态加载函数
-                mutationfunc();
-            } else {
-                setInterval(function () {
-                    // 动态加载函数
-                    mutationfunc();
-
-                }, 500);
-            }
+            var observer = new ACMO(mutationfunc);
+            var wrapper = document.querySelector("#wrapper");
+            observer.observe(wrapper, {
+                "attributes": false,
+                "characterData": false,
+                "subtree": true,
+                "attributesFilter": ["class"],
+            });
+            mutationfunc();
         } catch (e) {
         }
     }
