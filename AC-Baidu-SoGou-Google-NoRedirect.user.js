@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         12.6
+// @version         12.7
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -23,6 +23,7 @@
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
 // @lastmodified    2017-09-13
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.09.13-V12.7 1.修复N年前更新导致的部分网址重定向无效，继续使用GET方法，因为好些网站不支持HEAD方法，获取成功之后就断开，尽量减少了网络开支; 2.修复搜狗的部分搜索异常; 3.修复百度在chrome61上的链接异常问题
 // @note            2017.09.13-V12.6 开学之后的第二个版本，修复上次更新导致的百度首页错乱，修复firefox上的触发，修复SuperPreloader的翻页展示
 // @note            2017.09.12-V12.5 开学之后的第一个版本，修复在百度上偶尔不触发的问题【从首页搜索的时候触发】，其次在兄弟XXX(我也忘了哪个P_P)的帮助下，修复了偶尔会全屏特殊推广模式的问题
 // @note            2017.09.06-V12.4 修复上个版本更新导致的百度知道再次异常问题;更新知乎上的重定向问题-自己的脚本
@@ -323,25 +324,31 @@
             var curhref = curNode.href;
             if (list[i] != null && list[i].getAttribute("ac_redirectStatus") == null) {
                 list[i].setAttribute("ac_redirectStatus", "0");
-                if (curhref.indexOf("baidu.com") > -1 || curhref.indexOf("sogou.com") > -1) {
+                if (curhref.indexOf("www.baidu.com/link") > -1 || curhref.indexOf("www.sogou.com/link") > -1) {
                     (function (c_curnode,c_curhref) {
                         setTimeout(function () {
-                            GM_xmlhttpRequest({
+                            var gmRequestNode = GM_xmlhttpRequest({
                                 url: c_curhref,
                                 headers: {
                                     "Accept": "text/html"
                                 },
-                                method: curhref.indexOf("baidu.com") > -1 ? "HEAD" : "GET",
+                                method: "GET",
                                 onreadystatechange: function (response) {
-                                    if (response.finalUrl != curhref) {
+                                    if (response.finalUrl != curhref && response.finalUrl!="" && response.finalUrl != null) {
                                         var resultURL = response.finalUrl;
-                                        if (SiteTypeID == SiteType.SOGOU) {
-                                            //如果是搜狗的结果
-                                            var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
-                                            if (resultResponseUrl != null)
-                                                resultURL = resultResponseUrl;
+                                        if(resultURL != null && resultURL != ""){
+                                            $("a[href*='"+c_curhref+"']").attr("href", resultURL);
+                                            gmRequestNode.abort();
                                         }
-                                        c_curnode.href = resultURL;
+                                    }else if (SiteTypeID == SiteType.SOGOU) { //如果是搜狗的结果
+                                        var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
+                                        if (resultResponseUrl != null){
+                                            resultURL = resultResponseUrl;
+                                        }
+                                        if(resultURL != null && resultURL != ""){
+                                            $("a[href*='"+c_curhref+"']").attr("href", resultURL);
+                                            gmRequestNode.abort();
+                                        }
                                     }
                                 }
                             });
