@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         12.7
+// @version         12.8
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -18,11 +18,13 @@
 // @include         https://zhidao.baidu.com/*
 // @include         *.zhihu.com/*
 // @home-url        https://greasyfork.org/zh-TW/scripts/14178
+// @home-url2       https://github.com/langren1353/GM_script
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2017-09-13
+// @lastmodified    2017-09-15
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.09.15-V12.8 紧急修复谷歌上页面卡顿的问题，排查得知为百度规则的扩展出了问题，非常感谢众多朋友的支持，没有你们的反馈就没有这个脚本。修复并移除了百度官方采用的新方式广告模式，貌似只在chrome上出现
 // @note            2017.09.13-V12.7 1.修复N年前更新导致的部分网址重定向无效，继续使用GET方法，因为好些网站不支持HEAD方法，获取成功之后就断开，尽量减少了网络开支; 2.修复搜狗的部分搜索异常; 3.修复百度在chrome61上的链接异常问题
 // @note            2017.09.13-V12.6 开学之后的第二个版本，修复上次更新导致的百度首页错乱，修复firefox上的触发，修复SuperPreloader的翻页展示
 // @note            2017.09.12-V12.5 开学之后的第一个版本，修复在百度上偶尔不触发的问题【从首页搜索的时候触发】，其次在兄弟XXX(我也忘了哪个P_P)的帮助下，修复了偶尔会全屏特殊推广模式的问题
@@ -205,6 +207,7 @@
                 removeLinkTarget(); // 移除知乎的重定向问题
             try{$(".res_top_banner").remove();}catch (e){} // 移除百度可能显示的劫持
             try{$("body>.result-op").remove();}catch (e){} // 移除可能出现的莫名找不到位置的全屏推荐
+            try{$(".c-container /deep/ .c-container").remove();}catch (e){} // 移除百度的恶心Shadow DOM（Shadown Root）
         }
         if (isFaviconEnable) {
             addFavicon(document.querySelectorAll(Ftype)); // 添加Favicon显示
@@ -375,7 +378,7 @@
                 var lastId = 0;
                 for (var i = 0; i < fathers.length; i++) {
                     var currentNode = fathers[i];
-                    if (fathers[i].tagName == "DIV" && fathers[i].getAttribute("dealAD") == null) {
+                    if (currentNode.tagName == "DIV" && currentNode.getAttribute("dealAD") == null) {
                         if (null == currentNode.id || "" == currentNode.id) {
                             // 米有ID的貌似都是广告
                             console.log("移除广告1 CLASS=" + currentNode.className);
@@ -630,30 +633,36 @@
             }else{
                 $("#wrapper .s_form #form").attr("style", "");
             }
-            StyleManger.init();
-            ControlManager.init();
+            if(SiteTypeID == SiteType.BAIDU){
+                StyleManger.init();
+                ControlManager.init();
+            }
             if($("#double").length > 0){
                 setTimeout(function(){ // 动态设置底部推荐关键字的marginTop属性
                     document.querySelector("#container #rs div").parentNode.style.marginTop = Math.max($("#double").height(), $("#content_left").height())-$("#content_left").height()+"px";
                 }, 400);
             }
         }
-        StyleManger.importOnceCSS();
-        ControlManager.centerDisplay();
-        try{
-            mutationfunc();
-        }catch (e){}
-        try {
-            var observer = new ACMO(mutationfunc);
-            var wrapper = document.querySelector("#wrapper");
-            observer.observe(wrapper, {
-                "attributes": false,
-                "characterData": false,
-                "subtree": true,
-                "attributesFilter": ["class"],
-            });
-            mutationfunc();
-        } catch (e) {
+        if(SiteTypeID == SiteType.BAIDU){
+            StyleManger.init();
+            ControlManager.init();
+            try{
+                mutationfunc();
+            }catch (e){}
+            try {
+                var observer = new ACMO(mutationfunc);
+                var wrapper = document.querySelector("#wrapper");
+                observer.observe(wrapper, {
+                    "attributes": false,
+                    "characterData": false,
+                    "subtree": true,
+                    "attributesFilter": ["class"],
+                });
+                mutationfunc();
+            } catch (e) {
+            }
+        }else{
+            return;
         }
     }
 })();
