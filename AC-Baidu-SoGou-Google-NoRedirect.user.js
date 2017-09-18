@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         12.8
+// @version         12.9
 // @connect         *
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
@@ -22,8 +22,9 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2017-09-15
+// @lastmodified    2017-09-18
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.09.18-V12.9 更新原因：1.勿忘国耻918；2.更新百度偶尔重定向没成功的问题；3.修复页面的小问题；4.新增文字下划线开关
 // @note            2017.09.15-V12.8 紧急修复谷歌上页面卡顿的问题，排查得知为百度规则的扩展出了问题，非常感谢众多朋友的支持，没有你们的反馈就没有这个脚本。修复并移除了百度官方采用的新方式广告模式，貌似只在chrome上出现
 // @note            2017.09.13-V12.7 1.修复N年前更新导致的部分网址重定向无效，继续使用GET方法，因为好些网站不支持HEAD方法，获取成功之后就断开，尽量减少了网络开支; 2.修复搜狗的部分搜索异常; 3.修复百度在chrome61上的链接异常问题
 // @note            2017.09.13-V12.6 开学之后的第二个版本，修复上次更新导致的百度首页错乱，修复firefox上的触发，修复SuperPreloader的翻页展示
@@ -97,6 +98,7 @@
     var RedirctMod = 0; // 0-普通模式-一级目录去重定向；1-完整模式-全部去重定向(可能会卡网)
     var isFaviconEnable = true;
     var isCounterEnable = false;
+    var isALineEnable = false;
     LoadSetting(); // 读取个人设置信息
     var Stype_Normal; // 去重定向的选择
     var Stype_All; // 去重定向的选择
@@ -120,12 +122,14 @@
         } catch (e) {
         }
     });
-    document.addEventListener('DOMContentLoaded', function (e) {
-        setTimeout(function () {
-            // 如果没有SuperPreload的话那么就会自动调用这个
-            ShowSetting();
-        }, 1000);
-    }, false);
+    try{
+        document.addEventListener('DOMContentLoaded', function (e) {
+            setTimeout(function () {
+                // 如果没有SuperPreload的话那么就会自动调用这个
+                ShowSetting();
+            }, 1000);
+        }, false);
+    }catch (e){}
     if (location.host.indexOf("www.baidu.com") > -1) {
         SiteTypeID = SiteType.BAIDU;
         Stype_Normal = "h3.t>a";
@@ -162,10 +166,12 @@
         document.querySelector("#sp-ac-content").style.display = 'block';
     });
     AC_addStyle(
-        "a{text-decoration:none}" + // 移除这些个下划线
         ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
         ".res_top_banner{display:none}" // 移除可能的百度HTTPS劫持显示问题
     );
+    if(!isALineEnable){
+        AC_addStyle("a{text-decoration:none}");// 移除这些个下划线
+    }
     function AC_addStyle(css, className){
         var tout = setInterval(function(){
             if(document.body != null){
@@ -193,6 +199,7 @@
         }, 200);
     }
     function ACHandle() {
+        InsertSettingMenu();
         if (isRedirectEnable) {
             if (RedirctMod==0){ //移除一级目录重定向
                 if(Stype_Normal != null && Stype_Normal != "")
@@ -218,9 +225,13 @@
         if (isAdsEnable) {
             FSBaidu();
             removeAD_baidu_sogou(); // 移除百度广告
+        }else{
+            $("input[name='sp-ac-a_force_style']").attr("disabled", "disabled");
         }
     }
-    FSBaidu(); // 添加设置项-单双列显示
+    if (isAdsEnable){
+        FSBaidu(); // 添加设置项-单双列显示
+    }
     function ACtoggleSettingDisplay() {
         // 显示？隐藏设置界面
         setTimeout(function () {
@@ -234,7 +245,7 @@
     function ShowSetting() {
         // 如果不存在的话，那么自己创建一个-copy from superPreload
         if (document.querySelector("#sp-ac-container") == null) {
-            AC_addStyle('#sp-ac-container{z-index:999999!important;text-align:left!important;}#sp-ac-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-ac-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;margin-top: 0px !important;}#sp-ac-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-ac-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-ac-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-ac-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-ac-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-ac-container fieldset>ul{padding:0!important;margin:0!important;}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}');
+            AC_addStyle('#sp-ac-container{z-index:999999!important;text-align:left!important;background-color:white;}#sp-ac-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-ac-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;margin-top: 0px !important;}#sp-ac-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-ac-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-ac-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-ac-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-ac-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-ac-container fieldset>ul{padding:0!important;margin:0!important;}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}');
             var Container = document.createElement('div');
             Container.id = "sp-ac-container";
             Container.style = "position: fixed !important; top: 10%;right: 7%;";
@@ -259,6 +270,7 @@
                 "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (isFaviconEnable ? 'checked' : '') + ">附加2-Favicon功能</label>\n" +
                 "                </li>\n" +
                 "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (isCounterEnable ? 'checked' : '') + ">附加3-编号功能</label></li>\n" +
+                "                <li><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (isALineEnable ? 'checked' : '') + ">附加4-下划线</label></li>\n" +
                 "                <li><a target='_blank' href='https://shang.qq.com/wpa/qunwpa?idkey=5bbfe9de1e81a0930bd053f3157aad2dbb3fa7b991ac9f22ea9f2e2f53efde80' style='color:red !important;'>联系作者,提建议,寻求帮助,脚本定制点我</a></li>" +
                 "            </ul>\n" +
                 "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton' title='取消' style='position: relative !important;float: left !important;'>取消</span>\n" +
@@ -272,26 +284,34 @@
         for (var i = 0; i < allNodes.length; i++) {
             if (allNodes[i].getAttribute('acClick') == null) {
                 allNodes[i].setAttribute('acClick', '1');
-                allNodes[i].addEventListener('click', function (e) {
-                    return ACtoggleSettingDisplay();
-                }, true);
+                try{
+                    allNodes[i].addEventListener('click', function (e) {
+                        return ACtoggleSettingDisplay();
+                    }, true);
+                }catch (e){}
             }
         }
-        document.querySelector("#sp-ac-savebutton").addEventListener('click', function (e) {
-            // 保存功能
-            GM_setValue("isRedirectEnable", document.querySelector("#sp-ac-redirect").checked);
-            GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
-            GM_setValue("AdsStyleMode", document.querySelector('input[name="sp-ac-a_force_style"]:checked').value);
-            GM_setValue("RedirctMod", document.querySelector('input[name="sp-ac-a_force_rediMod"]:checked').value);
-            GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
-            GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
-            setTimeout(function () {
-                window.location.reload();
-            },200);
-        }, false);
-        document.querySelector("#sp-ac-cancelbutton").addEventListener('click', function (e) {
-            document.querySelector("#sp-ac-content").style.display = 'none';
-        }, false);
+        try{
+            document.querySelector("#sp-ac-savebutton").addEventListener('click', function (e) {
+                // 保存功能
+                GM_setValue("isRedirectEnable", document.querySelector("#sp-ac-redirect").checked);
+                GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
+                GM_setValue("AdsStyleMode", document.querySelector('input[name="sp-ac-a_force_style"]:checked').value);
+                GM_setValue("RedirctMod", document.querySelector('input[name="sp-ac-a_force_rediMod"]:checked').value);
+                GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
+                GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
+                GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 400);
+            }, false);
+        }catch (e){}
+        try{
+            document.querySelector("#sp-ac-cancelbutton").addEventListener('click', function (e) {
+                document.querySelector("#sp-ac-content").style.display = 'none';
+            }, false);
+        }catch (e){}
+
     }
 
     function LoadSetting() {
@@ -301,6 +321,7 @@
         RedirctMod = GM_getValue("RedirctMod", 0);
         isFaviconEnable = GM_getValue("isFaviconEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
+        isALineEnable = GM_getValue("isALineEnable", false);
     }
     function removeOnMouseDownFunc() {
         try {
@@ -339,8 +360,9 @@
                                 onreadystatechange: function (response) {
                                     if (response.finalUrl != curhref && response.finalUrl!="" && response.finalUrl != null) {
                                         var resultURL = response.finalUrl;
-                                        if(resultURL != null && resultURL != ""){
+                                        if(resultURL != null && resultURL != "" && resultURL.indexOf("www.baidu.com/link") < 0){
                                             $("a[href*='"+c_curhref+"']").attr("href", resultURL);
+                                            $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
                                             gmRequestNode.abort();
                                         }
                                     }else if (SiteTypeID == SiteType.SOGOU) { //如果是搜狗的结果
@@ -350,6 +372,7 @@
                                         }
                                         if(resultURL != null && resultURL != ""){
                                             $("a[href*='"+c_curhref+"']").attr("href", resultURL);
+                                            $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
                                             gmRequestNode.abort();
                                         }
                                     }
@@ -521,7 +544,20 @@
             return false;
         }
     }
-
+    function InsertSettingMenu(){
+        if ($("#myuser").length < 1) {
+            var $parent = $("#u");
+            $parent.style="width: 319px;";
+            var $div = $("<a style='text-decoration: none;'><ol id='myuser' style='display: inline-block;'>" +
+                "<li class='myuserconfig' style='display: inline-block;height: 18px;line-height: 1.5;background: #2866bd;color: #fff;font-weight: bold;text-align: center;padding: 6px;border-radius: 5px;'>自定义</li></ol></a>");
+            $div.prependTo($parent);
+            try{
+                document.querySelector("#myuser .myuserconfig").addEventListener('click', function (e) {
+                    return ACtoggleSettingDisplay();
+                }, true);
+            }catch (e){}
+        }
+    }
     function FSBaidu() { // thanks for code from 浮生@未歇 @page https://greasyfork.org/zh-TW/scripts/31642
         var StyleManger = {
             importStyle: function (fileUrl, toClassName) {
@@ -565,22 +601,6 @@
             }
         };
         var ControlManager = {
-            //插入自定义菜单
-            inserCustomMenu: function () {
-                if ($("#myuser").length < 1) {
-                    var $parent = $("#u");
-                    var $div = $("<a><ol id='myuser'><li class='myuserconfig'>自定义</li></ol></a>");
-                    $div.prependTo($parent);
-                    document.querySelector("#myuser .myuserconfig").addEventListener('click', function (e) {
-                        return ACtoggleSettingDisplay();
-                    }, true);
-                }
-                // if($("#container #rs:has(div)").length < 1){
-                //     var nullRSNode = document.createElement("div");//相关搜索节点，虽然没有，但是必须要搞出来，否则底部空间不够，导致页数位置出问题
-                //     nullRSNode.id = "rs";
-                //     document.querySelector("#container").insertBefore(nullRSNode, document.querySelector("#container #rs"));
-                // }
-            },
             twoPageDisplay: function () {
                 var $div = $("<div id='double'></div>");
                 var $double = null;
@@ -624,7 +644,6 @@
             },
             init: function () {
                 this.centerDisplay();
-                this.inserCustomMenu();
             }
         };
         function mutationfunc() {
