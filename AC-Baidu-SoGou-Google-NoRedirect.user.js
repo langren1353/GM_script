@@ -5,12 +5,14 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         12.9
+// @version         12.10
 // @connect         *
-// @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
-// @include         http://www.sogou.com/*
-// @include         https://www.sogou.com/*
+// @include         http://www.baidu.com/*
+// @include         http://www.sogou.com/web*
+// @include         https://www.sogou.com/web*
+// @include         https://www.so.com/s?*
+// @include         https://www.so.com/s?*
 // @include         /^https?://\w+.bing.com/.*/
 // @include         /^https?\:\/\/encrypted.google.[^\/]+/
 // @include         /^https?\:\/\/www.google.[^\/]+/
@@ -21,9 +23,10 @@
 // @home-url2       https://github.com/langren1353/GM_script
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
-// @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2017-09-18
+// @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
+// @lastmodified    2017-09-27
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.10.27-V12.10 1.修复逼死强迫症的问题；2.移除完整模式-避免出现各种拦截；3.修复www.so.com的重定向问题
 // @note            2017.09.18-V12.9 更新原因：1.勿忘国耻918；2.更新百度偶尔重定向没成功的问题；3.修复页面的小问题；4.新增文字下划线开关
 // @note            2017.09.15-V12.8 紧急修复谷歌上页面卡顿的问题，排查得知为百度规则的扩展出了问题，非常感谢众多朋友的支持，没有你们的反馈就没有这个脚本。修复并移除了百度官方采用的新方式广告模式，貌似只在chrome上出现
 // @note            2017.09.13-V12.7 1.修复N年前更新导致的部分网址重定向无效，继续使用GET方法，因为好些网站不支持HEAD方法，获取成功之后就断开，尽量减少了网络开支; 2.修复搜狗的部分搜索异常; 3.修复百度在chrome61上的链接异常问题
@@ -90,7 +93,8 @@
         "b_algo", //bing1
         "b_ans", //bing2
         "vrwrap", //sogou1
-        "rb"//sogou2
+        "rb",//sogou2
+        "res-list"//so-360
     );// Favicon放在xx位置
     var isRedirectEnable = true;
     var isAdsEnable = true;
@@ -108,10 +112,11 @@
     var SiteType={
         BAIDU:1,
         SOGOU:2,
-        GOOGLE:3,
-        BING:4,
-        ZHIHU:5,
-        OTHERS:6,
+        SO:3,
+        GOOGLE:4,
+        BING:5,
+        ZHIHU:6,
+        OTHERS:7,
     };
     var ACMO = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
     var option = {'childList': true, 'subtree': true};
@@ -143,6 +148,13 @@
         // Stype_All = ".results a[id*='sogou_vr_']:visible";
         Stype_All = "h3.pt>a, h3.vrTitle>a";
         Ftype = "cite[id*='cacheresult_info_']";
+        Ctype = ".results>div";
+        startSelect("body", "body", option);
+    }  else if (location.host.indexOf("so.com") > -1) {
+        SiteTypeID = SiteType.SO;
+        Stype_Normal = ".res-list h3>a";
+        Stype_All = ".res-list a";
+        Ftype = ".res-linkinfo cite";
         Ctype = ".results>div";
         startSelect("body", "body", option);
     } else if (location.host.indexOf("google") > -1) {
@@ -257,7 +269,7 @@
                 "            <ul>\n" +
                 "                <li><label><input title='AC-重定向' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-重定向' type='checkbox' " + (isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
                 "                    &nbsp;&nbsp;&nbsp;&nbsp;<label><input title='重定向-普通模式' name='sp-ac-a_force_rediMod' value='0' type='radio' " + (RedirctMod==0 ? 'checked' : '') + ">重定向-普通模式</label>" +
-                "                    <label title='完整模式很容易出现验证码，自行斟酌'><input name='sp-ac-a_force_rediMod' value='1' title='' type='radio' " + (RedirctMod==1 ? 'checked' : '') + ">重定向-完整模式</label>" +
+                // "                    <label title='完整模式很容易出现验证码，自行斟酌'><input name='sp-ac-a_force_rediMod' value='1' title='' type='radio' " + (RedirctMod==1 ? 'checked' : '') + ">重定向-完整模式</label>" +
                 "                </li>\n" +
                 "                <li><label><input title='AC-去广告' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label>\n" +
                 "                </li>\n" +
@@ -297,7 +309,7 @@
                 GM_setValue("isRedirectEnable", document.querySelector("#sp-ac-redirect").checked);
                 GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
                 GM_setValue("AdsStyleMode", document.querySelector('input[name="sp-ac-a_force_style"]:checked').value);
-                GM_setValue("RedirctMod", document.querySelector('input[name="sp-ac-a_force_rediMod"]:checked').value);
+                // GM_setValue("RedirctMod", document.querySelector('input[name="sp-ac-a_force_rediMod"]:checked').value);
                 GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
                 GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
                 GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
@@ -318,7 +330,7 @@
         isRedirectEnable = GM_getValue("isRedirectEnable", true);
         isAdsEnable = GM_getValue("isAdsEnable", true);
         AdsStyleMode = GM_getValue("AdsStyleMode", 0);
-        RedirctMod = GM_getValue("RedirctMod", 0);
+        // RedirctMod = GM_getValue("RedirctMod", 0);
         isFaviconEnable = GM_getValue("isFaviconEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
         isALineEnable = GM_getValue("isALineEnable", false);
@@ -348,7 +360,7 @@
             var curhref = curNode.href;
             if (list[i] != null && list[i].getAttribute("ac_redirectStatus") == null) {
                 list[i].setAttribute("ac_redirectStatus", "0");
-                if (curhref.indexOf("www.baidu.com/link") > -1 || curhref.indexOf("www.sogou.com/link") > -1) {
+                if (curhref.indexOf("www.baidu.com/link") > -1 || curhref.indexOf("www.sogou.com/link") > -1 || curhref.indexOf("so.com/link") > -1) {
                     (function (c_curnode,c_curhref) {
                         setTimeout(function () {
                             var gmRequestNode = GM_xmlhttpRequest({
@@ -358,7 +370,7 @@
                                 },
                                 method: "GET",
                                 onreadystatechange: function (response) {
-                                    if (response.finalUrl != curhref && response.finalUrl!="" && response.finalUrl != null) {
+                                    if (response.finalUrl != curhref && response.finalUrl!="" && response.finalUrl != null && SiteTypeID == SiteType.BAIDU) {
                                         var resultURL = response.finalUrl;
                                         if(resultURL != null && resultURL != "" && resultURL.indexOf("www.baidu.com/link") < 0){
                                             $("a[href*='"+c_curhref+"']").attr("href", resultURL);
@@ -366,6 +378,16 @@
                                             gmRequestNode.abort();
                                         }
                                     }else if (SiteTypeID == SiteType.SOGOU) { //如果是搜狗的结果
+                                        var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
+                                        if (resultResponseUrl != null){
+                                            resultURL = resultResponseUrl;
+                                        }
+                                        if(resultURL != null && resultURL != ""){
+                                            $("a[href*='"+c_curhref+"']").attr("href", resultURL);
+                                            $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
+                                            gmRequestNode.abort();
+                                        }
+                                    } else if(SiteTypeID == SiteType.SO){
                                         var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
                                         if (resultResponseUrl != null){
                                             resultURL = resultResponseUrl;
@@ -561,7 +583,8 @@
     function FSBaidu() { // thanks for code from 浮生@未歇 @page https://greasyfork.org/zh-TW/scripts/31642
         var StyleManger = {
             importStyle: function (fileUrl, toClassName) {
-                if($("."+toClassName).length>0) return;
+                if($("."+toClassName).length > 0) return;
+                if($("#content_left").length <= 0) return;
                 var ssNode = document.createElement("link");
                 ssNode.rel = "stylesheet";
                 ssNode.type = "text/css";
@@ -581,10 +604,12 @@
             //加载单页样式
             loadOnePageStyle: function () {
                 this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css", "baiduOnePageStyle");
+                $("#result_logo img").attr("src", "http://ww1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
             },
             //加载双页样式
             loadTwoPageStyle: function () {
                 this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css", "baiduTwoPageStyle");
+                $("#result_logo img").attr("src", "http://ww1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
             },
             loadExpandOneStyle:function () {
                 AC_addStyle(
