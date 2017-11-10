@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         12.10
+// @version         12.11
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -26,6 +26,7 @@
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
 // @lastmodified    2017-09-27
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.11.02-V12.11 新增在手机mobile模式下百度的重定向处理，其余网站以后再说吧，估计没有需求
 // @note            2017.10.27-V12.10 1.修复逼死强迫症的问题；2.移除完整模式-避免出现各种拦截；3.修复www.so.com的重定向问题
 // @note            2017.09.18-V12.9 更新原因：1.勿忘国耻918；2.更新百度偶尔重定向没成功的问题；3.修复页面的小问题；4.新增文字下划线开关
 // @note            2017.09.15-V12.8 紧急修复谷歌上页面卡顿的问题，排查得知为百度规则的扩展出了问题，非常感谢众多朋友的支持，没有你们的反馈就没有这个脚本。修复并移除了百度官方采用的新方式广告模式，貌似只在chrome上出现
@@ -99,13 +100,11 @@
     var isRedirectEnable = true;
     var isAdsEnable = true;
     var AdsStyleMode = 1;// 0-不带css；1-单列靠左；2-单列居中；3-双列居中
-    var RedirctMod = 0; // 0-普通模式-一级目录去重定向；1-完整模式-全部去重定向(可能会卡网)
     var isFaviconEnable = true;
     var isCounterEnable = false;
     var isALineEnable = false;
     LoadSetting(); // 读取个人设置信息
     var Stype_Normal; // 去重定向的选择
-    var Stype_All; // 去重定向的选择
     var Ftype; // favicon的选择
     var Ctype; // Counter的选择
     var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;谷歌=3;必应=4;知乎=5;其他=6]
@@ -118,6 +117,7 @@
         ZHIHU:6,
         OTHERS:7,
     };
+
     var ACMO = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
     var option = {'childList': true, 'subtree': true};
     var observer = new ACMO(function (records) {
@@ -137,23 +137,19 @@
     }catch (e){}
     if (location.host.indexOf("www.baidu.com") > -1) {
         SiteTypeID = SiteType.BAIDU;
-        Stype_Normal = "h3.t>a";
-        Stype_All = "#content_left .c-container a[href*='http://www.baidu.com/link'][class!='c-showurl'][class!='c-img6']:visible";//非图片；非底部小链接；可见
+        Stype_Normal = "h3.t>a, #results .c-container>.c-blocka"; //PC,mobile
         Ftype = ".result-op, .c-showurl";
         Ctype = "#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]";
-        startSelect("#wrapper", "#wrapper", option);
+        startSelect("#wrapper,#page-bd", "#wrapper,#page-bd", option);
     } else if (location.host.indexOf("sogou") > -1) {
         SiteTypeID = SiteType.SOGOU;
         Stype_Normal = "h3.pt>a, h3.vrTitle>a";
-        // Stype_All = ".results a[id*='sogou_vr_']:visible";
-        Stype_All = "h3.pt>a, h3.vrTitle>a";
         Ftype = "cite[id*='cacheresult_info_']";
         Ctype = ".results>div";
         startSelect("body", "body", option);
     }  else if (location.host.indexOf("so.com") > -1) {
         SiteTypeID = SiteType.SO;
         Stype_Normal = ".res-list h3>a";
-        Stype_All = ".res-list a";
         Ftype = ".res-linkinfo cite";
         Ctype = ".results>div";
         startSelect("body", "body", option);
@@ -213,13 +209,8 @@
     function ACHandle() {
         InsertSettingMenu();
         if (isRedirectEnable) {
-            if (RedirctMod==0){ //移除一级目录重定向
-                if(Stype_Normal != null && Stype_Normal != "")
-                    resetURLNormal($(Stype_Normal)); // 百度搜狗去重定向-普通模式【注意不能为document.query..】
-            }else{ // 移除全部重定向
-                if(Stype_All != null && Stype_All != "")
-                    resetURLNormal($(Stype_All)); // 百度搜狗去重定向-完整模式【注意不能为document.query..】
-            }
+            if(Stype_Normal != null && Stype_Normal != "")
+                resetURLNormal($(Stype_Normal)); // 百度搜狗去重定向-普通模式【注意不能为document.query..】
             if(SiteTypeID == SiteType.GOOGLE)
                 removeOnMouseDownFunc(); // 移除onMouseDown事件，谷歌去重定向
             if(SiteTypeID == SiteType.ZHIHU)
@@ -268,8 +259,7 @@
                 "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置</legend>\n" +
                 "            <ul>\n" +
                 "                <li><label><input title='AC-重定向' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-重定向' type='checkbox' " + (isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
-                "                    &nbsp;&nbsp;&nbsp;&nbsp;<label><input title='重定向-普通模式' name='sp-ac-a_force_rediMod' value='0' type='radio' " + (RedirctMod==0 ? 'checked' : '') + ">重定向-普通模式</label>" +
-                // "                    <label title='完整模式很容易出现验证码，自行斟酌'><input name='sp-ac-a_force_rediMod' value='1' title='' type='radio' " + (RedirctMod==1 ? 'checked' : '') + ">重定向-完整模式</label>" +
+                "                    &nbsp;&nbsp;&nbsp;&nbsp;<label><input title='重定向-普通模式' name='sp-ac-a_force_rediMod' value='0' type='radio' checked>重定向-普通模式</label>" +
                 "                </li>\n" +
                 "                <li><label><input title='AC-去广告' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label>\n" +
                 "                </li>\n" +
@@ -309,7 +299,6 @@
                 GM_setValue("isRedirectEnable", document.querySelector("#sp-ac-redirect").checked);
                 GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
                 GM_setValue("AdsStyleMode", document.querySelector('input[name="sp-ac-a_force_style"]:checked').value);
-                // GM_setValue("RedirctMod", document.querySelector('input[name="sp-ac-a_force_rediMod"]:checked').value);
                 GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
                 GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
                 GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
@@ -330,7 +319,6 @@
         isRedirectEnable = GM_getValue("isRedirectEnable", true);
         isAdsEnable = GM_getValue("isAdsEnable", true);
         AdsStyleMode = GM_getValue("AdsStyleMode", 0);
-        // RedirctMod = GM_getValue("RedirctMod", 0);
         isFaviconEnable = GM_getValue("isFaviconEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
         isALineEnable = GM_getValue("isALineEnable", false);
@@ -360,7 +348,7 @@
             var curhref = curNode.href;
             if (list[i] != null && list[i].getAttribute("ac_redirectStatus") == null) {
                 list[i].setAttribute("ac_redirectStatus", "0");
-                if (curhref.indexOf("www.baidu.com/link") > -1 || curhref.indexOf("www.sogou.com/link") > -1 || curhref.indexOf("so.com/link") > -1) {
+                if (curhref.indexOf("www.baidu.com/link") > -1 || curhref.indexOf("m.baidu.com/from") > -1 || curhref.indexOf("www.sogou.com/link") > -1 || curhref.indexOf("so.com/link") > -1) {
                     (function (c_curnode,c_curhref) {
                         setTimeout(function () {
                             var gmRequestNode = GM_xmlhttpRequest({
@@ -370,33 +358,21 @@
                                 },
                                 method: "GET",
                                 onreadystatechange: function (response) {
-                                    if (response.finalUrl != curhref && response.finalUrl!="" && response.finalUrl != null && SiteTypeID == SiteType.BAIDU) {
-                                        var resultURL = response.finalUrl;
-                                        if(resultURL != null && resultURL != "" && resultURL.indexOf("www.baidu.com/link") < 0){
-                                            $("a[href*='"+c_curhref+"']").attr("href", resultURL);
-                                            $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
-                                            gmRequestNode.abort();
+                                    if (SiteTypeID == SiteType.BAIDU) {
+                                        if(response.finalUrl != c_curhref && response.finalUrl!="" && response.finalUrl != null){
+                                            var resultURL = response.finalUrl;
+                                            if(resultURL != null && resultURL != "" && (resultURL.indexOf("www.baidu.com/link") < 0 && resultURL.indexOf("m.baidu.com/from") < 0)){
+                                                $("a[href*='"+c_curhref+"']").attr("href", resultURL);
+                                                $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
+                                                gmRequestNode.abort();
+                                            }
+                                        }else{
+                                            DealRedirect(gmRequestNode, c_curhref, response.responseText, "location.replace\\(\"([^\"]+)\"");
                                         }
                                     }else if (SiteTypeID == SiteType.SOGOU) { //如果是搜狗的结果
-                                        var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
-                                        if (resultResponseUrl != null){
-                                            resultURL = resultResponseUrl;
-                                        }
-                                        if(resultURL != null && resultURL != ""){
-                                            $("a[href*='"+c_curhref+"']").attr("href", resultURL);
-                                            $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
-                                            gmRequestNode.abort();
-                                        }
+                                        DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'");
                                     } else if(SiteTypeID == SiteType.SO){
-                                        var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
-                                        if (resultResponseUrl != null){
-                                            resultURL = resultResponseUrl;
-                                        }
-                                        if(resultURL != null && resultURL != ""){
-                                            $("a[href*='"+c_curhref+"']").attr("href", resultURL);
-                                            $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
-                                            gmRequestNode.abort();
-                                        }
+                                        DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'");
                                     }
                                 }
                             });
@@ -406,7 +382,19 @@
             }
         }
     }
-
+    function DealRedirect(request, curNodeHref, respText, RegText){
+        if(respText == null || typeof(respText)=="undefined") return;
+        var resultURL = "";
+        var resultResponseUrl = Reg_Get(respText, RegText);
+        if (resultResponseUrl != null){
+            resultURL = resultResponseUrl;
+        }
+        if(resultURL != null && resultURL != ""){
+            $("a[href*='"+curNodeHref+"']").attr("href", resultURL);
+            $("a[href*='"+curNodeHref+"']").attr("ac_redirectStatus", "2");
+            request.abort();
+        }
+    }
     function Reg_Get(HTML, reg) {
         var RegE = new RegExp(reg);
         try {
