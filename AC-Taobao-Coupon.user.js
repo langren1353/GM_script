@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         AC-淘宝天猫商品优惠信息查询
-// @version      2.3
+// @version      2.4
 // @description  淘宝天猫商品查询是否具有优惠券
 // @author       AC
 // @include      https://item.taobao.com/item.htm*
 // @include      https://detail.tmall.com/item.htm*
 // @include      https://s.taobao.com/search?q=*
+// @note         2017.11.10-V2.4 如果有优惠，可以展示出优惠信息了
 // @note         2017.11.4-V2.3 暂时新增两种模式供选择
 // @note         2017.11.2-V2.2 参照了一个大神的脚本之后拿到了一些css，于是又加了些东西，展示一些双十一相关的标签
 // @note         2017.11.1-V2.1 切换为include规则，而非match规则，避免GreaseMonkey上无法使用的问题
@@ -15,8 +16,10 @@
 // @home-url     https://greasyfork.org/zh-TW/scripts/34606
 // @run-at       document-start
 // @namespace    1353464539@qq.com
+// @require      https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // ==/UserScript==
 // .tb-detail-hd, .tb-main-title
+var acJquery = jQuery.noConflict();
 function AutoStart(time, cssSelector, dealFunc) {
     var timerNode = setInterval(function () {
         if (document.querySelector(cssSelector).style.display == "") {
@@ -37,6 +40,15 @@ function addStyle(css) { //添加CSS的代码--copy的
     );
     return document.insertBefore(pi, document.documentElement);
 }
+function acBuyScript(result){
+    var node = document.querySelector(".acBuyScriptCoupon");
+    if(result.count == 1){
+        node.innerHTML = "！有优惠券啊！";
+        node.href = "https://s.click.taobao.com/" + result.mod_json_details.couponUrl;
+    }else{
+        node.innerHTML = "已领取或无优惠"
+    }
+}
 if (location.host == "item.taobao.com" || location.host == "detail.tmall.com") {
     AutoStart(200, ".tb-detail-hd, .tb-main-title", function () {
         var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
@@ -47,10 +59,32 @@ if (location.host == "item.taobao.com" || location.host == "detail.tmall.com") {
         var faNode = document.querySelector("div#J_Title p.tb-subtitle, div.tb-detail-hd h1");
         var insNode = document.createElement("div");
         insNode.style = "font-size: 32px;font-weight: bold;font-family:microsoft yahei;";
-        var htmlText = "<a href=" + queryCoupon + " target='_blank' style='color: red;'>==找优惠==</a>";
-        htmlText += "&nbsp;&nbsp;&nbsp;&nbsp;<a href=" + querySimilar + " target='_blank' style='color: red;'>==看相似==</a>";
+        var htmlText = "<a class='acBuyScriptCoupon' href='javascript:void(0);' style='color: red;'>==找优惠==</a>";
+        htmlText += "&nbsp;&nbsp;&nbsp;&nbsp;<a href=" + querySimilar + " target='_blank' style='color: red;'>==找相似==</a>";
         insNode.innerHTML = htmlText;
         faNode.appendChild(insNode);
+        setTimeout(function(){
+            acJquery.ajax({
+                url:"https://www.ntaow.com/getDetails_json.jsp?auctionId="+goodID,
+                dataType:'jsonp',
+                success:function(result) {
+                    console.log(result);
+                },
+                timeout:3000
+            });
+        }, 200);
+        var jsNode = document.createElement("script");
+        jsNode.innerHTML = "function acBuyScript(result){\n" +
+            "    var node = document.querySelector(\".acBuyScriptCoupon\");\n" +
+            "    if(result.count == 1){\n" +
+            "        node.innerHTML = \"！有优惠券啊！\";\n" +
+            "        node.href = \"https://s.click.taobao.com/\" + result.mod_json_details.couponUrl;\n" +
+            "    }else{\n" +
+            "        node.innerHTML = \"无优惠信息\"\n" +
+            "        node.style = \"font-size: 11px;\";\n" +
+            "    }\n" +
+            "}";
+        document.body.appendChild(jsNode);
     });
 } else if (location.host == "s.taobao.com") {
     AutoStart(200, ".m-itemlist", function () {
