@@ -32,13 +32,13 @@
 // @include     http*://115.com/?tab=offline&mode=wangpan
 // @include     http*://www.furk.net/users/files/add
 
-// @include     https*://javbooks.com/content_censored/*
-// @include     https*://jmvbt.com/content_censored/*
+// @include     /^https?://javbooks.com/content_(un)?censored/.*/
+// @include     /^https?://jmvbt.com/content_(un)?censored/.*/
 
 
 // @note        edit form https://sleazyfork.org/zh-CN/scripts/8392-%E6%8C%8A V1.50
 
-// @version     1.51
+// @version     1.52
 // @run-at      document-end
 // @grant       GM_xmlhttpRequest
 // @grant       GM_setClipboard
@@ -77,8 +77,9 @@ var main = {
     javbtbook:{
         type: 0,
         re: /(jmvbt|javbooks).com/,
-        insert_where: ".Preview_cg_area",
+        insert_where: ".Preview_cg_area,.dht_dl_area",
         vid: function () {
+            GM_addStyle("body>center{display:none;}");
             return document.querySelector("#info .infobox a").textContent
         }
     },
