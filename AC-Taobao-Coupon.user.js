@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         AC-淘宝天猫商品优惠信息查询
-// @version      3.1
+// @version      3.2
 // @description  淘宝天猫商品查询是否具有优惠券
 // @author       AC
 // @include      https://item.taobao.com/item.htm*
 // @include      https://detail.tmall.com/item.htm*
-// @include      https://s.taobao.com/search?q=*
+// @note         2017.11.17-V3.2 绝望的搜索BUG修复
 // @note         2017.11.17-V3.1 优化载入缓慢的问题
 // @note         2017.11.17-V3.0 修复上一版过于流畅的bug，上一版更新导致的bug挺多的。。。
 // @note         2017.11.17-V2.9 正常更新，尽量减少由于重定向带来的影响，同时修正规则避免出事
@@ -93,28 +93,15 @@ function queryData(goodID, type){
         }
     });
 }
-if (location.host == "item.taobao.com" || location.host == "detail.tmall.com") {
-    AutoStart(100, ".tb-detail-hd, .tb-main-title", function () {
-        var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
-        var goodTitle = TitleNode.firstChild.nodeValue.trim();
-        var querySimilar = "https://www.ntaow.com/coupon.jsp?mQuery=" + encodeURI(goodTitle);
-        var faNode = document.querySelector("div#J_Title p.tb-subtitle, div.tb-detail-hd h1");
-        var insNode = document.createElement("div");
-        insNode.style = "font-size: 32px;font-weight: bold;font-family:microsoft yahei;";
-        var htmlText = "<a class='acBuyScriptCoupon' href='javascript:void(0);' style='color: red;'>=查找中=</a>";
-        htmlText += "&nbsp;&nbsp;&nbsp;&nbsp;<a href=" + querySimilar + " target='_blank' style='color: red;'>=找相似=</a>";
-        insNode.innerHTML = htmlText;
-        faNode.appendChild(insNode);
-    });
-} else if (location.host == "s.taobao.com") {
-    AutoStart(200, ".m-itemlist", function () {
-        addStyle(".m-itemlist .grid .row-4 { margin-top: 1px !important; margin-bottom: 20px;}");
-        addStyle('.m-itemlist .grid .row-4, .m-itemlist .icon-has-more { overflow: visible !important;}');
-        addStyle(".m-itemlist .grid .item { height: 376px !important;}");
-        addStyle(".m-itemlist .grid .icon { margin-top: 3px; !important;}");
-        addStyle(".grid .item-ctx-hover .icons { margin-top: 7px !important;}");
-
-        addStyle(".response-wider  .m-itemlist .grid .item { height: 406px !important}");
-        addStyle(".response-narrow  .m-itemlist .grid .item { height: 336px !important}");
-    });
-}
+AutoStart(100, ".tb-detail-hd, .tb-main-title", function () {
+    var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
+    var goodTitle = TitleNode.firstChild.nodeValue.trim();
+    var querySimilar = "https://www.ntaow.com/coupon.jsp?mQuery=" + encodeURI(goodTitle);
+    var faNode = document.querySelector("div#J_Title p.tb-subtitle, div.tb-detail-hd h1");
+    var insNode = document.createElement("div");
+    insNode.style = "font-size: 32px;font-weight: bold;font-family:microsoft yahei;";
+    var htmlText = "<a class='acBuyScriptCoupon' href='javascript:void(0);' style='color: red;'>=查找中=</a>";
+    htmlText += "&nbsp;&nbsp;&nbsp;&nbsp;<a href=" + querySimilar + " target='_blank' style='color: red;'>=找相似=</a>";
+    insNode.innerHTML = htmlText;
+    faNode.appendChild(insNode);
+});
