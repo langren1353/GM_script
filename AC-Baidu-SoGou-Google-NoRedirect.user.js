@@ -5,12 +5,14 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         12.11
+// @version         13.1
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
 // @include         http://www.sogou.com/web*
 // @include         https://www.sogou.com/web*
+// @include         http://www.sogou.com/sie*
+// @include         https://www.sogou.com/sie*
 // @include         https://www.so.com/s?*
 // @include         https://www.so.com/s?*
 // @include         /^https?://\w+.bing.com/.*/
@@ -26,6 +28,9 @@
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
 // @lastmodified    2017-09-27
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.11.17-V13.1 移除百度系的重定向，虽然处理了，但是百度系直连会导致文字无法直接显示，其他直连不影响
+// @note            2017.11.17-V12.13 进一步移除百度的广告，右边部分广告的处理和移除
+// @note            2017.11.15-V12.12 搜狗的搜索地址又变了，加一个
 // @note            2017.11.02-V12.11 新增在手机mobile模式下百度的重定向处理，其余网站以后再说吧，估计没有需求
 // @note            2017.10.27-V12.10 1.修复逼死强迫症的问题；2.移除完整模式-避免出现各种拦截；3.修复www.so.com的重定向问题
 // @note            2017.09.18-V12.9 更新原因：1.勿忘国耻918；2.更新百度偶尔重定向没成功的问题；3.修复页面的小问题；4.新增文字下划线开关
@@ -175,7 +180,7 @@
     });
     AC_addStyle(
         ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
-        ".res_top_banner{display:none}" // 移除可能的百度HTTPS劫持显示问题
+        ".res_top_banner{display:none!important;}" // 移除可能的百度HTTPS劫持显示问题
     );
     if(!isALineEnable){
         AC_addStyle("a{text-decoration:none}");// 移除这些个下划线
@@ -234,6 +239,7 @@
     }
     if (isAdsEnable){
         FSBaidu(); // 添加设置项-单双列显示
+        AC_addStyle("#content_right td>div:not([id]){display:none;}", "");
     }
     function ACtoggleSettingDisplay() {
         // 显示？隐藏设置界面
@@ -312,7 +318,6 @@
                 document.querySelector("#sp-ac-content").style.display = 'none';
             }, false);
         }catch (e){}
-
     }
 
     function LoadSetting() {
@@ -362,8 +367,14 @@
                                         if(response.finalUrl != c_curhref && response.finalUrl!="" && response.finalUrl != null){
                                             var resultURL = response.finalUrl;
                                             if(resultURL != null && resultURL != "" && (resultURL.indexOf("www.baidu.com/link") < 0 && resultURL.indexOf("m.baidu.com/from") < 0)){
-                                                $("a[href*='"+c_curhref+"']").attr("href", resultURL);
-                                                $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
+                                                if(resultURL.indexOf("baidu.com") > 0){
+                                                    // 如果是百度自家的丢弃：百度有防止爬虫，直连会导致内容部分被替换，所以该链接获取了也丢弃
+                                                    $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "-2");
+                                                }else{
+                                                    // 如果不是百度的链接
+                                                    $("a[href*='"+c_curhref+"']").attr("href", resultURL);
+                                                    $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
+                                                }
                                                 gmRequestNode.abort();
                                             }
                                         }else{
