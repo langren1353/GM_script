@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         13.1
+// @version         13.2
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -28,7 +28,8 @@
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
 // @lastmodified    2017-09-27
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
-// @note            2017.11.17-V13.1 移除百度系的重定向，虽然处理了，但是百度系直连会导致文字无法直接显示，其他直连不影响
+// @note            2017.11.23-V13.2 感谢卡饭坛友@Apollo8511提供反馈，已经修复部分知乎的重定向问题，更多问题可以直接反馈我
+// @note            2017.11.22-V13.1 移除百度系的重定向，虽然处理了，但是百度系直连会导致文字无法直接显示，其他直连不影响
 // @note            2017.11.17-V12.13 进一步移除百度的广告，右边部分广告的处理和移除
 // @note            2017.11.15-V12.12 搜狗的搜索地址又变了，加一个
 // @note            2017.11.02-V12.11 新增在手机mobile模式下百度的重定向处理，其余网站以后再说吧，估计没有需求
@@ -170,7 +171,7 @@
         startSelect("body", "body", option);
     } else if (location.host.indexOf("zhihu.com") > -1) {
         SiteTypeID = SiteType.ZHIHU;
-        startSelect(".Card .List", ".Card .List", option);
+        startSelect("body", "body", option);
     } else {
         SiteTypeID = SiteType.OTHERS;
         AC_addStyle(".word-replace{display: none !important;}");
@@ -339,9 +340,9 @@
     }
     function removeLinkTarget() {
         // console.log("移除知乎重定向问题");
-        var nodes = document.querySelectorAll(".Card .List .RichContent a[href*='https://link.zhihu.com/?target']");
+        var nodes = document.querySelectorAll(".RichText a[href*='//link.zhihu.com/?target']");
         for(var i=0; i<nodes.length; i++){
-            var url = decodeURIComponent(nodes[i].href.replace("https://link.zhihu.com/?target=", ""));
+            var url = decodeURIComponent(nodes[i].href.replace(/https?:\/\/link\.zhihu\.com\/\?target=/, ""));
             nodes[i].href = url;
         }
     }
