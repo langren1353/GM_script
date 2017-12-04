@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         13.2
+// @version         13.3
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -26,8 +26,9 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2017-09-27
+// @lastmodified    2017-12-04
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.12.04-V13.3 新增设置，针对百度系列的重定向问题，不常用百度系列的朋友可以开启这个功能
 // @note            2017.11.23-V13.2 感谢卡饭坛友@Apollo8511提供反馈，已经修复部分知乎的重定向问题，更多问题可以直接反馈我
 // @note            2017.11.22-V13.1 移除百度系的重定向，虽然处理了，但是百度系直连会导致文字无法直接显示，其他直连不影响
 // @note            2017.11.17-V12.13 进一步移除百度的广告，右边部分广告的处理和移除
@@ -104,6 +105,7 @@
         "res-list"//so-360
     );// Favicon放在xx位置
     var isRedirectEnable = true;
+    var isRedirectBaidusEnable = true;
     var isAdsEnable = true;
     var AdsStyleMode = 1;// 0-不带css；1-单列靠左；2-单列居中；3-双列居中
     var isFaviconEnable = true;
@@ -265,16 +267,18 @@
                 "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
                 "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置</legend>\n" +
                 "            <ul>\n" +
-                "                <li><label><input title='AC-重定向' id='sp-ac-redirect' name='sp-ac-a_separator' title='AC-重定向' type='checkbox' " + (isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
-                "                    &nbsp;&nbsp;&nbsp;&nbsp;<label><input title='重定向-普通模式' name='sp-ac-a_force_rediMod' value='0' type='radio' checked>重定向-普通模式</label>" +
+                "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
+                "                    <label title='重定向-普通模式' style='margin-left:20px'><input  name='sp-ac-a_force_rediMod' value='0' type='radio' checked>重定向-普通模式</label>" +
                 "                </li>\n" +
-                "                <li><label><input title='AC-去广告' id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label>\n" +
+                "                <li><label title='开启后，可能导致百度知道文字复制出问题' style='margin-left:20px'><input id='sp-ac-redirect_baidus' name='sp-ac-a_separator' type='checkbox' " + (isRedirectBaidusEnable ? 'checked' : '') + ">重定向-处理百度系列</label>\n" +
+                "                </li>\n" +
+                "                <li><label title='AC-去广告' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label>\n" +
                 "                </li>\n" +
                 "                <li>" +
-                "                    &nbsp;&nbsp;&nbsp;&nbsp;<label><input title='去广告-原始模式' name='sp-ac-a_force_style' value='0' type='radio' " + (AdsStyleMode==0 ? 'checked' : '') + ">去广告-原始模式</label>" +
+                "                    <label title='去广告-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style' value='0' type='radio' " + (AdsStyleMode==0 ? 'checked' : '') + ">去广告-原始模式</label>" +
                 "                    <label><input title='去广告-单列普通' name='sp-ac-a_force_style' value='1'  type='radio' " + (AdsStyleMode==1 ? 'checked' : '') + ">去广告-单列普通</label>" +
-                "                    <BR/>&nbsp;&nbsp;&nbsp;&nbsp;<label><input title='去广告-单列居中' name='sp-ac-a_force_style' value='2'  type='radio' " + (AdsStyleMode==2 ? 'checked' : '') + ">去广告-单列居中</label>" +
-                "                    <label><input title='去广告-双列居中' name='sp-ac-a_force_style' value='3'  type='radio' " + (AdsStyleMode==3 ? 'checked' : '') + ">去广告-双列居中</label>" +
+                "                    <BR/><label title='去广告-单列居中' style='margin-left:20px'><input  name='sp-ac-a_force_style' value='2'  type='radio' " + (AdsStyleMode==2 ? 'checked' : '') + ">去广告-单列居中</label>" +
+                "                    <label title='去广告-双列居中'><input  name='sp-ac-a_force_style' value='3'  type='radio' " + (AdsStyleMode==3 ? 'checked' : '') + ">去广告-双列居中</label>" +
                 "                </li>\n" +
                 "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (isFaviconEnable ? 'checked' : '') + ">附加2-Favicon功能</label>\n" +
                 "                </li>\n" +
@@ -309,6 +313,7 @@
                 GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
                 GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
                 GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
+                GM_setValue("isRedirectBaidusEnable", document.querySelector("#sp-ac-redirect_baidus").checked);
                 setTimeout(function () {
                     window.location.reload();
                 }, 400);
@@ -328,6 +333,7 @@
         isFaviconEnable = GM_getValue("isFaviconEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
         isALineEnable = GM_getValue("isALineEnable", false);
+        isRedirectBaidusEnable = GM_getValue("isRedirectBaidusEnable", false);
     }
     function removeOnMouseDownFunc() {
         try {
@@ -370,6 +376,9 @@
                                             if(resultURL != null && resultURL != "" && (resultURL.indexOf("www.baidu.com/link") < 0 && resultURL.indexOf("m.baidu.com/from") < 0)){
                                                 if(resultURL.indexOf("baidu.com") > 0){
                                                     // 如果是百度自家的丢弃：百度有防止爬虫，直连会导致内容部分被替换，所以该链接获取了也丢弃
+                                                    if(isRedirectBaidusEnable){
+                                                        $("a[href*='"+c_curhref+"']").attr("href", resultURL);
+                                                    }
                                                     $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "-2");
                                                 }else{
                                                     // 如果不是百度的链接
