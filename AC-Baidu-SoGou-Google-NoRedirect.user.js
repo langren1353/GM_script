@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         13.3
+// @version         13.4
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -26,8 +26,9 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2017-12-04
+// @lastmodified    2017-12-20
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2017.12.20-V13.4 感谢ID：磁悬浮青蛙的反馈，已经修复小概率搜索之后点击结果白屏的问题-貌似之前处理过，但是没有彻底处理掉，这次彻底了，改用CSS隐藏
 // @note            2017.12.04-V13.3 新增设置，针对百度系列的重定向问题，不常用百度系列的朋友可以开启这个功能
 // @note            2017.11.23-V13.2 感谢卡饭坛友@Apollo8511提供反馈，已经修复部分知乎的重定向问题，更多问题可以直接反馈我
 // @note            2017.11.22-V13.1 移除百度系的重定向，虽然处理了，但是百度系直连会导致文字无法直接显示，其他直连不影响
@@ -183,7 +184,8 @@
     });
     AC_addStyle(
         ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
-        ".res_top_banner{display:none!important;}" // 移除可能的百度HTTPS劫持显示问题
+        ".res_top_banner{display:none!important;}" +  // 移除可能的百度HTTPS劫持显示问题
+        ".result-op:not([id]){display:none!important;}" // 移除可能出现的莫名找不到位置的全屏推荐
     );
     if(!isALineEnable){
         AC_addStyle("a{text-decoration:none}");// 移除这些个下划线
@@ -192,7 +194,7 @@
         var tout = setInterval(function(){
             if(document.body != null){
                 clearInterval(tout);
-                try{document.querySelector("."+className).remove();}catch (e){};
+                try{document.querySelector("."+className).remove();}catch (e){}
                 var cssNode = document.createElement("style");
                 if(className != null)
                     cssNode.className = className;
@@ -224,7 +226,7 @@
             if(SiteTypeID == SiteType.ZHIHU)
                 removeLinkTarget(); // 移除知乎的重定向问题
             try{$(".res_top_banner").remove();}catch (e){} // 移除百度可能显示的劫持
-            try{$("body>.result-op").remove();}catch (e){} // 移除可能出现的莫名找不到位置的全屏推荐
+            // try{$("body>.result-op").remove();}catch (e){} // 移除可能出现的莫名找不到位置的全屏推荐--更换为CSS隐藏规则，直接删除可能删不掉
             try{$(".c-container /deep/ .c-container").remove();}catch (e){} // 移除百度的恶心Shadow DOM（Shadown Root）
         }
         if (isFaviconEnable) {
