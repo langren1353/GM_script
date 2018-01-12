@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         13.4
+// @version         13.6
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -26,8 +26,10 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2017-12-20
+// @lastmodified    2017-12-27
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.01.12-V13.6 1.新增移除右边栏的按钮；2.新增版本显示文字；3.修正favicon位置；4.修复favicon的图片错误时候的值，万年BUG
+// @note            2017.12.27-V13.5 修复由于上个版本更新处理白屏，导致的默认标准模式的右侧栏不见了
 // @note            2017.12.20-V13.4 感谢ID：磁悬浮青蛙的反馈，已经修复小概率搜索之后点击结果白屏的问题-貌似之前处理过，但是没有彻底处理掉，这次彻底了，改用CSS隐藏
 // @note            2017.12.04-V13.3 新增设置，针对百度系列的重定向问题，不常用百度系列的朋友可以开启这个功能
 // @note            2017.11.23-V13.2 感谢卡饭坛友@Apollo8511提供反馈，已经修复部分知乎的重定向问题，更多问题可以直接反馈我
@@ -110,6 +112,7 @@
     var isAdsEnable = true;
     var AdsStyleMode = 1;// 0-不带css；1-单列靠左；2-单列居中；3-双列居中
     var isFaviconEnable = true;
+    var isRightDisplayEnable = true;
     var isCounterEnable = false;
     var isALineEnable = false;
     LoadSetting(); // 读取个人设置信息
@@ -126,7 +129,7 @@
         ZHIHU:6,
         OTHERS:7,
     };
-
+    var BaiduVersion = " V" + GM_info.script.version;
     var ACMO = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
     var option = {'childList': true, 'subtree': true};
     var observer = new ACMO(function (records) {
@@ -184,12 +187,8 @@
     });
     AC_addStyle(
         ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
-        ".res_top_banner{display:none!important;}" +  // 移除可能的百度HTTPS劫持显示问题
-        ".result-op:not([id]){display:none!important;}" // 移除可能出现的莫名找不到位置的全屏推荐
+        ".res_top_banner{display:none!important;}"  // 移除可能的百度HTTPS劫持显示问题
     );
-    if(!isALineEnable){
-        AC_addStyle("a{text-decoration:none}");// 移除这些个下划线
-    }
     function AC_addStyle(css, className){
         var tout = setInterval(function(){
             if(document.body != null){
@@ -246,6 +245,13 @@
         FSBaidu(); // 添加设置项-单双列显示
         AC_addStyle("#content_right td>div:not([id]){display:none;}", "");
     }
+    if(!isRightDisplayEnable){
+        // 移除右边栏
+        AC_addStyle("#content_right{display:none !important;}.result-op:not([id]){display:none!important;}");
+    }
+    if(!isALineEnable){
+        AC_addStyle("a{text-decoration:none}");// 移除这些个下划线
+    }
     function ACtoggleSettingDisplay() {
         // 显示？隐藏设置界面
         setTimeout(function () {
@@ -267,7 +273,7 @@
                 "    <div id='sp-ac-content' style='display: none;'>\n" +
                 "        <div id='sp-ac-main'>\n" +
                 "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
-                "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置</legend>\n" +
+                "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置"+BaiduVersion+"</legend>\n" +
                 "            <ul>\n" +
                 "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
                 "                    <label title='重定向-普通模式' style='margin-left:20px'><input  name='sp-ac-a_force_rediMod' value='0' type='radio' checked>重定向-普通模式</label>" +
@@ -282,10 +288,10 @@
                 "                    <BR/><label title='去广告-单列居中' style='margin-left:20px'><input  name='sp-ac-a_force_style' value='2'  type='radio' " + (AdsStyleMode==2 ? 'checked' : '') + ">去广告-单列居中</label>" +
                 "                    <label title='去广告-双列居中'><input  name='sp-ac-a_force_style' value='3'  type='radio' " + (AdsStyleMode==3 ? 'checked' : '') + ">去广告-双列居中</label>" +
                 "                </li>\n" +
-                "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (isFaviconEnable ? 'checked' : '') + ">附加2-Favicon功能</label>\n" +
-                "                </li>\n" +
-                "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (isCounterEnable ? 'checked' : '') + ">附加3-编号功能</label></li>\n" +
-                "                <li><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (isALineEnable ? 'checked' : '') + ">附加4-下划线</label></li>\n" +
+                "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (isFaviconEnable ? 'checked' : '') + ">附加2-Favicon功能</label></li>\n" +
+                "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' name='sp-ac-a_force' type='checkbox' " + (isRightDisplayEnable ? 'checked' : '') + ">附加3-显示右侧栏</label></li>\n" +
+                "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (isCounterEnable ? 'checked' : '') + ">附加4-编号功能</label></li>\n" +
+                "                <li><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (isALineEnable ? 'checked' : '') + ">附加5-下划线</label></li>\n" +
                 "                <li><a target='_blank' href='https://shang.qq.com/wpa/qunwpa?idkey=5bbfe9de1e81a0930bd053f3157aad2dbb3fa7b991ac9f22ea9f2e2f53efde80' style='color:red !important;'>联系作者,提建议,寻求帮助,脚本定制点我</a></li>" +
                 "            </ul>\n" +
                 "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton' title='取消' style='position: relative !important;float: left !important;'>取消</span>\n" +
@@ -313,6 +319,7 @@
                 GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
                 GM_setValue("AdsStyleMode", document.querySelector('input[name="sp-ac-a_force_style"]:checked').value);
                 GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
+                GM_setValue("isRightDisplayEnable", document.querySelector("#sp-ac-right").checked);
                 GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
                 GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
                 GM_setValue("isRedirectBaidusEnable", document.querySelector("#sp-ac-redirect_baidus").checked);
@@ -333,6 +340,7 @@
         isAdsEnable = GM_getValue("isAdsEnable", true);
         AdsStyleMode = GM_getValue("AdsStyleMode", 0);
         isFaviconEnable = GM_getValue("isFaviconEnable", true);
+        isRightDisplayEnable = GM_getValue("isRightDisplayEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
         isALineEnable = GM_getValue("isALineEnable", false);
         isRedirectBaidusEnable = GM_getValue("isRedirectBaidusEnable", false);
@@ -534,6 +542,7 @@
                     //http://"+faviconUrl+"/cdn.ico?defaulticon=http://soz.im/favicon.ico 不稳定
                     //https://www.xtwind.com/api/index.php?url=???? 挂了。。。
                     //https://statics.dnspod.cn/proxy_favicon/_/favicon?domain=sina.cn
+                    //www.google.com/s2/favicons?domain=764350177.lofter.com
                     //如果地址不正确，那么丢弃
                     var host = faviconUrl.replace(/[^.]+\.([^.]+)\.([^.]+)/, "$1.$2");
                     if (curNode.querySelector(".faviconT") == null && host.length > 3) {
@@ -542,13 +551,13 @@
                         citeList[index].setAttribute("ac_faviconStatus", "1");
                         curNode.insertBefore(insNode, curNode.firstChild);
                         insNode.className = "faviconT";
-                        insNode.style = "vertical-align:sub;height:16px;width:16px;margin-right:5px";
+                        insNode.style = "vertical-align:sub;height:16px;width:16px;margin-right:5px;margin-bottom: 2px;";
                         insNode.src = "https://favicon.yandex.net/favicon/" + host;
                         insNode.setAttribute("faviconID", "0");
-                        insNode.onload = function () {
-                            if (insNode.naturalWidth < 16) {
-                                //console.log("失败2："+faviconUrl+"暂时无解");
-                                insNode.src = "https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg";
+                        insNode.onload = function (eveNode) {
+                            if (eveNode.target.naturalWidth < 16) {
+                                eveNode.target.src = "https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg";
+                                eveNode.target.onload = null;
                             }
                         };
                     }
@@ -616,17 +625,20 @@
             loadOnePageStyle: function () {
                 this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css", "baiduOnePageStyle");
                 $("#result_logo img").attr("src", "http://ww1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                AC_addStyle(".result-op:not([id]){display:none!important;}");
             },
             //加载双页样式
             loadTwoPageStyle: function () {
                 this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css", "baiduTwoPageStyle");
                 $("#result_logo img").attr("src", "http://ww1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                AC_addStyle(".result-op:not([id]){display:none!important;}");
             },
             loadExpandOneStyle:function () {
                 AC_addStyle(
-                    "#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}\n" +
-                    "#content_left .result,#content_left .result-op{width:100%; min-width:670px;margin-bottom:14px!important;}\n" +
-                    ".c-span18{width:78%!important;min-width:550px;}\n" +
+                    ".result-op:not([id]){display:none!important;}" +
+                    "#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}" +
+                    "#content_left .result,#content_left .result-op{width:100%; min-width:670px;margin-bottom:14px!important;}" +
+                    ".c-span18{width:78%!important;min-width:550px;}" +
                     ".c-span24{width: auto!important;}", "loadExpandOneStyle");
             },
             init: function () {
