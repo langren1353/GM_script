@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         13.6
+// @version         13.7
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -28,6 +28,7 @@
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
 // @lastmodified    2017-12-27
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.02.16-V13.7 1.新增关闭百度搜索预测；2.新增未知图标时切换； 3.移除百度搜索建议的顶部一条
 // @note            2018.01.12-V13.6 1.新增移除右边栏的按钮；2.新增版本显示文字；3.修正favicon位置；4.修复favicon的图片错误时候的值，万年BUG
 // @note            2017.12.27-V13.5 修复由于上个版本更新处理白屏，导致的默认标准模式的右侧栏不见了
 // @note            2017.12.20-V13.4 感谢ID：磁悬浮青蛙的反馈，已经修复小概率搜索之后点击结果白屏的问题-貌似之前处理过，但是没有彻底处理掉，这次彻底了，改用CSS隐藏
@@ -112,7 +113,9 @@
     var isAdsEnable = true;
     var AdsStyleMode = 1;// 0-不带css；1-单列靠左；2-单列居中；3-双列居中
     var isFaviconEnable = true;
+    var defaultFaviconUrl = "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg";
     var isRightDisplayEnable = true;
+    var doDisableSug = true;
     var isCounterEnable = false;
     var isALineEnable = false;
     LoadSetting(); // 读取个人设置信息
@@ -180,14 +183,15 @@
         startSelect("body", "body", option);
     } else {
         SiteTypeID = SiteType.OTHERS;
-        AC_addStyle(".word-replace{display: none !important;}");
+        // AC_addStyle(".word-replace{display: none !important;}"); // 由于百度自身的防盗链检测有问题，所以关闭这个选项，避免出问题
     }
     GM_registerMenuCommand('AC-重定向脚本设置', function () {
         document.querySelector("#sp-ac-content").style.display = 'block';
     });
     AC_addStyle(
         ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
-        ".res_top_banner{display:none!important;}"  // 移除可能的百度HTTPS劫持显示问题
+        ".res_top_banner{display:none!important;}",  // 移除可能的百度HTTPS劫持显示问题
+        ".headBlock{display:none;}" // 移除百度的搜索结果顶部一条的建议文字
     );
     function AC_addStyle(css, className){
         var tout = setInterval(function(){
@@ -231,6 +235,11 @@
         if (isFaviconEnable) {
             addFavicon(document.querySelectorAll(Ftype)); // 添加Favicon显示
         }
+        if(doDisableSug){
+            acSetCookie("ORIGIN", 2);
+        }else{
+            acSetCookie("ORIGIN", "", -1);
+        }
         if (isCounterEnable) {
             addCounter(document.querySelectorAll(Ctype));
         }
@@ -251,6 +260,12 @@
     }
     if(!isALineEnable){
         AC_addStyle("a{text-decoration:none}");// 移除这些个下划线
+    }
+    function acSetCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + "; " + expires+";domain=.www.baidu.com";
     }
     function ACtoggleSettingDisplay() {
         // 显示？隐藏设置界面
@@ -289,6 +304,8 @@
                 "                    <label title='去广告-双列居中'><input  name='sp-ac-a_force_style' value='3'  type='radio' " + (AdsStyleMode==3 ? 'checked' : '') + ">去广告-双列居中</label>" +
                 "                </li>\n" +
                 "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (isFaviconEnable ? 'checked' : '') + ">附加2-Favicon功能</label></li>\n" +
+                "                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='"+defaultFaviconUrl+"' style='width:200px;margin-top:-0.3rem !important;' type='input' " + (isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
+                "                <li><label><input title='AC-移除搜索预测' id='sp-ac-sug_origin' name='sp-ac-a_force' type='checkbox' " + (doDisableSug ? 'checked' : '') + ">附加3-移除百度搜索预测(文字自动搜索)</label></li>\n" +
                 "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' name='sp-ac-a_force' type='checkbox' " + (isRightDisplayEnable ? 'checked' : '') + ">附加3-显示右侧栏</label></li>\n" +
                 "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (isCounterEnable ? 'checked' : '') + ">附加4-编号功能</label></li>\n" +
                 "                <li><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (isALineEnable ? 'checked' : '') + ">附加5-下划线</label></li>\n" +
@@ -319,6 +336,9 @@
                 GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
                 GM_setValue("AdsStyleMode", document.querySelector('input[name="sp-ac-a_force_style"]:checked').value);
                 GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
+                var imgurl = document.querySelector("#sp-ac-faviconUrl").value.trim();
+                GM_setValue("defaultFaviconUrl", (imgurl==""||imgurl==null) ? "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg":imgurl);
+                GM_setValue("doDisableSug", document.querySelector("#sp-ac-sug_origin").checked);
                 GM_setValue("isRightDisplayEnable", document.querySelector("#sp-ac-right").checked);
                 GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
                 GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
@@ -340,6 +360,8 @@
         isAdsEnable = GM_getValue("isAdsEnable", true);
         AdsStyleMode = GM_getValue("AdsStyleMode", 0);
         isFaviconEnable = GM_getValue("isFaviconEnable", true);
+        defaultFaviconUrl = GM_getValue("defaultFaviconUrl", "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg");
+        doDisableSug = GM_getValue("doDisableSug", true);
         isRightDisplayEnable = GM_getValue("isRightDisplayEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
         isALineEnable = GM_getValue("isALineEnable", false);
@@ -556,7 +578,7 @@
                         insNode.setAttribute("faviconID", "0");
                         insNode.onload = function (eveNode) {
                             if (eveNode.target.naturalWidth < 16) {
-                                eveNode.target.src = "https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg";
+                                eveNode.target.src = defaultFaviconUrl;
                                 eveNode.target.onload = null;
                             }
                         };
