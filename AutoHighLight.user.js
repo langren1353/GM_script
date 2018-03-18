@@ -2,13 +2,13 @@
 // @name            AC-双击选中高亮
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @namespace       ntaow.com
-// @version         1.2
+// @version         2.1
 // @include         *
 // @copyright       2017, AC
-// @description     双击选中高亮或者普通选中后按G高亮
-// @note            2017.11.21-V1.2 新增剪切板复制操作
-// @note            2017.09.06-V1.1 双击选中或者选中后按下G高亮
-// @require         https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js
+// @description     双击选中高亮 或者 普通选中后按G高亮
+// @note            2017.12.06-V2.1 修复一个小bug，导致abc_def高亮出问题，同时优化了以前的移除规则，避免了对原始html的影响-待测试
+// @note            2017.11.03-V1.2 修复双击触发的问题以及选中文字的问题
+// @note            2017.09.06-V1.1 第一版本
 // @grant           none
 // ==/UserScript==
 document.addEventListener('dblclick', DoHighLight, false);
@@ -17,6 +17,7 @@ document.addEventListener('keyup', DoHighLight, false);
 var isDBClickOn = true;
 var enableCharCode = 'G';
 var keySets = new Object();
+var counter = 0;
 function DoHighLight(e) {
     var target = e.target;
     var selectedText = getSelectedText(target);
@@ -28,7 +29,6 @@ function DoHighLight(e) {
         }else if (s_dblclick) {
             doHighLight(selectedText);
         }
-        var clipboard = new Clipboard('.acWHSet'); // 初始化剪切板信息
     }
 }
 function doHighLight(selectedText) {
@@ -55,6 +55,7 @@ function getSelectedText(target) {
     }
     var selectedText = window.getSelection().toString();
     if (!selectedText) selectedText = getTextSelection();
+    console.log(selectedText);
     return selectedText;
 }
 function getBLen(str) {
@@ -68,7 +69,13 @@ function getBLen(str) {
 // 初始化点击的文字信息
 function initKeySets(selection){
     // 1.split通过特殊字符和字符边界分割串，2.通过特定字符连接原始串，3.1移除多次重复的特定串，避免空串 3.2移除开头或者结尾的特定串，避免分割后出现空白数据，4.按特定串分割
-    keySets.keywords = selection.split(/\b|[\uFF00-\uFFFF\u3000-\u303F]/g).join('ACsCA').replace(/[^\u4E00-\u9FA5|0-9|a-z|A-Z]+/g, "").replace(/(ACsCA){2}/g, "ACsCA").replace(/(^ACsCA|ACsCA$)/g, "").split("ACsCA");
+    keySets.keywords = selection
+        .split(/\b|[\uFF00-\uFFFF\u3000-\u303F]/g)
+        .join('ACsCA')
+        .replace(/[^\u4E00-\u9FA5|0-9|a-z|A-Z_]+/g, "")
+        .replace(/(ACsCA){2}/g, "ACsCA")
+        .replace(/(^ACsCA|ACsCA$)/g, "")
+        .split("ACsCA");
     keySets.length = keySets.keywords.length;
     keySets.textcolor = new Array();
     keySets.backcolor = new Array();
@@ -122,15 +129,20 @@ function doHighLightAll_Text(){
         var node = snapElements.snapshotItem(i);
         if (pat.test(node.nodeValue)) {
             var sp = span.cloneNode(true);
-            sp.innerHTML = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(pat, "<thdfrag class='THmo acWHSet' data-clipboard-text='$1' txhidy15='acWHSet'>$1</thdfrag>");
+            sp.innerHTML = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(pat, '<thdfrag class="THmo acWHSet" txhidy15="acWHSet" onclick="window.acCopyText">$1</thdfrag>');
             node.parentNode.replaceChild(sp, node);
-            sp.addEventListener("click", function () {
-                console.log("已经复制");
-            }, false);
             // try to un-nest containers
             if (sp.parentNode.hasAttribute("thdcontain")) sp.outerHTML = sp.innerHTML;
         }
     }
+}
+window.acCopyText = function(e){
+    var clipboardData = window.clipboardData; //for IE
+    if (!clipboardData) { // for chrome
+        clipboardData = e.originalEvent.clipboardData;
+    }
+    console.log(e.clipboardData.getData('text'));
+    clipboardData.setData('Text', cpTxt);
 }
 function unHighLightAll_Text(){
     var tgts = document.querySelectorAll('thdfrag[txhidy15="acWHSet"]');
@@ -143,7 +155,7 @@ function unHighLightAll_Text(){
             tgts[i].outerHTML = tgts[i].textContent.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             tgtspan = parnode;
         }
-        tgtspan.normalize(); // 不影响显示，但是影响html内部文字排版
+        tgtspan.normalize(); // 不影响显示，但是影响html内部文字排版---》new 不影响html结果了
         if (tgtspan.hasAttribute("thdcontain")){
             parnode = tgtspan.parentNode;
             if (parnode){
@@ -155,4 +167,32 @@ function unHighLightAll_Text(){
             }
         }
     }
+    var oldTgs = document.querySelectorAll("thdfrag[thdcontain='true']");
+    counter = 0;
+    for(var i=0; i < oldTgs.length; i++){
+        var curTg = oldTgs[i];
+        markChildandRemove(curTg);
+    }
+    console.log("次数是："+counter);
+}
+function markChildandRemove(node){
+    try{
+        if(node.tagName.toLowerCase() == "thdfrag"){
+            console.log("this?"+node.innerHTML);
+            node.outerHTML = node.innerHTML;
+        }
+        var childList = node.childNodes;
+        for(var i=0; i < childList.length; i++){
+            counter++;
+            console.log(node.tagName+'--prein');
+            var node = childList[i];
+            console.log(node.tagName+'--in');
+            markChildandRemove(node);
+            console.log(node.tagName+'--out');
+            if(node.tagName.toLowerCase() == "thdfrag"){
+                console.log("this?"+node.innerHTML);
+                node.outerHTML = node.innerHTML;
+            }
+        }
+    }catch (e){}
 }
