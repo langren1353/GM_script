@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         13.7
+// @version         13.9
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -26,8 +26,10 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2017-12-27
+// @lastmodified    2018-03-18
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.03.18-V13.9 更新谷歌的favicon丢失的问题
+// @note            2018.03.04-V13.8 更新图库为https模式，避免那啥显示不安全
 // @note            2018.02.16-V13.7 1.新增关闭百度搜索预测；2.新增未知图标时切换； 3.移除百度搜索建议的顶部一条
 // @note            2018.01.12-V13.6 1.新增移除右边栏的按钮；2.新增版本显示文字；3.修正favicon位置；4.修复favicon的图片错误时候的值，万年BUG
 // @note            2017.12.27-V13.5 修复由于上个版本更新处理白屏，导致的默认标准模式的右侧栏不见了
@@ -120,7 +122,7 @@
     var isALineEnable = false;
     LoadSetting(); // 读取个人设置信息
     var Stype_Normal; // 去重定向的选择
-    var Ftype; // favicon的选择
+    var Ftype; // favicon的选择-取得实际地址-得到host
     var Ctype; // Counter的选择
     var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;谷歌=3;必应=4;知乎=5;其他=6]
     var SiteType={
@@ -170,7 +172,8 @@
         startSelect("body", "body", option);
     } else if (location.host.indexOf("google") > -1) {
         SiteTypeID = SiteType.GOOGLE;
-        Ftype = "._Rm";
+        // Ftype = "._Rm";
+        Ftype = ".iUh30";
         Ctype = ".srg>div[class~=g] *[class~=r],._yE>div[class~=_kk]";
         startSelect("body", "body", option);
     } else if (location.host.indexOf("bing") > -1) {
@@ -233,6 +236,7 @@
             try{$(".c-container /deep/ .c-container").remove();}catch (e){} // 移除百度的恶心Shadow DOM（Shadown Root）
         }
         if (isFaviconEnable) {
+            console.log("you are favicon:"+Ftype);
             addFavicon(document.querySelectorAll(Ftype)); // 添加Favicon显示
         }
         if(doDisableSug){
@@ -646,13 +650,13 @@
             //加载单页样式
             loadOnePageStyle: function () {
                 this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css", "baiduOnePageStyle");
-                $("#result_logo img").attr("src", "http://ww1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                $("#result_logo img").attr("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
                 AC_addStyle(".result-op:not([id]){display:none!important;}");
             },
             //加载双页样式
             loadTwoPageStyle: function () {
                 this.importStyle("https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css", "baiduTwoPageStyle");
-                $("#result_logo img").attr("src", "http://ww1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                $("#result_logo img").attr("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
                 AC_addStyle(".result-op:not([id]){display:none!important;}");
             },
             loadExpandOneStyle:function () {
