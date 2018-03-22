@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name 有道-惠惠购物助手(新)
 // @description 有道购物助手，购物比价，自动对比电商同款商品价格，轻松网购不吃亏，更有各种优惠信息对比
-// @update 2018-03-22
-// @version 1.0
+// @update 2018-03-23
+// @version 1.1
+// @note   2018.03.23 剔除掉无用的广告信息，滚动一段距离后移除顶部标签，保留比价功能
 // @note   2018.03.22 基于大神 Harv 的惠惠购物助手修改而来，把底部标签放到了顶部更好看，其余之后再改
 // @author AC Edit form: Harv
 // @grant  GM_getValue
@@ -612,11 +613,13 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
                 method: "GET", responseType: 'jsonp', url: "https://cent.ntaow.com/getGMDetails_json.jsp?&auctionId=" + goodID + "&title=" + cgoodTitle,
                 onload: function (res) {
                     res = res.responseText.replace("acBuyScript", "").replace("(", "").replace(/\)$/, "");
-                    res = JSON.parse(res);
-                    acBuyScript(res);
+                    res = JSON.parse(res); acBuyScript(res);
                 }
             });
         }
+        timerDoOnce(".hui-link", function(){
+            document.querySelector("#hui-plugin-close").nextElementSibling.remove();
+        }, 200);
         AutoStart(100, ".tb-detail-hd, .tb-main-title", function () {
             var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
             var goodTitle = TitleNode.firstChild.nodeValue.trim();
@@ -640,17 +643,23 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
                 anoInsNode.innerHTML = htmlTMALL;
                 document.querySelector('.tb-sku').append(anoInsNode);
             }
-            timerDoOnce("#hui-plugin-close", function(){document.querySelector("#hui-plugin-close").nextElementSibling.remove();}, 200);
         });
     }
-    var documentTimer = setInterval(function(){
-        if(document != null){
-            clearInterval(documentTimer);
-            var s = document.createElement('script');
+    timerDoOnce("body", function(){
+        var s = document.createElement('script');
             s.setAttribute('src','https://shared-https.ydstatic.com/gouwuex/ext/script/extension_3_1.js?vendor=youdao&browser=firefox');
             s.setAttribute('charset','utf-8');
             document.body.appendChild(s);
-        }
     }, 200);
-    addStyle(".site-nav{margin-top:50px;}div[style='z-index: 2147483647; position: fixed;']>div>table{top:0px;position: fixed;z-index: 23333333;background-color: white;}div[style='z-index: 2147483647; position: fixed;']>div{bottom:unset;}");
+    setInterval(function(){
+        var node = document.querySelector("div[style='z-index: 2147483647; position: fixed;']>div>table");
+        if(node != null){
+            if(window.scrollY >= 300){
+                node.style = "top:unset;";
+            }else{
+                node.style = "top:0px;";
+            } 
+        }
+    },200);
+    addStyle(".site-nav,#site-nav{margin-top:50px;}div[style='z-index: 2147483647; position: fixed;']>div>table{top:0px;position: fixed;z-index: 23333333;background-color: white;}div[style='z-index: 2147483647; position: fixed;']>div{bottom:unset;}");
 }
