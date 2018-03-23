@@ -2,13 +2,15 @@
 // @name            AC-双击选中高亮
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @namespace       ntaow.com
-// @version         2.1
+// @version         2.2
 // @include         *
 // @copyright       2017, AC
 // @description     双击选中高亮 或者 普通选中后按G高亮
+// @note            2018.03.18-V2.2 更新，新增了点击之后复制的效果
 // @note            2017.12.06-V2.1 修复一个小bug，导致abc_def高亮出问题，同时优化了以前的移除规则，避免了对原始html的影响-待测试
 // @note            2017.11.03-V1.2 修复双击触发的问题以及选中文字的问题
 // @note            2017.09.06-V1.1 第一版本
+// @require         https://cdn.staticfile.org/clipboard.js/1.6.1/clipboard.min.js
 // @grant           none
 // ==/UserScript==
 document.addEventListener('dblclick', DoHighLight, false);
@@ -129,20 +131,13 @@ function doHighLightAll_Text(){
         var node = snapElements.snapshotItem(i);
         if (pat.test(node.nodeValue)) {
             var sp = span.cloneNode(true);
-            sp.innerHTML = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(pat, '<thdfrag class="THmo acWHSet" txhidy15="acWHSet" onclick="window.acCopyText">$1</thdfrag>');
+            sp.innerHTML = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(pat, '<thdfrag class="THmo acWHSet" txhidy15="acWHSet" data-clipboard-text="$1">$1</thdfrag>');
             node.parentNode.replaceChild(sp, node);
             // try to un-nest containers
             if (sp.parentNode.hasAttribute("thdcontain")) sp.outerHTML = sp.innerHTML;
         }
     }
-}
-window.acCopyText = function(e){
-    var clipboardData = window.clipboardData; //for IE
-    if (!clipboardData) { // for chrome
-        clipboardData = e.originalEvent.clipboardData;
-    }
-    console.log(e.clipboardData.getData('text'));
-    clipboardData.setData('Text', cpTxt);
+    var clipboard = new Clipboard('.acWHSet');
 }
 function unHighLightAll_Text(){
     var tgts = document.querySelectorAll('thdfrag[txhidy15="acWHSet"]');
