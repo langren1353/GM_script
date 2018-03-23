@@ -15,4 +15,4 @@
 ![TamperMonkey](/images/TM_2.jpg)<BR/>
 去重定向结果如下：<BR/>
 ![GreaseMonkey](/images/GM_2.png)<BR/>
-支持我的可以看看我的网站：<https://www.ntaow.com><BR/>
+谢谢大家，支持我的可以看看我的网站：<https://www.ntaow.com><BR/>
