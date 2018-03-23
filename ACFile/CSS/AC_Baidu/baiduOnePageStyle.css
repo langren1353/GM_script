@@ -1,0 +1,33 @@
+#container{
+    width:auto;
+}
+#form{
+    position:relative;
+    left:calc(50% - 420px);
+    background-color: unset;
+}
+#result_logo{
+    position: relative;
+    left: calc(50% - 420px);
+    margin:10px 0 0;
+}
+#s_tab>b,#s_tab>a{
+    position:relative;
+    left:calc(50% - 445px);
+}
+#container .head_nums_cont_outer{
+    position:absolute;
+    left:calc(50% - 502px);
+}
+#content_left{
+    margin-top:35px;
+}
+#content_left,#rs,#page{
+    position:relative;
+    padding-left: 0;
+    margin-left: calc(50% - 420px);
+    width: 50%!important;
+}
+#rs .tt{
+    margin:0px -20px 1px 0px;
+}

@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         13.9
+// @version         14.0
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -26,8 +26,9 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2018-03-18
+// @lastmodified    2018-03-23
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.03.23-V14.0 1.尝试修复在百度贴吧和百度知道的文字显示异常的问题; 2.修复编号奇怪的异常问题
 // @note            2018.03.18-V13.9 更新谷歌的favicon丢失的问题
 // @note            2018.03.04-V13.8 更新图库为https模式，避免那啥显示不安全
 // @note            2018.02.16-V13.7 1.新增关闭百度搜索预测；2.新增未知图标时切换； 3.移除百度搜索建议的顶部一条
@@ -111,7 +112,6 @@
         "res-list"//so-360
     );// Favicon放在xx位置
     var isRedirectEnable = true;
-    var isRedirectBaidusEnable = true;
     var isAdsEnable = true;
     var AdsStyleMode = 1;// 0-不带css；1-单列靠左；2-单列居中；3-双列居中
     var isFaviconEnable = true;
@@ -142,6 +142,7 @@
             ShowSetting();
             ACHandle();
         } catch (e) {
+            console.log(e);
         }
     });
     try{
@@ -156,7 +157,7 @@
         SiteTypeID = SiteType.BAIDU;
         Stype_Normal = "h3.t>a, #results .c-container>.c-blocka"; //PC,mobile
         Ftype = ".result-op, .c-showurl";
-        Ctype = "#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]";
+        Ctype = "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]";
         startSelect("#wrapper,#page-bd", "#wrapper,#page-bd", option);
     } else if (location.host.indexOf("sogou") > -1) {
         SiteTypeID = SiteType.SOGOU;
@@ -236,7 +237,6 @@
             try{$(".c-container /deep/ .c-container").remove();}catch (e){} // 移除百度的恶心Shadow DOM（Shadown Root）
         }
         if (isFaviconEnable) {
-            console.log("you are favicon:"+Ftype);
             addFavicon(document.querySelectorAll(Ftype)); // 添加Favicon显示
         }
         if(doDisableSug){
@@ -274,10 +274,11 @@
     function ACtoggleSettingDisplay() {
         // 显示？隐藏设置界面
         setTimeout(function () {
-            if (document.querySelector("#sp-ac-content").style.display == 'block')
+            if (document.querySelector("#sp-ac-content").style.display == 'block'){
                 document.querySelector("#sp-ac-content").style.display = 'none';
-            else
+            }else{
                 document.querySelector("#sp-ac-content").style.display = 'block';
+            }
         }, 100);
         return false;
     }
@@ -295,9 +296,6 @@
                 "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置"+BaiduVersion+"</legend>\n" +
                 "            <ul>\n" +
                 "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
-                "                    <label title='重定向-普通模式' style='margin-left:20px'><input  name='sp-ac-a_force_rediMod' value='0' type='radio' checked>重定向-普通模式</label>" +
-                "                </li>\n" +
-                "                <li><label title='开启后，可能导致百度知道文字复制出问题' style='margin-left:20px'><input id='sp-ac-redirect_baidus' name='sp-ac-a_separator' type='checkbox' " + (isRedirectBaidusEnable ? 'checked' : '') + ">重定向-处理百度系列</label>\n" +
                 "                </li>\n" +
                 "                <li><label title='AC-去广告' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label>\n" +
                 "                </li>\n" +
@@ -346,7 +344,6 @@
                 GM_setValue("isRightDisplayEnable", document.querySelector("#sp-ac-right").checked);
                 GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
                 GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
-                GM_setValue("isRedirectBaidusEnable", document.querySelector("#sp-ac-redirect_baidus").checked);
                 setTimeout(function () {
                     window.location.reload();
                 }, 400);
@@ -358,7 +355,6 @@
             }, false);
         }catch (e){}
     }
-
     function LoadSetting() {
         isRedirectEnable = GM_getValue("isRedirectEnable", true);
         isAdsEnable = GM_getValue("isAdsEnable", true);
@@ -369,7 +365,6 @@
         isRightDisplayEnable = GM_getValue("isRightDisplayEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
         isALineEnable = GM_getValue("isALineEnable", false);
-        isRedirectBaidusEnable = GM_getValue("isRedirectBaidusEnable", false);
     }
     function removeOnMouseDownFunc() {
         try {
@@ -394,35 +389,35 @@
             // 采用闭包的方法来进行数据的传递
             var curNode = list[i];
             var curhref = curNode.href;
+            var trueUrlNoBaidu = "";
+            try{
+                var node = curNode.parentNode.parentNode;
+                if(node.className.indexOf("result") >= 0){
+                    trueUrlNoBaidu = node.querySelector(Ftype).innerHTML;
+                    trueUrlNoBaidu = replaceAll(trueUrlNoBaidu);
+                }
+            }catch (e){
+            }
+            if(IsinBaiduBlockLists(trueUrlNoBaidu)){
+                $("a[href*='"+curhref+"']").attr("ac_redirectStatus", "-2"); // 丢弃特殊的百度自身的地址【百度知道、百度贴吧】
+                continue;
+            }
             if (list[i] != null && list[i].getAttribute("ac_redirectStatus") == null) {
                 list[i].setAttribute("ac_redirectStatus", "0");
-                if (curhref.indexOf("www.baidu.com/link") > -1 || curhref.indexOf("m.baidu.com/from") > -1 || curhref.indexOf("www.sogou.com/link") > -1 || curhref.indexOf("so.com/link") > -1) {
+                if (curhref.indexOf("www.baidu.com/link") > -1 ||
+                    curhref.indexOf("m.baidu.com/from") > -1 ||
+                    curhref.indexOf("www.sogou.com/link") > -1 ||
+                    curhref.indexOf("so.com/link") > -1) {
                     (function (c_curnode,c_curhref) {
                         setTimeout(function () {
                             var gmRequestNode = GM_xmlhttpRequest({
                                 url: c_curhref,
-                                headers: {
-                                    "Accept": "text/html"
-                                },
+                                headers: {"Accept": "text/html"},
                                 method: "GET",
                                 onreadystatechange: function (response) {
                                     if (SiteTypeID == SiteType.BAIDU) {
                                         if(response.finalUrl != c_curhref && response.finalUrl!="" && response.finalUrl != null){
-                                            var resultURL = response.finalUrl;
-                                            if(resultURL != null && resultURL != "" && (resultURL.indexOf("www.baidu.com/link") < 0 && resultURL.indexOf("m.baidu.com/from") < 0)){
-                                                if(resultURL.indexOf("baidu.com") > 0){
-                                                    // 如果是百度自家的丢弃：百度有防止爬虫，直连会导致内容部分被替换，所以该链接获取了也丢弃
-                                                    if(isRedirectBaidusEnable){
-                                                        $("a[href*='"+c_curhref+"']").attr("href", resultURL);
-                                                    }
-                                                    $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "-2");
-                                                }else{
-                                                    // 如果不是百度的链接
-                                                    $("a[href*='"+c_curhref+"']").attr("href", resultURL);
-                                                    $("a[href*='"+c_curhref+"']").attr("ac_redirectStatus", "2");
-                                                }
-                                                gmRequestNode.abort();
-                                            }
+                                            DealRedirect(gmRequestNode, c_curhref, response.finalUrl);
                                         }else{
                                             DealRedirect(gmRequestNode, c_curhref, response.responseText, "location.replace\\(\"([^\"]+)\"");
                                         }
@@ -441,13 +436,14 @@
     }
     function DealRedirect(request, curNodeHref, respText, RegText){
         if(respText == null || typeof(respText)=="undefined") return;
-        var resultURL = "";
-        var resultResponseUrl = Reg_Get(respText, RegText);
-        if (resultResponseUrl != null){
-            resultURL = resultResponseUrl;
+        var resultResponseUrl = "";
+        if(RegText != null){
+            resultResponseUrl = Reg_Get(respText, RegText);
+        } else{
+            resultResponseUrl = respText;
         }
-        if(resultURL != null && resultURL != ""){
-            $("a[href*='"+curNodeHref+"']").attr("href", resultURL);
+        if(resultResponseUrl != null && resultResponseUrl != ""){
+            $("a[href*='"+curNodeHref+"']").attr("href", resultResponseUrl);
             $("a[href*='"+curNodeHref+"']").attr("ac_redirectStatus", "2");
             request.abort();
         }
@@ -460,7 +456,6 @@
             return "";
         }
     }
-
     function removeAD_baidu_sogou() { // 移除百度自有广告
         if (SiteTypeID == SiteType.BAIDU) {
             if (document.querySelectorAll("#content_left")[0] != null) {
@@ -515,7 +510,16 @@
             }
         }
     }
-
+    function IsNumber(val){
+        if(val === "" || val ==null){
+            return false;
+        }
+        if(!isNaN(val)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     function addCounter(citeList) {
         var cssText = "display:inline-block;background:#FD9999;color:#D7D7D7;font-family:'微软雅黑';font-size:16px;text-align:center;width:20px;line-height:20px;border-radius:50%;float:left;";
         var div = document.createElement('div');
@@ -525,12 +529,29 @@
             } else {
                 citeList[i].setAttribute('sortIndex', i);
                 citeList[i].inner = citeList[i].innerHTML;
-                div.innerHTML = "<div class='CounterT' style=" + cssText + ">" + (i + 1) + "</div>";
-                citeList[i].innerHTML = div.innerHTML + citeList[i].inner;
+                if(IsNumber(citeList[i].parentNode.id)){
+                    div.innerHTML = "<div class='CounterT' style=" + cssText + ">" + citeList[i].parentNode.id + "</div>";
+                    citeList[i].innerHTML = div.innerHTML + citeList[i].inner;
+                }
             }
         }
     }
-
+    function replaceAll(sbefore) {
+        var send;
+        var result = sbefore.split('-');
+        if (SiteTypeID == SiteType.SOGOU && location.href.indexOf("sogou") < 20) {
+            // --搜狗专用；如果第一个是中文的话，地址就是第二个
+            sbefore = result[1];
+        }
+        send = sbefore.replace(/(\/[^/]*|\s*)/, "").replace(/<[^>]*>/g, "").replace(/https?:\/\//g, "").replace(/<\/?strong>/g, "").replace(/<\/?b>/g, "").replace(/<?>?/g, "").replace(/( |\/).*/g, "");
+        return send;
+    }
+    function IsinBaiduBlockLists(url){
+        if(url == null) return false;
+        if(url.indexOf("zhidao.baidu.com") >= 0) return true;
+        if(url.indexOf("teiba.baidu.com") >= 0) return true;
+        return false;
+    }
     function addFavicon(citeList) {
         for (var index = 0; index < citeList.length; index++) {
             var url = replaceAll(citeList[index].innerHTML);
@@ -590,18 +611,6 @@
                 }
             }
         }
-
-        function replaceAll(sbefore) {
-            var send;
-            var result = sbefore.split('-');
-            if (SiteTypeID == SiteType.SOGOU && location.href.indexOf("sogou") < 20) {
-                // --搜狗专用；如果第一个是中文的话，地址就是第二个
-                sbefore = result[1];
-            }
-            send = sbefore.replace(/(\/[^/]*|\s*)/, "").replace(/<[^>]*>/g, "").replace(/https?:\/\//g, "").replace(/<\/?strong>/g, "").replace(/<\/?b>/g, "").replace(/<?>?/g, "").replace(/( |\/).*/g, "");
-            return send;
-        }
-
         function isInUrlList(url) {
             var leng = fatherName.length;
             for (var i = 0; i < leng; i++) {
