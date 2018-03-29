@@ -2,16 +2,16 @@
 // @name            AC-双击选中高亮
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @namespace       ntaow.com
-// @version         2.2
+// @version         2.3
 // @include         *
 // @copyright       2017, AC
 // @description     双击选中高亮 或者 普通选中后按G高亮
+// @note            2018.03.26-V2.3 更新，根据TamperMonkey的函数修复了复制操作的代码
 // @note            2018.03.18-V2.2 更新，新增了点击之后复制的效果
 // @note            2017.12.06-V2.1 修复一个小bug，导致abc_def高亮出问题，同时优化了以前的移除规则，避免了对原始html的影响-待测试
 // @note            2017.11.03-V1.2 修复双击触发的问题以及选中文字的问题
 // @note            2017.09.06-V1.1 第一版本
-// @require         https://cdn.staticfile.org/clipboard.js/1.6.1/clipboard.min.js
-// @grant           none
+// @grant           GM_setClipboard
 // ==/UserScript==
 document.addEventListener('dblclick', DoHighLight, false);
 document.addEventListener('mouseup', DoHighLight, false);
@@ -20,6 +20,7 @@ var isDBClickOn = true;
 var enableCharCode = 'G';
 var keySets = new Object();
 var counter = 0;
+var isInDebug = false;
 function DoHighLight(e) {
     var target = e.target;
     var selectedText = getSelectedText(target);
@@ -33,11 +34,17 @@ function DoHighLight(e) {
         }
     }
 }
+function myConsoleLog(text){
+    if(isInDebug){
+        console.log(text);
+    }
+}
 function doHighLight(selectedText) {
     unHighLightAll_Text();
-    console.log("双击:" + selectedText);
+    myConsoleLog("双击:" + selectedText);
+    GM_setClipboard(selectedText);
     initKeySets(selectedText);
-    console.log(keySets.keywords);
+    myConsoleLog(keySets.keywords);
     doHighLightAll_CSS();
     doHighLightAll_Text();
 }
@@ -57,7 +64,7 @@ function getSelectedText(target) {
     }
     var selectedText = window.getSelection().toString();
     if (!selectedText) selectedText = getTextSelection();
-    console.log(selectedText);
+    myConsoleLog(selectedText);
     return selectedText;
 }
 function getBLen(str) {
@@ -108,13 +115,13 @@ function doHighLightAll_CSS(){ // 顶部的那一堆数组
 }
 function doHighLightAll_Text(){
     if(keySets.keywords.length == 0) return;
-    var patExp = "(";
+    var patExp = "";
     for(var index=0; index<keySets.keywords.length-1; index++) {
         // if(keySets.keywords)
         patExp += keySets.keywords[index]+"|";
     }
-    patExp += keySets.keywords[index]+")";
-    var pat = new RegExp(patExp, "gi");
+    patExp += keySets.keywords[index];
+    var pat = new RegExp("("+patExp+")", "gi");
     var span = document.createElement('thdfrag');
     span.setAttribute("thdcontain","true");
     var snapElements = document.evaluate(
@@ -131,13 +138,12 @@ function doHighLightAll_Text(){
         var node = snapElements.snapshotItem(i);
         if (pat.test(node.nodeValue)) {
             var sp = span.cloneNode(true);
-            sp.innerHTML = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(pat, '<thdfrag class="THmo acWHSet" txhidy15="acWHSet" data-clipboard-text="$1">$1</thdfrag>');
+            sp.innerHTML = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(pat, '<thdfrag class="THmo acWHSet" txhidy15="acWHSet">$1</thdfrag>');
             node.parentNode.replaceChild(sp, node);
             // try to un-nest containers
             if (sp.parentNode.hasAttribute("thdcontain")) sp.outerHTML = sp.innerHTML;
         }
     }
-    var clipboard = new Clipboard('.acWHSet');
 }
 function unHighLightAll_Text(){
     var tgts = document.querySelectorAll('thdfrag[txhidy15="acWHSet"]');
@@ -168,24 +174,24 @@ function unHighLightAll_Text(){
         var curTg = oldTgs[i];
         markChildandRemove(curTg);
     }
-    console.log("次数是："+counter);
+    myConsoleLog("次数是："+counter);
 }
 function markChildandRemove(node){
     try{
         if(node.tagName.toLowerCase() == "thdfrag"){
-            console.log("this?"+node.innerHTML);
+            myConsoleLog("this?"+node.innerHTML);
             node.outerHTML = node.innerHTML;
         }
         var childList = node.childNodes;
         for(var i=0; i < childList.length; i++){
             counter++;
-            console.log(node.tagName+'--prein');
+            myConsoleLog(node.tagName+'--prein');
             var node = childList[i];
-            console.log(node.tagName+'--in');
+            myConsoleLog(node.tagName+'--in');
             markChildandRemove(node);
-            console.log(node.tagName+'--out');
+            myConsoleLog(node.tagName+'--out');
             if(node.tagName.toLowerCase() == "thdfrag"){
-                console.log("this?"+node.innerHTML);
+                myConsoleLog("this?"+node.innerHTML);
                 node.outerHTML = node.innerHTML;
             }
         }
