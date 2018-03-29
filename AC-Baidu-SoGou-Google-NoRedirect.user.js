@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name AC-baidu： 优化百度、搜狗、谷歌搜索结果之重定向去除+去广告+favicon
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
-// @grant		    GM_xmlhttpRequest
+// @grant         GM_xmlhttpRequest
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         14.2
+// @version         14.4
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -26,8 +26,10 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2018-03-26
+// @lastmodified    2018-03-28
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.03.28-V14.4 移除jquery的require，疑似jquery引起冲突问题，于是彻底弃用jquery来处理页面数据，改用原声JS处理页面
+// @note            2018.03.27-V14.3 刷一个版本号，同时优化CSS载入过多的问题，但是载入过慢的问题又出现了，下次处理
 // @note            2018.03.26-V14.2 修复由于上次更新过于流畅的bug，同时修正首页的样式显示
 // @note            2018.03.25-V14.1 再次抄点代码，借鉴老司机:浮生@未歇的部分优化代码完善已有的（@resource、GM_getResourceText、GM_addStyle），避免页面闪烁一下，同时解决部分css载入重复的问题
 // @note            2018.03.23-V14.0 1.尝试修复在百度贴吧和百度知道的文字显示异常的问题; 2.修复编号奇怪的异常问题
@@ -104,7 +106,6 @@
 // @grant           GM_addStyle
 // @grant           GM_getResourceText
 // @grant           GM_registerMenuCommand
-// @require         https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
 // ==/UserScript==
 
 // 初次：还是采用了setInterval来处理，感觉这样的话速度应该比Dom快，也比MO适用，因为MO需要在最后才能调用，实用性还不如timer
@@ -128,7 +129,7 @@
     var doDisableSug = true;
     var isCounterEnable = false;
     var isALineEnable = false;
-    var hasLoaded = false;
+    var valueLock = false; // 避免数据同时读取和写入时导致的死锁，然后致使页面死循环
     LoadSetting(); // 读取个人设置信息
     var Stype_Normal; // 去重定向的选择
     var Ftype; // favicon的选择-取得实际地址-得到host
@@ -146,22 +147,26 @@
     var BaiduVersion = " V" + GM_info.script.version;
     var ACMO = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
     var option = {'childList': true, 'subtree': true};
-    var observer = new ACMO(function (records) {
-        try {
-            ShowSetting();
-            ACHandle();
-        } catch (e) {
-            console.log(e);
-        }
-    });
+    var observer;
+    try{
+        observer = new ACMO(function (records) {
+            try {
+                ShowSetting();
+                ACHandle();
+            } catch (e) {
+                console.log(e);
+            }
+        });
+    }catch (e){console.log(e);}
     try{
         document.addEventListener('DOMContentLoaded', function (e) {
             setTimeout(function () {
-                // 如果没有SuperPreload的话那么就会自动调用这个
+                // 如果没有ACMO的话那么就会自动调用这个
                 ShowSetting();
+                ACHandle();
             }, 1000);
         }, false);
-    }catch (e){}
+    }catch (e){console.log(e);}
     if (location.host.indexOf("www.baidu.com") > -1) {
         SiteTypeID = SiteType.BAIDU;
         Stype_Normal = "h3.t>a, #results .c-container>.c-blocka"; //PC,mobile
@@ -226,6 +231,7 @@
                     observer.observe(document.querySelector(selector), option);
                 }catch (e){
                     observer.observe(document.body, option);
+                    console.log(e);
                 }
             }
         }, 200);
@@ -234,14 +240,13 @@
         InsertSettingMenu();
         if (isRedirectEnable) {
             if(Stype_Normal != null && Stype_Normal != "")
-                resetURLNormal($(Stype_Normal)); // 百度搜狗去重定向-普通模式【注意不能为document.query..】
+                resetURLNormal(document.querySelectorAll(Stype_Normal)); // 百度搜狗去重定向-普通模式【注意不能为document.query..】
             if(SiteTypeID == SiteType.GOOGLE)
                 removeOnMouseDownFunc(); // 移除onMouseDown事件，谷歌去重定向
             if(SiteTypeID == SiteType.ZHIHU)
                 removeLinkTarget(); // 移除知乎的重定向问题
-            try{$(".res_top_banner").remove();}catch (e){} // 移除百度可能显示的劫持
-            // try{$("body>.result-op").remove();}catch (e){} // 移除可能出现的莫名找不到位置的全屏推荐--更换为CSS隐藏规则，直接删除可能删不掉
-            try{$(".c-container /deep/ .c-container").remove();}catch (e){} // 移除百度的恶心Shadow DOM（Shadown Root）
+            try{document.querySelector(".res_top_banner").remove();}catch (e){} // 移除百度可能显示的劫持
+            try{document.querySelector(".c-container /deep/ .c-container").remove();}catch (e){} // 移除百度的恶心Shadow DOM（Shadown Root）
         }
         if (isFaviconEnable) {
             addFavicon(document.querySelectorAll(Ftype)); // 添加Favicon显示
@@ -258,7 +263,7 @@
             FSBaidu();
             removeAD_baidu_sogou(); // 移除百度广告
         }else{
-            $("input[name='sp-ac-a_force_style']").attr("disabled", "disabled");
+            document.querySelector("input[name='sp-ac-a_force_style']").setAttribute("disabled", "disabled");
         }
     }
     function acSetCookie(cname, cvalue, exdays) {
@@ -313,7 +318,7 @@
                 "        </fieldset>\n" +
                 "        </div>\n" +
                 "    </div>";
-            try{document.body.appendChild(Container);}catch (e){}
+            try{document.body.appendChild(Container);}catch (e){console.log(e);}
         }
         var allNodes = document.querySelectorAll(".faviconT, .CounterT");
         for (var i = 0; i < allNodes.length; i++) {
@@ -323,7 +328,7 @@
                     allNodes[i].addEventListener('click', function (e) {
                         return ACtoggleSettingDisplay();
                     }, true);
-                }catch (e){}
+                }catch (e){console.log(e);}
             }
         }
         try{
@@ -343,12 +348,12 @@
                     window.location.reload();
                 }, 400);
             }, false);
-        }catch (e){}
+        }catch (e){console.log(e);}
         try{
             document.querySelector("#sp-ac-cancelbutton").addEventListener('click', function (e) {
                 document.querySelector("#sp-ac-content").style.display = 'none';
             }, false);
-        }catch (e){}
+        }catch (e){console.log(e);}
     }
     function LoadSetting() {
         isRedirectEnable = GM_getValue("isRedirectEnable", true);
@@ -368,6 +373,7 @@
                 one.setAttribute("target", "_blank"); // 谷歌链接新标签打开
             });
         } catch (e) {
+            console.log(e);
         }
     }
     function removeLinkTarget() {
@@ -394,7 +400,7 @@
             }catch (e){
             }
             if(IsinBaiduBlockLists(trueUrlNoBaidu)){
-                $("a[href*='"+curhref+"']").attr("ac_redirectStatus", "-2"); // 丢弃特殊的百度自身的地址【百度知道、百度贴吧】
+                document.querySelector("a[href*='"+curhref+"']").setAttribute("ac_redirectStatus", "-2"); // 丢弃特殊的百度自身的地址【百度知道、百度贴吧】
                 continue;
             }
             if (list[i] != null && list[i].getAttribute("ac_redirectStatus") == null) {
@@ -438,8 +444,8 @@
             resultResponseUrl = respText;
         }
         if(resultResponseUrl != null && resultResponseUrl != ""){
-            $("a[href*='"+curNodeHref+"']").attr("href", resultResponseUrl);
-            $("a[href*='"+curNodeHref+"']").attr("ac_redirectStatus", "2");
+            document.querySelector("a[href*='"+curNodeHref+"']").setAttribute("ac_redirectStatus", "2");
+            document.querySelector("a[href*='"+curNodeHref+"']").setAttribute("href", resultResponseUrl);
             request.abort();
         }
     }
@@ -617,13 +623,14 @@
         }
     }
     function InsertSettingMenu(){
-        if ($("#myuser").length < 1) {
-            var $parent = $("#u");
-            $parent.style="width: 319px;";
-            var $div = $("<a style='text-decoration: none;'><ol id='myuser' style='display: inline-block;'>" +
-                "<li class='myuserconfig' style='display: inline-block;height: 18px;line-height: 1.5;background: #2866bd;color: #fff;font-weight: bold;text-align: center;padding: 6px;border-radius: 5px;'>自定义</li></ol></a>");
-            $div.prependTo($parent);
+        if (document.querySelector("#myuser") == null) {
             try{
+                var parent = document.querySelector("#u");
+                parent.style="width: 319px;";
+                var userAdiv = document.createElement("a");
+                userAdiv.style = "text-decoration: none;";
+                userAdiv.innerHTML = "<ol id='myuser' style='display: inline-block;'><li class='myuserconfig' style='display: inline-block;height: 18px;line-height: 1.5;background: #2866bd;color: #fff;font-weight: bold;text-align: center;padding: 6px;border-radius: 5px;'>自定义</li></ol>";
+                parent.insertBefore(userAdiv, parent.childNodes[0]);
                 document.querySelector("#myuser .myuserconfig").addEventListener('click', function (e) {
                     return ACtoggleSettingDisplay();
                 }, true);
@@ -643,12 +650,12 @@
             //加载单页样式
             loadOnePageStyle: function () {
                 GM_addStyle(GM_getResourceText("baiduOnePageStyle")+".result-op:not([id]){display:none!important;}");
-                $("#result_logo img").attr("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
             },
             //加载双页样式
             loadTwoPageStyle: function () {
                 GM_addStyle(GM_getResourceText("baiduTwoPageStyle")+".result-op:not([id]){display:none!important;}");
-                $("#result_logo img").attr("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
             },
             loadExpandOneStyle:function () {
                 GM_addStyle(
@@ -657,52 +664,62 @@
                     "#content_left .result,#content_left .result-op{width:100%; min-width:670px;margin-bottom:14px!important;}" +
                     ".c-span18{width:78%!important;min-width:550px;}" +
                     ".c-span24{width: auto!important;}");
-            },
-            init: function () {
-                this.loadMyMenuStyle();
-            },
-            importOnceCSS: function () {
-                this.init();
             }
         };
         var ControlManager = {
             twoPageDisplay: function () {
-                var $div = $("<div id='double'></div>");
-                var $double = null;
-                var $parent = null;
-                var $selector = null;
-                //文档加载完成再运行
-                $(document).ready(function () {
-                    if ($("#content_left>#double").length < 1) {
-                        $parent = $("#content_left");
-                        $selector = $("#content_left>.c-container:odd");
-                        $div.prependTo($parent);
-                        $selector.prependTo($("#double"));
-                    }
-                    //兼容自动翻页脚本
-                    if ($("#content_left>.sp-separator").length > 0) {
-                        $parent = $("#content_left>.sp-separator[isHandled!='1']");
-                        $selector = $("#content_left>.sp-separator[isHandled!='1']~.c-container:odd");
-                        // $div.after($parent);
-                        // $parent.remove();
-                        $parent.attr("isHandled", "1");
-                        $selector.appendTo($("#double"));
-                    }
-                });
+                // 定时查询
+                try{
+                    setInterval(function(){
+                        if(document.querySelector("#content_left") != null){
+                            // clearInterval(doubleCheckTimer);
+                            var div = document.createElement("div");
+                            div.id ="double";
+                            var parent = null;
+                            var selector = null;
+                            if (document.querySelector("#content_left>#double") == null) {
+                                parent = document.querySelector("#content_left");
+                                selector = document.querySelectorAll("#content_left>.c-container:nth-child(even)");
+                                parent.insertBefore(div, parent.childNodes[0]);
+                                var DBP = document.querySelector("#double");
+                                var DBP_c0 = DBP.childNodes[0];
+                                for(var i=0; i < selector.length; i++){
+                                    DBP.insertBefore(selector[i], DBP_c0);
+                                }
+                            }
+                            //兼容自动翻页脚本
+                            if (document.querySelector("#content_left>.sp-separator") != null) {
+                                parent = document.querySelector("#content_left>.sp-separator:not([isHandled])");
+                                selector = document.querySelectorAll("#content_left>.sp-separator:not([isHandled])~.c-container:nth-child(odd)");
+                                try{parent.setAttribute("isHandled", "1");}catch (e){}
+                                var DBP = document.querySelector("#double");
+                                for(var i=0; i < selector.length; i++){
+                                    DBP.appendChild(selector[i]);
+                                }
+                            }
+                        }
+                    }, 50);
+                }catch (e){
+                    console.log(e);
+                }
             },
             //居中显示
             centerDisplay: function () {
-                var $result = AdsStyleMode || null;
-                if(hasLoaded == false){
-                    if($("#content_left").length <= 0) return;
-                    if($result == 1){
+                var result = AdsStyleMode || null;
+                if(document.querySelector(".acCssLoadFlag") == null && valueLock == false){
+                    if(document.querySelector("#content_left") == null) return;
+                    valueLock = true;
+                    var insLockNode = document.createElement("style");
+                    document.querySelector("#content_left").appendChild(insLockNode);
+                    StyleManger.loadMyMenuStyle();
+                    if(result == 1){
                         StyleManger.loadExpandOneStyle();
                         StyleManger.loadCommonStyle();
-                    } else if ($result == 2) {//单页居中
+                    } else if (result == 2) {//单页居中
                         StyleManger.loadExpandOneStyle();
                         StyleManger.loadCommonStyle();
                         StyleManger.loadOnePageStyle();
-                    } else if ($result == 3) { //双页居中
+                    } else if (result == 3) { //双页居中
                         StyleManger.loadCommonStyle();
                         StyleManger.loadTwoPageStyle();
                         this.twoPageDisplay();
@@ -714,37 +731,29 @@
             }
         };
         function mutationfunc() {
-            if($("#lg:visible").length > 0){ // 大图模式--->百度首页
-                $("#wrapper .s_form #form").attr("style", "left:unset !important;");
-            }else{
-                $("#wrapper .s_form #form").attr("style", "");
-            }
+            // if(document.querySelector("#lg:visible") != null){ // 大图模式--->百度首页
+            //     document.querySelector("#wrapper .s_form #form").setAttribute("style", "left:unset !important;");
+            // }else{
+            //     document.querySelector("#wrapper .s_form #form").setAttribute("style", "");
+            // }
             if(SiteTypeID == SiteType.BAIDU){
-                StyleManger.init();
                 ControlManager.init();
             }
-            if($("#double").length > 0){
+            if(document.querySelector("#double") != null){
                 setTimeout(function(){ // 动态设置底部推荐关键字的marginTop属性
-                    document.querySelector("#container #rs div").parentNode.style.marginTop = Math.max($("#double").height(), $("#content_left").height())-$("#content_left").height()+"px";
+                    document.querySelector("#container #rs div").parentNode.style.marginTop = Math.max(document.querySelector("#double").offsetHeight, document.querySelector("#content_left").offsetHeight)-document.querySelector("#content_left").offsetHeight+"px";
                 }, 400);
             }
         }
         if(SiteTypeID == SiteType.BAIDU){
-            StyleManger.init();
             ControlManager.init();
             try{
                 mutationfunc();
-            }catch (e){}
+            }catch (e){console.log(e);}
             try {
                 var observer = new ACMO(mutationfunc);
                 var wrapper = document.querySelector("#wrapper");
-                observer.observe(wrapper, {
-                    "attributes": false,
-                    "characterData": false,
-                    "subtree": true,
-                    "attributesFilter": ["class"],
-                });
-                mutationfunc();
+                observer.observe(wrapper, option);
             } catch (e) {
             }
         }else{
