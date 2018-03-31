@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         14.5
+// @version         14.8
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -28,6 +28,9 @@
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
 // @lastmodified    2018-04-01
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.04.01-V14.8 --日狗问题，忘了改代码，只是更新了说明。。
+// @note            2018.04.01-V14.7 经过老司机(没ID)提供的反馈，发现上一版更新的依旧有bug，修复调小触发参数导致的触发没有生效的问题--偶尔双列失效的问题
+// @note            2018.04.01-V14.6 经过老司机(没ID)提供的反馈，排查发现chrome上脚本首次载入失效的问题，已经修复
 // @note            2018.04.01-V14.5 更新并添加谷歌双列、待测试，如果有问题，可以直接反馈
 // @note            2018.03.28-V14.4 移除jquery的require，疑似jquery引起冲突问题，于是彻底弃用jquery来处理页面数据，改用原声JS处理页面
 // @note            2018.03.27-V14.3 刷一个版本号，同时优化CSS载入过多的问题，但是载入过慢的问题又出现了，下次处理
@@ -266,15 +269,15 @@
         }else{
             acSetCookie("ORIGIN", "", -1);
         }
-        if (isCounterEnable) {
-            addCounter(document.querySelectorAll(Ctype));
-        }
         if (isAdsEnable) {
             FSBaidu();
             removeAD_baidu_sogou(); // 移除百度广告
         }else{
             document.querySelector("input[name='sp-ac-a_force_style_baidu']").setAttribute("disabled", "disabled");
             document.querySelector("input[name='sp-ac-a_force_style_google']").setAttribute("disabled", "disabled");
+        }
+        if (isCounterEnable) {
+            addCounter(document.querySelectorAll(Ctype));
         }
     }
     function acSetCookie(cname, cvalue, exdays) {
@@ -464,8 +467,10 @@
             resultResponseUrl = respText;
         }
         if(resultResponseUrl != null && resultResponseUrl != ""){
-            document.querySelector("a[href*='"+curNodeHref+"']").setAttribute("ac_redirectStatus", "2");
-            document.querySelector("a[href*='"+curNodeHref+"']").setAttribute("href", resultResponseUrl);
+            try{
+                document.querySelector("a[href*='"+curNodeHref+"']").setAttribute("ac_redirectStatus", "2");
+                document.querySelector("a[href*='"+curNodeHref+"']").setAttribute("href", resultResponseUrl);
+            }catch (e){}
             request.abort();
         }
     }
@@ -542,7 +547,7 @@
         }
     }
     function addCounter(citeList) {
-        var cssText = "display:inline-block;background:#FD9999;color:#D7D7D7;font-family:'微软雅黑';font-size:16px;text-align:center;width:20px;line-height:20px;border-radius:50%;float:left;";
+        var cssText = "margin-right:4px;display:inline-block;background:#FD9999;color:#D7D7D7;font-family:'微软雅黑';font-size:16px;text-align:center;width:20px;line-height:20px;border-radius:50%;float:left;";
         var div = document.createElement('div');
         for (var i = 0; i < citeList.length; i++) {
             if (citeList[i].getAttribute('sortIndex')) {
@@ -736,11 +741,10 @@
         };
         var ControlManager = {
             twoPageDisplay: function () {
-                console.log("two display");
                 // 定时查询
                 try{
                     setInterval(function(){
-                        if(document.querySelector("#content_left,.srg") != null){
+                        if(document.querySelector("#content_left>.c-container:nth-child(even),.srg>.g:nth-child(even)") != null){
                             // clearInterval(doubleCheckTimer);
                             var div = document.createElement("div");
                             div.id ="double";
@@ -793,6 +797,9 @@
                         StyleManger.loadTwoPageStyle();
                         StyleManger.loadCommonStyle();
                     }
+                    setTimeout(function() {
+                        valueLock = false;
+                    }, 30);
                 }
             },
             init: function () {
@@ -830,7 +837,7 @@
         try {
             var observer = new ACMO(mutationfunc);
             var wrapper = document.querySelector("#wrapper");
-            observer.observe(wrapper, option);
+            observer.observe(wrapper, {"attributes": false,"childList":true,"characterData": false,"subtree": true,"attributesFilter": ["class"]});
         } catch (e) {
         }
     }
