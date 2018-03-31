@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name AC-baidu： 优化百度、搜狗、谷歌搜索结果之重定向去除+去广告+favicon
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
-// @grant         GM_xmlhttpRequest
+// @grant           GM_xmlhttpRequest
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         14.4
+// @version         14.5
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -26,8 +26,9 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2018-03-28
+// @lastmodified    2018-04-01
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.04.01-V14.5 更新并添加谷歌双列、待测试，如果有问题，可以直接反馈
 // @note            2018.03.28-V14.4 移除jquery的require，疑似jquery引起冲突问题，于是彻底弃用jquery来处理页面数据，改用原声JS处理页面
 // @note            2018.03.27-V14.3 刷一个版本号，同时优化CSS载入过多的问题，但是载入过慢的问题又出现了，下次处理
 // @note            2018.03.26-V14.2 修复由于上次更新过于流畅的bug，同时修正首页的样式显示
@@ -97,10 +98,14 @@
 // @note            2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note            2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note            2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource        baiduCommonStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduCommonStyle.css
-// @resource        baiduMyMenuStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css
-// @resource        baiduOnePageStyle   https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css
-// @resource        baiduTwoPageStyle   https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css
+// @resource        baiduCommonStyle     https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduCommonStyle.css
+// @resource        baiduMyMenuStyle     https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css
+// @resource        baiduOnePageStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css
+// @resource        baiduTwoPageStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css
+// @resource        googleCommonStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleCommonStyle.css
+// @resource        googleMyMenuStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleMyMenuStyle.css
+// @resource        googleOnePageStyle   https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleOnePageStyle.css
+// @resource        googleTwoPageStyle   https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleTwoPageStyle.css
 // @grant           GM_getValue
 // @grant           GM_setValue
 // @grant           GM_addStyle
@@ -120,16 +125,19 @@
         "rb",//sogou2
         "res-list"//so-360
     );// Favicon放在xx位置
-    var isRedirectEnable = true;
-    var isAdsEnable = true;
-    var AdsStyleMode = 1;// 0-不带css；1-单列靠左；2-单列居中；3-双列居中
-    var isFaviconEnable = true;
+    var isRedirectEnable = true; // 是否开启重定向功能
+    var isAdsEnable = true; // 是否开启去广告模式
+    var AdsStyleMode_Baidu = 1;// 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+    var AdsStyleMode_Google = 1;// 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+    var AdsStyleMode = AdsStyleMode_Baidu;// 值 = baidu or = google
+    var isFaviconEnable = true; // 是否开启favicon图标功能
     var defaultFaviconUrl = "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg";
     var isRightDisplayEnable = true;
     var doDisableSug = true;
-    var isCounterEnable = false;
+    var isCounterEnable = false; // 是否显示计数器
     var isALineEnable = false;
     var valueLock = false; // 避免数据同时读取和写入时导致的死锁，然后致使页面死循环
+    var sortIndex = 1; // 设置编号值
     LoadSetting(); // 读取个人设置信息
     var Stype_Normal; // 去重定向的选择
     var Ftype; // favicon的选择-取得实际地址-得到host
@@ -203,6 +211,8 @@
         SiteTypeID = SiteType.OTHERS;
     }
     if (isAdsEnable){
+        if(SiteTypeID == SiteType.BAIDU) AdsStyleMode = AdsStyleMode_Baidu;
+        if(SiteTypeID == SiteType.GOOGLE) AdsStyleMode = AdsStyleMode_Google;
         FSBaidu(); // 添加设置项-单双列显示
         GM_addStyle("#content_right td>div:not([id]){display:none;}");
     }
@@ -263,7 +273,8 @@
             FSBaidu();
             removeAD_baidu_sogou(); // 移除百度广告
         }else{
-            document.querySelector("input[name='sp-ac-a_force_style']").setAttribute("disabled", "disabled");
+            document.querySelector("input[name='sp-ac-a_force_style_baidu']").setAttribute("disabled", "disabled");
+            document.querySelector("input[name='sp-ac-a_force_style_google']").setAttribute("disabled", "disabled");
         }
     }
     function acSetCookie(cname, cvalue, exdays) {
@@ -293,17 +304,24 @@
                 "    <div id='sp-ac-content' style='display: none;'>\n" +
                 "        <div id='sp-ac-main'>\n" +
                 "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
-                "            <legend title='自动翻页模式的相关设置' style='color: red !important;'>AC-重定向设置"+BaiduVersion+"</legend>\n" +
+                "            <legend title='自动翻页模式的相关设置'><a href='https://bbs.kafan.cn/forum.php?mod=viewthread&tid=1865907' target='_blank' style='color: red !important;'>AC-重定向设置"+BaiduVersion+"</a></legend>\n" +
                 "            <ul>\n" +
                 "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
                 "                </li>\n" +
                 "                <li><label title='AC-去广告' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label>\n" +
                 "                </li>\n" +
                 "                <li>" +
-                "                    <label title='去广告-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style' value='0' type='radio' " + (AdsStyleMode==0 ? 'checked' : '') + ">去广告-原始模式</label>" +
-                "                    <label><input title='去广告-单列普通' name='sp-ac-a_force_style' value='1'  type='radio' " + (AdsStyleMode==1 ? 'checked' : '') + ">去广告-单列普通</label>" +
-                "                    <BR/><label title='去广告-单列居中' style='margin-left:20px'><input  name='sp-ac-a_force_style' value='2'  type='radio' " + (AdsStyleMode==2 ? 'checked' : '') + ">去广告-单列居中</label>" +
-                "                    <label title='去广告-双列居中'><input  name='sp-ac-a_force_style' value='3'  type='radio' " + (AdsStyleMode==3 ? 'checked' : '') + ">去广告-双列居中</label>" +
+                "                    <label title='百度-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_baidu' value='0' type='radio' " + (AdsStyleMode_Baidu==0 ? 'checked' : '') + ">百度-原始模式</label>" +
+                "                    <label><input title='百度-单列普通' name='sp-ac-a_force_style_baidu' value='1'  type='radio' " + (AdsStyleMode_Baidu==1 ? 'checked' : '') + ">百度-单列普通</label>" +
+                "                    <BR/><label title='百度-单列居中' style='margin-left:20px'><input  name='sp-ac-a_force_style_baidu' value='2'  type='radio' " + (AdsStyleMode_Baidu==2 ? 'checked' : '') + ">百度-单列居中</label>" +
+                "                    <label title='百度-双列居中'><input  name='sp-ac-a_force_style_baidu' value='3'  type='radio' " + (AdsStyleMode_Baidu==3 ? 'checked' : '') + ">百度-双列居中</label>" +
+
+                "                    <BR/><div style='height: 1px;width:207px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>"+
+
+                "                    <label title='谷歌-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_google' value='0' type='radio' " + (AdsStyleMode_Google==0 ? 'checked' : '') + ">谷歌-原始模式</label>" +
+                "                    <label><input title='谷歌-单列普通' name='sp-ac-a_force_style_google' value='1'  type='radio' " + (AdsStyleMode_Google==1 ? 'checked' : '') + ">谷歌-单列普通</label>" +
+                "                    <BR/><label title='谷歌-单列居中' style='margin-left:20px'><input  name='sp-ac-a_force_style_google' value='2'  type='radio' " + (AdsStyleMode_Google==2 ? 'checked' : '') + ">谷歌-单列居中</label>" +
+                "                    <label title='谷歌-双列居中'><input  name='sp-ac-a_force_style_google' value='3'  type='radio' " + (AdsStyleMode_Google==3 ? 'checked' : '') + ">谷歌-双列居中</label>" +
                 "                </li>\n" +
                 "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (isFaviconEnable ? 'checked' : '') + ">附加2-Favicon功能</label></li>\n" +
                 "                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='"+defaultFaviconUrl+"' style='width:200px;margin-top:-0.3rem !important;' type='input' " + (isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
@@ -336,7 +354,8 @@
                 // 保存功能
                 GM_setValue("isRedirectEnable", document.querySelector("#sp-ac-redirect").checked);
                 GM_setValue("isAdsEnable", document.querySelector("#sp-ac-ads").checked);
-                GM_setValue("AdsStyleMode", document.querySelector('input[name="sp-ac-a_force_style"]:checked').value);
+                GM_setValue("AdsStyleMode_Baidu", document.querySelector('input[name="sp-ac-a_force_style_baidu"]:checked').value);
+                GM_setValue("AdsStyleMode_Google", document.querySelector('input[name="sp-ac-a_force_style_google"]:checked').value);
                 GM_setValue("isFaviconEnable", document.querySelector("#sp-ac-favicon").checked);
                 var imgurl = document.querySelector("#sp-ac-faviconUrl").value.trim();
                 GM_setValue("defaultFaviconUrl", (imgurl==""||imgurl==null) ? "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg":imgurl);
@@ -358,7 +377,8 @@
     function LoadSetting() {
         isRedirectEnable = GM_getValue("isRedirectEnable", true);
         isAdsEnable = GM_getValue("isAdsEnable", true);
-        AdsStyleMode = GM_getValue("AdsStyleMode", 0);
+        AdsStyleMode_Baidu = GM_getValue("AdsStyleMode_Baidu", 1);
+        AdsStyleMode_Google = GM_getValue("AdsStyleMode_Google", 1);
         isFaviconEnable = GM_getValue("isFaviconEnable", true);
         defaultFaviconUrl = GM_getValue("defaultFaviconUrl", "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg");
         doDisableSug = GM_getValue("doDisableSug", true);
@@ -528,12 +548,16 @@
             if (citeList[i].getAttribute('sortIndex')) {
                 continue;
             } else {
-                citeList[i].setAttribute('sortIndex', i);
+                citeList[i].setAttribute('sortIndex', sortIndex);
                 citeList[i].inner = citeList[i].innerHTML;
                 if(IsNumber(citeList[i].parentNode.id)){
                     div.innerHTML = "<div class='CounterT' style=" + cssText + ">" + citeList[i].parentNode.id + "</div>";
                     citeList[i].innerHTML = div.innerHTML + citeList[i].inner;
+                }else{
+                    div.innerHTML = "<div class='CounterT' style=" + cssText + ">" + sortIndex + "</div>";
+                    citeList[i].innerHTML = div.innerHTML + citeList[i].inner;
                 }
+                sortIndex++;
             }
         }
     }
@@ -625,7 +649,7 @@
     function InsertSettingMenu(){
         if (document.querySelector("#myuser") == null) {
             try{
-                var parent = document.querySelector("#u");
+                var parent = document.querySelector("#u, .gb_Ec");
                 parent.style="width: 319px;";
                 var userAdiv = document.createElement("a");
                 userAdiv.style = "text-decoration: none;";
@@ -638,24 +662,68 @@
         }
     }
     function FSBaidu() { // thanks for code from 浮生@未歇 @page https://greasyfork.org/zh-TW/scripts/31642
+        var keySite = "baidu";
+        if(SiteTypeID == SiteType.GOOGLE) keySite = "google";
         var StyleManger = {
+            importStyle: function (fileUrl, toClassName) {
+                if(document.querySelector("."+toClassName) != null) return;
+                if(document.querySelector("#content_left,.srg") == null) return;
+                var ssNode = document.createElement("link");
+                ssNode.rel = "stylesheet";
+                ssNode.type = "text/css";
+                ssNode.className = toClassName;
+                ssNode.media = "screen";
+                ssNode.href = fileUrl;
+                try{document.body.appendChild(ssNode);}catch (e){}
+            },
+            //
+            // //加载普通样式
+            // loadCommonStyle: function () {
+            //     this.importStyle("http://127.0.0.1/"+keySite+"/baiduCommonStyle.css", "baiduCommonStyle");
+            // },
+            // //加载自定义菜单样式
+            // loadMyMenuStyle: function () {
+            //     this.importStyle("http://127.0.0.1/"+keySite+"/baiduMyMenuStyle.css", "baiduMyMenuStyle");
+            // },
+            // //加载单页样式
+            // loadOnePageStyle: function () {
+            //     this.importStyle("http://127.0.0.1/"+keySite+"/baiduOnePageStyle.css", "baiduOnePageStyle");
+            //     GM_addStyle(".result-op:not([id]){display:none!important;}");
+            //     try{
+            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+            //     }catch (e){}
+            // },
+            // //加载双页样式
+            // loadTwoPageStyle: function () {
+            //     console.log("load two style:"+"http://127.0.0.1/"+keySite+"/baiduTwoPageStyle.css");
+            //     this.importStyle("http://127.0.0.1/"+keySite+"/baiduTwoPageStyle.css", "baiduTwoPageStyle");
+            //     GM_addStyle(".result-op:not([id]){display:none!important;}");
+            //     try{
+            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+            //     }catch (e){}
+            // },
+
             //加载普通样式
             loadCommonStyle: function () {
-                GM_addStyle(GM_getResourceText("baiduCommonStyle"));
+                GM_addStyle(GM_getResourceText(keySite+"CommonStyle"));
             },
             //加载自定义菜单样式
             loadMyMenuStyle: function () {
-                GM_addStyle(GM_getResourceText("baiduMyMenuStyle"));
+                GM_addStyle(GM_getResourceText(keySite+"MyMenuStyle"));
             },
             //加载单页样式
             loadOnePageStyle: function () {
-                GM_addStyle(GM_getResourceText("baiduOnePageStyle")+".result-op:not([id]){display:none!important;}");
-                document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                GM_addStyle(GM_getResourceText(keySite+"OnePageStyle")+".result-op:not([id]){display:none!important;}");
+                try{
+                    document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                }catch (e){}
             },
             //加载双页样式
             loadTwoPageStyle: function () {
-                GM_addStyle(GM_getResourceText("baiduTwoPageStyle")+".result-op:not([id]){display:none!important;}");
-                document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                GM_addStyle(GM_getResourceText(keySite+"TwoPageStyle")+".result-op:not([id]){display:none!important;}");
+                try{
+                    document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+                }catch (e){}
             },
             loadExpandOneStyle:function () {
                 GM_addStyle(
@@ -668,18 +736,19 @@
         };
         var ControlManager = {
             twoPageDisplay: function () {
+                console.log("two display");
                 // 定时查询
                 try{
                     setInterval(function(){
-                        if(document.querySelector("#content_left") != null){
+                        if(document.querySelector("#content_left,.srg") != null){
                             // clearInterval(doubleCheckTimer);
                             var div = document.createElement("div");
                             div.id ="double";
                             var parent = null;
                             var selector = null;
-                            if (document.querySelector("#content_left>#double") == null) {
-                                parent = document.querySelector("#content_left");
-                                selector = document.querySelectorAll("#content_left>.c-container:nth-child(even)");
+                            if (document.querySelector("#content_left>#double,.srg>#double") == null) {
+                                parent = document.querySelector("#content_left,.srg");
+                                selector = document.querySelectorAll("#content_left>.c-container:nth-child(even),.srg>.g:nth-child(even)");
                                 parent.insertBefore(div, parent.childNodes[0]);
                                 var DBP = document.querySelector("#double");
                                 var DBP_c0 = DBP.childNodes[0];
@@ -688,9 +757,9 @@
                                 }
                             }
                             //兼容自动翻页脚本
-                            if (document.querySelector("#content_left>.sp-separator") != null) {
-                                parent = document.querySelector("#content_left>.sp-separator:not([isHandled])");
-                                selector = document.querySelectorAll("#content_left>.sp-separator:not([isHandled])~.c-container:nth-child(odd)");
+                            if (document.querySelector("#content_left>.sp-separator, .med>.sp-separator") != null) {
+                                parent = document.querySelector("#content_left>.sp-separator:not([isHandled]), .med>.sp-separator:not([isHandled])");
+                                selector = document.querySelectorAll("#content_left>.sp-separator:not([isHandled])~.c-container:nth-child(odd), .med>.sp-separator:not([isHandled])~#ires .g:nth-child(odd)");
                                 try{parent.setAttribute("isHandled", "1");}catch (e){}
                                 var DBP = document.querySelector("#double");
                                 for(var i=0; i < selector.length; i++){
@@ -707,10 +776,10 @@
             centerDisplay: function () {
                 var result = AdsStyleMode || null;
                 if(document.querySelector(".acCssLoadFlag") == null && valueLock == false){
-                    if(document.querySelector("#content_left") == null) return;
+                    if(document.querySelector("#content_left, .srg") == null) return;
                     valueLock = true;
                     var insLockNode = document.createElement("style");
-                    document.querySelector("#content_left").appendChild(insLockNode);
+                    document.querySelector("#content_left, .srg").appendChild(insLockNode);
                     StyleManger.loadMyMenuStyle();
                     if(result == 1){
                         StyleManger.loadExpandOneStyle();
@@ -720,9 +789,9 @@
                         StyleManger.loadCommonStyle();
                         StyleManger.loadOnePageStyle();
                     } else if (result == 3) { //双页居中
-                        StyleManger.loadCommonStyle();
-                        StyleManger.loadTwoPageStyle();
                         this.twoPageDisplay();
+                        StyleManger.loadTwoPageStyle();
+                        StyleManger.loadCommonStyle();
                     }
                 }
             },
@@ -731,33 +800,38 @@
             }
         };
         function mutationfunc() {
-            // if(document.querySelector("#lg:visible") != null){ // 大图模式--->百度首页
-            //     document.querySelector("#wrapper .s_form #form").setAttribute("style", "left:unset !important;");
-            // }else{
-            //     document.querySelector("#wrapper .s_form #form").setAttribute("style", "");
-            // }
-            if(SiteTypeID == SiteType.BAIDU){
-                ControlManager.init();
-            }
+            ControlManager.init();
             if(document.querySelector("#double") != null){
                 setTimeout(function(){ // 动态设置底部推荐关键字的marginTop属性
-                    document.querySelector("#container #rs div").parentNode.style.marginTop = Math.max(document.querySelector("#double").offsetHeight, document.querySelector("#content_left").offsetHeight)-document.querySelector("#content_left").offsetHeight+"px";
+                    try{
+                        document.querySelector("#container #rs div").parentNode.style.marginTop = Math.max(document.querySelector("#double").offsetHeight, document.querySelector("#content_left").offsetHeight)-document.querySelector("#content_left").offsetHeight+"px";
+                    }catch (e){}
                 }, 400);
             }
         }
-        if(SiteTypeID == SiteType.BAIDU){
-            ControlManager.init();
-            try{
-                mutationfunc();
-            }catch (e){console.log(e);}
-            try {
-                var observer = new ACMO(mutationfunc);
-                var wrapper = document.querySelector("#wrapper");
-                observer.observe(wrapper, option);
-            } catch (e) {
-            }
-        }else{
-            return;
+        ControlManager.init();
+        if(AdsStyleMode > 0){
+            window.onresize = function(){
+                try{
+                    var width = document.documentElement.clientWidth;
+                    if(AdsStyleMode == 2)// 单列居中模式
+                        width -= 200;
+                    document.querySelector("#res").style="width: "+width+"px;margin-left:-200px";
+                    var marLeft = width * 0.5 - 480;
+                    if(AdsStyleMode == 2){
+                        document.querySelector("#bottomads~#extrares").style="margin-left:"+marLeft+"px !important";
+                        document.querySelector("#foot").style="margin-left:"+(marLeft - 150)+"px !important";
+                    }
+                }catch (e){}
+            };
+            window.onresize();
+        }
+        mutationfunc();
+        try {
+            var observer = new ACMO(mutationfunc);
+            var wrapper = document.querySelector("#wrapper");
+            observer.observe(wrapper, option);
+        } catch (e) {
         }
     }
 })();

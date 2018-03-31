@@ -1,0 +1,21 @@
+.srg{
+    margin-left: calc(34% - 420px) !important;
+}
+#rs, .srg .g{
+    width: 870px !important;
+}
+#rs, .srg .g .rc .s{
+    max-width:unset;
+}
+#res{
+    margin-left:unset !important;
+}
+.tsf,#bottomads~#extrares{
+    margin-left: calc(39% - 420px) !important;
+}
+.appbar, #hdtb-msb{
+    padding-left: calc(34% - 420px) !important;
+}
+#foot{
+    margin-left: calc(34% - 420px);
+}
