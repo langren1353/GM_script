@@ -78,7 +78,7 @@ a em {
     width: 630px;
 }
 /* 条目 */
-.srg {
+#search .srg {
     padding-left: 5%;
     margin-left: 8%;
     animation-name: left_logoR;
@@ -86,8 +86,7 @@ a em {
     -webkit-animation-timing-function: ease;
 }
 
-#rs,
-.srg .g {
+#rs, .bkWMgd .g {
     width: 760px;
     padding: 0px 20px 15px;
     margin-top: 0px;
@@ -99,14 +98,14 @@ a em {
     -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
 }
-#rs, .srg .g .rc .s{
+#rs, .bkWMgd .g .rc .s{
     max-width:unset;
 }
-.srg .result-op:hover,.srg .result:hover{
+.bkWMgd .g:hover{
     box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;
 }
-.srg .g[tpl='soft'] .op-soft-title,
-.srg .g h3 {
+.bkWMgd .g[tpl='soft'] .op-soft-title,
+.bkWMgd .g h3 {
     background-color: #f8f8f8;
     margin: 0px -20px 10px -20px;
     padding: 8px 20px 5px;
@@ -168,28 +167,28 @@ a em {
 
 .srg .se_com_irregular_gallery ul li,
 .srg .op_jingyan_list,
-.srg .g .op-img-address-link-type {
+.bkWMgd .g .op-img-address-link-type {
     display: inline-block;
     margin-left: 10px;
 }
 /* 标题*/
-.srg .g[tpl='soft'] .op-soft-title a,
-.srg .g[tpl='soft'] .op-soft-title a em,
-.srg .g h3 a,
-.srg .g h3 a em {
+.bkWMgd .g[tpl='soft'] .op-soft-title a,
+.bkWMgd .g[tpl='soft'] .op-soft-title a em,
+.bkWMgd .g h3 a,
+.bkWMgd .g h3 a em {
     color: #2866bd;
     font-weight: bold;
 }
 .srg .op-soft-title a,
-.srg .g h3 a {
+.bkWMgd .g h3 a {
     position: relative;
 }
 .srg .op-soft-title a em,
-.srg .g h3 a em {
+.bkWMgd .g h3 a em {
     text-decoration: none;
 }
 .srg .op-soft-title a:hover:after,
-.srg .g h3 a:hover:after {
+.bkWMgd .g h3 a:hover:after {
     left: 0;
     width: 100%;
     -webkit-transition: width 350ms;
@@ -197,7 +196,7 @@ a em {
     transition: width 350ms;
 }
 .srg .op-soft-title a:after,
-.srg .g h3 a:after {
+.bkWMgd .g h3 a:after {
     content: "";
     position: absolute;
     border-bottom: 2px solid #2866bd;
@@ -210,17 +209,17 @@ a em {
 }
 /* 标题:visied */
 
-.srg .op-soft-title a .srg .g h3 a {
+.srg .op-soft-title a .bkWMgd .g h3 a {
     position: relative;
 }
 .srg .op-soft-title a:visited,
 .srg .op-soft-title a:visited em,
-.srg .g h3 a:visited,
-.srg .g h3 a:visited em {
+.bkWMgd .g h3 a:visited,
+.bkWMgd .g h3 a:visited em {
     color: #660099;
 }
 .srg .op-soft-title a:visited:hover:after,
-.srg .g h3 a:visited:hover:after {
+.bkWMgd .g h3 a:visited:hover:after {
     left: 0;
     width: 100%;
     -webkit-transition: width 350ms;
@@ -228,7 +227,7 @@ a em {
     transition: width 350ms;
 }
 .srg .op-soft-title a:visited:after,
-.srg .g h3 a:visited:after {
+.bkWMgd .g h3 a:visited:after {
     content: "";
     position: absolute;
     border-bottom: 2px solid #660099;
@@ -313,10 +312,10 @@ a em {
 .tsf{
     margin-left: 10%; 
 }
-#ires>#brs, .srg>#imagebox_bigimages{
+#ires>#brs, .srg>#imagebox_bigimages, #search .bkWMgd>.g{
     margin-left:13%;
 }
-#rso>.bkWMgd>div:not([class='srg']){
+#search>.bkWMgd>div:not([class='srg']){
     margin-left:14%;
     max-width: 640px;
 }

@@ -672,64 +672,64 @@
         var StyleManger = {
             importStyle: function (fileUrl, toClassName) {
                 if(document.querySelector("."+toClassName) != null) return;
-                if(document.querySelector("#content_left,.srg") == null) return;
+                if(document.querySelector("#content_left,.bkWMgd") == null) return;
                 var ssNode = document.createElement("link");
                 ssNode.rel = "stylesheet";
                 ssNode.type = "text/css";
                 ssNode.className = toClassName;
                 ssNode.media = "screen";
                 ssNode.href = fileUrl;
-                try{document.body.appendChild(ssNode);}catch (e){}
+                try{document.head.appendChild(ssNode);}catch (e){}
             },
             //
-            // //加载普通样式
-            // loadCommonStyle: function () {
-            //     this.importStyle("http://127.0.0.1/"+keySite+"/baiduCommonStyle.css", "baiduCommonStyle");
-            // },
-            // //加载自定义菜单样式
-            // loadMyMenuStyle: function () {
-            //     this.importStyle("http://127.0.0.1/"+keySite+"/baiduMyMenuStyle.css", "baiduMyMenuStyle");
-            // },
-            // //加载单页样式
-            // loadOnePageStyle: function () {
-            //     this.importStyle("http://127.0.0.1/"+keySite+"/baiduOnePageStyle.css", "baiduOnePageStyle");
-            //     GM_addStyle(".result-op:not([id]){display:none!important;}");
-            //     try{
-            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
-            //     }catch (e){}
-            // },
-            // //加载双页样式
-            // loadTwoPageStyle: function () {
-            //     console.log("load two style:"+"http://127.0.0.1/"+keySite+"/baiduTwoPageStyle.css");
-            //     this.importStyle("http://127.0.0.1/"+keySite+"/baiduTwoPageStyle.css", "baiduTwoPageStyle");
-            //     GM_addStyle(".result-op:not([id]){display:none!important;}");
-            //     try{
-            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
-            //     }catch (e){}
-            // },
-
             //加载普通样式
             loadCommonStyle: function () {
-                GM_addStyle(GM_getResourceText(keySite+"CommonStyle"));
+                this.importStyle("http://127.0.0.1/"+keySite+"CommonStyle.css", "CommonStyle");
             },
             //加载自定义菜单样式
             loadMyMenuStyle: function () {
-                GM_addStyle(GM_getResourceText(keySite+"MyMenuStyle"));
+                this.importStyle("http://127.0.0.1/"+keySite+"MyMenuStyle.css", "MyMenuStyle");
             },
             //加载单页样式
             loadOnePageStyle: function () {
-                GM_addStyle(GM_getResourceText(keySite+"OnePageStyle")+".result-op:not([id]){display:none!important;}");
+                this.importStyle("http://127.0.0.1/"+keySite+"OnePageStyle.css", "OnePageStyle");
+                GM_addStyle(".result-op:not([id]){display:none!important;}");
                 try{
                     document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
                 }catch (e){}
             },
             //加载双页样式
             loadTwoPageStyle: function () {
-                GM_addStyle(GM_getResourceText(keySite+"TwoPageStyle")+".result-op:not([id]){display:none!important;}");
+                console.log("load two style:"+"http://127.0.0.1/"+keySite+"TwoPageStyle.css");
+                this.importStyle("http://127.0.0.1/"+keySite+"TwoPageStyle.css", "TwoPageStyle");
+                GM_addStyle(".result-op:not([id]){display:none!important;}");
                 try{
                     document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
                 }catch (e){}
             },
+            //
+            // //加载普通样式
+            // loadCommonStyle: function () {
+            //     GM_addStyle(GM_getResourceText(keySite+"CommonStyle"));
+            // },
+            // //加载自定义菜单样式
+            // loadMyMenuStyle: function () {
+            //     GM_addStyle(GM_getResourceText(keySite+"MyMenuStyle"));
+            // },
+            // //加载单页样式
+            // loadOnePageStyle: function () {
+            //     GM_addStyle(GM_getResourceText(keySite+"OnePageStyle")+".result-op:not([id]){display:none!important;}");
+            //     try{
+            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+            //     }catch (e){}
+            // },
+            // //加载双页样式
+            // loadTwoPageStyle: function () {
+            //     GM_addStyle(GM_getResourceText(keySite+"TwoPageStyle")+".result-op:not([id]){display:none!important;}");
+            //     try{
+            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+            //     }catch (e){}
+            // },
             loadExpandOneStyle:function () {
                 GM_addStyle(
                     ".result-op:not([id]){display:none!important;}" +
@@ -780,11 +780,12 @@
             centerDisplay: function () {
                 var result = AdsStyleMode || null;
                 if(document.querySelector(".acCssLoadFlag") == null && valueLock == false){
-                    if(document.querySelector("#content_left, .srg") == null) return;
+                    if(document.querySelector("#content_left, .bkWMgd") == null) return;
                     valueLock = true;
                     var insLockNode = document.createElement("style");
-                    document.querySelector("#content_left, .srg").appendChild(insLockNode);
+                    document.querySelector("#content_left, .bkWMgd").appendChild(insLockNode);
                     StyleManger.loadMyMenuStyle();
+                    console.log("loadDATA");
                     if(result == 1){
                         StyleManger.loadExpandOneStyle();
                         StyleManger.loadCommonStyle();
@@ -806,8 +807,10 @@
                 this.centerDisplay();
             }
         };
+        ControlManager.init();
         function mutationfunc() {
             ControlManager.init();
+            window.onresize();
             if(document.querySelector("#double") != null){
                 setTimeout(function(){ // 动态设置底部推荐关键字的marginTop属性
                     try{
@@ -816,22 +819,24 @@
                 }, 400);
             }
         }
-        ControlManager.init();
         if(AdsStyleMode > 0){
-            window.onresize = function(){
-                try{
-                    var width = document.documentElement.clientWidth;
-                    if(AdsStyleMode == 2)// 单列居中模式
-                        width -= 200;
-                    document.querySelector("#res").style="width: "+width+"px;margin-left:-200px";
-                    var marLeft = width * 0.5 - 480;
-                    if(AdsStyleMode == 2){
-                        document.querySelector("#bottomads~#extrares").style="margin-left:"+marLeft+"px !important";
-                        document.querySelector("#foot").style="margin-left:"+(marLeft - 150)+"px !important";
+            window.onresize = function() {
+                setTimeout(function () {
+                    try {
+                        console.log("reSize");
+                        var width = document.documentElement.clientWidth;
+                        if (AdsStyleMode == 2)// 单列居中模式
+                            width -= 200;
+                        document.querySelector(".bkWMgd").style = "margin-left:-175px;width: " + width + "px;";
+                        var marLeft = width * 0.5 - 480;
+                        if (AdsStyleMode == 2) {
+                            document.querySelector("#bottomads~#extrares").style = "margin-left:" + marLeft + "px !important";
+                            document.querySelector("#foot").style = "margin-left:" + (marLeft - 150) + "px !important";
+                        }
+                    } catch (e) {
                     }
-                }catch (e){}
-            };
-            window.onresize();
+                }, 400);
+            }
         }
         mutationfunc();
         try {
