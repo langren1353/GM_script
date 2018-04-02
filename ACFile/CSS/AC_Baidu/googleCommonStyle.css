@@ -19,7 +19,7 @@ iframe,
 }
 /******************* 初始化 *******************/
 body {
-    background-color: #f5f5f5;
+    background-color: #fDfDfD;
 }
 #form .bdsug{
     width: 76%;
@@ -78,7 +78,7 @@ a em {
     width: 630px;
 }
 /* 条目 */
-#search .srg {
+#search .srg, .med>#ires .bkWMgd>.srg{
     padding-left: 5%;
     margin-left: 8%;
     animation-name: left_logoR;

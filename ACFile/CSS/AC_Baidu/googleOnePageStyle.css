@@ -1,5 +1,6 @@
 .srg{
-    margin-left: calc(34% - 420px) !important;
+    margin-left: calc(34% - 600px) !important;
+    padding-left: calc(5% + 180px) !important;
 }
 #rs, .srg .g{
     width: 870px !important;
@@ -10,12 +11,15 @@
 #res{
     margin-left:unset !important;
 }
-.tsf,#bottomads~#extrares{
-    margin-left: calc(39% - 420px) !important;
+.tsf{
+    margin-left: calc(39% - 380px) !important;
 }
 .appbar, #hdtb-msb{
-    padding-left: calc(34% - 420px) !important;
+    padding-left: calc(34% - 380px) !important;
 }
-#foot{
-    margin-left: calc(34% - 420px);
+#foot, #bottomads~#extrares, #ires>#brs{
+    margin-left: calc(34% - 380px);
+}
+.sfibbbc{
+    width: 760px;
 }

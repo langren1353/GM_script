@@ -12,7 +12,6 @@
 .srg>#double>.g {
     width: 100%;
     overflow: hidden;
-    max-width: 670px;
     padding: 0px 20px 15px;
     margin-top: 0px;
     margin-bottom: 40px;
@@ -25,8 +24,7 @@
 }
 .srg>.g {
     overflow: hidden;
-    width: 50% !important;
-    max-width: 670px !important;
+    max-width: 51%;
     padding: 0px 20px 15px !important;
     margin-top: 0px !important;
     margin-bottom: 40px !important;
@@ -36,4 +34,7 @@
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1) !important;
     -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1) !important;
     -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1) !important;
+}
+.search>#ires .srg>.g{
+    max-width: unset;
 }
