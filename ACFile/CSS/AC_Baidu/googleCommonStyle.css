@@ -313,11 +313,15 @@ a em {
     margin-left: 10%; 
 }
 #ires>#brs, .srg>#imagebox_bigimages, #search .bkWMgd>.g{
-    margin-left:13%;
+    margin-left: calc(39% - 420px) !important;
 }
-#search>.bkWMgd>div:not([class='srg']){
-    margin-left:14%;
-    max-width: 640px;
+.bkWMgd>div:not([class]), #taw{
+    margin-left: 13%;
+    max-width: 760px;
+}
+.bkWMgd>div:not([class='srg'])>g-section-with-header{
+    margin-left: 2%;
+    margin-right: 2%;
 }
 #bottomads~#extrares{
     margin-left: 10%;
@@ -325,4 +329,7 @@ a em {
 }
 .appbar, #hdtb-msb{
     padding-left: 3%;
+}
+#tads[aria-label='广告']{
+    display:none;
 }

@@ -2,6 +2,9 @@
     margin-left: calc(34% - 600px) !important;
     padding-left: calc(5% + 180px) !important;
 }
+.bkWMgd>#imagebox_bigimages, #taw{
+    margin-left: calc(39% - 420px) !important;
+}
 #rs, .srg .g{
     width: 870px !important;
 }
@@ -22,4 +25,10 @@
 }
 .sfibbbc{
     width: 760px;
+}
+.bkWMgd>div:not([class]){
+    margin-left: calc(34% - 600px) !important;
+    padding-left: calc(5% + 180px) !important;
+    width: 870px !important;
+    max-width: 870px;
 }

@@ -696,55 +696,55 @@
                 ssNode.href = fileUrl;
                 try{document.head.appendChild(ssNode);}catch (e){}
             },
-            // //
-            // //加载普通样式
-            // loadCommonStyle: function () {
-            //     this.importStyle("http://127.0.0.1/"+keySite+"CommonStyle.css", "CommonStyle");
-            // },
-            // //加载自定义菜单样式
-            // loadMyMenuStyle: function () {
-            //     this.importStyle("http://127.0.0.1/"+keySite+"MyMenuStyle.css", "MyMenuStyle");
-            // },
-            // //加载单页样式
-            // loadOnePageStyle: function () {
-            //     this.importStyle("http://127.0.0.1/"+keySite+"OnePageStyle.css", "OnePageStyle");
-            //     GM_addStyle(".result-op:not([id]){display:none!important;}");
-            //     try{
-            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
-            //     }catch (e){}
-            // },
-            // //加载双页样式
-            // loadTwoPageStyle: function () {
-            //     console.log("load two style:"+"http://127.0.0.1/"+keySite+"TwoPageStyle.css");
-            //     this.importStyle("http://127.0.0.1/"+keySite+"TwoPageStyle.css", "TwoPageStyle");
-            //     GM_addStyle(".result-op:not([id]){display:none!important;}");
-            //     try{
-            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
-            //     }catch (e){}
-            // },
-
+            //
             //加载普通样式
             loadCommonStyle: function () {
-                GM_addStyle(GM_getResourceText(keySite+"CommonStyle"));
+                this.importStyle("http://127.0.0.1/"+keySite+"CommonStyle.css", "CommonStyle");
             },
             //加载自定义菜单样式
             loadMyMenuStyle: function () {
-                GM_addStyle(GM_getResourceText(keySite+"MyMenuStyle"));
+                this.importStyle("http://127.0.0.1/"+keySite+"MyMenuStyle.css", "MyMenuStyle");
             },
             //加载单页样式
             loadOnePageStyle: function () {
-                GM_addStyle(GM_getResourceText(keySite+"OnePageStyle")+".result-op:not([id]){display:none!important;}");
+                this.importStyle("http://127.0.0.1/"+keySite+"OnePageStyle.css", "OnePageStyle");
+                GM_addStyle(".result-op:not([id]){display:none!important;}");
                 try{
                     document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
                 }catch (e){}
             },
             //加载双页样式
             loadTwoPageStyle: function () {
-                GM_addStyle(GM_getResourceText(keySite+"TwoPageStyle")+".result-op:not([id]){display:none!important;}");
+                console.log("load two style:"+"http://127.0.0.1/"+keySite+"TwoPageStyle.css");
+                this.importStyle("http://127.0.0.1/"+keySite+"TwoPageStyle.css", "TwoPageStyle");
+                GM_addStyle(".result-op:not([id]){display:none!important;}");
                 try{
                     document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
                 }catch (e){}
             },
+
+            // //加载普通样式
+            // loadCommonStyle: function () {
+            //     GM_addStyle(GM_getResourceText(keySite+"CommonStyle"));
+            // },
+            // //加载自定义菜单样式
+            // loadMyMenuStyle: function () {
+            //     GM_addStyle(GM_getResourceText(keySite+"MyMenuStyle"));
+            // },
+            // //加载单页样式
+            // loadOnePageStyle: function () {
+            //     GM_addStyle(GM_getResourceText(keySite+"OnePageStyle")+".result-op:not([id]){display:none!important;}");
+            //     try{
+            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+            //     }catch (e){}
+            // },
+            // //加载双页样式
+            // loadTwoPageStyle: function () {
+            //     GM_addStyle(GM_getResourceText(keySite+"TwoPageStyle")+".result-op:not([id]){display:none!important;}");
+            //     try{
+            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+            //     }catch (e){}
+            // },
             loadExpandOneStyle:function () {
                 GM_addStyle(
                     ".result-op:not([id]){display:none!important;}" +

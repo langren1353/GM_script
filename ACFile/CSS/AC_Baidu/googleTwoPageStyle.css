@@ -3,6 +3,10 @@
     float: unset;
     width: 80%;
 }
+.bkWMgd>div:not([class]){
+    margin-left:14%;
+    width: 40%;
+}
 #double {
     width: 47%;
     margin-left: 49%;
