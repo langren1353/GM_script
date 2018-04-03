@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         14.9
+// @version         15.0
 // @connect         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
@@ -28,6 +28,7 @@
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
 // @lastmodified    2018-04-02
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.04.03-V15.0 继续尝试修复bug,优化整体页面效果以及谷歌其余页面的效果展示
 // @note            2018.04.02-V14.9 更新谷歌整体效果,并尝试修复图片新闻等显示问题的bug
 // @note            2018.04.01-V14.8 --日狗问题，忘了改代码，只是更新了说明。。
 // @note            2018.04.01-V14.7 经过老司机(没ID)提供的反馈，发现上一版更新的依旧有bug，修复调小触发参数导致的触发没有生效的问题--偶尔双列失效的问题
@@ -102,14 +103,14 @@
 // @note            2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note            2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note            2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource        baiduCommonStyle     https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduCommonStyle.css?t=14.9
-// @resource        baiduMyMenuStyle     https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css?t=14.9
-// @resource        baiduOnePageStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css?t=14.9
-// @resource        baiduTwoPageStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css?t=14.9
-// @resource        googleCommonStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleCommonStyle.css?t=14.9
-// @resource        googleMyMenuStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleMyMenuStyle.css?t=14.9
-// @resource        googleOnePageStyle   https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleOnePageStyle.css?t=14.9
-// @resource        googleTwoPageStyle   https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleTwoPageStyle.css?t=14.9
+// @resource        baiduCommonStyle     https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduCommonStyle.css?t=15.0
+// @resource        baiduMyMenuStyle     https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css?t=15.0
+// @resource        baiduOnePageStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css?t=15.0
+// @resource        baiduTwoPageStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css?t=15.0
+// @resource        googleCommonStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleCommonStyle.css?t=15.0
+// @resource        googleMyMenuStyle    https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleMyMenuStyle.css?t=15.0
+// @resource        googleOnePageStyle   https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleOnePageStyle.css?t=15.0
+// @resource        googleTwoPageStyle   https://remix.ac.cn/ACFile/CSS/AC_Baidu/googleTwoPageStyle.css?t=15.0
 // @grant           GM_getValue
 // @grant           GM_setValue
 // @grant           GM_addStyle
@@ -223,7 +224,7 @@
     }
     if(!isRightDisplayEnable){
         // 移除右边栏
-        GM_addStyle("#content_right{display:none !important;}.result-op:not([id]){display:none!important;}");
+        GM_addStyle("#content_right{display:none !important;}.result-op:not([id]){display:none!important;}#rhs{display:none;}");
     }
     if(!isALineEnable){
         GM_addStyle("a{text-decoration:none}");// 移除这些个下划线
@@ -409,16 +410,22 @@
             nodes[i].href = url;
         }
     }
-    function AC_addStyle(css, className){ // 添加CSS代码，不考虑文本载入时间，带有className
+    function AC_addStyle(css, className, addToTarget, isReload){ // 添加CSS代码，不考虑文本载入时间，带有className
         var tout = setInterval(function(){
-            if(document.head != null){
+            if(addToTarget == null) addToTarget = "head";
+            if(isReload == null) isReload = false;
+            if(document.querySelector(addToTarget) != null){
                 clearInterval(tout);
+                if(isReload == false && document.querySelector("."+className) != null){
+                    // 节点存在,并且不准备覆盖
+                    return;
+                }
                 try{document.querySelector("."+className).remove();}catch (e){};
                 var cssNode = document.createElement("style");
                 if(className != null)
                     cssNode.className = className;
                 cssNode.innerHTML = css;
-                try{document.head.appendChild(cssNode);}catch (e){console.log(e.message);}
+                try{document.querySelector(addToTarget).appendChild(cssNode);}catch (e){console.log(e.message);}
             }
         }, 200);
     }
@@ -685,8 +692,13 @@
         var keySite = "baidu";
         if(SiteTypeID == SiteType.GOOGLE) keySite = "google";
         var StyleManger = {
-            importStyle: function (fileUrl, toClassName) {
-                if(document.querySelector("."+toClassName) != null) return;
+            importStyle: function (fileUrl, toClassName, addToTarget, isReload) {
+                if(isReload == null) isReload = false;
+                if(addToTarget == null) addToTarget = "head";
+                if(isReload==false && document.querySelector("."+toClassName) != null){
+                    // 已经存在,并且不准备覆盖
+                    return;
+                }
                 if(document.querySelector("#content_left,.bkWMgd") == null) return;
                 var ssNode = document.createElement("link");
                 ssNode.rel = "stylesheet";
@@ -694,20 +706,19 @@
                 ssNode.className = toClassName;
                 ssNode.media = "screen";
                 ssNode.href = fileUrl;
-                try{document.head.appendChild(ssNode);}catch (e){}
+                try{document.querySelector(addToTarget).appendChild(ssNode);}catch (e){}
             },
-            //
             //加载普通样式
             loadCommonStyle: function () {
-                this.importStyle("http://127.0.0.1/"+keySite+"CommonStyle.css", "CommonStyle");
+                this.importStyle("http://127.0.0.1/"+keySite+"CommonStyle.css", "CommonStyle", "#wrapper>#head, .jsrp");
             },
             //加载自定义菜单样式
             loadMyMenuStyle: function () {
-                this.importStyle("http://127.0.0.1/"+keySite+"MyMenuStyle.css", "MyMenuStyle");
+                this.importStyle("http://127.0.0.1/"+keySite+"MyMenuStyle.css", "MyMenuStyle", "#wrapper>#head, .jsrp");
             },
             //加载单页样式
             loadOnePageStyle: function () {
-                this.importStyle("http://127.0.0.1/"+keySite+"OnePageStyle.css", "OnePageStyle");
+                this.importStyle("http://127.0.0.1/"+keySite+"OnePageStyle.css", "OnePageStyle", "#wrapper>#head, .jsrp");
                 GM_addStyle(".result-op:not([id]){display:none!important;}");
                 try{
                     document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
@@ -715,8 +726,7 @@
             },
             //加载双页样式
             loadTwoPageStyle: function () {
-                console.log("load two style:"+"http://127.0.0.1/"+keySite+"TwoPageStyle.css");
-                this.importStyle("http://127.0.0.1/"+keySite+"TwoPageStyle.css", "TwoPageStyle");
+                this.importStyle("http://127.0.0.1/"+keySite+"TwoPageStyle.css", "TwoPageStyle", "#wrapper>#head, .jsrp");
                 GM_addStyle(".result-op:not([id]){display:none!important;}");
                 try{
                     document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
@@ -725,33 +735,30 @@
 
             // //加载普通样式
             // loadCommonStyle: function () {
-            //     GM_addStyle(GM_getResourceText(keySite+"CommonStyle"));
+            //     AC_addStyle(GM_getResourceText(keySite+"CommonStyle"), "ACStyle-common", "#wrapper>#head, .jsrp");
+            //     try{
+            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
+            //     }catch (e){}
             // },
             // //加载自定义菜单样式
             // loadMyMenuStyle: function () {
-            //     GM_addStyle(GM_getResourceText(keySite+"MyMenuStyle"));
+            //     AC_addStyle(GM_getResourceText(keySite+"MyMenuStyle"), "ACStyle-mymenu", "#wrapper>#head, .jsrp");
             // },
             // //加载单页样式
             // loadOnePageStyle: function () {
-            //     GM_addStyle(GM_getResourceText(keySite+"OnePageStyle")+".result-op:not([id]){display:none!important;}");
-            //     try{
-            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
-            //     }catch (e){}
+            //     AC_addStyle(GM_getResourceText(keySite+"OnePageStyle")+".result-op:not([id]){display:none!important;}", "ACStyle-onepage", "#wrapper>#head, .jsrp");
             // },
             // //加载双页样式
             // loadTwoPageStyle: function () {
-            //     GM_addStyle(GM_getResourceText(keySite+"TwoPageStyle")+".result-op:not([id]){display:none!important;}");
-            //     try{
-            //         document.querySelector("#result_logo img").setAttribute("src", "https://ws1.sinaimg.cn/large/6a155794ly1fkx1uhxfz6j2039012wen.jpg");
-            //     }catch (e){}
+            //     AC_addStyle(GM_getResourceText(keySite+"TwoPageStyle")+".result-op:not([id]){display:none!important;}", "ACStyle-twopage", "#wrapper>#head, .jsrp");
             // },
             loadExpandOneStyle:function () {
-                GM_addStyle(
+                AC_addStyle(
                     ".result-op:not([id]){display:none!important;}" +
                     "#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}" +
                     "#content_left .result,#content_left .result-op{width:100%; min-width:670px;margin-bottom:14px!important;}" +
                     ".c-span18{width:78%!important;min-width:550px;}" +
-                    ".c-span24{width: auto!important;}");
+                    ".c-span24{width: auto!important;}", "ACStyle-expand", "#wrapper>#head, .jsrp");
             }
         };
         var ControlManager = {
@@ -794,6 +801,7 @@
             //居中显示
             centerDisplay: function () {
                 var result = AdsStyleMode || null;
+                if(result > 0) AC_addStyle("#rhs{display:none}", "ACStyle-hide");
                 if(document.querySelector(".acCssLoadFlag") == null && valueLock == false){
                     if(document.querySelector("#content_left, .bkWMgd") == null) return;
                     valueLock = true;
@@ -837,6 +845,7 @@
             window.onresize = function() {
                 setTimeout(function () {
                     try {
+                        console.log("resize");
                         var width = document.documentElement.clientWidth;
                         if (AdsStyleMode == 2)// 单列居中模式
                             width -= 200;
@@ -844,11 +853,11 @@
                         // for(var i = 0 ; i < nodes.length; i++){
                         //     nodes[i].style = (i==0?"margin-left:-175px;":"")+"width: " + width + "px;";
                         // }
-
                         if(onResizeLocked == false){
                             onResizeLocked = true;
-                            AC_addStyle("#cnt>.mw #center_col .med[id='res']{width:"+width+"px;margin-left:-175px}", "AC-Style-bkWMgd");
-                            setTimeout(function(){onResizeLocked = false; }, 300);
+                            // AC_addStyle("#cnt>.mw #center_col .med[id='res'], #taw{width:"+width+"px;}", "AC-Style-bkWMgd", null, true);
+                            AC_addStyle("#center_col{width:"+width+"px !important;margin-left: unset !important;margin-right: unset !important;}", "AC-Style-bkWMgd", null, true);
+                            setTimeout(function(){onResizeLocked = false; }, 100);
                         }
                         var marLeft = width * 0.5 - 480;
                         if (AdsStyleMode == 2) {

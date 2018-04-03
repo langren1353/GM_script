@@ -79,8 +79,6 @@ a em {
 }
 /* 条目 */
 #search .srg, .med>#ires .bkWMgd>.srg{
-    padding-left: 5%;
-    margin-left: 8%;
     animation-name: left_logoR;
     -webkit-animation-duration: .1s;
     -webkit-animation-timing-function: ease;
@@ -306,30 +304,12 @@ a em {
         opacity: 1;
     }
 }
-.exp-outline, #rhscol{
-    display:none !important;
+#center_col>*{
+    padding-left:11%;
+    padding-right:11%;
 }
-.tsf{
-    margin-left: 10%; 
-}
-#ires>#brs, .srg>#imagebox_bigimages, #search .bkWMgd>.g{
-    margin-left: calc(39% - 420px) !important;
-}
-.bkWMgd>div:not([class]), #taw{
-    margin-left: 13%;
-    max-width: 760px;
-}
-.bkWMgd>div:not([class='srg'])>g-section-with-header{
-    margin-left: 2%;
-    margin-right: 2%;
-}
-#bottomads~#extrares{
-    margin-left: 10%;
-    width:800px;
-}
-.appbar, #hdtb-msb{
-    padding-left: 3%;
-}
-#tads[aria-label='广告']{
-    display:none;
+.bkWMgd>div:not([class]){
+    width: 730px;
+    margin-left: 15px;
+    margin-right: 15px;
 }

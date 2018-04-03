@@ -1,12 +1,11 @@
-.srg{
-    margin-left: calc(34% - 600px) !important;
-    padding-left: calc(5% + 180px) !important;
+#taw{
+    max-width:unset;
 }
-.bkWMgd>#imagebox_bigimages, #taw{
-    margin-left: calc(39% - 420px) !important;
-}
-#rs, .srg .g{
+.bkWMgd .g{
     width: 870px !important;
+}
+.bkWMgd>div:not([class]){
+    width: 840px !important;
 }
 #rs, .srg .g .rc .s{
     max-width:unset;
@@ -14,21 +13,6 @@
 #res{
     margin-left:unset !important;
 }
-.tsf{
-    margin-left: calc(39% - 380px) !important;
-}
-.appbar, #hdtb-msb{
-    padding-left: calc(34% - 380px) !important;
-}
-#foot, #bottomads~#extrares, #ires>#brs{
-    margin-left: calc(34% - 380px);
-}
 .sfibbbc{
     width: 760px;
-}
-.bkWMgd>div:not([class]){
-    margin-left: calc(34% - 600px) !important;
-    padding-left: calc(5% + 180px) !important;
-    width: 870px !important;
-    max-width: 870px;
 }

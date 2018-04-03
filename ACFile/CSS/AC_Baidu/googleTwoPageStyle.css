@@ -1,11 +1,9 @@
 .srg {
     position: relative;
     float: unset;
-    width: 80%;
 }
 .bkWMgd>div:not([class]){
-    margin-left:14%;
-    width: 40%;
+    width: 45% !important;
 }
 #double {
     width: 47%;
@@ -26,9 +24,9 @@
     -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
 }
-.srg>.g {
+.srg>.g, .bkWMgd>.g{
     overflow: hidden;
-    max-width: 51%;
+    max-width: 48%;
     padding: 0px 20px 15px !important;
     margin-top: 0px !important;
     margin-bottom: 40px !important;
