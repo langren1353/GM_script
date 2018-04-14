@@ -3,8 +3,12 @@
 }
 #form{
     position:relative;
-    left:calc(50% - 420px);
+    left:calc(50% - 410px);
     background-color: unset;
+    width:50%;
+}
+.wrapper_l #form #kw{
+    width:98% !important;
 }
 #result_logo{
     position: relative;
@@ -27,7 +31,14 @@
     padding-left: 0;
     margin-left: calc(50% - 420px);
     width: 50%!important;
+    min-width: 670px;
 }
 #rs .tt{
     margin:0px -20px 1px 0px;
+}
+#content_left .c-container{
+    width:100% !important;
+}
+#page a, #page strong{
+    margin-right: 22px !important;
 }
