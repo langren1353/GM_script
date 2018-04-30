@@ -1,12 +1,14 @@
 // ==UserScript==
-// @name         AC-整理-淘宝天猫优惠券查询领取,大额优惠券,【100元购物神券】,省钱购物,领券购买更优惠,平均优惠20%
-// @version      5.0
-// @description  淘宝商品查询是否具有优惠券,各种大额优惠券,【3元|10元|20元|40元】优惠券领取,购物必备
+// @name         AC-独家-淘宝天猫优惠券查询领取,大额优惠券,【100元购物神券】,省钱购物,领券购买更优惠,平均优惠20%
+// @version      5.2
+// @description  独家查询淘宝商品查询是否具有优惠券,各种大额优惠券,【3元|10元|20元|40元】优惠券领取,购物必备
 // @author       AC
 // @include      https://item.taobao.com/item.htm*
 // @include      https://detail.tmall.com/item.htm*
 // @include      https://s.taobao.com/search*
 // @include      https://cart.taobao.com/*
+// @note         2018.04.30-V5.2 新增优惠券面额查询结果
+// @note         2018.03.18-V5.1 更新下标题
 // @note         2018.03.18-V5.0 新增购物车页面设置数据
 // @note         2018.03.10-V4.9 修正上个版本更新的问题
 // @note         2018.03.08-V4.8 简单增加一个按钮选项
@@ -72,7 +74,7 @@ if(location.href.indexOf("item.taobao.com") + location.href.indexOf("detail.tmal
             if (node != null) {
                 clearInterval(tt);
                 if (result.count == 1) {
-                    node.innerHTML = "!查看找优惠!";
+                    node.innerHTML = "!"+result.mod_json_details.priceDiscount+"元优惠券!";
                     var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
                     var goodTitle = TitleNode.firstChild.nodeValue.trim();
                     node.href = "https://cent.ntaow.com/coupon.jsp?mQuery=" + encodeURI(goodTitle);
@@ -86,7 +88,7 @@ if(location.href.indexOf("item.taobao.com") + location.href.indexOf("detail.tmal
     function queryData(goodID) {
         cgoodTitle = document.title;
         var ret = GM_xmlhttpRequest({
-            method: "GET", responseType: 'jsonp', url: "https://cent.ntaow.com/getGMDetails_json.jsp?&auctionId=" + goodID + "&title=" + cgoodTitle,
+            method: "GET", responseType: 'jsonp', url: "https://cent.ntaow.com/getDetails_json.jsp?&auctionId=" + goodID + "&title=" + cgoodTitle,
             onload: function (res) {
                 res = res.responseText.replace("acBuyScript", "").replace("(", "").replace(/\)$/, "");
                 res = JSON.parse(res);

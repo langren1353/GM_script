@@ -1,8 +1,10 @@
 // ==UserScript==
-// @name 有道-惠惠购物助手(新)
+// @name 有道-惠惠购物助手(新)-购物比价-优惠券查找
 // @description 有道购物助手，购物比价，自动对比电商同款商品价格，轻松网购不吃亏，更有各种优惠信息对比
-// @update 2018-03-23
-// @version 1.1
+// @update 2018-04-30
+// @version 1.3
+// @note   2018.04.30 修复样式效果缩回后的问题；新增优惠价格展示
+// @note   2018.04.04 修复京东的历史价格情况展示问题
 // @note   2018.03.23 剔除掉无用的广告信息，滚动一段距离后移除顶部标签，保留比价功能
 // @note   2018.03.22 基于大神 Harv 的惠惠购物助手修改而来，把底部标签放到了顶部更好看，其余之后再改
 // @author AC Edit form: Harv
@@ -513,7 +515,7 @@
 // @include https://detail.tmall.com/item.htm*
 // @include https://s.taobao.com/search*
 // @include https://cart.taobao.com/*
-// @include http://*.jd.com/*
+// @include https://*.jd.com/*
 // @run-at  document-start
 // ==/UserScript==
 function addStyle(css) {
@@ -529,7 +531,7 @@ function timerDoOnce(node, functionName, checkTime){
             clearInterval(tt);
             functionName();
         }
-    }, checkTime)
+    }, checkTime);
 }
 
 if(location.href.indexOf("s.taobao.com/search") > 0){
@@ -596,7 +598,7 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
                 if (node != null) {
                     clearInterval(tt);
                     if (result.count == 1) {
-                        node.innerHTML = "!查看找优惠!";
+                        node.innerHTML = "!"+result.mod_json_details.priceDiscount+"元优惠券!";
                         var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
                         var goodTitle = TitleNode.firstChild.nodeValue.trim();
                         node.href = "https://cent.ntaow.com/coupon.jsp?mQuery=" + encodeURI(goodTitle);
@@ -610,16 +612,14 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
         function queryData(goodID) {
             cgoodTitle = document.title;
             var ret = GM_xmlhttpRequest({
-                method: "GET", responseType: 'jsonp', url: "https://cent.ntaow.com/getGMDetails_json.jsp?&auctionId=" + goodID + "&title=" + cgoodTitle,
+                method: "GET", responseType: 'jsonp', url: "https://cent.ntaow.com/getDetails_json.jsp?&auctionId=" + goodID + "&title=" + cgoodTitle,
                 onload: function (res) {
                     res = res.responseText.replace("acBuyScript", "").replace("(", "").replace(/\)$/, "");
                     res = JSON.parse(res); acBuyScript(res);
                 }
             });
         }
-        timerDoOnce(".hui-link", function(){
-            document.querySelector("#hui-plugin-close").nextElementSibling.remove();
-        }, 200);
+
         AutoStart(100, ".tb-detail-hd, .tb-main-title", function () {
             var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
             var goodTitle = TitleNode.firstChild.nodeValue.trim();
@@ -647,9 +647,24 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
     }
     timerDoOnce("body", function(){
         var s = document.createElement('script');
-            s.setAttribute('src','https://shared-https.ydstatic.com/gouwuex/ext/script/extension_3_1.js?vendor=youdao&browser=firefox');
-            s.setAttribute('charset','utf-8');
-            document.body.appendChild(s);
+        s.setAttribute('src','https://shared-https.ydstatic.com/gouwuex/ext/script/extension_3_1.js?vendor=youdao&browser=firefox');
+        s.setAttribute('charset','utf-8');
+        document.body.appendChild(s);
+    }, 200);
+    timerDoOnce(".hui-link", function(){
+        var bgNodeFinder = document.querySelector("a[hui-type='switch']").parentNode.className;
+        bgNodeFinder = bgNodeFinder.substr(bgNodeFinder.indexOf(" ")+1);
+        setTimeout(function(){addStyle(".hui-minishoppingtool ."+bgNodeFinder+"{background-position: -547px -3px !important;}");}, 2000);
+        document.querySelector("a[clkaction='BAR_ONEKEY_MOD_CLICK'] div").innerHTML = "每日最热";
+        document.querySelector("a[clkaction='BAR_ONEKEY_MOD_CLICK']").setAttribute("href", "https://ntaow.com/hot.html");
+        document.querySelector("a[clkaction='BAR_DEAL_MOD_CLICK']").setAttribute("href", "https://ntaow.com/bimai.html");
+        document.querySelector("a[clkaction='BAR_COUPON_MOD_CLICK']").setAttribute("href", "https://ntaow.com/acsearch.html");
+        document.querySelector("a[clkaction='BAR_LEMALL_AD_CLICK']").setAttribute("href", "https://ntaow.com/acsearch.html");
+        var node = document.querySelector(".hui-link"); // 移除广告标签
+        while(node.tagName != "LI"){
+            node = node.parentNode;
+        }
+        node.remove();
     }, 200);
     setInterval(function(){
         var node = document.querySelector("div[style='z-index: 2147483647; position: fixed;']>div>table");
@@ -658,7 +673,7 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
                 node.style = "top:unset;";
             }else{
                 node.style = "top:0px;";
-            } 
+            }
         }
     },200);
     addStyle(".site-nav,#site-nav{margin-top:50px;}div[style='z-index: 2147483647; position: fixed;']>div>table{top:0px;position: fixed;z-index: 23333333;background-color: white;}div[style='z-index: 2147483647; position: fixed;']>div{bottom:unset;}");
