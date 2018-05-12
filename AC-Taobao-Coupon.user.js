@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         AC-独家-淘宝天猫优惠券查询领取,大额优惠券,【100元购物神券】,省钱购物,领券购买更优惠,平均优惠20%
-// @version      5.2
+// @version      5.3
 // @description  独家查询淘宝商品查询是否具有优惠券,各种大额优惠券,【3元|10元|20元|40元】优惠券领取,购物必备
 // @author       AC
 // @include      https://item.taobao.com/item.htm*
 // @include      https://detail.tmall.com/item.htm*
 // @include      https://s.taobao.com/search*
 // @include      https://cart.taobao.com/*
+// @note         2018.05.12-V5.3 修复在部分天猫页面没反应的问题
 // @note         2018.04.30-V5.2 新增优惠券面额查询结果
 // @note         2018.03.18-V5.1 更新下标题
 // @note         2018.03.18-V5.0 新增购物车页面设置数据
@@ -54,9 +55,7 @@ if(location.href.indexOf("item.taobao.com") + location.href.indexOf("detail.tmal
         return null;
     }
     var goodID = getQueryString("id");
-    if (location.href.indexOf("ali_trackid") < 0) {
-        queryData(goodID);
-    }
+    queryData(goodID);
     function AutoStart(time, cssSelector, dealFunc) {
         var timerNode = setInterval(function () {
             try {
@@ -86,7 +85,7 @@ if(location.href.indexOf("item.taobao.com") + location.href.indexOf("detail.tmal
         }, 50);
     }
     function queryData(goodID) {
-        cgoodTitle = document.title;
+        var cgoodTitle = document.title+"";
         var ret = GM_xmlhttpRequest({
             method: "GET", responseType: 'jsonp', url: "https://cent.ntaow.com/getDetails_json.jsp?&auctionId=" + goodID + "&title=" + cgoodTitle,
             onload: function (res) {
