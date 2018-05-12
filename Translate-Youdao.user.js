@@ -1,21 +1,24 @@
 // ==UserScript==
 // @name  AC-有道取词+翻译
-// @version 0.8
+// @description 一个可以在浏览器中自由使用的屏幕取词脚本-alt+鼠标翻译，或者选中按Q翻译
+// @version 1.1
 // @namespace youdao
 // @author  AC -modified from ：Liu Yuyang(sa@linuxer.me)
-// @description 一个可以在浏览器中自由使用的屏幕取词脚本-alt+鼠标翻译，或者选中按Q翻译
 // @include *
-// @note 2017-11-15 修复了一大堆，优化了下界面的展示问题
-// @note 2017-2-21 修正了由于z-index过低导致的淘宝页面翻译过于底层而看不见
-// @note 2016-9-29 修正了部分格式错误，换行的时候稍微好了点
-// @note 2016-1-12 终于修正了，之前只改了句子翻译中的文字颜色，才发现单词翻译后的颜色简直看不清。。。
-// @note 2016-1-9 修改默认背景色
-// @note 2016-1-8 修正chrome的支持
-// @note 2016-1-8 修改窗体默认大小，尽可能的显示回车功能，避免了以前的全部显示在同一行--依旧有bug
-// @note 2015-11-26 修改部分地方适合自己使用，选中文字，按下Q翻译，或者alt+鼠标选中，自动翻译
 // @icon    https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @run-at  document-end
+// @note    V1.1 2018-05-12 有道自己不更新~~HTTPS证书过期，现在使用搜狗翻译吧，老司机们说搜狗翻译还是很有优势的，至于百度翻译，再说吧
+// @note    V1.0 2017-11-22 修复firefox57的翻译的BUG
+// @note    V0.9 2017-11-15 修复了一大堆，优化了下界面的展示问题
+// @note    V0.8 2017-2-21 修正了由于z-index过低导致的淘宝页面翻译过于底层而看不见
+// @note    V0.7 2016-9-29 修正了部分格式错误，换行的时候稍微好了点
+// @note    V0.6 2016-1-12 终于修正了，之前只改了句子翻译中的文字颜色，才发现单词翻译后的颜色简直看不清。。。
+// @note    V0.5 2016-1-9 修改默认背景色
+// @note    V0.4 2016-1-8 修正chrome的支持
+// @note    V0.3 2016-1-8 修改窗体默认大小，尽可能的显示回车功能，避免了以前的全部显示在同一行--依旧有bug
+// @note    V0.2 2015-11-26 修改部分地方适合自己使用，选中文字，按下Q翻译，或者alt+鼠标选中，自动翻译
 // @grant GM_xmlhttpRequest
+// @connect fanyi.youdao.com
 // ==/UserScript==
 
 var curX;
@@ -52,7 +55,7 @@ function callbackWrapper(e) {
     }
 }
 function isInACTransPop(){
-    var checkNode = document.getSelection().baseNode.parentNode;
+    var checkNode = document.getSelection().anchorNode.parentNode;
     return checkNode && (""+checkNode.className).indexOf("ACyoudao") < 0;
 }
 function translate() {
@@ -76,9 +79,10 @@ function translate() {
         // parse
         var dictJSON = JSON.parse(result);
         console.log(dictJSON);
-        var query = dictJSON['query'];
-        var errorCode = dictJSON['errorCode'];
-        if (dictJSON['basic']) {
+        var query = dictJSON['translate']['orig_text'];
+        // var errorCode = dictJSON['errorCode'];
+        console.log(query);
+        if (dictJSON['dictionary']) {
             word();
         } else {
             sentence();
@@ -171,6 +175,7 @@ function translate() {
                     play(query);
                 }, false);
             };
+            header.style.lineHeight = "1.8";
             header.style.color = "black";
             header.style.margin = "0";
             header.style.padding = "0";
@@ -211,39 +216,38 @@ function translate() {
             // ul style
             ul.style.margin = "0";
             ul.style.padding = "0";
-            dictJSON['translation'].map(function(trans) {
-                var li = document.createElement('li');
-                li.style.listStyle = "none";
-                li.style.margin = "0";
-                li.style.padding = "0";
-                li.style.background = "none";
-                li.style.color = "#008CD8";
-                li.className = "ACyoudaoPopupLi";
-                trans = trans.replaceAll('QWER', '\n').replaceAll(",", ", ");
-                console.log(trans);
-                transResult += trans;
-                var reg = new RegExp("\n","gm");
-                while(reg.exec(trans) != null){// 如果找不到回车了，那么最后重复一次新建<p>
-                    //找到一个回车，那么添加一个新的<p>，内容为：trans.sub(0, ?); trans = trans.sub(?);
-                    var newNode = document.createElement("li");
-                    newNode.className = "ACyoudaoPopupLi";
-                    newNode.style.listStyle = "none";
-                    newNode.style.margin = "0";
-                    newNode.style.padding = "0";
-                    newNode.style.background = "none";
-                    newNode.style.color = "#008CD8";
-                    newNode.style.fontSize = "15px";
-                    newNode.innerHTML = trans.substring(0, reg.lastIndex-2);
-                    li.appendChild(newNode);
-                    trans = trans.substring(reg.lastIndex);
-                }
-                var newNode = document.createElement("div");
-                newNode.className = "ACyoudaoPopupDiv";
-                newNode.innerHTML = trans;
-                newNode.style = "color:#008CD8 !important;font-size:15px !important;margin-left:10px;margin-right:10px;";
+            var trans = dictJSON['translate']['dit'];
+            var li = document.createElement('li');
+            li.style.listStyle = "none";
+            li.style.margin = "0";
+            li.style.padding = "0";
+            li.style.background = "none";
+            li.style.color = "#008CD8";
+            li.className = "ACyoudaoPopupLi";
+            trans = trans.replaceAll('QWER', '\n').replaceAll(",", ", ");
+            console.log(trans);
+            transResult += trans;
+            var reg = new RegExp("\n","gm");
+            while(reg.exec(trans) != null){// 如果找不到回车了，那么最后重复一次新建<p>
+                //找到一个回车，那么添加一个新的<p>，内容为：trans.sub(0, ?); trans = trans.sub(?);
+                var newNode = document.createElement("li");
+                newNode.className = "ACyoudaoPopupLi";
+                newNode.style.listStyle = "none";
+                newNode.style.margin = "0";
+                newNode.style.padding = "0";
+                newNode.style.background = "none";
+                newNode.style.color = "#008CD8";
+                newNode.style.fontSize = "15px";
+                newNode.innerHTML = trans.substring(0, reg.lastIndex-2);
                 li.appendChild(newNode);
-                ul.appendChild(li);
-            });
+                trans = trans.substring(reg.lastIndex);
+            }
+            var newNode = document.createElement("div");
+            newNode.className = "ACyoudaoPopupDiv";
+            newNode.innerHTML = trans;
+            newNode.style = "line-height: 1.8;color:#008CD8 !important;font-size:15px !important;margin-left:10px;margin-right:10px;";
+            li.appendChild(newNode);
+            ul.appendChild(li);
             youdaoWindow.appendChild(ul);
         }
     }
@@ -251,7 +255,8 @@ function translate() {
 
     function translate(word, ts) {
         word = encodeURIComponent(word);
-        var reqUrl = 'https://fanyi.youdao.com/openapi.do?type=data&doctype=json&version=1.1&relatedUrl=http%3A%2F%2Ffanyi.youdao.com%2F%23&keyfrom=fanyiweb&key=null&translate=on&q='+word+'&ts='+ts;
+        // var reqUrl = 'https://fanyi.youdao.com/openapi.do?type=data&doctype=json&version=1.1&relatedUrl=http%3A%2F%2Ffanyi.youdao.com%2F%23&keyfrom=fanyiweb&key=null&translate=on&q='+word+'&ts='+ts;
+        var reqUrl = 'https://fanyi.sogou.com/reventondc/translate?from=auto&to=en&client=pc&fr=browser_pc&useDetect=on&useDetectResult=on&text='+word+'&ts='+ts;
         console.log("request url: ", reqUrl);
         var ret = GM_xmlhttpRequest({
             method: "GET",
