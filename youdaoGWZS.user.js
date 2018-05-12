@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name 有道-惠惠购物助手(新)-购物比价-优惠券查找
 // @description 有道购物助手，购物比价，自动对比电商同款商品价格，轻松网购不吃亏，更有各种优惠信息对比
-// @update 2018-04-30
-// @version 1.3
+// @update 2018-05-12
+// @version 1.4
+// @note   2018.05.12 修复在部分天猫页面没反应的问题
 // @note   2018.04.30 修复样式效果缩回后的问题；新增优惠价格展示
 // @note   2018.04.04 修复京东的历史价格情况展示问题
 // @note   2018.03.23 剔除掉无用的广告信息，滚动一段距离后移除顶部标签，保留比价功能
@@ -578,9 +579,7 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
             return null;
         }
         var goodID = getQueryString("id");
-        if (location.href.indexOf("ali_trackid") < 0) {
-            queryData(goodID);
-        }
+        queryData(goodID);
         function AutoStart(time, cssSelector, dealFunc) {
             var timerNode = setInterval(function () {
                 try {
@@ -610,7 +609,7 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
             }, 50);
         }
         function queryData(goodID) {
-            cgoodTitle = document.title;
+            var cgoodTitle = document.title+"";
             var ret = GM_xmlhttpRequest({
                 method: "GET", responseType: 'jsonp', url: "https://cent.ntaow.com/getDetails_json.jsp?&auctionId=" + goodID + "&title=" + cgoodTitle,
                 onload: function (res) {
