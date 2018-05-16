@@ -190,7 +190,7 @@ function translate() {
                 var playLogo = document.createElement('span');
                 header.appendChild(phoneticNode);
                 (function(index){
-                    phoneticNode.addEventListener('mousedown', function(e){
+                    phoneticNode.addEventListener('mouseup', function(e){
                         if (e.target === phoneticNode) { }
                         e.stopPropagation();
                         play(phonetic[index]['filename']);
