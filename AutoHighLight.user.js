@@ -2,10 +2,11 @@
 // @name            AC-双击选中高亮
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @namespace       ntaow.com
-// @version         2.3
+// @version         2.4
 // @include         *
-// @copyright       2017, AC
+// @copyright       2018, AC
 // @description     双击选中高亮 或者 普通选中后按G高亮
+// @note            2018.05.15-V2.4 修复某些分词的问题，现在分词应该足够可以用了
 // @note            2018.03.26-V2.3 更新，根据TamperMonkey的函数修复了复制操作的代码
 // @note            2018.03.18-V2.2 更新，新增了点击之后复制的效果
 // @note            2017.12.06-V2.1 修复一个小bug，导致abc_def高亮出问题，同时优化了以前的移除规则，避免了对原始html的影响-待测试
@@ -21,16 +22,18 @@ var enableCharCode = 'G';
 var keySets = new Object();
 var counter = 0;
 var isInDebug = false;
+var colorList = ["#FFFF80", "#89c3fa", "#f95f52"];
 function DoHighLight(e) {
     var target = e.target;
     var selectedText = getSelectedText(target);
     var s_dblclick = (e.type === 'dblclick')&&isDBClickOn; // 是双击选中
     var s_keyup = (e.type === 'keyup') && (enableCharCode.charCodeAt(0)==e.keyCode);// 是按下特殊按键
     if (selectedText && getBLen(selectedText) >= 3) {
+        myConsoleLog(selectedText)
         if (s_keyup){
-            doHighLight(selectedText);
+            doHighLightTextS(selectedText);
         }else if (s_dblclick) {
-            doHighLight(selectedText);
+            doHighLightTextS(selectedText);
         }
     }
 }
@@ -39,7 +42,7 @@ function myConsoleLog(text){
         console.log(text);
     }
 }
-function doHighLight(selectedText) {
+function doHighLightTextS(selectedText) {
     unHighLightAll_Text();
     myConsoleLog("双击:" + selectedText);
     GM_setClipboard(selectedText);
@@ -77,9 +80,13 @@ function getBLen(str) {
 
 // 初始化点击的文字信息
 function initKeySets(selection){
-    // 1.split通过特殊字符和字符边界分割串，2.通过特定字符连接原始串，3.1移除多次重复的特定串，避免空串 3.2移除开头或者结尾的特定串，避免分割后出现空白数据，4.按特定串分割
+    // 1.split通过特殊字符和字符边界分割串[非[0-9A-Za-z]特殊字符]
+    // 2.通过特定字符连接原始串，
+    // 3.1移除多次重复的特定串，非常用串移除，避免空串
+    // 3.2移除开头或者结尾的特定串，避免分割后出现空白数据，
+    // 4.按特定串分割
     keySets.keywords = selection
-        .split(/\b|[\uFF00-\uFFFF\u3000-\u303F]/g)
+        .split(/\b |[\u0000-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u00FF\uFF00-\uFFFF\u3000-\u303F]/g)
         .join('ACsCA')
         .replace(/[^\u4E00-\u9FA5|0-9|a-z|A-Z_]+/g, "")
         .replace(/(ACsCA){2}/g, "ACsCA")
@@ -87,11 +94,11 @@ function initKeySets(selection){
         .split("ACsCA");
     keySets.length = keySets.keywords.length;
     keySets.textcolor = new Array();
-    keySets.backcolor = new Array();
+    // keySets.backcolor = new Array();
     keySets.visible = new Array();
     for(var i=0; i < keySets.keywords.length; i++){
         keySets.textcolor[i] = "rgb(0,0,0)";
-        keySets.backcolor[i] = "rgb(255,255,128)";
+        // keySets.backcolor[i] = colorList[i % colorList.length];
         keySets.visible[i] = "true";
     }
 }
@@ -99,8 +106,11 @@ function doHighLightAll_CSS(){ // 顶部的那一堆数组
     if (keySets.visible[0] == "true"){
         var rule = ".acWHSet{display:inline!important;";
         if (keySets.textcolor.length > 0) rule += "color:"+keySets.textcolor[0]+";";
-        if (keySets.backcolor.length > 0) rule += "background-color:"+keySets.backcolor[0]+";";
+        // if (keySets.backcolor.length > 0) rule += "background-color:"+keySets.backcolor[0]+";";
         rule += "font-weight:inherit;}";
+        for(var i = 0; i < keySets.keywords.length; i++){
+            rule += ".acWHSet[data='"+keySets.keywords[i]+"']{background-color:"+colorList[i % colorList.length]+";}";
+        }
         var setrule = document.querySelector('style[hlset="acWHSet"]');
         if (!setrule){
             var s = document.createElement("style");
@@ -138,7 +148,8 @@ function doHighLightAll_Text(){
         var node = snapElements.snapshotItem(i);
         if (pat.test(node.nodeValue)) {
             var sp = span.cloneNode(true);
-            sp.innerHTML = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(pat, '<thdfrag class="THmo acWHSet" txhidy15="acWHSet">$1</thdfrag>');
+            var repNodeHTML = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(pat, '<thdfrag class="THmo acWHSet" txhidy15="acWHSet" data="$1">$1</thdfrag>');
+            sp.innerHTML = repNodeHTML;
             node.parentNode.replaceChild(sp, node);
             // try to un-nest containers
             if (sp.parentNode.hasAttribute("thdcontain")) sp.outerHTML = sp.innerHTML;
