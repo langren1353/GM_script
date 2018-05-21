@@ -5,29 +5,19 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         15.2
+// @version         16.1
 // @connect         *
-// @include         https://www.baidu.com/*
-// @include         http://www.baidu.com/*
-// @include         http://www.sogou.com/web*
-// @include         https://www.sogou.com/web*
-// @include         http://www.sogou.com/sie*
-// @include         https://www.sogou.com/sie*
-// @include         https://www.so.com/s?*
-// @include         https://www.so.com/s?*
-// @include         /^https?://\w+.bing.com/.*/
-// @include         /^https?\:\/\/encrypted.google.[^\/]+/
-// @include         /^https?\:\/\/www.google.[^\/]+/
-// @include         https://*.zhidao.baidu.com/*
-// @include         https://zhidao.baidu.com/*
-// @include         *.zhihu.com/*
+// @include         *
 // @home-url        https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2       https://github.com/langren1353/GM_script
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2018-04-20
+// @lastmodified    2018-05-21
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.05.21-V16.1 优化高亮的问题; 同时修复了一个高亮关键词的bug；在一个老司机的指点下，添加了referer参数
+// @note            2018.05.21-V16.0 谢谢朋友们关心5.20我还是一个人过的很好；大版本：修正计数器的计数问题，修正MO失效之后脚本的触发问题；新增搜索关键词高亮选项，默认关闭
+// @note            2018.05.06-V15.3 简单移除好搜的广告
 // @note            2018.04.20-V15.2 修复bing的Favicon效果，避免显示在不同行上
 // @note            2018.04.04-V15.1 继续尝试修复bug,优化整体页面效果以及谷歌其余页面的效果展示;同时将百度样式写入到#wrapper>#head中去,刷新或者更换页面时就不会异常闪烁并且很平滑了
 // @note            2018.04.02-V14.9 更新谷歌整体效果,并尝试修复图片新闻等显示问题的bug
@@ -115,9 +105,12 @@
 // @grant           GM_getValue
 // @grant           GM_setValue
 // @grant           GM_addStyle
+// @grant           GM_setClipboard
 // @grant           GM_getResourceText
 // @grant           GM_registerMenuCommand
 // ==/UserScript==
+window.ACMO = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
 
 // 初次：还是采用了setInterval来处理，感觉这样的话速度应该比Dom快，也比MO适用，因为MO需要在最后才能调用，实用性还不如timer
 // 之后：还是采用MO的方式来处理
@@ -145,10 +138,18 @@
     var valueLock = false; // 避免数据同时读取和写入时导致的死锁，然后致使页面死循环
     var onResizeLocked = false;
     var sortIndex = 1; // 设置编号值
+    var isHighLightEnable = false;
+    var hasNewFuncNeedDisplay = true; // 设置器
+    var HightLightColorList = ["#FFFF80", "#90EE90", "#33FFFF", "#FF6600", "#FF69B4", "#20B2AA", "#8470FF"];
+
     LoadSetting(); // 读取个人设置信息
+
+    var enableDBSelectText = false;
+    var isSearchWindowActive = true;
+    var oldTextSelectInterval;
     var Stype_Normal; // 去重定向的选择
     var FaviconType; // favicon的选择-取得实际地址-得到host
-    var Ctype; // Counter的选择
+    var CounterType; // Counter的选择
     var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;谷歌=3;必应=4;知乎=5;其他=6]
     var SiteType={
         BAIDU:1,
@@ -160,11 +161,10 @@
         OTHERS:7,
     };
     var BaiduVersion = " V" + GM_info.script.version;
-    var ACMO = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
     var option = {'childList': true, 'subtree': true};
     var observer;
     try{
-        observer = new ACMO(function (records) {
+        observer = new window.ACMO(function (records) {
             try {
                 ShowSetting();
                 ACHandle();
@@ -174,42 +174,50 @@
         });
     }catch (e){console.log(e);}
     try{
-        document.addEventListener('DOMContentLoaded', function (e) {
-            setTimeout(function () {
-                // 如果没有ACMO的话那么就会自动调用这个
-                ShowSetting();
-                ACHandle();
-            }, 1000);
-        }, false);
+        if(typeof(window.ACMO) == "undefined" || window.ACMO == null){
+            console.log("ACMO失效了");
+            var insertLocked = false;
+            document.addEventListener('DOMNodeInserted', function (e) {
+                if (insertLocked == false) {
+                    insertLocked = true;
+                    setTimeout(function () {
+                        // 如果没有ACMO的话那么就会自动调用这个
+                        insertLocked = false;
+                        ShowSetting();
+                        ACHandle();
+                    }, 1000);
+                }
+            }, false);
+        }
     }catch (e){console.log(e);}
     if (location.host.indexOf("www.baidu.com") > -1) {
         SiteTypeID = SiteType.BAIDU;
         Stype_Normal = "h3.t>a, #results .c-container>.c-blocka"; //PC,mobile
         FaviconType = ".result-op, .c-showurl";
-        Ctype = "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]";
+        CounterType = "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]";
         startSelect("#wrapper,#page-bd", "#wrapper,#page-bd", option);
     } else if (location.host.indexOf("sogou") > -1) {
         SiteTypeID = SiteType.SOGOU;
         Stype_Normal = "h3.pt>a, h3.vrTitle>a";
         FaviconType = "cite[id*='cacheresult_info_']";
-        Ctype = ".results>div";
+        CounterType = ".results>div";
         startSelect("body", "body", option);
     }  else if (location.host.indexOf("so.com") > -1) {
         SiteTypeID = SiteType.SO;
         Stype_Normal = ".res-list h3>a";
         FaviconType = ".res-linkinfo cite";
-        Ctype = ".results>div";
+        CounterType = ".results>div";
         startSelect("body", "body", option);
     } else if (location.host.indexOf("google") > -1) {
         SiteTypeID = SiteType.GOOGLE;
         // FaviconType = "._Rm";
         FaviconType = ".iUh30";
-        Ctype = ".srg>div[class~=g] *[class~=r],._yE>div[class~=_kk]";
+        CounterType = ".srg>div[class~=g] *[class~=r],._yE>div[class~=_kk]";
         startSelect("body", "body", option);
     } else if (location.host.indexOf("bing") > -1) {
         SiteTypeID = SiteType.BING;
         FaviconType = ".b_attribution>cite";
-        Ctype = "#b_results>li[class~=b_ans],#b_results>li[class~=b_algo],#b_results>li[class~=b_algo]";
+        CounterType = "#b_results>li[class~=b_ans],#b_results>li[class~=b_algo],#b_results>li[class~=b_algo]";
         startSelect("body", "body", option);
     } else if (location.host.indexOf("zhihu.com") > -1) {
         SiteTypeID = SiteType.ZHIHU;
@@ -217,28 +225,64 @@
     } else {
         SiteTypeID = SiteType.OTHERS;
     }
+    if(isHighLightEnable == true){
+        WordAutoHighLight();
+        // 读取关键词，高亮显示
+        DoHighLightWithSearchText();
+    }
+    if(SiteTypeID == SiteType.OTHERS){
+        console.log("其他站点");
+        return;
+    }else if(isHighLightEnable == true){
+        // 拿到搜索关键词，存入GM中
+        setInterval(function(){
+            if(document.hidden == true){ // 只要是搜索窗口不激活，那么flag=false
+                isSearchWindowActive = false;
+                enableDBSelectText = false;
+            }
+            // 窗口激活状态；或者是窗口之前是不激活，现在激活了
+            if(isSearchWindowActive == true || (isSearchWindowActive == false && document.hidden == false)) {
+                var searchValue = (window.location.search.substr(1) + "").split("&");
+                for (var i = 0; i < searchValue.length; i++) {
+                    var key_value = searchValue[i].split("=");
+                    if (/^(wd|q|query)$/.test(key_value[0])) {
+                        var searchWords = decodeURI(key_value[1]).toLocaleLowerCase().replace(/\+/g, " ");
+                        if(GM_getValue("searchKeyWords", "") != searchWords && enableDBSelectText == false){ // 避免重复掉用，一直刷新关键词
+                            console.log("设定为："+searchWords);
+                            GM_setValue("searchKeyWords", searchWords);
+                            DoHighLightWithSearchText();
+                        }
+                        break;
+                    }
+                }
+            }
+        }, 1000);
+    }
     if (isAdsEnable){
         if(SiteTypeID == SiteType.BAIDU) AdsStyleMode = AdsStyleMode_Baidu;
         if(SiteTypeID == SiteType.GOOGLE) AdsStyleMode = AdsStyleMode_Google;
         FSBaidu(); // 添加设置项-单双列显示
-        GM_addStyle("#content_right td>div:not([id]){display:none;}");
+        AC_addStyle("#content_right td>div:not([id]){display:none;}", "adsEnable", "body");
     }
+
     if(!isRightDisplayEnable){
         // 移除右边栏
-        GM_addStyle("#content_right{display:none !important;}.result-op:not([id]){display:none!important;}#rhs{display:none;}");
+        AC_addStyle("#content_right{display:none !important;}.result-op:not([id]){display:none!important;}#rhs{display:none;}", "RightRemove", "body");
     }
     if(!isALineEnable){
-        GM_addStyle("a{text-decoration:none}");// 移除这些个下划线
+        AC_addStyle("a{text-decoration:none}", "NoLine", "body");// 移除这些个下划线
     }
     GM_registerMenuCommand('AC-重定向脚本设置', function () {
         document.querySelector("#sp-ac-content").style.display = 'block';
     });
-    GM_addStyle(
+    AC_addStyle(
         ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
         ".res_top_banner{display:none!important;}"+  // 移除可能的百度HTTPS劫持显示问题
         ".headBlock{display:none;}" // 移除百度的搜索结果顶部一条的建议文字
+        , "AC-special-BAIDU"
+        , "body"
     );
-    GM_addStyle('#sp-ac-container{z-index:999999!important;text-align:left!important;background-color:white;}#sp-ac-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-ac-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;margin-top: 0px !important;}#sp-ac-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-ac-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-ac-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-ac-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-ac-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-ac-container fieldset>ul{padding:0!important;margin:0!important;}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}');
+    AC_addStyle('#sp-ac-container{z-index:999999!important;text-align:left!important;background-color:white;}#sp-ac-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-ac-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;margin-top: 0px !important;}#sp-ac-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-ac-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-ac-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-ac-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-ac-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-ac-container fieldset>ul{padding:0!important;margin:0!important;}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}label[class="newFunc"]{color:blue !important;}', "ac-MENU", "body");
     function startSelect(checkNode, selector, option) {
         var tt = setInterval(function () {
             if (document.querySelector(checkNode)) {
@@ -254,6 +298,7 @@
         }, 200);
     }
     function ACHandle() {
+        if(SiteTypeID == SiteType.OTHERS) return;
         InsertSettingMenu();
         if (isRedirectEnable) {
             if(Stype_Normal != null && Stype_Normal != "")
@@ -262,8 +307,8 @@
                 removeOnMouseDownFunc(); // 移除onMouseDown事件，谷歌去重定向
             if(SiteTypeID == SiteType.ZHIHU)
                 removeLinkTarget(); // 移除知乎的重定向问题
-            try{document.querySelector(".res_top_banner").remove();}catch (e){} // 移除百度可能显示的劫持
-            try{document.querySelector(".c-container /deep/ .c-container").remove();}catch (e){} // 移除百度的恶心Shadow DOM（Shadown Root）
+            safeRemove(".res_top_banner"); // 移除百度可能显示的劫持
+            safeRemove(".c-container /deep/ .c-container"); // 移除百度的恶心Shadow DOM（Shadown Root）
         }
         if (isFaviconEnable) {
             addFavicon(document.querySelectorAll(FaviconType)); // 添加Favicon显示
@@ -281,7 +326,7 @@
             document.querySelector("input[name='sp-ac-a_force_style_google']").setAttribute("disabled", "disabled");
         }
         if (isCounterEnable) {
-            addCounter(document.querySelectorAll(Ctype));
+            addCounter(document.querySelectorAll(CounterType));
         }
     }
     function acSetCookie(cname, cvalue, exdays) {
@@ -296,12 +341,15 @@
             if (document.querySelector("#sp-ac-content").style.display == 'block'){
                 document.querySelector("#sp-ac-content").style.display = 'none';
             }else{
+                GM_setValue("version", GM_info.script.version);
+                document.querySelector(".ac-newversionDisplay").style.display = 'none';
                 document.querySelector("#sp-ac-content").style.display = 'block';
             }
         }, 100);
         return false;
     }
     function ShowSetting() {
+        if(SiteTypeID == SiteType.OTHERS) return;
         // 如果不存在的话，那么自己创建一个-copy from superPreload
         if (document.querySelector("#sp-ac-container") == null) {
             var Container = document.createElement('div');
@@ -331,11 +379,13 @@
                 "                    <label title='谷歌-双列居中'><input  name='sp-ac-a_force_style_google' value='3'  type='radio' " + (AdsStyleMode_Google==3 ? 'checked' : '') + ">谷歌-双列居中</label>" +
                 "                </li>\n" +
                 "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (isFaviconEnable ? 'checked' : '') + ">附加2-Favicon功能</label></li>\n" +
-                "                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='"+defaultFaviconUrl+"' style='width:200px;margin-top:-0.3rem !important;' type='input' " + (isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
+                "                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='"+defaultFaviconUrl+"' style='width:55%;margin-top:-0.3rem !important;' type='input' " + (isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
                 "                <li><label><input title='AC-移除搜索预测' id='sp-ac-sug_origin' name='sp-ac-a_force' type='checkbox' " + (doDisableSug ? 'checked' : '') + ">附加3-移除百度搜索预测(文字自动搜索)</label></li>\n" +
                 "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' name='sp-ac-a_force' type='checkbox' " + (isRightDisplayEnable ? 'checked' : '') + ">附加3-显示右侧栏</label></li>\n" +
                 "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (isCounterEnable ? 'checked' : '') + ">附加4-编号功能</label></li>\n" +
                 "                <li><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (isALineEnable ? 'checked' : '') + ">附加5-下划线</label></li>\n" +
+                "                <li><label style='"+(hasNewFuncNeedDisplay?"color:blue !important;font-weight: 100;":"")+"'><input title='AC-自动高亮' id='sp-ac-highlight' name='sp-ac-a_force' type='checkbox' " + (isHighLightEnable ? 'checked' : '') + ">附加6-搜索高亮-双击任意双字符文本切换高亮状态(或者选中文本按下W)</label></li>\n" +
+                "                    <label style='margin-left:20px'>高亮-颜色列表：<input title='高亮-颜色设定' style='width: 65%;' id='sp-ac-highLightColorList' value='"+(HightLightColorList+"").replace(",", ", ")+"'></label>" +
                 "                <li><a target='_blank' href='https://shang.qq.com/wpa/qunwpa?idkey=5bbfe9de1e81a0930bd053f3157aad2dbb3fa7b991ac9f22ea9f2e2f53efde80' style='color:red !important;'>联系作者,提建议,寻求帮助,脚本定制点我</a></li>" +
                 "            </ul>\n" +
                 "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton' title='取消' style='position: relative !important;float: left !important;'>取消</span>\n" +
@@ -370,6 +420,13 @@
                 GM_setValue("isRightDisplayEnable", document.querySelector("#sp-ac-right").checked);
                 GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
                 GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
+                GM_setValue("isHighLightEnable", document.querySelector("#sp-ac-highlight").checked);
+                var colorText = document.querySelector("#sp-ac-highLightColorList").value.split(",");
+                var colorList = [];
+                for(var i=0; i<colorText.length; i++){
+                    colorList[i] = colorText[i].trim();
+                }
+                GM_setValue("HightLightColorList", colorList);
                 setTimeout(function () {
                     window.location.reload();
                 }, 400);
@@ -392,6 +449,14 @@
         isRightDisplayEnable = GM_getValue("isRightDisplayEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
         isALineEnable = GM_getValue("isALineEnable", false);
+        isHighLightEnable = GM_getValue("isHighLightEnable", false);
+        HightLightColorList = GM_getValue("HightLightColorList", ["#FFFF80", "#90EE90", "#33FFFF", "#FF6600", "#FF69B4", "#20B2AA", "#8470FF"]);
+        var oldVersion = GM_getValue("version", "");
+        if(oldVersion == GM_info.script.version){
+            hasNewFuncNeedDisplay = false;
+        }else{
+            hasNewFuncNeedDisplay = needDisplayNewFun;
+        }
     }
     function removeOnMouseDownFunc() {
         try {
@@ -421,14 +486,16 @@
                     // 节点存在,并且不准备覆盖
                     return;
                 }
-                try{document.querySelector("."+className).remove();}catch (e){};
+                safeRemove("."+className);
                 var cssNode = document.createElement("style");
                 if(className != null)
                     cssNode.className = className;
                 cssNode.innerHTML = css;
-                try{document.querySelector(addToTarget).appendChild(cssNode);}catch (e){console.log(e.message);}
+                try{
+                    document.querySelector(addToTarget).appendChild(cssNode);
+                }catch (e){console.log(e.message);}
             }
-        }, 200);
+        }, 50);
     }
     function resetURLNormal(list) {
         for (var i = 0; i < list.length; i++) {
@@ -459,7 +526,7 @@
                         setTimeout(function () {
                             var gmRequestNode = GM_xmlhttpRequest({
                                 url: c_curhref,
-                                headers: {"Accept": "text/html"},
+                                headers: {"Accept": "text/html", "Referer":c_curhref},
                                 method: "GET",
                                 onreadystatechange: function (response) {
                                     if (SiteTypeID == SiteType.BAIDU) {
@@ -541,22 +608,17 @@
                 }
             }
         } else if (SiteTypeID == SiteType.SOGOU) {
-            try {
-                document.querySelector("#promotion_adv_container").remove();
-            } catch (e) {
-            }
-            try {
-                document.querySelector("#kmap_business_title").remove();
-            } catch (e) {
-            }
-            try {
-                document.querySelector("#kmap_business_ul").remove();
-            } catch (e) {
-            }
+            safeRemove("#promotion_adv_container");
+            safeRemove("#kmap_business_title");
+            safeRemove("#kmap_business_ul");
             try {
                 document.querySelector(".rvr-model[style='width:250px;']").style = "display:none";
             } catch (e) {
             }
+        }else if (SiteTypeID == SiteType.SO) {
+            safeRemove("#so_kw-ad");
+            safeRemove("#m-spread-left");
+            safeRemove("#m-spread-bottom");
         }
     }
     function IsNumber(val){
@@ -570,7 +632,7 @@
         }
     }
     function addCounter(citeList) {
-        var cssText = "margin-right:4px;display:inline-block;background:#FD9999;color:#D7D7D7;font-family:'微软雅黑';font-size:16px;text-align:center;width:20px;line-height:20px;border-radius:50%;float:left;";
+        var cssText = "margin-right:4px;display:inline-block;background:#FD9999;color:white;font-family:'微软雅黑';font-size:16px;text-align:center;width:22px;line-height:22px;border-radius:50%;float:left;";
         var div = document.createElement('div');
         for (var i = 0; i < citeList.length; i++) {
             if (citeList[i].getAttribute('sortIndex')) {
@@ -579,7 +641,8 @@
                 citeList[i].setAttribute('sortIndex', sortIndex);
                 citeList[i].inner = citeList[i].innerHTML;
                 if(IsNumber(citeList[i].parentNode.id)){
-                    div.innerHTML = "<div class='CounterT' style=" + cssText + ">" + citeList[i].parentNode.id + "</div>";
+                    // 如果是百度的数据
+                    div.innerHTML = "<div class='CounterT' style=" + cssText + ">" + (citeList[i].parentNode.id % 100) + "</div>";
                     citeList[i].innerHTML = div.innerHTML + citeList[i].inner;
                 }else{
                     div.innerHTML = "<div class='CounterT' style=" + cssText + ">" + sortIndex + "</div>";
@@ -589,6 +652,11 @@
             }
         }
     }
+    function safeRemove(cssSelector){
+        try {
+            document.querySelector(cssSelector).remove();
+        }catch (e){}}
+
     function replaceAll(sbefore) {
         var send;
         var result = sbefore.split('-');
@@ -617,7 +685,8 @@
                 }
                 var curNode = citeList[index];
                 var faviconUrl = url;
-                for (II = 0; II <= 5; II++) {
+                var II= 0;
+                for (; II <= 5; II++) {
                     curNode = curNode.parentNode;
                     if (isInUrlList(curNode.className)) {
                         break;
@@ -679,11 +748,11 @@
     function InsertSettingMenu(){
         if (document.querySelector("#myuser") == null) {
             try{
-                var parent = document.querySelector("#u, .gb_Ec");
+                var parent = document.querySelector("#u, #gbw>div>div");
                 parent.style="width: auto;";
                 var userAdiv = document.createElement("a");
                 userAdiv.style = "text-decoration: none;";
-                userAdiv.innerHTML = "<ol id='myuser' style='display: inline-block;'><li class='myuserconfig' style='display: inline-block;height: 18px;line-height: 1.5;background: #2866bd;color: #fff;font-weight: bold;text-align: center;padding: 6px;'>自定义</li></ol>";
+                userAdiv.innerHTML = "<ol id='myuser' style='display: inline-block;'><li class='myuserconfig' style='display: inline-block;height: 18px;line-height: 1.5;background: #2866bd;color: #fff;font-weight: bold;text-align: center;padding: 6px;'>自定义&nbsp;<span class='ac-newversionDisplay' style='background-color: red;left: 0px;top: 0px;float: right;height: 8px;width: 8px;border-radius: 4px;display:"+(hasNewFuncNeedDisplay?"unset":"none")+"'>&nbsp;</span></li></ol>";
                 parent.insertBefore(userAdiv, parent.childNodes[0]);
                 document.querySelector("#myuser .myuserconfig").addEventListener('click', function (e) {
                     return ACtoggleSettingDisplay();
@@ -840,7 +909,7 @@
                     try{
                         document.querySelector("#container #rs div").parentNode.style.marginTop = Math.max(document.querySelector("#double").offsetHeight, document.querySelector("#content_left").offsetHeight)-document.querySelector("#content_left").offsetHeight+"px";
                     }catch (e){}
-                }, 400);
+                }, 1200);
             }
         }
         if(AdsStyleMode > 0){
@@ -868,10 +937,214 @@
         }
         mutationfunc();
         try {
-            var observer = new ACMO(mutationfunc);
+            var observer = new window.ACMO(mutationfunc);
             var wrapper = document.querySelector("#wrapper");
             observer.observe(wrapper, {"attributes": false,"childList":true,"characterData": false,"subtree": true,"attributesFilter": ["class"]});
         } catch (e) {
+        }
+    }
+    function DoHighLightWithSearchText(){
+        var searchValue = GM_getValue("searchKeyWords", "");
+        WordAutoHighLight(searchValue);
+    }
+    function WordAutoHighLight(searchText){
+        document.addEventListener('dblclick', DoHighLight, false);
+        document.addEventListener('mouseup', DoHighLight, false);
+        document.addEventListener('keyup', DoHighLight, true);
+        var isDBClickOn = true;
+        var enableCharCode = 'W';
+        var keySets = new Object();
+        var counter = 0;
+        var isInDebug = false;
+        doHighLightTextS(searchText);
+        function DoHighLight(e) {
+            var target = e.target;
+            var selectedText = getSelectedText(target);
+            var s_dblclick = (e.type === 'dblclick') && isDBClickOn; // 是双击选中
+            var s_keyup = (e.type === 'keyup') && (enableCharCode.charCodeAt(0)==e.keyCode);// 是按下特殊按键
+            if (selectedText && getBLen(selectedText) >= 3) {
+                myConsoleLog(selectedText);
+                if (s_keyup){
+                    doHighLightTextS(selectedText);
+                }else if (s_dblclick) {
+                    enableDBSelectText = true;
+                    GM_setValue("searchKeyWords", selectedText);
+                    doHighLightTextS(selectedText, true);
+                }
+            }
+        }
+        function myConsoleLog(text){
+            if(isInDebug){
+                console.log(text);
+            }
+        }
+        function doHighLightTextS(selectedText, dbclick) {
+            if(typeof(selectedText) == "undefined" || selectedText == null || selectedText == "") return;
+            unHighLightAll_Text();
+            if(dbclick){
+                myConsoleLog("双击:" + selectedText);
+                GM_setClipboard(selectedText);
+            }
+            initKeySets(selectedText);
+            myConsoleLog(keySets.keywords);
+            doHighLightAll_CSS();
+            try{clearInterval(oldTextSelectInterval);}catch (e){console.log(e);}
+            oldTextSelectInterval = setInterval(function(){
+                doHighLightAll_Text();
+            }, 100);
+        }
+        function getSelectedText(target) {
+            function getTextSelection() {
+                var selectedText = '';
+                if (target.getAttribute("type")) {
+                    if (target.getAttribute("type").toLowerCase() === "checkbox") return '';
+                }
+                var value = target.value;
+                if (value) {
+                    var startPos = target.selectionStart;
+                    var endPos = target.selectionEnd;
+                    if (!isNaN(startPos) && !isNaN(endPos)) selectedText = value.substring(startPos, endPos);
+                    return selectedText;
+                } else return '';
+            }
+            var selectedText = window.getSelection().toString();
+            if (!selectedText) selectedText = getTextSelection();
+            myConsoleLog(selectedText);
+            return selectedText;
+        }
+        function getBLen(str) {
+            if (str == null) return 0;
+            if (typeof str != "string"){
+                str += "";
+            }
+            return str.replace(/[^\x00-\xff]/g,"01").length;
+        }
+        // 初始化点击的文字信息
+        function initKeySets(selection){
+            // 1.split通过特殊字符和字符边界分割串[非[0-9A-Za-z]特殊字符]
+            // 2.通过特定字符连接原始串，
+            // 3.1移除多次重复的特定串，非常用串移除，避免空串
+            // 3.2移除开头或者结尾的特定串，避免分割后出现空白数据，
+            // 4.按特定串分割
+            keySets.keywords = selection
+                .split(/\b |[\u0000-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u00FF\uFF00-\uFFFF\u3000-\u303F]/g)
+                .join('ACsCA')
+                .replace(/[^\u4E00-\u9FA5|0-9|a-z|A-Z_]+/g, "")
+                .replace(/(ACsCA){2}/g, "ACsCA")
+                .replace(/(^ACsCA|ACsCA$)/g, "")
+                .split("ACsCA");
+            keySets.length = keySets.keywords.length;
+            keySets.textcolor = new Array();
+            // keySets.backcolor = new Array();
+            keySets.visible = new Array();
+            for(var i=0; i < keySets.keywords.length; i++){
+                keySets.textcolor[i] = "rgb(0,0,0)";
+                keySets.visible[i] = "true";
+            }
+        }
+        function doHighLightAll_CSS(){ // 顶部的那一堆数组
+            if (keySets.visible[0] == "true"){
+                var rule = ".acWHSet{display:inline!important;";
+                if (keySets.textcolor.length > 0) rule += "color:"+keySets.textcolor[0]+";";
+                rule += "font-weight:inherit;}";
+                for(var i = 0; i < keySets.keywords.length; i++){
+                    rule += ".acWHSet[data='"+keySets.keywords[i].toLocaleLowerCase()+"']{background-color:"+HightLightColorList[i % HightLightColorList.length]+";}";
+                }
+                AC_addStyle(rule, "AC-highLightRule", "body", true);
+            }
+        }
+        function doHighLightAll_Text(){
+            // myConsoleLog(keySets.keywords);
+            if(keySets.keywords.length == 0) return;
+            var patExp = "";
+            for(var index=0; index<keySets.keywords.length-1; index++) {
+                patExp += keySets.keywords[index]+"|";
+            }
+            patExp += keySets.keywords[index];
+            var pat = new RegExp("("+patExp+")", "gi");
+            var span = document.createElement('thdfrag');
+            span.setAttribute("thdcontain","true");
+            var snapElements = document.evaluate(
+                './/text()[normalize-space() != "" ' +
+                'and not(ancestor::style) ' +
+                'and not(ancestor::script) ' +
+                'and not(ancestor::textarea) ' +
+                'and not(ancestor::div[@id="thdtopbar"]) ' +
+                'and not(ancestor::div[@id="kwhiedit"]) ' +
+                'and not(parent::thdfrag[@txhidy15])]',
+                document.body, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+            if (!snapElements.snapshotItem(0)) { return; }
+            try{
+                for (var i = 0, len = snapElements.snapshotLength; i < len; i++) {
+                    var node = snapElements.snapshotItem(i);
+                    if (pat.test(node.nodeValue)) {
+                        pat.lastIndex = 0; // 必须重置
+                        var sp = span.cloneNode(true);
+                        var findResult = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        var matchs = pat.exec(findResult);
+                        var repNodeHTML = findResult;
+                        var hashSet = new Array();
+                        for(var j = 0; j < matchs.length; j++){
+                            myConsoleLog(matchs[j]);
+                            if(typeof(hashSet[matchs[i]]) == "undefined"){
+                                hashSet[matchs[i]] = 1;
+                                repNodeHTML = repNodeHTML.replace(matchs[j], '<thdfrag class="THmo acWHSet" txhidy15="acWHSet" data="'+matchs[j].toLocaleLowerCase()+'">'+matchs[j]+'</thdfrag>');
+                            }
+                        }
+                        sp.innerHTML = repNodeHTML;
+                        node.parentNode.replaceChild(sp, node);
+                        if (sp.parentNode.hasAttribute("thdcontain")) sp.outerHTML = sp.innerHTML;
+                    }
+                }
+            }catch (e) {
+                console.log(e);
+            }
+        }
+        function unHighLightAll_Text(){
+            var tgts = document.querySelectorAll('thdfrag[txhidy15="acWHSet"]');
+            for (var i=0; i<tgts.length; i++){
+                var parnode = tgts[i].parentNode, parpar = parnode.parentNode, tgtspan;
+                if (parnode.hasAttribute("thdcontain") && parnode.innerHTML == tgts[i].outerHTML){
+                    parnode.outerHTML = tgts[i].textContent.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    tgtspan = parpar;
+                } else {
+                    tgts[i].outerHTML = tgts[i].textContent.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    tgtspan = parnode;
+                }
+                tgtspan.normalize();
+                if (tgtspan.hasAttribute("thdcontain")){
+                    parnode = tgtspan.parentNode;
+                    if (parnode){
+                        if (parnode.hasAttribute("thdcontain") && parnode.innerHTML == tgtspan.outerHTML && tgtspan.querySelectorAll('thdfrag[txhidy15]').length == 0){
+                            parnode.outerHTML = tgtspan.innerHTML;
+                        } else if (parnode.innerHTML == tgtspan.outerHTML && tgtspan.querySelectorAll('thdfrag[txhidy15]').length == 0) {
+                            parnode.innerHTML = tgtspan.innerHTML;
+                        }
+                    }
+                }
+            }
+            var oldTgs = document.querySelectorAll("thdfrag[thdcontain='true']");
+            counter = 0;
+            for(var i=0; i < oldTgs.length; i++){
+                var curTg = oldTgs[i];
+                markChildandRemove(curTg);
+            }
+        }
+        function markChildandRemove(node){
+            try{
+                if(node.tagName.toLowerCase() == "thdfrag"){
+                    node.outerHTML = node.innerHTML;
+                }
+                var childList = node.childNodes;
+                for(var i=0; i < childList.length; i++){
+                    counter++;
+                    var node = childList[i];
+                    markChildandRemove(node);
+                    if(node.tagName.toLowerCase() == "thdfrag"){
+                        node.outerHTML = node.innerHTML;
+                    }
+                }
+            }catch (e){}
         }
     }
 })();
