@@ -5,16 +5,32 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         16.1
+// @version         16.3
 // @connect         *
 // @include         *
+// @include         https://www.baidu.com/*
+// @include         http://www.baidu.com/*
+// @include         http://www.sogou.com/web*
+// @include         https://www.sogou.com/web*
+// @include         http://www.sogou.com/sie*
+// @include         https://www.sogou.com/sie*
+// @include         https://www.so.com/s?*
+// @include         https://www.so.com/s?*
+// @include         /^https?://\w+.bing.com/.*/
+// @include         /^https?\:\/\/encrypted.google.[^\/]+/
+// @include         /^https?\:\/\/www.google.[^\/]+/
+// @include         https://*.zhidao.baidu.com/*
+// @include         https://zhidao.baidu.com/*
+// @include         *.zhihu.com/*
 // @home-url        https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2       https://github.com/langren1353/GM_script
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2018-05-21
+// @lastmodified    2018-05-22
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.05.22-V16.3 设置添加双击高亮按钮
+// @note            2018.05.22-V16.2 不再使用MO方式，百度的原因导致MO彻底无法使用，于是全都用DOM操作来判断吧
 // @note            2018.05.21-V16.1 优化高亮的问题; 同时修复了一个高亮关键词的bug；在一个老司机的指点下，添加了referer参数
 // @note            2018.05.21-V16.0 谢谢朋友们关心5.20我还是一个人过的很好；大版本：修正计数器的计数问题，修正MO失效之后脚本的触发问题；新增搜索关键词高亮选项，默认关闭
 // @note            2018.05.06-V15.3 简单移除好搜的广告
@@ -109,7 +125,6 @@
 // @grant           GM_getResourceText
 // @grant           GM_registerMenuCommand
 // ==/UserScript==
-window.ACMO = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
 var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
 
 // 初次：还是采用了setInterval来处理，感觉这样的话速度应该比Dom快，也比MO适用，因为MO需要在最后才能调用，实用性还不如timer
@@ -132,6 +147,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
     var isFaviconEnable = true; // 是否开启favicon图标功能
     var defaultFaviconUrl = "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg";
     var isRightDisplayEnable = true;
+    var isDBHighLightEnable = true;
     var doDisableSug = true;
     var isCounterEnable = false; // 是否显示计数器
     var isALineEnable = false;
@@ -146,11 +162,12 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
 
     var enableDBSelectText = false;
     var isSearchWindowActive = true;
+    var hasInitBtnBind = false;
     var oldTextSelectInterval;
     var Stype_Normal; // 去重定向的选择
     var FaviconType; // favicon的选择-取得实际地址-得到host
     var CounterType; // Counter的选择
-    var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;谷歌=3;必应=4;知乎=5;其他=6]
+    var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;3=好搜;谷歌=4;必应=5;知乎=6;其他=7]
     var SiteType={
         BAIDU:1,
         SOGOU:2,
@@ -161,77 +178,49 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         OTHERS:7,
     };
     var BaiduVersion = " V" + GM_info.script.version;
-    var option = {'childList': true, 'subtree': true};
-    var observer;
+    var insertLocked = false;
     try{
-        observer = new window.ACMO(function (records) {
-            try {
-                ShowSetting();
-                ACHandle();
-            } catch (e) {
-                console.log(e);
-            }
-        });
-    }catch (e){console.log(e);}
-    try{
-        if(typeof(window.ACMO) == "undefined" || window.ACMO == null){
-            console.log("ACMO失效了");
-            var insertLocked = false;
-            document.addEventListener('DOMNodeInserted', function (e) {
-                if (insertLocked == false) {
-                    insertLocked = true;
-                    setTimeout(function () {
-                        // 如果没有ACMO的话那么就会自动调用这个
-                        insertLocked = false;
-                        ShowSetting();
-                        ACHandle();
-                    }, 1000);
-                }
-            }, false);
-        }
+        document.addEventListener('DOMNodeInserted', function (e) {
+            rapidDeal();
+        }, false);
     }catch (e){console.log(e);}
     if (location.host.indexOf("www.baidu.com") > -1) {
         SiteTypeID = SiteType.BAIDU;
         Stype_Normal = "h3.t>a, #results .c-container>.c-blocka"; //PC,mobile
         FaviconType = ".result-op, .c-showurl";
         CounterType = "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]";
-        startSelect("#wrapper,#page-bd", "#wrapper,#page-bd", option);
     } else if (location.host.indexOf("sogou") > -1) {
         SiteTypeID = SiteType.SOGOU;
         Stype_Normal = "h3.pt>a, h3.vrTitle>a";
         FaviconType = "cite[id*='cacheresult_info_']";
         CounterType = ".results>div";
-        startSelect("body", "body", option);
     }  else if (location.host.indexOf("so.com") > -1) {
         SiteTypeID = SiteType.SO;
         Stype_Normal = ".res-list h3>a";
         FaviconType = ".res-linkinfo cite";
         CounterType = ".results>div";
-        startSelect("body", "body", option);
     } else if (location.host.indexOf("google") > -1) {
         SiteTypeID = SiteType.GOOGLE;
         // FaviconType = "._Rm";
         FaviconType = ".iUh30";
         CounterType = ".srg>div[class~=g] *[class~=r],._yE>div[class~=_kk]";
-        startSelect("body", "body", option);
     } else if (location.host.indexOf("bing") > -1) {
         SiteTypeID = SiteType.BING;
         FaviconType = ".b_attribution>cite";
         CounterType = "#b_results>li[class~=b_ans],#b_results>li[class~=b_algo],#b_results>li[class~=b_algo]";
-        startSelect("body", "body", option);
     } else if (location.host.indexOf("zhihu.com") > -1) {
         SiteTypeID = SiteType.ZHIHU;
-        startSelect("body", "body", option);
     } else {
         SiteTypeID = SiteType.OTHERS;
     }
-    if(isHighLightEnable == true){
+    if(isDBHighLightEnable == true){
         WordAutoHighLight();
+    }
+    if(isHighLightEnable == true){
         // 读取关键词，高亮显示
         DoHighLightWithSearchText();
     }
     if(SiteTypeID == SiteType.OTHERS){
-        console.log("其他站点");
         return;
     }else if(isHighLightEnable == true){
         // 拿到搜索关键词，存入GM中
@@ -264,7 +253,6 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         FSBaidu(); // 添加设置项-单双列显示
         AC_addStyle("#content_right td>div:not([id]){display:none;}", "adsEnable", "body");
     }
-
     if(!isRightDisplayEnable){
         // 移除右边栏
         AC_addStyle("#content_right{display:none !important;}.result-op:not([id]){display:none!important;}#rhs{display:none;}", "RightRemove", "body");
@@ -283,19 +271,18 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         , "body"
     );
     AC_addStyle('#sp-ac-container{z-index:999999!important;text-align:left!important;background-color:white;}#sp-ac-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-ac-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;margin-top: 0px !important;}#sp-ac-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-ac-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-ac-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-ac-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-ac-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-ac-container fieldset>ul{padding:0!important;margin:0!important;}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}label[class="newFunc"]{color:blue !important;}', "ac-MENU", "body");
-    function startSelect(checkNode, selector, option) {
-        var tt = setInterval(function () {
-            if (document.querySelector(checkNode)) {
-                clearInterval(tt);
-                /***最后必须要设置好MO继续监听页面数据--自动加载下一页的问题***/
-                try{
-                    observer.observe(document.querySelector(selector), option);
-                }catch (e){
-                    observer.observe(document.body, option);
-                    console.log(e);
-                }
+    function rapidDeal(){
+        try{
+            if (insertLocked == false) {
+                insertLocked = true;
+                setTimeout(function () {
+                    insertLocked = false;
+                    ShowSetting();
+                    ACHandle();
+                    if(isAdsEnable) FSBaidu();
+                }, 20);
             }
-        }, 200);
+        }catch (e){console.log(e);}
     }
     function ACHandle() {
         if(SiteTypeID == SiteType.OTHERS) return;
@@ -381,10 +368,11 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (isFaviconEnable ? 'checked' : '') + ">附加2-Favicon功能</label></li>\n" +
                 "                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='"+defaultFaviconUrl+"' style='width:55%;margin-top:-0.3rem !important;' type='input' " + (isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
                 "                <li><label><input title='AC-移除搜索预测' id='sp-ac-sug_origin' name='sp-ac-a_force' type='checkbox' " + (doDisableSug ? 'checked' : '') + ">附加3-移除百度搜索预测(文字自动搜索)</label></li>\n" +
-                "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' name='sp-ac-a_force' type='checkbox' " + (isRightDisplayEnable ? 'checked' : '') + ">附加3-显示右侧栏</label></li>\n" +
-                "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (isCounterEnable ? 'checked' : '') + ">附加4-编号功能</label></li>\n" +
-                "                <li><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (isALineEnable ? 'checked' : '') + ">附加5-下划线</label></li>\n" +
-                "                <li><label style='"+(hasNewFuncNeedDisplay?"color:blue !important;font-weight: 100;":"")+"'><input title='AC-自动高亮' id='sp-ac-highlight' name='sp-ac-a_force' type='checkbox' " + (isHighLightEnable ? 'checked' : '') + ">附加6-搜索高亮-双击任意双字符文本切换高亮状态(或者选中文本按下W)</label></li>\n" +
+                "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' type='checkbox' " + ( isRightDisplayEnable? 'checked' : '') + ">附加4-显示右侧栏</label></li>\n" +
+                "                <li><label style='"+(hasNewFuncNeedDisplay?"color:blue !important;font-weight: 100;":"")+"'><input title='AC-双击高亮' id='sp-ac-DBhightLight' name='sp-ac-a_force' type='checkbox' " + (isDBHighLightEnable ? 'checked' : '') + ">附加4-双击高亮</label></li>\n" +
+                "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (isCounterEnable ? 'checked' : '') + ">附加6-编号功能</label></li>\n" +
+                "                <li><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (isALineEnable ? 'checked' : '') + ">附加7-下划线</label></li>\n" +
+                "                <li><label style='"+(hasNewFuncNeedDisplay?"color:blue !important;font-weight: 100;":"")+"'><input title='AC-自动高亮' id='sp-ac-highlight' name='sp-ac-a_force' type='checkbox' " + (isHighLightEnable ? 'checked' : '') + ">附加8-搜索高亮-双击任意双字符文本切换高亮状态(或者选中文本按下W)</label></li>\n" +
                 "                    <label style='margin-left:20px'>高亮-颜色列表：<input title='高亮-颜色设定' style='width: 65%;' id='sp-ac-highLightColorList' value='"+(HightLightColorList+"").replace(",", ", ")+"'></label>" +
                 "                <li><a target='_blank' href='https://shang.qq.com/wpa/qunwpa?idkey=5bbfe9de1e81a0930bd053f3157aad2dbb3fa7b991ac9f22ea9f2e2f53efde80' style='color:red !important;'>联系作者,提建议,寻求帮助,脚本定制点我</a></li>" +
                 "            </ul>\n" +
@@ -418,6 +406,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 GM_setValue("defaultFaviconUrl", (imgurl==""||imgurl==null) ? "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg":imgurl);
                 GM_setValue("doDisableSug", document.querySelector("#sp-ac-sug_origin").checked);
                 GM_setValue("isRightDisplayEnable", document.querySelector("#sp-ac-right").checked);
+                GM_setValue("isDBHighLightEnable", document.querySelector("#sp-ac-DBhightLight").checked);
                 GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
                 GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
                 GM_setValue("isHighLightEnable", document.querySelector("#sp-ac-highlight").checked);
@@ -447,6 +436,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         defaultFaviconUrl = GM_getValue("defaultFaviconUrl", "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg");
         doDisableSug = GM_getValue("doDisableSug", true);
         isRightDisplayEnable = GM_getValue("isRightDisplayEnable", true);
+        isDBHighLightEnable = GM_getValue("isDBHighLightEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
         isALineEnable = GM_getValue("isALineEnable", false);
         isHighLightEnable = GM_getValue("isHighLightEnable", false);
@@ -936,21 +926,18 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             }
         }
         mutationfunc();
-        try {
-            var observer = new window.ACMO(mutationfunc);
-            var wrapper = document.querySelector("#wrapper");
-            observer.observe(wrapper, {"attributes": false,"childList":true,"characterData": false,"subtree": true,"attributesFilter": ["class"]});
-        } catch (e) {
-        }
     }
     function DoHighLightWithSearchText(){
         var searchValue = GM_getValue("searchKeyWords", "");
         WordAutoHighLight(searchValue);
     }
     function WordAutoHighLight(searchText){
-        document.addEventListener('dblclick', DoHighLight, false);
-        document.addEventListener('mouseup', DoHighLight, false);
-        document.addEventListener('keyup', DoHighLight, true);
+        if(!hasInitBtnBind){
+            hasInitBtnBind = true;
+            document.addEventListener('dblclick', DoHighLight, false);
+            document.addEventListener('mouseup', DoHighLight, false);
+            document.addEventListener('keyup', DoHighLight, true);
+        }
         var isDBClickOn = true;
         var enableCharCode = 'W';
         var keySets = new Object();
