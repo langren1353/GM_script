@@ -5,11 +5,11 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         16.3
+// @version         17.1
 // @connect         *
-// @include         *
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
+// @include         http://xueshu.baidu.com/*
 // @include         http://www.sogou.com/web*
 // @include         https://www.sogou.com/web*
 // @include         http://www.sogou.com/sie*
@@ -27,8 +27,12 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2018-05-22
+// @lastmodified    2018-05-25
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.05.25-V17.1 新增支持百度学术的重定向功能
+// @note            2018.05.25-V17.0 拆分关键词高亮这个功能，保证功能尽量不交叉，如果需要这个功能的，请安装搜索关键词自动高亮脚本
+// @note            2018.05.22-V16.5 尝试缓解内存的问题，避免对其他的进行干扰，同时减少了head标签触发
+// @note            2018.05.22-V16.4 彻底拆分双击高亮和自动高亮功能，同时保持两个功能都是关闭状态
 // @note            2018.05.22-V16.3 设置添加双击高亮按钮
 // @note            2018.05.22-V16.2 不再使用MO方式，百度的原因导致MO彻底无法使用，于是全都用DOM操作来判断吧
 // @note            2018.05.21-V16.1 优化高亮的问题; 同时修复了一个高亮关键词的bug；在一个老司机的指点下，添加了referer参数
@@ -125,11 +129,12 @@
 // @grant           GM_getResourceText
 // @grant           GM_registerMenuCommand
 // ==/UserScript==
-var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
 
+var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
 // 初次：还是采用了setInterval来处理，感觉这样的话速度应该比Dom快，也比MO适用，因为MO需要在最后才能调用，实用性还不如timer
 // 之后：还是采用MO的方式来处理
 (function () {
+    'use strict';
     var fatherName = new Array(
         "c-container", //baidu1
         "rc", //google
@@ -147,27 +152,20 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
     var isFaviconEnable = true; // 是否开启favicon图标功能
     var defaultFaviconUrl = "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg";
     var isRightDisplayEnable = true;
-    var isDBHighLightEnable = true;
     var doDisableSug = true;
     var isCounterEnable = false; // 是否显示计数器
     var isALineEnable = false;
     var valueLock = false; // 避免数据同时读取和写入时导致的死锁，然后致使页面死循环
     var onResizeLocked = false;
     var sortIndex = 1; // 设置编号值
-    var isHighLightEnable = false;
     var hasNewFuncNeedDisplay = true; // 设置器
-    var HightLightColorList = ["#FFFF80", "#90EE90", "#33FFFF", "#FF6600", "#FF69B4", "#20B2AA", "#8470FF"];
 
     LoadSetting(); // 读取个人设置信息
 
-    var enableDBSelectText = false;
-    var isSearchWindowActive = true;
-    var hasInitBtnBind = false;
-    var oldTextSelectInterval;
     var Stype_Normal; // 去重定向的选择
     var FaviconType; // favicon的选择-取得实际地址-得到host
     var CounterType; // Counter的选择
-    var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;3=好搜;谷歌=4;必应=5;知乎=6;其他=7]
+    var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;3=好搜;谷歌=4;必应=5;知乎=6;百度学术=7;其他=8]
     var SiteType={
         BAIDU:1,
         SOGOU:2,
@@ -175,15 +173,12 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         GOOGLE:4,
         BING:5,
         ZHIHU:6,
-        OTHERS:7,
+        BAIDU_XUESHU:7,
+        OTHERS:8
     };
     var BaiduVersion = " V" + GM_info.script.version;
     var insertLocked = false;
-    try{
-        document.addEventListener('DOMNodeInserted', function (e) {
-            rapidDeal();
-        }, false);
-    }catch (e){console.log(e);}
+    var oldCenter_colWidth = 0;
     if (location.host.indexOf("www.baidu.com") > -1) {
         SiteTypeID = SiteType.BAIDU;
         Stype_Normal = "h3.t>a, #results .c-container>.c-blocka"; //PC,mobile
@@ -210,43 +205,19 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         CounterType = "#b_results>li[class~=b_ans],#b_results>li[class~=b_algo],#b_results>li[class~=b_algo]";
     } else if (location.host.indexOf("zhihu.com") > -1) {
         SiteTypeID = SiteType.ZHIHU;
+    } else if(location.host.indexOf("xueshu.baidu.com") > -1){
+        SiteTypeID = SiteType.BAIDU_XUESHU;
     } else {
         SiteTypeID = SiteType.OTHERS;
     }
-    if(isDBHighLightEnable == true){
-        WordAutoHighLight();
-    }
-    if(isHighLightEnable == true){
-        // 读取关键词，高亮显示
-        DoHighLightWithSearchText();
-    }
-    if(SiteTypeID == SiteType.OTHERS){
-        return;
-    }else if(isHighLightEnable == true){
-        // 拿到搜索关键词，存入GM中
-        setInterval(function(){
-            if(document.hidden == true){ // 只要是搜索窗口不激活，那么flag=false
-                isSearchWindowActive = false;
-                enableDBSelectText = false;
-            }
-            // 窗口激活状态；或者是窗口之前是不激活，现在激活了
-            if(isSearchWindowActive == true || (isSearchWindowActive == false && document.hidden == false)) {
-                var searchValue = (window.location.search.substr(1) + "").split("&");
-                for (var i = 0; i < searchValue.length; i++) {
-                    var key_value = searchValue[i].split("=");
-                    if (/^(wd|q|query)$/.test(key_value[0])) {
-                        var searchWords = decodeURI(key_value[1]).toLocaleLowerCase().replace(/\+/g, " ");
-                        if(GM_getValue("searchKeyWords", "") != searchWords && enableDBSelectText == false){ // 避免重复掉用，一直刷新关键词
-                            console.log("设定为："+searchWords);
-                            GM_setValue("searchKeyWords", searchWords);
-                            DoHighLightWithSearchText();
-                        }
-                        break;
-                    }
-                }
-            }
-        }, 1000);
-    }
+
+    try{
+        if(SiteTypeID != SiteType.OTHERS){
+            document.addEventListener('DOMNodeInserted', function (e) {
+                rapidDeal();
+            }, false);
+        }
+    }catch (e){console.log(e);}
     if (isAdsEnable){
         if(SiteTypeID == SiteType.BAIDU) AdsStyleMode = AdsStyleMode_Baidu;
         if(SiteTypeID == SiteType.GOOGLE) AdsStyleMode = AdsStyleMode_Google;
@@ -273,7 +244,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
     AC_addStyle('#sp-ac-container{z-index:999999!important;text-align:left!important;background-color:white;}#sp-ac-container *{font-size:13px!important;color:black!important;float:none!important;}#sp-ac-main-head{position:relative!important;top:0!important;left:0!important;}#sp-ac-span-info{position:absolute!important;right:1px!important;top:0!important;font-size:10px!important;line-height:10px!important;background:none!important;font-style:italic!important;color:#5a5a5a!important;text-shadow:white 0px 1px 1px!important;}#sp-ac-container input{vertical-align:middle!important;display:inline-block!important;outline:none!important;height:auto !important;padding:0px !important;margin-bottom:0px !important;margin-top: 0px !important;}#sp-ac-container input[type="number"]{width:50px!important;text-align:left!important;}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4!important;padding:1px!important;margin:3px!important;width:13px!important;height:13px!important;background:none!important;cursor:pointer!important;visibility:visible !important;position:static !important;}#sp-ac-container input[type="button"]{border:1px solid #ccc!important;cursor:pointer!important;background:none!important;width:auto!important;height:auto!important;}#sp-ac-container li{list-style:none!important;margin:3px 0!important;border:none!important;float:none!important;}#sp-ac-container fieldset{border:2px groove #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:4px 9px 6px 9px!important;margin:2px!important;display:block!important;width:auto!important;height:auto!important;}#sp-ac-container legend{line-height:20px !important;margin-bottom:0px !important;}#sp-ac-container fieldset>ul{padding:0!important;margin:0!important;}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px!important;}#sp-ac-rect{position:relative!important;top:0!important;left:0!important;float:right!important;height:10px!important;width:10px!important;padding:0!important;margin:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8)!important;opacity:0.8!important;}#sp-ac-dot,#sp-ac-cur-mode{position:absolute!important;z-index:9999!important;width:5px!important;height:5px!important;padding:0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid white!important;opacity:1!important;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)!important;}#sp-ac-dot{right:-3px!important;top:-3px!important;}#sp-ac-cur-mode{left:-3px!important;top:-3px!important;width:6px!important;height:6px!important;}#sp-ac-content{padding:0!important;margin:5px 5px 0 0!important;-moz-border-radius:3px!important;border-radius:3px!important;border:1px solid #A0A0A0!important;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;box-shadow:-2px 2px 5px rgba(0,0,0,0.3)!important;}#sp-ac-main{padding:5px!important;border:1px solid white!important;-moz-border-radius:3px!important;border-radius:3px!important;background-color:#F2F2F7!important;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%)!important;background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))!important;}#sp-ac-foot{position:relative!important;left:0!important;right:0!important;min-height:20px!important;}#sp-ac-savebutton{position:absolute!important;top:0!important;right:2px!important;}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc!important;-moz-border-radius:3px!important;border-radius:3px!important;padding:2px 3px!important;cursor:pointer!important;background-color:#F9F9F9!important;-webkit-box-shadow:inset 0 10px 5px white!important;-moz-box-shadow:inset 0 10px 5px white!important;box-shadow:inset 0 10px 5px white!important;}label[class="newFunc"]{color:blue !important;}', "ac-MENU", "body");
     function rapidDeal(){
         try{
-            if (insertLocked == false) {
+            if (insertLocked == false && SiteTypeID != SiteType.OTHERS) {
                 insertLocked = true;
                 setTimeout(function () {
                     insertLocked = false;
@@ -292,8 +263,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 resetURLNormal(document.querySelectorAll(Stype_Normal)); // 百度搜狗去重定向-普通模式【注意不能为document.query..】
             if(SiteTypeID == SiteType.GOOGLE)
                 removeOnMouseDownFunc(); // 移除onMouseDown事件，谷歌去重定向
-            if(SiteTypeID == SiteType.ZHIHU)
-                removeLinkTarget(); // 移除知乎的重定向问题
+            removeRedirectLinkTarget(); // 移除知乎的重定向问题 & 百度学术重定向问题
             safeRemove(".res_top_banner"); // 移除百度可能显示的劫持
             safeRemove(".c-container /deep/ .c-container"); // 移除百度的恶心Shadow DOM（Shadown Root）
         }
@@ -357,9 +327,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 "                    <label><input title='百度-单列普通' name='sp-ac-a_force_style_baidu' value='1'  type='radio' " + (AdsStyleMode_Baidu==1 ? 'checked' : '') + ">百度-单列普通</label>" +
                 "                    <BR/><label title='百度-单列居中' style='margin-left:20px'><input  name='sp-ac-a_force_style_baidu' value='2'  type='radio' " + (AdsStyleMode_Baidu==2 ? 'checked' : '') + ">百度-单列居中</label>" +
                 "                    <label title='百度-双列居中'><input  name='sp-ac-a_force_style_baidu' value='3'  type='radio' " + (AdsStyleMode_Baidu==3 ? 'checked' : '') + ">百度-双列居中</label>" +
-
                 "                    <BR/><div style='height: 1px;width:207px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>"+
-
                 "                    <label title='谷歌-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_google' value='0' type='radio' " + (AdsStyleMode_Google==0 ? 'checked' : '') + ">谷歌-原始模式</label>" +
                 "                    <label><input title='谷歌-单列普通' name='sp-ac-a_force_style_google' value='1'  type='radio' " + (AdsStyleMode_Google==1 ? 'checked' : '') + ">谷歌-单列普通</label>" +
                 "                    <BR/><label title='谷歌-单列居中' style='margin-left:20px'><input  name='sp-ac-a_force_style_google' value='2'  type='radio' " + (AdsStyleMode_Google==2 ? 'checked' : '') + ">谷歌-单列居中</label>" +
@@ -369,11 +337,8 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 "                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='"+defaultFaviconUrl+"' style='width:55%;margin-top:-0.3rem !important;' type='input' " + (isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
                 "                <li><label><input title='AC-移除搜索预测' id='sp-ac-sug_origin' name='sp-ac-a_force' type='checkbox' " + (doDisableSug ? 'checked' : '') + ">附加3-移除百度搜索预测(文字自动搜索)</label></li>\n" +
                 "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' type='checkbox' " + ( isRightDisplayEnable? 'checked' : '') + ">附加4-显示右侧栏</label></li>\n" +
-                "                <li><label style='"+(hasNewFuncNeedDisplay?"color:blue !important;font-weight: 100;":"")+"'><input title='AC-双击高亮' id='sp-ac-DBhightLight' name='sp-ac-a_force' type='checkbox' " + (isDBHighLightEnable ? 'checked' : '') + ">附加4-双击高亮</label></li>\n" +
                 "                <li><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (isCounterEnable ? 'checked' : '') + ">附加6-编号功能</label></li>\n" +
                 "                <li><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (isALineEnable ? 'checked' : '') + ">附加7-下划线</label></li>\n" +
-                "                <li><label style='"+(hasNewFuncNeedDisplay?"color:blue !important;font-weight: 100;":"")+"'><input title='AC-自动高亮' id='sp-ac-highlight' name='sp-ac-a_force' type='checkbox' " + (isHighLightEnable ? 'checked' : '') + ">附加8-搜索高亮-双击任意双字符文本切换高亮状态(或者选中文本按下W)</label></li>\n" +
-                "                    <label style='margin-left:20px'>高亮-颜色列表：<input title='高亮-颜色设定' style='width: 65%;' id='sp-ac-highLightColorList' value='"+(HightLightColorList+"").replace(",", ", ")+"'></label>" +
                 "                <li><a target='_blank' href='https://shang.qq.com/wpa/qunwpa?idkey=5bbfe9de1e81a0930bd053f3157aad2dbb3fa7b991ac9f22ea9f2e2f53efde80' style='color:red !important;'>联系作者,提建议,寻求帮助,脚本定制点我</a></li>" +
                 "            </ul>\n" +
                 "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton' title='取消' style='position: relative !important;float: left !important;'>取消</span>\n" +
@@ -406,16 +371,8 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 GM_setValue("defaultFaviconUrl", (imgurl==""||imgurl==null) ? "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg":imgurl);
                 GM_setValue("doDisableSug", document.querySelector("#sp-ac-sug_origin").checked);
                 GM_setValue("isRightDisplayEnable", document.querySelector("#sp-ac-right").checked);
-                GM_setValue("isDBHighLightEnable", document.querySelector("#sp-ac-DBhightLight").checked);
                 GM_setValue("isCounterEnable", document.querySelector("#sp-ac-counter").checked);
                 GM_setValue("isALineEnable", document.querySelector("#sp-ac-aline").checked);
-                GM_setValue("isHighLightEnable", document.querySelector("#sp-ac-highlight").checked);
-                var colorText = document.querySelector("#sp-ac-highLightColorList").value.split(",");
-                var colorList = [];
-                for(var i=0; i<colorText.length; i++){
-                    colorList[i] = colorText[i].trim();
-                }
-                GM_setValue("HightLightColorList", colorList);
                 setTimeout(function () {
                     window.location.reload();
                 }, 400);
@@ -436,11 +393,8 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         defaultFaviconUrl = GM_getValue("defaultFaviconUrl", "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg");
         doDisableSug = GM_getValue("doDisableSug", true);
         isRightDisplayEnable = GM_getValue("isRightDisplayEnable", true);
-        isDBHighLightEnable = GM_getValue("isDBHighLightEnable", true);
         isCounterEnable = GM_getValue("isCounterEnable", false);
         isALineEnable = GM_getValue("isALineEnable", false);
-        isHighLightEnable = GM_getValue("isHighLightEnable", false);
-        HightLightColorList = GM_getValue("HightLightColorList", ["#FFFF80", "#90EE90", "#33FFFF", "#FF6600", "#FF69B4", "#20B2AA", "#8470FF"]);
         var oldVersion = GM_getValue("version", "");
         if(oldVersion == GM_info.script.version){
             hasNewFuncNeedDisplay = false;
@@ -458,12 +412,19 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             console.log(e);
         }
     }
-    function removeLinkTarget() {
-        // console.log("移除知乎重定向问题");
-        var nodes = document.querySelectorAll(".RichText a[href*='//link.zhihu.com/?target']");
-        for(var i=0; i<nodes.length; i++){
-            var url = decodeURIComponent(nodes[i].href.replace(/https?:\/\/link\.zhihu\.com\/\?target=/, ""));
-            nodes[i].href = url;
+    function removeRedirectLinkTarget() {
+        if(SiteTypeID == SiteType.ZHIHU){
+            var nodes = document.querySelectorAll(".RichText a[href*='//link.zhihu.com/?target']");
+            for(var i=0; i<nodes.length; i++){
+                var url = decodeURIComponent(nodes[i].href.replace(/https?:\/\/link\.zhihu\.com\/\?target=/, ""));
+                nodes[i].href = url;
+            }
+        }else if(SiteTypeID == SiteType.BAIDU_XUESHU){
+            var nodes = document.querySelectorAll("a[href*='sc_vurl=http']");
+            for(var i=0; i<nodes.length; i++){
+                var url = getUrlAttribute(nodes[i].href, "sc_vurl", true);
+                nodes[i].href = url;
+            }
         }
     }
     function AC_addStyle(css, className, addToTarget, isReload){ // 添加CSS代码，不考虑文本载入时间，带有className
@@ -486,6 +447,17 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 }catch (e){console.log(e.message);}
             }
         }, 50);
+    }
+    function getUrlAttribute(url, attribute, needDecode){
+        var searchValueS = (url.substr(1) + "").split("&");
+        for (var i = 0; i < searchValueS.length; i++) {
+            var key_value = searchValueS[i].split("=");
+            var reg = new RegExp("^"+attribute+"$");
+            if (reg.test(key_value[0])) {
+                var searchWords = key_value[1];
+                return needDecode?decodeURIComponent(searchWords):searchWords;
+            }
+        }
     }
     function resetURLNormal(list) {
         for (var i = 0; i < list.length; i++) {
@@ -742,7 +714,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 parent.style="width: auto;";
                 var userAdiv = document.createElement("a");
                 userAdiv.style = "text-decoration: none;";
-                userAdiv.innerHTML = "<ol id='myuser' style='display: inline-block;'><li class='myuserconfig' style='display: inline-block;height: 18px;line-height: 1.5;background: #2866bd;color: #fff;font-weight: bold;text-align: center;padding: 6px;'>自定义&nbsp;<span class='ac-newversionDisplay' style='background-color: red;left: 0px;top: 0px;float: right;height: 8px;width: 8px;border-radius: 4px;display:"+(hasNewFuncNeedDisplay?"unset":"none")+"'>&nbsp;</span></li></ol>";
+                userAdiv.innerHTML = "<ol id='myuser' style='display: inline-block;'><li class='myuserconfig' style='display: inline-block;height: 18px;line-height: 1.5;background: #2866bd;color: #fff;font-weight: bold;text-align: center;padding: 6px;'>自定义 <span class='ac-newversionDisplay' style='background-color: red;left: 0px;top: 0px;float: right;height: 8px;width: 8px;border-radius: 4px;display:"+(hasNewFuncNeedDisplay?"unset":"none")+"'>&nbsp;</span></li></ol>";
                 parent.insertBefore(userAdiv, parent.childNodes[0]);
                 document.querySelector("#myuser .myuserconfig").addEventListener('click', function (e) {
                     return ACtoggleSettingDisplay();
@@ -909,6 +881,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                         var width = document.documentElement.clientWidth;
                         if (AdsStyleMode == 2)// 单列居中模式
                             width -= 200;
+                        if(oldCenter_colWidth == width) return;
                         if(onResizeLocked == false){
                             onResizeLocked = true;
                             // AC_addStyle("#cnt>.mw #center_col .med[id='res'], #taw{width:"+width+"px;}", "AC-Style-bkWMgd", null, true);
@@ -920,218 +893,12 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                             document.querySelector("#bottomads~#extrares").style = "margin-left:" + marLeft + "px !important";
                             document.querySelector("#foot").style = "margin-left:" + (marLeft - 150) + "px !important";
                         }
+                        oldCenter_colWidth = width;
                     } catch (e) {
                     }
-                }, 100);
+                }, 500);
             }
         }
         mutationfunc();
-    }
-    function DoHighLightWithSearchText(){
-        var searchValue = GM_getValue("searchKeyWords", "");
-        WordAutoHighLight(searchValue);
-    }
-    function WordAutoHighLight(searchText){
-        if(!hasInitBtnBind){
-            hasInitBtnBind = true;
-            document.addEventListener('dblclick', DoHighLight, false);
-            document.addEventListener('mouseup', DoHighLight, false);
-            document.addEventListener('keyup', DoHighLight, true);
-        }
-        var isDBClickOn = true;
-        var enableCharCode = 'W';
-        var keySets = new Object();
-        var counter = 0;
-        var isInDebug = false;
-        doHighLightTextS(searchText);
-        function DoHighLight(e) {
-            var target = e.target;
-            var selectedText = getSelectedText(target);
-            var s_dblclick = (e.type === 'dblclick') && isDBClickOn; // 是双击选中
-            var s_keyup = (e.type === 'keyup') && (enableCharCode.charCodeAt(0)==e.keyCode);// 是按下特殊按键
-            if (selectedText && getBLen(selectedText) >= 3) {
-                myConsoleLog(selectedText);
-                if (s_keyup){
-                    doHighLightTextS(selectedText);
-                }else if (s_dblclick) {
-                    enableDBSelectText = true;
-                    GM_setValue("searchKeyWords", selectedText);
-                    doHighLightTextS(selectedText, true);
-                }
-            }
-        }
-        function myConsoleLog(text){
-            if(isInDebug){
-                console.log(text);
-            }
-        }
-        function doHighLightTextS(selectedText, dbclick) {
-            if(typeof(selectedText) == "undefined" || selectedText == null || selectedText == "") return;
-            unHighLightAll_Text();
-            if(dbclick){
-                myConsoleLog("双击:" + selectedText);
-                GM_setClipboard(selectedText);
-            }
-            initKeySets(selectedText);
-            myConsoleLog(keySets.keywords);
-            doHighLightAll_CSS();
-            try{clearInterval(oldTextSelectInterval);}catch (e){console.log(e);}
-            oldTextSelectInterval = setInterval(function(){
-                doHighLightAll_Text();
-            }, 100);
-        }
-        function getSelectedText(target) {
-            function getTextSelection() {
-                var selectedText = '';
-                if (target.getAttribute("type")) {
-                    if (target.getAttribute("type").toLowerCase() === "checkbox") return '';
-                }
-                var value = target.value;
-                if (value) {
-                    var startPos = target.selectionStart;
-                    var endPos = target.selectionEnd;
-                    if (!isNaN(startPos) && !isNaN(endPos)) selectedText = value.substring(startPos, endPos);
-                    return selectedText;
-                } else return '';
-            }
-            var selectedText = window.getSelection().toString();
-            if (!selectedText) selectedText = getTextSelection();
-            myConsoleLog(selectedText);
-            return selectedText;
-        }
-        function getBLen(str) {
-            if (str == null) return 0;
-            if (typeof str != "string"){
-                str += "";
-            }
-            return str.replace(/[^\x00-\xff]/g,"01").length;
-        }
-        // 初始化点击的文字信息
-        function initKeySets(selection){
-            // 1.split通过特殊字符和字符边界分割串[非[0-9A-Za-z]特殊字符]
-            // 2.通过特定字符连接原始串，
-            // 3.1移除多次重复的特定串，非常用串移除，避免空串
-            // 3.2移除开头或者结尾的特定串，避免分割后出现空白数据，
-            // 4.按特定串分割
-            keySets.keywords = selection
-                .split(/\b |[\u0000-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u00FF\uFF00-\uFFFF\u3000-\u303F]/g)
-                .join('ACsCA')
-                .replace(/[^\u4E00-\u9FA5|0-9|a-z|A-Z_]+/g, "")
-                .replace(/(ACsCA){2}/g, "ACsCA")
-                .replace(/(^ACsCA|ACsCA$)/g, "")
-                .split("ACsCA");
-            keySets.length = keySets.keywords.length;
-            keySets.textcolor = new Array();
-            // keySets.backcolor = new Array();
-            keySets.visible = new Array();
-            for(var i=0; i < keySets.keywords.length; i++){
-                keySets.textcolor[i] = "rgb(0,0,0)";
-                keySets.visible[i] = "true";
-            }
-        }
-        function doHighLightAll_CSS(){ // 顶部的那一堆数组
-            if (keySets.visible[0] == "true"){
-                var rule = ".acWHSet{display:inline!important;";
-                if (keySets.textcolor.length > 0) rule += "color:"+keySets.textcolor[0]+";";
-                rule += "font-weight:inherit;}";
-                for(var i = 0; i < keySets.keywords.length; i++){
-                    rule += ".acWHSet[data='"+keySets.keywords[i].toLocaleLowerCase()+"']{background-color:"+HightLightColorList[i % HightLightColorList.length]+";}";
-                }
-                AC_addStyle(rule, "AC-highLightRule", "body", true);
-            }
-        }
-        function doHighLightAll_Text(){
-            // myConsoleLog(keySets.keywords);
-            if(keySets.keywords.length == 0) return;
-            var patExp = "";
-            for(var index=0; index<keySets.keywords.length-1; index++) {
-                patExp += keySets.keywords[index]+"|";
-            }
-            patExp += keySets.keywords[index];
-            var pat = new RegExp("("+patExp+")", "gi");
-            var span = document.createElement('thdfrag');
-            span.setAttribute("thdcontain","true");
-            var snapElements = document.evaluate(
-                './/text()[normalize-space() != "" ' +
-                'and not(ancestor::style) ' +
-                'and not(ancestor::script) ' +
-                'and not(ancestor::textarea) ' +
-                'and not(ancestor::div[@id="thdtopbar"]) ' +
-                'and not(ancestor::div[@id="kwhiedit"]) ' +
-                'and not(parent::thdfrag[@txhidy15])]',
-                document.body, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-            if (!snapElements.snapshotItem(0)) { return; }
-            try{
-                for (var i = 0, len = snapElements.snapshotLength; i < len; i++) {
-                    var node = snapElements.snapshotItem(i);
-                    if (pat.test(node.nodeValue)) {
-                        pat.lastIndex = 0; // 必须重置
-                        var sp = span.cloneNode(true);
-                        var findResult = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                        var matchs = pat.exec(findResult);
-                        var repNodeHTML = findResult;
-                        var hashSet = new Array();
-                        for(var j = 0; j < matchs.length; j++){
-                            myConsoleLog(matchs[j]);
-                            if(typeof(hashSet[matchs[i]]) == "undefined"){
-                                hashSet[matchs[i]] = 1;
-                                repNodeHTML = repNodeHTML.replace(matchs[j], '<thdfrag class="THmo acWHSet" txhidy15="acWHSet" data="'+matchs[j].toLocaleLowerCase()+'">'+matchs[j]+'</thdfrag>');
-                            }
-                        }
-                        sp.innerHTML = repNodeHTML;
-                        node.parentNode.replaceChild(sp, node);
-                        if (sp.parentNode.hasAttribute("thdcontain")) sp.outerHTML = sp.innerHTML;
-                    }
-                }
-            }catch (e) {
-                console.log(e);
-            }
-        }
-        function unHighLightAll_Text(){
-            var tgts = document.querySelectorAll('thdfrag[txhidy15="acWHSet"]');
-            for (var i=0; i<tgts.length; i++){
-                var parnode = tgts[i].parentNode, parpar = parnode.parentNode, tgtspan;
-                if (parnode.hasAttribute("thdcontain") && parnode.innerHTML == tgts[i].outerHTML){
-                    parnode.outerHTML = tgts[i].textContent.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                    tgtspan = parpar;
-                } else {
-                    tgts[i].outerHTML = tgts[i].textContent.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                    tgtspan = parnode;
-                }
-                tgtspan.normalize();
-                if (tgtspan.hasAttribute("thdcontain")){
-                    parnode = tgtspan.parentNode;
-                    if (parnode){
-                        if (parnode.hasAttribute("thdcontain") && parnode.innerHTML == tgtspan.outerHTML && tgtspan.querySelectorAll('thdfrag[txhidy15]').length == 0){
-                            parnode.outerHTML = tgtspan.innerHTML;
-                        } else if (parnode.innerHTML == tgtspan.outerHTML && tgtspan.querySelectorAll('thdfrag[txhidy15]').length == 0) {
-                            parnode.innerHTML = tgtspan.innerHTML;
-                        }
-                    }
-                }
-            }
-            var oldTgs = document.querySelectorAll("thdfrag[thdcontain='true']");
-            counter = 0;
-            for(var i=0; i < oldTgs.length; i++){
-                var curTg = oldTgs[i];
-                markChildandRemove(curTg);
-            }
-        }
-        function markChildandRemove(node){
-            try{
-                if(node.tagName.toLowerCase() == "thdfrag"){
-                    node.outerHTML = node.innerHTML;
-                }
-                var childList = node.childNodes;
-                for(var i=0; i < childList.length; i++){
-                    counter++;
-                    var node = childList[i];
-                    markChildandRemove(node);
-                    if(node.tagName.toLowerCase() == "thdfrag"){
-                        node.outerHTML = node.innerHTML;
-                    }
-                }
-            }catch (e){}
-        }
     }
 })();
