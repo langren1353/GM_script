@@ -10,6 +10,7 @@
     margin-left: 49%;
     position: absolute;
     max-width: 670px;
+    z-index:1;
 }
 .srg>#double>.g {
     width: 100%;

@@ -3,7 +3,7 @@
 }
 #form{
     position:relative;
-    left:calc(50% - 410px);
+    left:calc(38% - 330px);
     background-color: unset;
     width:50%;
 }
@@ -12,7 +12,7 @@
 }
 #result_logo{
     position: relative;
-    left: calc(50% - 420px);
+    left: calc(38% - 330px);
     margin:10px 0 0;
 }
 #s_tab>b,#s_tab>a{
@@ -29,7 +29,7 @@
 #content_left,#rs,#page{
     position:relative;
     padding-left: 0;
-    margin-left: calc(50% - 420px);
+    margin-left: calc(38% - 330px);
     width: 50%!important;
     min-width: 670px;
 }
