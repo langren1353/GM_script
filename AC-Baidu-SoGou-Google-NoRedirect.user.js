@@ -5,8 +5,9 @@
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         17.1
-// @connect         *
+// @version         17.3
+// @connect         http://*
+// @connect         www.baidu.com
 // @include         https://www.baidu.com/*
 // @include         http://www.baidu.com/*
 // @include         http://xueshu.baidu.com/*
@@ -27,8 +28,10 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.去除百度的多余广告 3.添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能
-// @lastmodified    2018-05-25
+// @lastmodified    2018-06-14
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/14178
+// @note            2018.06.14-V17.3 由于edge中还是不支持返回真实链接，于是暂时屏蔽掉edge浏览器总的请求，等猴子更新了再开启这个功能；connect元素中添加baidu.com避免抽风
+// @note            2018.06.13-V17.2 加快查询速度-同时不再弹窗说新连接，无需设置特殊参数；缺点：LOG中会有许多Refused to connect to "xxx": Request was redirected to a not whitelisted URL
 // @note            2018.05.25-V17.1 新增支持百度学术的重定向功能
 // @note            2018.05.25-V17.0 拆分关键词高亮这个功能，保证功能尽量不交叉，如果需要这个功能的，请安装搜索关键词自动高亮脚本
 // @note            2018.05.22-V16.5 尝试缓解内存的问题，避免对其他的进行干扰，同时减少了head标签触发
@@ -308,7 +311,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
     function ShowSetting() {
         if(SiteTypeID == SiteType.OTHERS) return;
         // 如果不存在的话，那么自己创建一个-copy from superPreload
-        if (document.querySelector("#sp-ac-container") == null) {
+        if (document.body != null && document.querySelector("#sp-ac-container") == null) {
             var Container = document.createElement('div');
             Container.id = "sp-ac-container";
             Container.style = "position: fixed !important; top: 10%;right: 7%;";
@@ -377,12 +380,12 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                     window.location.reload();
                 }, 400);
             }, false);
-        }catch (e){console.log(e);}
+        }catch (e){}
         try{
             document.querySelector("#sp-ac-cancelbutton").addEventListener('click', function (e) {
                 document.querySelector("#sp-ac-content").style.display = 'none';
             }, false);
-        }catch (e){console.log(e);}
+        }catch (e){}
     }
     function LoadSetting() {
         isRedirectEnable = GM_getValue("isRedirectEnable", true);
@@ -460,6 +463,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         }
     }
     function resetURLNormal(list) {
+        if(navigator.userAgent.indexOf("Edge") > 0) return; // 如果是edge的话，那么不处理重定向问题-因为edge的猴子未完善，拿不到最终地址
         for (var i = 0; i < list.length; i++) {
             // 此方法是异步，故在结束的时候使用i会出问题-严重!
             // 采用闭包的方法来进行数据的传递
@@ -484,27 +488,31 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                     curhref.indexOf("m.baidu.com/from") > -1 ||
                     curhref.indexOf("www.sogou.com/link") > -1 ||
                     curhref.indexOf("so.com/link") > -1) {
-                    (function (c_curnode,c_curhref) {
-                        setTimeout(function () {
-                            var gmRequestNode = GM_xmlhttpRequest({
-                                url: c_curhref,
-                                headers: {"Accept": "text/html", "Referer":c_curhref},
-                                method: "GET",
-                                onreadystatechange: function (response) {
-                                    if (SiteTypeID == SiteType.BAIDU) {
-                                        if(response.finalUrl != c_curhref && response.finalUrl!="" && response.finalUrl != null){
-                                            DealRedirect(gmRequestNode, c_curhref, response.finalUrl);
-                                        }else{
-                                            DealRedirect(gmRequestNode, c_curhref, response.responseText, "location.replace\\(\"([^\"]+)\"");
-                                        }
-                                    }else if (SiteTypeID == SiteType.SOGOU) { //如果是搜狗的结果
-                                        DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'");
-                                    } else if(SiteTypeID == SiteType.SO){
-                                        DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'");
-                                    }
+                    (function (c_curnode, c_curhref) {
+                        var gmRequestNode = GM_xmlhttpRequest({
+                            url: c_curhref.replace(/^http:/, "https:"),
+                            headers: {"Accept": "text/html", "Referer":c_curhref},
+                            method: "GET",
+                            timeout: 10000,
+                            onreadystatechange: function (response) {
+                                if(response.responseHeaders.indexOf("tm-finalurldhdg") >= 0){
+                                    var relURL = Reg_Get(response.responseHeaders, "tm-finalurldhdg: ([^\\s]+)");
+                                    if(relURL == null || relURL == "") return;
+                                    DealRedirect(gmRequestNode, c_curhref, relURL);
                                 }
-                            });
-                        }, 100);
+                                if (SiteTypeID == SiteType.BAIDU) {
+                                    if(response.finalUrl != c_curhref && response.finalUrl!="" && response.finalUrl != null){
+                                        DealRedirect(gmRequestNode, c_curhref, response.finalUrl);
+                                    }else{
+                                        DealRedirect(gmRequestNode, c_curhref, response.responseText, "location.replace\\(\"([^\"]+)\"");
+                                    }
+                                }else if (SiteTypeID == SiteType.SOGOU) { //如果是搜狗的结果
+                                    DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'");
+                                } else if(SiteTypeID == SiteType.SO){
+                                    DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'");
+                                }
+                            }
+                        });
                     })(curNode, curhref); //传递旧的网址过去，读作c_curhref
                 }
             }
@@ -518,7 +526,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         } else{
             resultResponseUrl = respText;
         }
-        if(resultResponseUrl != null && resultResponseUrl != ""){
+        if(resultResponseUrl != null && resultResponseUrl != "" && resultResponseUrl.indexOf("www.baidu.com/link") < 0){
             try{
                 document.querySelector("a[href*='"+curNodeHref+"']").setAttribute("ac_redirectStatus", "2");
                 document.querySelector("a[href*='"+curNodeHref+"']").setAttribute("href", resultResponseUrl);
