@@ -1,19 +1,27 @@
 // ==UserScript==
-// @name 有道-惠惠购物助手(新)-购物比价-优惠券查找
+// @name 有道-惠惠购物助手(新)-购物比价-优惠券查找-一键领取购物立省80%-【2018.08.11加强稳定版】
 // @description 有道购物助手，购物比价，自动对比电商同款商品价格，轻松网购不吃亏，更有各种优惠信息对比
-// @update 2018-05-12
-// @version 1.4
+// @update 2018-08.11
+// @version 3.3
+// @note   2018.08.11 修复链接搜索的文字异常
+// @note   2018.08.08 修复优惠券面值链接异常-添加天猫搜索页面优惠券面值显示
+// @note   2018.08.06 更新-搜索结果页面显示搜索结果-添加搜索页面的优惠券面值显示
+// @note   2018.08.02 更新小问题
+// @note   2018.07.25 更新一下
+// @note   2018.07.01 修复偶尔的关键词找不到的问题，导致的无法获取搜索内容的标题
+// @note   2018.07.01 更新-修复顶部的遮挡问题，避免顶部遮挡住了jd这类的网页效果
+// @note   2018.06.25 更新-修复推广链接的移除问题;同时移除部分广告
+// @note   2018.06.13 修复有时候需要弹出链接的问题,以及有时候没有触发的问题
 // @note   2018.05.12 修复在部分天猫页面没反应的问题
 // @note   2018.04.30 修复样式效果缩回后的问题；新增优惠价格展示
 // @note   2018.04.04 修复京东的历史价格情况展示问题
 // @note   2018.03.23 剔除掉无用的广告信息，滚动一段距离后移除顶部标签，保留比价功能
 // @note   2018.03.22 基于大神 Harv 的惠惠购物助手修改而来，把底部标签放到了顶部更好看，其余之后再改
 // @author AC Edit form: Harv
-// @grant  GM_getValue
-// @grant  GM_setValue
 // @grant  GM_xmlhttpRequest
 // @namespace ACComparePrize
 // @icon    https://favicon.yandex.net/favicon/huihui.cn
+// @connect open.lesiclub.cn
 // @include http://*.001town.com/*
 // @include http://*.01goo.com/*
 // @include http://*.03l.cn/*
@@ -337,6 +345,7 @@
 // @include http://*.tao3c.com/*
 // @include http://item.taobao.com/*
 // @include https://item.taobao.com/*
+// @include *://uland.taobao.com/coupon/*
 // @include http://*.taoxie.cn/*
 // @include http://*.the365.com/*
 // @include http://*.thinkshop.cn/*
@@ -518,7 +527,9 @@
 // @include https://cart.taobao.com/*
 // @include https://*.jd.com/*
 // @run-at  document-start
+// @grant   GM_info
 // ==/UserScript==
+var goodTitle = "";
 function addStyle(css) {
     var pi = document.createProcessingInstruction(
         'xml-stylesheet',
@@ -534,26 +545,83 @@ function timerDoOnce(node, functionName, checkTime){
         }
     }, checkTime);
 }
-
-if(location.href.indexOf("s.taobao.com/search") > 0){
-    var counter = 0, max = 10;
+function resetGD(){
+    var gd = setInterval(function () {
+        var nodes = document.querySelectorAll(".items .J_MouserOnverReq .search_coupon_tip");
+        if(nodes != null && nodes.length > 0){
+            clearInterval(gd);
+            nodes = document.querySelectorAll(".items .J_MouserOnverReq");
+            for(var i = 0; i<nodes.length; i++){
+                try{
+                    var name = node.querySelector(".J_IconMoreNew .J_ClickStat").innerText.trim();
+                    nodes[i].querySelector(".search_coupon_tip").href = 'https://cent.ntaow.com/coupon.html?mQuery='+encodeURI(name);
+                }catch (e) {
+                }
+            }
+        }
+        gwcounter++;
+        if(gwcounter >= gwmax){
+            clearInterval(gd);
+        }
+    }, 100);
+}
+function loadGD(){
+    addStyle(".copon-search-list{background:url(https://cdn.gwdang.com/images/extensions/newbar/coupon_02.png) no-repeat;display:inline-block;position:absolute;top:0;right:0;font-size:14px;color:#FF173F!important;height:23px;width:92px;text-align:center;text-decoration:none!important;z-index:1;}");
+    var allNodes = document.querySelectorAll(".items .J_MouserOnverReq, #content .product");
+    for(var i = 0; i < allNodes.length; i++){
+        (function (node) {
+            var gid;
+            try{gid = node.querySelector(".pic>a").getAttribute("data-nid");} catch (e) { }
+            try{gid = gid || node.getAttribute("data-id");} catch (e) { }
+            GM_xmlhttpRequest({
+                method: "GET", url: "https://open.lesiclub.cn/coupon/get/10005/10001/" + gid,
+                onload: function (res) {
+                    res = JSON.parse(res.responseText);
+                    if(res.code == 200 && res.data != null && res.data.coupon.is_valid == true){
+                        var insNode = document.createElement("a");
+                        var name;
+                        try{name = node.querySelector(".J_IconMoreNew .J_ClickStat").innerText.trim();} catch (e) { }
+                        try{name = name || node.querySelector(".productTitle a").getAttribute("title");} catch (e) { }
+                        var price = res.data.coupon.coupon_money;
+                        insNode.setAttribute("title", "当前商品领券减"+price+"元");
+                        insNode.href = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(name);
+                        insNode.target = "_blank";
+                        insNode.className = "copon-search-list";
+                        insNode.innerHTML = "￥"+price+"元优惠券";
+                        try{node.querySelector(".pic-box").appendChild(insNode);}catch (e) {}
+                        try{node.querySelector(".productImg-wrap").appendChild(insNode);}catch (e) {}
+                    }
+                }
+            });
+        })(allNodes[i]);
+    }
+}
+if(location.href.indexOf("s.taobao.com/search") > 0 || location.href.indexOf("list.tmall.com/search_product") > 0){
+    var ttcounter = 0, ttmax = 10;
+    var gwcounter = 0, gwmax = 100;
     var tt = setInterval(function () {
         var nodes = document.querySelectorAll(".items .item-ad");
-        if(nodes != null){
+        var allNodes = document.querySelectorAll(".items .J_MouserOnverReq, #content .product");
+        if(allNodes != null && (nodes.length > 0 || allNodes.length > 0)){
             clearInterval(tt);
+            if(document.querySelector("script[src*='gwd']") != null){
+                resetGD();
+            }else{
+                loadGD();
+            }
             for(var i = 0; i<nodes.length; i++){
                 nodes[i].className = "item J_MouserOnverReq  ";
             }
         }
-        counter++;
-        if(counter >= max){
+        ttcounter++;
+        if(ttcounter >= ttmax){
             clearInterval(tt);
         }
     }, 100);
 } else if(location.href.indexOf("cart.taobao.com") >= 0){
     setInterval(function(){
         if(document.querySelector("#J_OrderList .item-basic-info") != null){
-            var htmlCart = "<a href='https://cent.ntaow.com/coupon.jsp?mQuery=AAAAAAAAAA' style='height:22px !important;color:red;font-size:16px;border-radius:1px;padding:2px;border-color:#fea356;border-style: dashed;'>查找优惠信息</a>";
+            var htmlCart = "<a href='https://cent.ntaow.com/coupon.html?mQuery=AAAAAAAAAA' style='height:22px !important;color:red;font-size:16px;border-radius:1px;padding:2px;border-color:#fea356;border-style: dashed;'>查找优惠信息</a>";
             var nodes = document.querySelectorAll(".order-content .item-basic-info");
             for(i = 0; i < nodes.length; i++){
                 var title = nodes[i].querySelector("a").getAttribute("title");
@@ -570,6 +638,8 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
             }
         }
     }, 1000);
+}else if(location.host.indexOf("uland") >= 0){
+    addStyle("#J_MMREDBOX_MASK{display:none !important;}");
 }else{
     if(location.href.indexOf("item.taobao.com") + location.href.indexOf("detail.tmall.com") >= 0) {
         function getQueryString(name) {
@@ -596,11 +666,13 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
                 var node = document.querySelector(".acBuyScriptCoupon");
                 if (node != null) {
                     clearInterval(tt);
-                    if (result.count == 1) {
-                        node.innerHTML = "!"+result.mod_json_details.priceDiscount+"元优惠券!";
-                        var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
-                        var goodTitle = TitleNode.firstChild.nodeValue.trim();
-                        node.href = "https://cent.ntaow.com/coupon.jsp?mQuery=" + encodeURI(goodTitle);
+                    if (result.code == 200 && result.data && result.data.coupon.is_valid == true) {
+                        node.innerHTML = "!"+result.data.coupon.coupon_money+"元优惠券!";
+                        node.href = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(goodTitle);
+                        timerDoOnce(".gwd-minibar-bg #coupon_box", function(){
+                            document.querySelector(".gwd-minibar-bg #coupon_box").href = node.href;
+                            document.querySelector("#gwdang_main #top_coupon_btn").href = node.href;
+                        }, 200);
                     } else {
                         node.innerHTML = "无优惠或已领优惠";
                         node.setAttribute("style", "font-size: 11px;color:#6c6c6c");
@@ -611,18 +683,22 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
         function queryData(goodID) {
             var cgoodTitle = document.title+"";
             var ret = GM_xmlhttpRequest({
-                method: "GET", responseType: 'jsonp', url: "https://cent.ntaow.com/getDetails_json.jsp?&auctionId=" + goodID + "&title=" + cgoodTitle,
+                method: "GET", url: "https://open.lesiclub.cn/coupon/get/10005/10001/" + goodID,
                 onload: function (res) {
-                    res = res.responseText.replace("acBuyScript", "").replace("(", "").replace(/\)$/, "");
-                    res = JSON.parse(res); acBuyScript(res);
+                    res = JSON.parse(res.responseText);
+                    acBuyScript(res);
                 }
             });
         }
 
         AutoStart(100, ".tb-detail-hd, .tb-main-title", function () {
             var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
-            var goodTitle = TitleNode.firstChild.nodeValue.trim();
-            var querySimilar = "https://cent.ntaow.com/coupon.jsp?mQuery=" + encodeURI(goodTitle);
+            goodTitle = TitleNode.firstChild.nodeValue.trim();
+            if(goodTitle == ""){
+                console.log(TitleNode.childNodes[1].innerHTML.trim());
+                goodTitle = TitleNode.childNodes[1].innerHTML.trim();
+            }
+            var querySimilar = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(goodTitle);
             var queryInSite = "https://s.taobao.com/search?q=" + encodeURI(goodTitle) + "&";
             var faNode = document.querySelector("div#J_Title p.tb-subtitle, div.tb-detail-hd h1");
             var insNode = document.createElement("div");
@@ -632,8 +708,8 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
             htmlText += "&nbsp;&nbsp;<a href=" + querySimilar + " target='_blank' style='color: red;'>[找相似]</a>";
             insNode.innerHTML = htmlText;
             faNode.appendChild(insNode);
-            var htmlTB = "<a style='margin-left: 10px;border-color: #F0CAB6;background: #FFE4D0;padding: 6px 12px;line-height: 26px;text-align: center;display: inline-block;margin-bottom: 0;font-weight: normal;height:26px;white-space: nowrap;vertical-align: middle;touch-action: manipulation;cursor: pointer;user-select: none;background-image: none;border: 1px solid #F0CAB6;border-radius:2px;color: #E5511D;#FF0036margin-left:10pxfont-family: \"Hiragino Sans GB\",\"microsoft yahei\",sans-serif;font-size: 16px;font-family: \"Hiragino Sans GB\",\"microsoft yahei\",sans-serif;' href='https://cent.ntaow.com/coupon.jsp?mQuery="+encodeURI(goodTitle)+"'>获取优惠券</a>";
-            var htmlTMALL = "<div class='tb-action' style='margin-top:0'><a style='display: inline-block;border-radius:2px;color: #fff;background-color: #DF231C;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: normal;height:26px;line-height:26px;width:156px;text-align: center;white-space: nowrap;vertical-align: middle;-ms-touch-action: manipulation;touch-action: manipulation;cursor: pointer;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;background-image: none;border: 1px solid transparent;' href='https://cent.ntaow.com/coupon.jsp?mQuery="+encodeURI(goodTitle)+"'>获取优惠券</a></div>";
+            var htmlTB = "<a style='margin-left: 10px;border-color: #F0CAB6;background: #FFE4D0;padding: 6px 12px;line-height: 26px;text-align: center;display: inline-block;margin-bottom: 0;font-weight: normal;height:26px;white-space: nowrap;vertical-align: middle;touch-action: manipulation;cursor: pointer;user-select: none;background-image: none;border: 1px solid #F0CAB6;border-radius:2px;color: #E5511D;#FF0036margin-left:10pxfont-family: \"Hiragino Sans GB\",\"microsoft yahei\",sans-serif;font-size: 16px;font-family: \"Hiragino Sans GB\",\"microsoft yahei\",sans-serif;' href='https://cent.ntaow.com/coupon.html?mQuery="+encodeURI(goodTitle)+"'>获取优惠券</a>";
+            var htmlTMALL = "<div class='tb-action' style='margin-top:0'><a style='display: inline-block;border-radius:2px;color: #fff;background-color: #DF231C;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: normal;height:26px;line-height:26px;width:156px;text-align: center;white-space: nowrap;vertical-align: middle;-ms-touch-action: manipulation;touch-action: manipulation;cursor: pointer;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;background-image: none;border: 1px solid transparent;' href='https://cent.ntaow.com/coupon.html?mQuery="+encodeURI(goodTitle)+"'>获取优惠券</a></div>";
             var anoInsNode = document.createElement("div");
             if(location.host.indexOf('taobao') > 0){
                 anoInsNode.innerHTML = htmlTB;
@@ -654,26 +730,26 @@ if(location.href.indexOf("s.taobao.com/search") > 0){
         var bgNodeFinder = document.querySelector("a[hui-type='switch']").parentNode.className;
         bgNodeFinder = bgNodeFinder.substr(bgNodeFinder.indexOf(" ")+1);
         setTimeout(function(){addStyle(".hui-minishoppingtool ."+bgNodeFinder+"{background-position: -547px -3px !important;}");}, 2000);
-        document.querySelector("a[clkaction='BAR_ONEKEY_MOD_CLICK'] div").innerHTML = "每日最热";
-        document.querySelector("a[clkaction='BAR_ONEKEY_MOD_CLICK']").setAttribute("href", "https://ntaow.com/hot.html");
-        document.querySelector("a[clkaction='BAR_DEAL_MOD_CLICK']").setAttribute("href", "https://ntaow.com/bimai.html");
-        document.querySelector("a[clkaction='BAR_COUPON_MOD_CLICK']").setAttribute("href", "https://ntaow.com/acsearch.html");
-        document.querySelector("a[clkaction='BAR_LEMALL_AD_CLICK']").setAttribute("href", "https://ntaow.com/acsearch.html");
         var node = document.querySelector(".hui-link"); // 移除广告标签
         while(node.tagName != "LI"){
             node = node.parentNode;
         }
         node.remove();
+        document.querySelector("a[clkaction='BAR_ONEKEY_MOD_CLICK'] div, a[clkaction='BAR_ONEKEY_MOD_CLICK_B'] div").innerHTML = "每日最热";
+        document.querySelector("a[clkaction='BAR_ONEKEY_MOD_CLICK'], a[clkaction='BAR_ONEKEY_MOD_CLICK_B']").setAttribute("href", "https://ntaow.com/hot.html");
+        document.querySelector("a[clkaction='BAR_DEAL_MOD_CLICK']").setAttribute("href", "https://ntaow.com/bimai.html");
+        document.querySelector("a[clkaction='BAR_COUPON_MOD_CLICK']").setAttribute("href", "https://ntaow.com/acsearch.html");
+        document.querySelector("a[clkaction='BAR_LEMALL_AD_CLICK']").setAttribute("href", "https://ntaow.com/acsearch.html");
     }, 200);
     setInterval(function(){
         var node = document.querySelector("div[style='z-index: 2147483647; position: fixed;']>div>table");
         if(node != null){
-            if(window.scrollY >= 300){
+            if(window.scrollY >= 200){
                 node.style = "top:unset;";
             }else{
                 node.style = "top:0px;";
             }
         }
-    },200);
-    addStyle(".site-nav,#site-nav{margin-top:50px;}div[style='z-index: 2147483647; position: fixed;']>div>table{top:0px;position: fixed;z-index: 23333333;background-color: white;}div[style='z-index: 2147483647; position: fixed;']>div{bottom:unset;}");
+    }, 50);
+    addStyle(".hui-show-long{min-height:unset !important;margin-top: -12px;}.hui-js-close-plugin+li>div{display:none;}body{margin-top:60px !important;}div[style='z-index: 2147483647; position: fixed;']>div>table{top:0px;position: fixed;z-index: 23333333;background-color: white;}div[style='z-index: 2147483647; position: fixed;']>div{bottom:unset;}div[style='z-index: 2147483647; position: fixed;']>div>table td:nth-child(3){display:none}");
 }

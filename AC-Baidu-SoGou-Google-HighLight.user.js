@@ -4,19 +4,27 @@
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @author          AC
 // @create          2018-05-25
-// @version         1.1
+// @version         1.8
 // @include         *
 // @home-url        https://greasyfork.org/zh-TW/scripts/368418
 // @home-url2       https://github.com/langren1353/GM_script
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
-// @lastmodified    2018-05-26
+// @lastmodified    2018-07-21
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/368418
+// @note            2018.07.21-V1.8 修复由于很快的高亮导致的高亮代码被个格式化为普通文本
+// @note            2018.07.06-V1.7 修复csdn的问题和w3cschool页面的代码问题
+// @note            2018.06.20-V1.6 修复上次更新导致的严重bug，页面卡死问题
+// @note            2018.06.18-V1.5 修复在部分csdn网页代码上，高亮不起作用
+// @note            2018.06.15-V1.4 修复在CSDN代码中，高亮处理之后导致的多了一部分文字的问题；减少了多次调用可能出现的冲突问题；依旧添加G键也是高亮效果
+// @note            2018.06.04-V1.3 1.修复百度翻页之后偶尔不自动高亮的问题；2.新增一定的页面高亮效果的调整；优化关键词的数量，数量到达一定程度，之后的关键词不做高亮处理
+// @note            2018.05.31-V1.2 修复由于分词不准的问题导致的丢词问题；修复停止高亮然后又自动启动的问题；修复下划线分割问题；修复左右尖括号转换问题；新增W高亮时复制文字内容
 // @note            2018.05.26-V1.1 修复垃圾代码，上个版本真的是垃圾代码，运行又慢，占用又高，还特么定时运行，但就是数据出现很慢，现在应该没有这个问题了
 // @note            2018.05.25-V1.0 从百度重定向脚本中拆分出来
 // @run-at          document-body
 // @grant           GM_getValue
 // @grant           GM_setValue
+// @grant           GM_setClipboard
 // ==/UserScript==
 
 var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
@@ -24,6 +32,8 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
 // 之后：还是采用MO的方式来处理
 (function () {
     'use strict';
+    var startTime = new Date().getTime();
+    var renderStartTime = 2000; // 1秒钟
     var isInDebug = false;
     var HightLightColorList = ["#FFFF80", "#90EE90", "#33FFFF", "#FF6600", "#FF69B4", "#20B2AA", "#8470FF"];
     var isSearchWindowActive = true;
@@ -32,6 +42,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
     var hasInitBtnBind = false;
     var hasInitBtnBind_DOM = false;
     var dataRapidLock = false;
+    var dataConflictLock = false;
     var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;3=好搜;谷歌=4;必应=5;知乎=6;其他=7]
     var SiteType={
         BAIDU:1,
@@ -57,6 +68,9 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
     } else {
         SiteTypeID = SiteType.OTHERS;
     }
+    setTimeout(function(){
+        DoHighLightWithSearchText(GM_getValue("searchKeyWords", ""));
+    }, renderStartTime);
     function DoHighLightWithSearchText(searchValue){
         WordAutoHighLight(searchValue);
     }
@@ -94,20 +108,24 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 document.addEventListener('keyup', DoHighLight, true);
             }, 500);
         }
-        var enableCharCode = 'W';
+        var enableCharCode1 = 'G';
+        var enableCharCode2 = 'W';
         var keySets = new Object();
         var counter = 0;
         doHighLightTextS(searchText);
-        function DoHighLight(e) {
+        function DoHighLight(e) { // 手动W触发
             var target = e.target;
             var selectedText = getSelectedText(target);
-            var s_keyup = (e.type === 'keyup') && (enableCharCode.charCodeAt(0)==e.keyCode);// 是按下特殊按键
+            var s_keyup = (e.type === 'keyup') && (enableCharCode1.charCodeAt(0)==e.keyCode || enableCharCode2.charCodeAt(0)==e.keyCode);// 是按下特殊按键
             if (s_keyup) {
                 if(typeof(selectedText) == "undefined" || selectedText == null || selectedText == ""){
                     try{clearInterval(oldTextSelectInterval);}catch (e){console.log(e);}
                     console.log("不准亮");
+                    hasInitBtnBind_DOM = false;
+                    document.removeEventListener('DOMSubtreeModified', DOMRapidHighLightFunc, false);
                     unHighLightAll_Text();
                 }else{
+                    GM_setClipboard(selectedText);
                     enableDBSelectText = true;
                     doHighLightTextS(selectedText, true);
                 }
@@ -122,22 +140,23 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             if(typeof(selectedText) == "undefined" || selectedText == null || selectedText == "") return;
             unHighLightAll_Text();
             if(dbclick){
-                GM_setValue("searchKeyWords", keySets.keywords);
+                GM_setValue("searchKeyWords", selectedText);
                 myConsoleLog("双击:" + selectedText + keySets.keywords);
             }
-            console.log("设定文字为："+selectedText);
             initKeySets(selectedText);
             doHighLightAll_CSS();
             doHighLightAll_Text();
+            setTimeout(function(){doHighLightAll_Text();}, 1500);
             if(hasInitBtnBind_DOM == false){
                 hasInitBtnBind_DOM = true;
-                document.addEventListener('DOMSubtreeModified', function (e) {
-                    if(dataRapidLock == false){
-                        dataRapidLock = true;
-                        doHighLightAll_Text();
-                        setTimeout(function(){dataRapidLock = false;}, 500);
-                    }
-                }, false);
+                document.addEventListener('DOMSubtreeModified', DOMRapidHighLightFunc, false);
+            }
+        }
+        function DOMRapidHighLightFunc(e) {
+            if(dataRapidLock == false){
+                dataRapidLock = true;
+                doHighLightAll_Text();
+                setTimeout(function(){dataRapidLock = false;}, 200);
             }
         }
         function getSelectedText(target) {
@@ -166,6 +185,22 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             }
             return str.replace(/[^\x00-\xff]/g,"01").length;
         }
+        function reSplitKeySet(keySet){
+            var data = keySet
+                .split(/\b |[\u0000-\u002F\u003A-\u0040\u005B-\u005e\u007B-\u00FF\uFF00-\uFFFF\u3000-\u303F]/g)
+                .join('ACsCA')
+                .replace(/[^\u4E00-\u9FA5|0-9|a-z|A-Z_]+/g, "")
+                .replace(/(ACsCA){2}/g, "ACsCA")
+                .replace(/(^ACsCA|ACsCA$)/g, "")
+                .split("ACsCA");
+            var newData = new Array();
+            for(var i = 0, j = 0; i < data.length; i++){
+                if(data[i].length > 1){
+                    newData[j++] = data[i];
+                }
+            }
+            return newData;
+        }
         // 初始化点击的文字信息
         function initKeySets(selection){
             // 1.split通过特殊字符和字符边界分割串[非[0-9A-Za-z]特殊字符]
@@ -173,16 +208,9 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             // 3.1移除多次重复的特定串，非常用串移除，避免空串
             // 3.2移除开头或者结尾的特定串，避免分割后出现空白数据，
             // 4.按特定串分割
-            keySets.keywords = selection
-                .split(/\b |[\u0000-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u00FF\uFF00-\uFFFF\u3000-\u303F]/g)
-                .join('ACsCA')
-                .replace(/[^\u4E00-\u9FA5|0-9|a-z|A-Z_]+/g, "")
-                .replace(/(ACsCA){2}/g, "ACsCA")
-                .replace(/(^ACsCA|ACsCA$)/g, "")
-                .split("ACsCA");
+            keySets.keywords = reSplitKeySet(selection);
             keySets.length = keySets.keywords.length;
             keySets.textcolor = new Array();
-            // keySets.backcolor = new Array();
             keySets.visible = new Array();
             for(var i=0; i < keySets.keywords.length; i++){
                 keySets.textcolor[i] = "rgb(0,0,0)";
@@ -191,7 +219,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         }
         function doHighLightAll_CSS(){ // 顶部的那一堆数组
             if (keySets.visible[0] == "true"){
-                var rule = ".acWHSet{display:inline!important;";
+                var rule = ".acWHSet{display:inline!important;box-shadow: -3px 0px 3px 0.15px rgba(0, 0, 0, 0.15);";
                 if (keySets.textcolor.length > 0) rule += "color:"+keySets.textcolor[0]+";";
                 rule += "font-weight:inherit;}";
                 for(var i = 0; i < keySets.keywords.length; i++){
@@ -201,32 +229,60 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             }
         }
         function doHighLightAll_Text(){
-            if(keySets.keywords.length == 0) return;
+            if(dataConflictLock == true) return;
+            dataConflictLock = true;
+            doHighLightAll_Text_Inner();
+            dataConflictLock = false;
+        }
+        function doHighLightAll_Text_Inner(){
+            var selection = GM_getValue("searchKeyWords", "");
+            // console.log("执行高亮"+selection);
+            keySets.keywords = reSplitKeySet(selection);
+            if(keySets.keywords.length == 0) {
+                return; // 退出1
+            }
             var patExp = "";
-            for(var index=0; index<keySets.keywords.length-1; index++) {
+            for(var index=0, sizeCount = 0; index<keySets.keywords.length-1 && index < 8 && sizeCount < 50; index++) {
                 patExp += keySets.keywords[index]+"|";
+                sizeCount += keySets.keywords[index].length;
             }
             patExp += keySets.keywords[index];
             var pat = new RegExp("("+patExp+")", "gi");
             var span = document.createElement('span');
             var snapElements = document.evaluate(
                 './/text()[normalize-space() != "" ' +
+                'and not(parent::span[@txhidy15]) ' +
                 'and not(ancestor::style) ' +
                 'and not(ancestor::script) ' +
                 'and not(ancestor::textarea) ' +
                 'and not(ancestor::div[@id="thdtopbar"]) ' +
-                'and not(ancestor::div[@id="kwhiedit"])' +
-                'and not(parent::span[@txhidy15])]',
+                'and not(ancestor::div[@id="kwhiedit"]) ' +
+                'and not(ancestor::pre) '+ // CSDN的代码文字，未初始化之前的1--->不作处理
+                ((new Date().getTime() - startTime > renderStartTime)?
+                    ('or (parent::pre) '+ // EG.http://www.w3school.com.cn/xpath/xpath_syntax.asp
+                        'or (parent::code[contains(@class, "language-java")]) '+ // EG.http://lib.csdn.net/article/android/8894
+                        'or (ancestor::pre[@class] and not(parent::span[@txhidy15])) ') // EG.https://blog.csdn.net/freeape/article/details/50485067
+                    :"") +
+                ']',
                 document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-            if (!snapElements.snapshotItem(0)) { return; }
+            if (!snapElements.snapshotItem(0)) {
+                return;
+            } // 退出2
             try{
                 for (var i = 0, len = snapElements.snapshotLength; i < len; i++) {
                     var node = snapElements.snapshotItem(i);
                     if (node.nodeValue.length > 1 && pat.test(node.nodeValue)) {
                         if(node.className!= null && node.className.indexOf("acWHSet") > 0) return;
+                        // if (node.parentNode.outerHTML != null && node.parentNode.outerHTML.indexOf("THmo acWHSet") >= 0) return;
+                        // console.log("start");
+                        // console.log(node.children);
+                        // console.log(node.className);
+                        // console.log(node.parentNode);
                         var sp = span.cloneNode(true);
                         var findResult = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        // console.log("1."+findResult);
                         var repNodeHTML = findResult.replace(pat, '<span class="THmo acWHSet" txhidy15="acWHSet">$1</span>');
+                        // console.log("2."+repNodeHTML);
                         sp.innerHTML = repNodeHTML;
                         if(node.parentNode == null) continue;
                         node.parentNode.replaceChild(sp, node);
@@ -240,6 +296,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             }catch (e) {
                 console.log(e);
             }
+            return;
         }
         function unHighLightAll_Text(){
             try{

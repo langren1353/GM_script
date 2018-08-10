@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name  AC-有道取词+翻译
 // @description 一个可以在浏览器中自由使用的屏幕取词脚本-alt+鼠标翻译，或者选中按Q翻译
-// @version 1.5
+// @version 1.6
 // @namespace youdao
 // @author  AC -modified from ：Liu Yuyang(sa@linuxer.me)
 // @include *
 // @icon    https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @run-at  document-end
+// @note    V1.6 2018-05-23 修复部分英文单词翻译不出来的bug，同时修复特殊的BOLD标签
 // @note    V1.5 2018-05-16 修复英文翻译单词的bug，同时修复语音的问题，暂时就这样了，最近不更新了，有需要的话提出来，以后再说
 // @note    V1.4 2018-05-16 修复上一次更新导致的bug，同时修复多种语言翻译，结果却翻译成了英文的bug
 // @note    V1.3 2018-05-16 修复word词组的时候翻译出错的问题
@@ -24,6 +25,7 @@
 // @grant GM_xmlhttpRequest
 // @connect fanyi.youdao.com
 // @connect fanyi.sogou.com
+// @grant   GM_addStyle
 // ==/UserScript==
 
 var curX;
@@ -35,7 +37,7 @@ document.body.addEventListener("mousemove", function(e){curX = e.clientX; curY =
 document.body.addEventListener("keypress", callbackWrapper, false);
 document.body.addEventListener("mouseup", callbackWrapper, false);
 document.body.addEventListener("dblclick", callbackWrapper, false);
-
+GM_addStyle("bold{font-weight: bold;}");
 function callbackWrapper(e) {
     if(e.type === 'dblclick' && isInACTransPop()){
         // console.log("双击操作：复制目标文本");
@@ -221,7 +223,7 @@ function translate() {
             try{
                 mapNode = basic['category'][0]['sense'][0]['example'];
             }catch (e) {
-                mapNode = basic['content'][0]['item']['core'][0]['branch'];
+                mapNode = basic['content'][0]['item']['core'];
             }
             mapNode.map(function(trans) {
                 var li = document.createElement('li');
@@ -237,7 +239,9 @@ function translate() {
                 }else{
                     innerHTML = trans['detail']['zh']+":" + trans['detail']['en']+":";
                 }
-                li.appendChild(document.createTextNode(innerHTML));
+                var divNode = document.createElement("div");
+                divNode.innerHTML = innerHTML;
+                li.appendChild(divNode);
                 ul.appendChild(li);
             });
             youdaoWindow.appendChild(ul);
@@ -287,7 +291,21 @@ function translate() {
             youdaoWindow.appendChild(ul);
         }
     }
-
+    function ToCDB(str) {
+        var tmp = "";
+        for(var i=0;i<str.length;i++)
+        {
+            if(str.charCodeAt(i)>65248&&str.charCodeAt(i)<65375)
+            {
+                tmp += String.fromCharCode(str.charCodeAt(i)-65248);
+            }
+            else
+            {
+                tmp += String.fromCharCode(str.charCodeAt(i));
+            }
+        }
+        return tmp
+    }
     function translate(word, ts) {
         var ToLANGUAGE = "en";
         if(!/[\u4E00-\u9FA5]/g.test(word)) // 如果没有中文，那么说明是外文--> to=中文
@@ -302,6 +320,8 @@ function translate() {
             headers: {"Accept": "application/json"},  // can be omitted...
             onload: function(res) {
                 var retContent = res.response;
+                retContent = ToCDB(retContent);
+                console.log(retContent);
                 //console.log(retContent)
                 popup(mx, my, retContent);
             },
