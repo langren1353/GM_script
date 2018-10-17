@@ -612,6 +612,8 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             safeRemove("#so_kw-ad");
             safeRemove("#m-spread-left");
             safeRemove("#m-spread-bottom");
+        }else if (SiteTypeID == SiteType.BING) {
+            safeRemove(".b_ad");
         }
     }
     function IsNumber(val){
