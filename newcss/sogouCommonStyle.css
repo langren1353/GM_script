@@ -1,0 +1,87 @@
+/*样式: sogouCommonStyle*/
+body {
+    background-color: #f5f5f5;
+}
+#biz_tip_box_tuiguang_float{
+    display: none;
+}
+.top-bar li{
+    line-height: 35px;
+}
+.top-bar .sogou-set-box a{
+    display: inline-block;
+}
+#main .results{
+    width: 100% !important;
+}
+#main .results>div{
+    width: 100% !important;
+    overflow: hidden;
+    padding: 12px 20px !important;
+    margin-top: 0px;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+}
+.results .rb a,
+.results .vrwrap a,
+.results .rb h3 a,
+.results .vrwrap h3 a {
+    position: relative;
+}
+#main .results>div:hover {
+    box-shadow: 0 0 2px gray!important;
+    background: rgba(230,230,230,0.1)!important;
+}
+#main .results>div h3 {
+    background-color: #f8f8f8;
+    margin: -12px -20px 10px -20px;
+    padding: 8px 20px 5px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+a, a strong {
+    text-decoration: none;
+}
+#main .results>div a strong,
+#main .results>div h3 a strong {
+    text-decoration: none;
+}
+#main .results>div a:hover:after,
+#main .results>div h3 a:hover:after {
+    left: 0;
+    width: 100%;
+    -webkit-transition: width 350ms;
+    -moz-transition: width 350ms;
+    transition: width 350ms;
+}
+#main .results>div a:after,
+#main .results>div h3 a:after {
+    content: "";
+    position: absolute;
+    border-bottom: 2px solid #2866bd;
+    bottom: 1px;
+    left: 100%;
+    width: 0;
+    -webkit-transition: width 350ms, left 350ms;
+    -moz-transition: width 350ms, left 350ms;
+    transition: width 350ms, left 350ms;
+}
+#main .results>div h3 a:visited,
+#main .results>div h3 a:visited strong,
+#main .results>div h3 h3 a:visited,
+#main .results>div h3 h3 a:visited strong {
+    color: #660099;
+}
+#main .results>div h3 a:visited:hover:after,
+#main .results>div h3 h3 a:visited:hover:after {
+    left: 0;
+    width: 100%;
+    -webkit-transition: width 350ms;
+    -moz-transition: width 350ms;
+    transition: width 350ms;
+}

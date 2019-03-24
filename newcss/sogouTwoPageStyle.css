@@ -1,0 +1,38 @@
+/*样式: sogouTwoPageStyle*/
+.wrap .wrapper .right{
+    display: none;
+}
+.wrap .wrapper{
+    padding-left: unset;
+}
+.wrap>.wrapper #main, .wrap>.hintBox, .wrap>.p{
+    width: 75vw;
+    max-width: unset;
+    position: relative;
+    margin: 0 auto;
+    float: unset;
+    padding-right: unset;
+    padding-left: unset;
+}
+#main .results{
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
+}
+#main .results>div{
+    margin-left: 5px;
+    margin-right: 15px;
+    width: unset !important;
+}
+.wrap .header .header-box{
+    min-width: 850px;
+    width: 50vw;
+    margin: 0 auto;
+}
+.wrap .header .header-box a.logo{
+    left: unset;
+}
+/*search engine jump*/
+body #sej-container{
+    padding-left: calc(12% - 113px) !important;
+}
