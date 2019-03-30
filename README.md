@@ -49,27 +49,34 @@
 - 百度和谷歌、必应和搜狗搜索页面都可以设置为单列、双列模式以及多列模式，视野更大
 - 请求是异步请求，并不会出现一个链接没有反馈回来，其余等待的情况，每个链接的请求都是独立的，互不影响，对于网络的影响几乎没有
 
-### 展示效果
+### 展示效果-运行成功后
 - 旧版本的：
 
 ![刚开始](https://ws1.sinaimg.cn/large/6a155794gy1g1jzp9plgwj20hy06n43i.jpg)
 - Baidu搜索结果
 
-![Baidu搜索结果](https://ws1.sinaimg.cn/large/6a155794ly1fpyfzr0h2rj21870oadli.jpg)
+![Baidu搜索结果](https://ws1.sinaimg.cn/large/6a155794ly1g1kk313gcbj20s10o9gpt.jpg)
 - google搜索结果
 
-![google搜索结果](https://ws1.sinaimg.cn/large/6a155794ly1fpyg1k0cp7j21bk0okn09.jpg)
+![google搜索结果](https://ws1.sinaimg.cn/large/6a155794ly1g1kk3jxzr8j20qz0oowih.jpg)
 - 搜狗搜索结果
 
-![搜狗搜索结果](https://ws1.sinaimg.cn/large/6a155794gy1g1jzs2iwwzj215r0p946h.jpg)
+![搜狗搜索结果](https://ws1.sinaimg.cn/large/6a155794ly1g1kk4jasvcj20ul0kwtc2.jpg)
 
 - 自定义操作
 
 ![自定义的操作](https://ws1.sinaimg.cn/large/6a155794gy1ftpfahynuej20ys0gbn1a.jpg)
 
-### Opera需要特殊操作 或者是 ![这种](https://ws1.sinaimg.cn/large/6a155794gy1g1k048x6vdj20by01la9z.jpg)
-如果遇到了上图这种情况，或者是在opera下运行脚本，需要下面这样设置就可以了
+### 如果在Opera下使用
+如果脚本需要在Opera下使用的话，需要这样设置TamperMokey扩展
 ![Opera的特殊处理](https://ws1.sinaimg.cn/large/6a155794ly1g04oed9igtj20lq0amt9e.jpg)
+
+
+### 如果遇到![这种](https://ws1.sinaimg.cn/large/6a155794gy1g1k048x6vdj20by01la9z.jpg)
+如果遇到了上图这种情况，下面这样设置就可以了
+![Opera的特殊处理](https://ws1.sinaimg.cn/large/6a155794ly1g1kk7nx20uj20kn0g4q44.jpg)
+
+
 
 ### 关于捐赠
 如果你觉得脚本还可以的，对您有那么些小帮助的，您可以通过支付宝或者微信扫一扫，捐助X元，谢谢众位大佬~
@@ -80,7 +87,7 @@
 
 ### 免责声明 
 本脚本仅在浏览器端运行，源码公开可见，仅做研究使用，不得用于非法获利， 如产生法律纠纷与脚本作者无关!!!
-其次本脚本禁止使用并修改用于制作什么脚本集合之类的聚合性脚本
+其次本脚本禁止使用并修改用于制作脚本集合之类的聚合性脚本
 
 ### 脚本反馈
 **QQ交流群: （[点击加群](https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_)）**
