@@ -1,0 +1,32 @@
+/*样式: sogouOnePageStyle*/
+.wrap .wrapper .right{
+    display: none;
+}
+.wrap .wrapper{
+    padding-left: unset;
+}
+.wrap>.wrapper #main, .wrap>.hintBox, .wrap>.p{
+    width: 55vw;
+    max-width: 55vw;
+    min-width: 850px;
+    position: relative;
+    margin: 0 auto;
+    float: unset;
+    padding-right: unset;
+    padding-left: unset;
+}
+#main .results>div{
+    width: 100% !important;
+}
+.wrap .header .header-box{
+    min-width: 850px;
+    width: 50vw;
+    margin: 0 auto;
+}
+.wrap .header .header-box a.logo{
+    left: unset;
+}
+/*search engine jump*/
+body #sej-container{
+    padding-left: calc(12% - 113px) !important;
+}

@@ -1,0 +1,20 @@
+/*存放单列居中样式*/
+/*存放双列样式*/
+#b_content #b_results{
+    width: 80vw;
+}
+body #b_header{
+    width: 79vw;
+    background-color: #FFFFFF;
+    margin: 0 auto;
+}
+#b_content{
+    margin-left: 5vw; 
+}
+#b_content #b_results>li{
+    width:98%;
+}
+/*search engine jump*/
+body #sej-container{
+    padding-left: calc(12% - 113px) !important;
+}

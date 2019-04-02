@@ -1,0 +1,72 @@
+/**HuYanStyle**/
+/*****百度护眼色*****/
+body[baidu],
+#wrapper #head,
+#wrapper #s_tab,
+form.fm .s_ipt_wr.bg{
+    background-color: #FFFFFF;
+}
+#wrapper #content_left .result-op,
+#wrapper #content_left .result,
+#wrapper #rs ,
+#wrapper #rs ,
+#wrapper #content_right{
+    background-color: #AAAAAA ;
+    border: 1px double #A2D7D4 ;
+    border-radius: 0px;
+}
+#wrapper #content_left .result-op:hover,
+#wrapper #content_left .result:hover {
+    background-color: #CCCCCC !important;
+}
+/**
+    CSS优先级：先有父元素优先级大于先有子元素优先级
+    且该规则优先级大于文件顺序优先级
+    后文件：#content_left .result-op h3 大于 先文件：.result-op h3
+**/
+#wrapper #content_left .result h3, 
+#wrapper #content_left .result-op h3, 
+#wrapper #content_left .c-container h3,
+#wrapper #rs .tt{
+    background-color: #BBBBBB ;
+}
+/***必应护眼色****/
+.na_cnt .nws_itm,
+.nws_itmb,
+#b_content #b_results li,
+body #b_header{
+    background-color: #AAAAAA ;
+    border: 1px double #A2D7D4 ;
+    border-radius: 0px;
+}
+#b_content #b_results li:hover {
+    background-color: #CCCCCC !important;
+}
+#b_content #b_results li h2{
+    background-color: #BBBBBB ;
+}
+/***谷歌护眼色****/
+body[google]{
+    background-color: #fDfDfD;
+}
+.srg .g, .bkWMgd>.g,
+.bkWMgd g-inner-card,
+#rhscol #rhs,
+#rhscol #rhs .g>div,
+.c2xzTb .g,
+.ruTcId .g,
+.fm06If .g,
+.cUnQKe .g,
+.HanQmf .g{
+    background-color: #AAAAAA ;
+    border: 1px double #A2D7D4 ;
+    border-radius: 0px;
+}
+.srg .g:hover,
+.bkWMgd>.g:hover {
+    background-color: #CCCCCC !important;
+}
+.bkWMgd .g div.r,
+.srg .g h3{
+    background-color: #BBBBBB ;
+}

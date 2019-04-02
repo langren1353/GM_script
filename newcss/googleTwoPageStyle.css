@@ -1,0 +1,65 @@
+/**加个注释**/
+.srg {
+    position: relative;
+    float: unset;
+}
+.srg>.g, .bkWMgd>.g{
+    width: unset;
+    margin-left: 20px;
+    overflow: hidden;
+    padding: 0px 20px 15px;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+}
+.search>#ires .srg>.g{
+    max-width: unset;
+}
+#main .mw #rhs{
+    display:none;
+}
+#main .mw{
+    max-width: unset;
+}
+#main #cnt{
+    width: 80vw;
+    margin-left: 10vw;
+}
+#acid_src>div{
+    width: unset;
+    margin-left: 20px;
+    /**直接横占一行**/
+    grid-column-start: 1;
+    grid-column-end: 6;
+}
+.bkWMgd .COEoid{
+    /*视频点-禁止边界问题*/
+    margin: unset;
+}
+.col{
+    width: 100% !important;
+}
+.col #center_col{
+    width: 100% !important;
+    margin-left: unset !important;
+}
+#acid_src{
+	display: grid;
+	grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
+}
+.srg{
+	display: grid;
+	grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
+}
+#acid_src div:last-child{
+    grid-column-end: 3;
+}
+/**search box align center**/
+.jsrp>form{
+    margin:0 auto;
+}

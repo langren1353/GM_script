@@ -1,0 +1,25 @@
+/*存放双列样式*/
+#container #content_left .hit_top_new{
+    display:none;
+}
+#b_content #b_results{
+    width: 80vw;
+    grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
+    display: inline-grid;
+}
+#b_content #b_results>li{
+    width:98%;
+}
+#b_msg, #b_pag{
+    grid-column-end: 3;
+    grid-column-start: 1;
+    background-color: #FFFFFF;
+}
+body #b_content{
+    margin-left: 5vw; 
+}
+
+/*search engine jump*/
+body #sej-container{
+    padding-left: calc(12% - 113px) !important;
+}
