@@ -12,7 +12,7 @@
 // @license         GPL-3.0-only
 // @create          2015-11-25
 // @run-at          document-start
-// @version         23.12
+// @version         23.16
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
@@ -24,14 +24,19 @@
 // @include         *://*.bing.com/*
 // @include         *://encrypted.google.*/search*
 // @include         *://*.google*/search*
+// @include         *://*.google*/webhp*
 // @include         *://*.zhihu.com/*
+// @exclude         *://*.google*/sorry*
 // @namespace       1353464539@qq.com
 // @supportURL      https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
 // @home-url        https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2       https://github.com/langren1353/GM_script
 // @copyright       2017, AC
-// @lastmodified    2019-02-16
+// @lastmodified    2019-04-26
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
+// @note            2019.04.26-V23.15 修复护眼色调节；新增不显示lock按钮选项；新增谷歌伪装百度；修复谷歌和百度页面的搜索样式；修复百度学术页面异常
+// @note            2019.03.30-V23.14 更新一下说明文档 && 添加一个github的跳转按钮 && 新增背景色
+// @note            2019.03.28-V23.13 更新-移除部分异常的百度白屏问题.新域名baidu.mx并不是百度旗下的地址，所以跳过。顺便刷一个版本，修复谷歌的recapture的问题，感谢老司机“breath365”
 // @note            2019.02.16-V23.12 修复上次更新导致的一堆bug & 更换资源。。。腾讯CDN真的不够你们用，还是用百度的免费cdn吧
 // @note            2019.02.15-V23.11 修复和Google Search Extra Button的兼容问题。修复地址有时候不能访问的问题。修复旧ff上的forEach和innerText不能用的问题。删除部分旧日志
 // @note            2019.02.14-V23.10 安静点，我有女朋了i_i。& 修复百度图片失效的问题
@@ -183,19 +188,19 @@
 // @note            2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note            2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note            2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource        baiduCommonStyle     http://xbaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.11
-// @resource        baiduOnePageStyle    http://xbaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.11
-// @resource        baiduTwoPageStyle    http://xbaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.11
-// @resource        googleCommonStyle    http://xbaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.11
-// @resource        googleOnePageStyle   http://xbaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.11
-// @resource        googleTwoPageStyle   http://xbaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.11
-// @resource        bingCommonStyle      http://xbaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.11
-// @resource        bingOnePageStyle     http://xbaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.11
-// @resource        bingTwoPageStyle     http://xbaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=23.11
-// @resource        sogouCommonStyle     http://xbaidu.ntaow.com/newcss/sogouCommonStyle.css?t=23.11
-// @resource        sogouOnePageStyle    http://xbaidu.ntaow.com/newcss/sogouOnePageStyle.css?t=23.11
-// @resource        sogouTwoPageStyle    http://xbaidu.ntaow.com/newcss/sogouTwoPageStyle.css?t=23.11
-// @resource        MainHuYanStyle       http://xbaidu.ntaow.com/newcss/HuYanStyle.css?t=23.11
+// @resource        baiduCommonStyle     http://xbaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.15
+// @resource        baiduOnePageStyle    http://xbaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.15
+// @resource        baiduTwoPageStyle    http://xbaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.15
+// @resource        googleCommonStyle    http://xbaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.15
+// @resource        googleOnePageStyle   http://xbaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.15
+// @resource        googleTwoPageStyle   http://xbaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.15
+// @resource        bingCommonStyle      http://xbaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.15
+// @resource        bingOnePageStyle     http://xbaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.15
+// @resource        bingTwoPageStyle     http://xbaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=23.15
+// @resource        sogouCommonStyle     http://xbaidu.ntaow.com/newcss/sogouCommonStyle.css?t=23.15
+// @resource        sogouOnePageStyle    http://xbaidu.ntaow.com/newcss/sogouOnePageStyle.css?t=23.15
+// @resource        sogouTwoPageStyle    http://xbaidu.ntaow.com/newcss/sogouTwoPageStyle.css?t=23.15
+// @resource        MainHuYanStyle       http://xbaidu.ntaow.com/newcss/HuYanStyle.css?t=23.15
 // @grant           GM_getValue
 // @grant           GM.getValue
 // @grant           GM_setValue
@@ -247,6 +252,7 @@
 			isAdsEnable: true, // 是否开启去广告模式
 			isBlockEnable: true, // 是否开启去拦截模式
 			isBlockDisplay: false, // 是否删除已拦截的条目
+			isBlockBtnDisplay: true, // 是否显示block按钮
 			AdsStyleEnable: true, // 是否开启自定义样式模式
 			AdsStyleMode_Baidu: 2, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
 			AdsStyleMode_Google: 2, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
@@ -267,21 +273,28 @@
 			isCounterEnable: false, // 是否显示计数器
 			isALineEnable: false, // 是否禁止下划线
 			isUserStyleEnable: false, // 是否开启自定义样式
+			isGooleInBaiduModeEnable: false, // 是否开启谷歌搜索结果页的百度图标显示
 			UserBlockList: ["baijiahao.baidu.com"],
-			UserStyleText: "/**计数器的颜色样式*/\n" +    // 自定义样式数据
-			".AC-CounterT{\n" +
-			"    background: #FD9999;\n" +
-			"}\n" +
-			"/**右侧栏的样式-其实不开启更好看一些*/\n" +
-			"#content_right{\n" +
-			"    padding: 20px 15px 15px;\n" +
-			"    border-radius: 5px;\n" +
-			"    background-color: #fff;\n" +
-			"    box-sizing: border-box;\n" +
-			"    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);\n" +
-			"    -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);\n" +
-			"    -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);\n" +
-			"}",
+			UserStyleText:
+`/**计数器的颜色样式*/
+.AC-CounterT{
+    background: #FD9999;
+}
+/**右侧栏的样式-其实不开启更好看一些*/
+#content_right{
+    padding: 20px 15px 15px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+}
+/****可以加一些自己的背景图片****/
+body{
+	background-repeat: repeat-y;
+    background-image: url('https://desk-fd.zol-img.com.cn/t_s1920x1080c5/g5/M00/01/03/ChMkJlor0OCILLxzABXfjnAdsxwAAi_rgLjHksAFd-m023.jpg');
+}`,
 			oldVersion: "",
 		};
 		var CONST = {
@@ -446,6 +459,8 @@
 						CONST.AdsStyleMode = ACConfig.AdsStyleMode_SoGou;
 						CONST.HuYanMode = ACConfig.HuYan_SoGou;
 						CONST.keySite = "sogou";
+					} else if(curSite.SiteTypeID == SiteType.BAIDU_XUESHU){
+						CONST.AdsStyleMode = 2;
 					}
 					CONST.StyleManger = FSBaidu(); // 添加设置项-单双列显示
 				}
@@ -477,7 +492,9 @@
 								var host = getBaiduHost(curNode.querySelector(curSite.FaviconType));
 								if(host == null) continue;
 								var faNode = curNode.querySelector(curSite.BlockType);
-								faNode.insertAdjacentHTML("afterend", `<button class='ghhider ghhb' meta="${host}" data-host="${host}" title='点击即可屏蔽 ${host} 放开，需要在自定义中手动配置放开'>block</button>`);
+								if(ACConfig.isBlockBtnDisplay){
+									faNode.insertAdjacentHTML("afterend", `<button class='ghhider ghhb' meta="${host}" data-host="${host}" title='点击即可屏蔽 ${host} 放开，需要在自定义中手动配置放开'>block</button>`);
+								}
 								curNode.setAttribute("acblock", "0");
 							}catch (e) {
 							}
@@ -592,6 +609,20 @@
 				if (ACConfig.isAdsEnable) {
 					// display已经无法隐藏他们了，需要用绝对的隐藏
 					addStyle("#bottomads{display:none;} #content_left>div:not([id])>div[cmatchid], #content_left>div[id*='300']:not([class*='result']),#content_right td>div:not([id]),#content_right>br{position:absolute;top:-6666px;}");
+				}
+				if (curSite.SiteTypeID == SiteType.GOOGLE && ACConfig.isGooleInBaiduModeEnable){
+					safeWaitFunc("#logo img", function(node){
+						node.removeAttribute("src");
+						node.src = "https://pic.rmb.bdstatic.com/c86255e8028696139d3e3e4bb44c047b.png";
+						var faNode = node.parentNode.parentNode;
+						faNode.className = faNode.className.replace(/( baidu | baidu$)/, "") + " baidu";
+					});
+					safeWaitFunc("#main img[alt='Google']", function(node){
+						node.removeAttribute("srcset");
+						node.src = "https://www.baidu.com/img/bd_logo1.png?where=super";
+						node.setAttribute("height", "129");
+						node.style = "padding-top: 59px;";
+					});
 				}
 				try {
 					if (curSite.SiteTypeID != SiteType.OTHERS) {
@@ -830,12 +861,13 @@
 							"        <div id='sp-ac-main'>\n" +
 							"        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
 
-							"            <legend title='AC重定向功能相关设置'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-重定向设置" + BaiduVersion + "</a></legend>\n" +
+							"            <legend title='AC重定向功能相关设置'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-重定向设置" + BaiduVersion + "</a><iframe src='https://ghbtns.com/github-btn.html?user=langren1353&repo=GM_script&type=star&count=true' frameborder='0' scrolling='0' style='height: 20px;max-width: 90px;padding-left:5px;box-sizing: border-box;margin-bottom: -5px;display:unset !important;'></iframe></legend>\n" +
 							"            <ul class='setting-main'>\n" +
 							"                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label></li>\n" +
 							"                <li><label title='AC-去广告' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label></li>\n" +
 							"                <li><label title='AC-自主拦截域名' style='"+(CONST.hasNewFuncNeedDisplay ? "color:red !important;font-weight: 100;background-color: yellow;font-weight: 600 !important;" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">附加2-自主拦截域名</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='自定义BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
-							"                    <label><input title='不再显示' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">移除已拦截内容</label>" +
+							"                    <label><input title='自动移除已经屏蔽的域名' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">自动移除</label>" +
+							"                    <label><input title='隐藏掉block按钮的显示' id='sp-ac-blockBtnDisplay' type='checkbox' " + (ACConfig.isBlockBtnDisplay ? '' : 'checked') + ">隐藏按钮</label>" +
 							"                </li>\n" +
 							"                <li><label title='AC-自定义样式'><input id='sp-ac-style' name='sp-ac-a_force' type='checkbox' " + (ACConfig.AdsStyleEnable ? 'checked' : '') + ">附加3-自定义样式</label>\n" +
 							"                <label></label></li>\n" +
@@ -858,6 +890,7 @@
 							"                       <labelHide>展开谷歌设置&gt;&gt;</labelHide>" +
 							"                       <label title='谷歌-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_google' value='0' type='radio' " + (ACConfig.AdsStyleMode_Google == 0 ? 'checked' : '') + ">谷歌-原始模式</label>" +
 							"                       <label title='谷歌-护眼模式'><input  name='sp-ac-huyan_style_google' type='checkbox' " + (ACConfig.HuYan_Google == true ? 'checked' : '') + ">谷歌-护眼模式</label>" +
+							"                       <label title='谷歌-伪装百度' style='"+(CONST.hasNewFuncNeedDisplay ? "color:red !important;font-weight: 100;background-color: yellow;font-weight: 600 !important;" : "")+"'><input  name='sp-ac-google_in_baidumode' type='checkbox' " + (ACConfig.isGooleInBaiduModeEnable == true ? 'checked' : '') + ">谷歌-伪装百度</label>" +
 							"                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='谷歌-单列普通模式' name='sp-ac-a_force_style_google' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Google == 1 ? 'checked' : '') + ">单列</label>" +
 							"                       <label title='谷歌-单列居中'><input  name='sp-ac-a_force_style_google' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Google == 2 ? 'checked' : '') + ">单列居中</label>" +
 							"                       <label title='双列'><input  name='sp-ac-a_force_style_google' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Google == 3 ? 'checked' : '') + ">双列</label>" +
@@ -897,9 +930,9 @@
 							"                <li><label class='menu-box-container'><label style='margin-left:20px;'>默认护眼颜色：</label>" +
 							"                       <input class='sp-ac-menuhuyanColor' title='自定义的护眼颜色' style='width:70px;margin-top:-0.05rem !important;' value='" + ACConfig.defaultHuYanColor + "'>" +
 							"                       <label class='menu-box-small' data-color='#DEF1EF' style='background-color:#DEF1EF;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-							"                       <label class='menu-box-small' data-color='#f3f2ee' style='background-color:#f3f2ee;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-							"                       <label class='menu-box-small' data-color='#e5e5e5' style='background-color:#e5e5e5;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-							"                       <label class='linkhref' data-href='https://html-color-codes.info/'  style='cursor:pointer;margin-right: 10px;' onclick='window.open(this.dataset.href)'>更多颜色选择</label>" +
+							"                       <label class='menu-box-small' data-color='#F3F2EE' style='background-color:#F3F2EE;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+							"                       <label class='menu-box-small' data-color='#E5E5E5' style='background-color:#E5E5E5;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+							"                       <label class='linkhref' data-href='https://www.ntaow.com/colorpicker.html'  style='cursor:pointer;margin-right: 10px;' onclick='window.open(this.dataset.href)'>更多颜色选择</label>" +
 							"                </label></li>\n" +
 							"                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isFaviconEnable ? 'checked' : '') + ">附加5-Favicon功能</label></li>\n" +
 							"                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='" + ACConfig.defaultFaviconUrl + "' style='width:55%;margin-top:-0.3rem !important;' type='input' " + (ACConfig.isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
@@ -932,6 +965,7 @@
 								ACConfig.isAdsEnable = document.querySelector("#sp-ac-ads").checked;
 								ACConfig.isBlockEnable = document.querySelector("#sp-ac-block").checked;
 								ACConfig.isBlockDisplay = document.querySelector("#sp-ac-removeBlock").checked;
+								ACConfig.isBlockBtnDisplay = !document.querySelector("#sp-ac-blockBtnDisplay").checked;
 								ACConfig.AdsStyleEnable = document.querySelector("#sp-ac-style").checked;
 								ACConfig.AdsStyleMode_Baidu = document.querySelector('input[name="sp-ac-a_force_style_baidu"]:checked').value;
 								ACConfig.AdsStyleMode_Google = document.querySelector('input[name="sp-ac-a_force_style_google"]:checked').value;
@@ -939,6 +973,7 @@
 								ACConfig.AdsStyleMode_SoGou = document.querySelector('input[name="sp-ac-a_force_style_sogou"]:checked').value;
 								ACConfig.HuYan_Baidu = document.querySelector('input[name="sp-ac-huyan_style_baidu"]').checked;
 								ACConfig.HuYan_Google = document.querySelector('input[name="sp-ac-huyan_style_google"]').checked;
+								ACConfig.isGooleInBaiduModeEnable = document.querySelector('input[name="sp-ac-google_in_baidumode"]').checked;
 								ACConfig.HuYan_Bing = document.querySelector('input[name="sp-ac-huyan_style_bing"]').checked;
 								ACConfig.HuYan_SoGou = document.querySelector('input[name="sp-ac-huyan_style_sogou"]').checked;
 								var imgurl = document.querySelector("#sp-ac-faviconUrl").value.trim();
@@ -1332,6 +1367,20 @@
 			function safeFunction(func){
 				safeRemove(func);
 			}
+			function safeWaitFunc(selector, callbackFunc, time, notClear){
+				time = time || 50;
+				notClear = notClear || false;
+				var doClear = !notClear;
+				var id = setInterval(function(){
+					if((typeof (selector) == "string" && document.querySelector(selector) != null)) {
+						if(doClear) clearInterval(id);
+						callbackFunc(document.querySelector(selector));
+					}else if((typeof(selector) == "function" && selector().length > 0)){
+						if(doClear) clearInterval(id);
+						callbackFunc(selector()[0]);
+					}
+				}, time);
+			};
 			function AC_addStyle(css, className, addToTarget, isReload, initType) { // 添加CSS代码，不考虑文本载入时间，带有className
 				var tout = setInterval(function () {
 					/**
@@ -1452,7 +1501,7 @@
 							.replace(/#aaa(a*)/igm, color)
 							.replace(/#bbb(b*)/igm, this.Lighter(color, -40))
 							.replace(/#ccc(c*)/igm, this.Lighter(color, 45));
-						AC_addStyle(style, "AC-" + CONST.keySite + "HuYanStyle" + (isNewGM ? "" : "-File"), "head", false, "text/css");
+						AC_addStyle(style, "AC-" + CONST.keySite + "HuYanStyle" + (isNewGM ? "" : "-File"), "head", true, "text/css"); // 需要修改的，所以为true
 					},
 					clip255: function (value) {
 						if (value > 255) return 255;
@@ -1503,9 +1552,9 @@
 						if (curSite.SiteTypeID == SiteType.SOGOU) cssHead = "#main .results";
 						AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(25%,1fr));} #container #content_left>*:not([class*='result']),#acid_src div:last-child{grid-column-end: 5;}", "AC-FourPageStyle", "head");
 					},
-					loadExpandOneStyle: function () {
-						AC_addStyle("#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}#wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .c-container{width:100%; min-width:670px;margin-bottom:14px!important;}.c-span18{width:78%!important;min-width:550px;}.c-span24{width: auto!important;}", "AC-Style-expand", "head");
-					},
+					// loadExpandOneStyle: function () {
+					// 	AC_addStyle("#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}#wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .c-container{width:100%; min-width:670px;margin-bottom:14px!important;}.c-span18{width:78%!important;min-width:550px;}.c-span24{width: auto!important;}", "AC-Style-expand", "head");
+					// },
 					loadPlainToCSS: function () {
 						for (var i = 0; i < document.childNodes.length; i++) {
 							var curNode = document.childNodes[i];
@@ -1565,6 +1614,7 @@
 					},
 					//居中显示 --- 必须是百度和谷歌的搜索结果页面，其他页面不能加载的--已经通过脚本include标签限制了一部分
 					centerDisplay: function () {
+						AC_addStyle("body[google] .logo.baidu{margin-top:-5px;} ", "AC-style-logo", "head");
 						var result = CONST.AdsStyleMode || null;
 						if (document.querySelector(".acCssLoadFlag") == null && document.querySelector(".ACExtension") == null) {
 							debug("in样式即将加载:"+result);
