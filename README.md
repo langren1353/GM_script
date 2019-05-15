@@ -40,29 +40,29 @@
 ### 展示效果-运行成功后
 - 旧版本的：
 
-![刚开始](https://ws1.sinaimg.cn/large/6a155794gy1g1jzp9plgwj20hy06n43i.jpg)
+![刚开始](https://i.loli.net/2019/05/15/5cdbe8bb9de9887898.jpg)
 - Baidu搜索结果
 
-![Baidu搜索结果](https://ws1.sinaimg.cn/large/6a155794ly1g1kk313gcbj20s10o9gpt.jpg)
+![Baidu搜索结果](https://i.loli.net/2019/05/15/5cdbe8d4923c310060.jpg)
 - google搜索结果
 
-![google搜索结果](https://ws1.sinaimg.cn/large/6a155794ly1g1kk3jxzr8j20qz0oowih.jpg)
+![google搜索结果](https://i.loli.net/2019/05/15/5cdbe8f80cb8a84810.jpg)
 
 ### 如果在Opera下使用
 如果脚本需要在Opera下使用的话，需要这样设置TamperMokey扩展
-![Opera的特殊处理](https://ws1.sinaimg.cn/large/6a155794ly1g04oed9igtj20lq0amt9e.jpg)
+![Opera的特殊处理](https://i.loli.net/2019/05/15/5cdbe9178f0ca24155.jpg)
 
 
-### 如果遇到![这种](https://ws1.sinaimg.cn/large/6a155794gy1g1k048x6vdj20by01la9z.jpg)
+### 如果遇到![这种](https://i.loli.net/2019/05/15/5cdbe92e1643d80271.jpg)
 如果遇到了上图这种情况，下面这样设置就可以了
-![Opera的特殊处理](https://ws1.sinaimg.cn/large/6a155794ly1g1kk7nx20uj20kn0g4q44.jpg)
+![Opera的特殊处理](https://i.loli.net/2019/05/15/5cdbe946dfcd688302.jpg)
 
 
 ### 关于捐赠
 如果你觉得脚本还可以的，对您有那么些小帮助的，您可以通过支付宝或者微信扫一扫，捐助X元，谢谢众位大佬~
 嫌麻烦可以帮忙点一下右上角的Star小星星
 
-微信：<img src="http://ww1.sinaimg.cn/large/6a155794ly1fvexwy5huzj20ar0atjsf.jpg" width=200 height=200/>支付宝：<img src="http://ww1.sinaimg.cn/large/6a155794ly1fvexw7oh40j20c70byt9p.jpg" width=200 height=200/>
+微信：<img src="https://i.loli.net/2019/05/15/5cdbe95a32d7950672.jpg" width=200 height=200/>支付宝：<img src="https://i.loli.net/2019/05/15/5cdbe96f55fd899926.jpg" width=200 height=200/>
 
 
 ### 免责声明 

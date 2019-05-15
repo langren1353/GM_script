@@ -4,14 +4,16 @@
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @author          AC
 // @create          2018-05-25
-// @version         1.8
+// @version         2.0
 // @include         *
 // @home-url        https://greasyfork.org/zh-TW/scripts/368418
 // @home-url2       https://github.com/langren1353/GM_script
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
-// @lastmodified    2018-07-21
+// @lastmodified    2018-10-08
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/368418
+// @note            2018.10.08-V2.0 修复多次触发导致的卡顿现象；修复搜索时高亮的问题
+// @note            2018.10.03-V1.9 修复由于<span>标签导致的：1.样式被界面污染 2.特定关键词被百度重定向脚本删除；修复在部分代码界面导致的高亮失效问题；修复高亮导致的标题栏被格式化
 // @note            2018.07.21-V1.8 修复由于很快的高亮导致的高亮代码被个格式化为普通文本
 // @note            2018.07.06-V1.7 修复csdn的问题和w3cschool页面的代码问题
 // @note            2018.06.20-V1.6 修复上次更新导致的严重bug，页面卡死问题
@@ -27,22 +29,26 @@
 // @grant           GM_setClipboard
 // ==/UserScript==
 
-var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
-// 初次：还是采用了setInterval来处理，感觉这样的话速度应该比Dom快，也比MO适用，因为MO需要在最后才能调用，实用性还不如timer
-// 之后：还是采用MO的方式来处理
+var isDebug = true; // 本次更新是否有新功能需要展示
+var debugX = isDebug ? console.log.bind(console) : function(){};
+function sayLength(){
+    debugX(document.querySelectorAll(".c-container").length);
+}
+
 (function () {
     'use strict';
     var startTime = new Date().getTime();
-    var renderStartTime = 2000; // 1秒钟
-    var isInDebug = false;
+    var renderStartTime = 5000; // 1秒钟 & 强制刷新应该优先于定时操作
     var HightLightColorList = ["#FFFF80", "#90EE90", "#33FFFF", "#FF6600", "#FF69B4", "#20B2AA", "#8470FF"];
-    var isSearchWindowActive = true;
+    var isSearchWindowActive = true;    // 搜索窗口是否激活
+    var OnlyDBCheck = false;            // 是否为双击事件
     var enableDBSelectText = false;
     var oldTextSelectInterval = -1;
     var hasInitBtnBind = false;
     var hasInitBtnBind_DOM = false;
     var dataRapidLock = false;
     var dataConflictLock = false;
+    var disableHighLight = false;       // 是否禁用highLight
     var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;3=好搜;谷歌=4;必应=5;知乎=6;其他=7]
     var SiteType={
         BAIDU:1,
@@ -53,6 +59,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         ZHIHU:6,
         OTHERS:7
     };
+    /*在搜索引擎上面会刷新当前搜索关键词内容*/
     if (location.host.indexOf("www.baidu.com") > -1) {
         SiteTypeID = SiteType.BAIDU;
     } else if (location.host.indexOf("sogou") > -1) {
@@ -80,8 +87,13 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             if(isReload == null) isReload = false;
             if(document.querySelector(addToTarget) != null){
                 clearInterval(tout);
-                if(isReload == false && document.querySelector("."+className) != null){
+                var checkNode = document.querySelector("."+className) || null;
+                if(isReload == false && checkNode != null){
                     // 节点存在,并且不准备覆盖
+                    return;
+                }
+                if(checkNode!= null && css == checkNode.innerHTML) {
+                    // checkNode可访问 & 内容相同 == > else 没有节点 || 内容不同
                     return;
                 }
                 safeRemove("."+className);
@@ -91,7 +103,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 cssNode.innerHTML = css;
                 try{
                     document.querySelector(addToTarget).appendChild(cssNode);
-                }catch (e){console.log(e.message);}
+                }catch (e){debugX(e.message);}
             }
         }, 50);
     }
@@ -105,8 +117,8 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             hasInitBtnBind = true;
             setTimeout(function(){
                 // 似乎过早的绑定可能出现问题，例如www.huomao.com中h5视频的LOGO一直在
-                document.addEventListener('keyup', DoHighLight, true);
-            }, 500);
+                document.addEventListener('keydown', DoHighLight, true);
+            }, 800);
         }
         var enableCharCode1 = 'G';
         var enableCharCode2 = 'W';
@@ -116,24 +128,24 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         function DoHighLight(e) { // 手动W触发
             var target = e.target;
             var selectedText = getSelectedText(target);
-            var s_keyup = (e.type === 'keyup') && (enableCharCode1.charCodeAt(0)==e.keyCode || enableCharCode2.charCodeAt(0)==e.keyCode);// 是按下特殊按键
+            var s_keyup = (e.type === 'keydown') && (enableCharCode1.charCodeAt(0)==e.keyCode || enableCharCode2.charCodeAt(0)==e.keyCode);// 是按下特殊按键
             if (s_keyup) {
                 if(typeof(selectedText) == "undefined" || selectedText == null || selectedText == ""){
-                    try{clearInterval(oldTextSelectInterval);}catch (e){console.log(e);}
-                    console.log("不准亮");
+                    try{clearInterval(oldTextSelectInterval);}catch (e){debugX(e);}
+                    debugX("不准亮");
+                    GM_setValue("searchKeyWords", ""); // 置空
                     hasInitBtnBind_DOM = false;
+                    disableHighLight = true;
+                    safeRemove(".AC-highLightRule");
                     document.removeEventListener('DOMSubtreeModified', DOMRapidHighLightFunc, false);
                     unHighLightAll_Text();
                 }else{
                     GM_setClipboard(selectedText);
                     enableDBSelectText = true;
+                    disableHighLight = false;
+                    OnlyDBCheck = true;
                     doHighLightTextS(selectedText, true);
                 }
-            }
-        }
-        function myConsoleLog(text){
-            if(isInDebug){
-                console.log(text);
             }
         }
         function doHighLightTextS(selectedText, dbclick) {
@@ -141,7 +153,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             unHighLightAll_Text();
             if(dbclick){
                 GM_setValue("searchKeyWords", selectedText);
-                myConsoleLog("双击:" + selectedText + keySets.keywords);
+                debugX("双击:" + selectedText + keySets.keywords);
             }
             initKeySets(selectedText);
             doHighLightAll_CSS();
@@ -155,8 +167,9 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         function DOMRapidHighLightFunc(e) {
             if(dataRapidLock == false){
                 dataRapidLock = true;
+                doHighLightAll_CSS();
                 doHighLightAll_Text();
-                setTimeout(function(){dataRapidLock = false;}, 200);
+                setTimeout(function(){dataRapidLock = false;}, 1000);
             }
         }
         function getSelectedText(target) {
@@ -175,7 +188,6 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             }
             var selectedText = window.getSelection().toString();
             if (!selectedText) selectedText = getTextSelection();
-            myConsoleLog(selectedText);
             return selectedText;
         }
         function getBLen(str) {
@@ -225,6 +237,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 for(var i = 0; i < keySets.keywords.length; i++){
                     rule += ".acWHSet[data='"+keySets.keywords[i].toLocaleLowerCase()+"']{background-color:"+HightLightColorList[i % HightLightColorList.length]+";}";
                 }
+                // debugX("触发重置CSS");
                 AC_addStyle(rule, "AC-highLightRule", "body", true);
             }
         }
@@ -236,7 +249,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         }
         function doHighLightAll_Text_Inner(){
             var selection = GM_getValue("searchKeyWords", "");
-            // console.log("执行高亮"+selection);
+            // debugX("执行高亮"+selection);
             keySets.keywords = reSplitKeySet(selection);
             if(keySets.keywords.length == 0) {
                 return; // 退出1
@@ -248,23 +261,24 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
             }
             patExp += keySets.keywords[index];
             var pat = new RegExp("("+patExp+")", "gi");
-            var span = document.createElement('span');
-            var snapElements = document.evaluate(
-                './/text()[normalize-space() != "" ' +
-                'and not(parent::span[@txhidy15]) ' +
+            var XhighLight = document.createElement('XhighLight');
+            var evalRule = './/text()[normalize-space() != "" ' +
+                'and not(parent::XhighLight[@txhidy15]) ' +
+                'and not(parent::title)' +
                 'and not(ancestor::style) ' +
                 'and not(ancestor::script) ' +
                 'and not(ancestor::textarea) ' +
                 'and not(ancestor::div[@id="thdtopbar"]) ' +
                 'and not(ancestor::div[@id="kwhiedit"]) ' +
+                'and not(parent::XhighLight[@txhidy15]) ' +
                 'and not(ancestor::pre) '+ // CSDN的代码文字，未初始化之前的1--->不作处理
-                ((new Date().getTime() - startTime > renderStartTime)?
-                    ('or (parent::pre) '+ // EG.http://www.w3school.com.cn/xpath/xpath_syntax.asp
-                        'or (parent::code[contains(@class, "language-java")]) '+ // EG.http://lib.csdn.net/article/android/8894
-                        'or (ancestor::pre[@class] and not(parent::span[@txhidy15])) ') // EG.https://blog.csdn.net/freeape/article/details/50485067
-                    :"") +
-                ']',
-                document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+                ((new Date().getTime() - startTime > renderStartTime || OnlyDBCheck == true)?
+                    ('or ((ancestor::pre) and not(parent::XhighLight[@txhidy15]) and ('+ // EG.http://www.w3school.com.cn/xpath/xpath_syntax.asp
+                        '(ancestor::code[@class]) '+ // EG.http://lib.csdn.net/article/android/8894
+                        'or (ancestor::div[contains(@class, "cnblogs_code")] ) '+ // EG.https://blog.csdn.net/freeape/article/details/50485067
+                        "))") : "") +
+                ']';
+            var snapElements = document.evaluate(evalRule, document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
             if (!snapElements.snapshotItem(0)) {
                 return;
             } // 退出2
@@ -274,15 +288,15 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                     if (node.nodeValue.length > 1 && pat.test(node.nodeValue)) {
                         if(node.className!= null && node.className.indexOf("acWHSet") > 0) return;
                         // if (node.parentNode.outerHTML != null && node.parentNode.outerHTML.indexOf("THmo acWHSet") >= 0) return;
-                        // console.log("start");
-                        // console.log(node.children);
-                        // console.log(node.className);
-                        // console.log(node.parentNode);
-                        var sp = span.cloneNode(true);
+                        // debugX("start");
+                        // debugX(node.children);
+                        // debugX(node.className);
+                        // debugX(node.parentNode);
+                        var sp = XhighLight.cloneNode(true);
                         var findResult = node.nodeValue.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                        // console.log("1."+findResult);
-                        var repNodeHTML = findResult.replace(pat, '<span class="THmo acWHSet" txhidy15="acWHSet">$1</span>');
-                        // console.log("2."+repNodeHTML);
+                        // debugX("1."+findResult);
+                        var repNodeHTML = findResult.replace(pat, '<XhighLight class="THmo acWHSet" txhidy15="acWHSet">$1</XhighLight>');
+                        // debugX("2."+repNodeHTML);
                         sp.innerHTML = repNodeHTML;
                         if(node.parentNode == null) continue;
                         node.parentNode.replaceChild(sp, node);
@@ -294,13 +308,13 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                     attributeDataResetList[i].setAttribute("data", attributeDataResetList[i].innerHTML.toLocaleLowerCase());
                 }
             }catch (e) {
-                console.log(e);
+                debugX(e);
             }
             return;
         }
         function unHighLightAll_Text(){
             try{
-                var tgts = document.querySelectorAll('span[txhidy15="acWHSet"]');
+                var tgts = document.querySelectorAll('XhighLight[txhidy15="acWHSet"]');
                 for (var i=0; i<tgts.length; i++){
                     var parnode = tgts[i].parentNode, parpar = parnode.parentNode, tgtspan;
                     if (parnode.hasAttribute("thdcontain") && parnode.innerHTML == tgts[i].outerHTML){
@@ -314,15 +328,15 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                     if (tgtspan.hasAttribute("thdcontain")){
                         parnode = tgtspan.parentNode;
                         if (parnode){
-                            if (parnode.hasAttribute("thdcontain") && parnode.innerHTML == tgtspan.outerHTML && tgtspan.querySelectorAll('span[txhidy15]').length == 0){
+                            if (parnode.hasAttribute("thdcontain") && parnode.innerHTML == tgtspan.outerHTML && tgtspan.querySelectorAll('XhighLight[txhidy15]').length == 0){
                                 parnode.outerHTML = tgtspan.innerHTML;
-                            } else if (parnode.innerHTML == tgtspan.outerHTML && tgtspan.querySelectorAll('span[txhidy15]').length == 0) {
+                            } else if (parnode.innerHTML == tgtspan.outerHTML && tgtspan.querySelectorAll('XhighLight[txhidy15]').length == 0) {
                                 parnode.innerHTML = tgtspan.innerHTML;
                             }
                         }
                     }
                 }
-                var oldTgs = document.querySelectorAll("span[thdcontain='true']");
+                var oldTgs = document.querySelectorAll("XhighLight[thdcontain='true']");
                 counter = 0;
                 for(var i=0; i < oldTgs.length; i++){
                     var curTg = oldTgs[i];
@@ -332,7 +346,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         }
         function markChildandRemove(node){
             try{
-                if(node.tagName.toLowerCase() == "span"){
+                if(node.tagName.toLowerCase() == "xhighlight"){
                     node.outerHTML = node.innerHTML;
                 }
                 var childList = node.childNodes;
@@ -340,7 +354,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                     counter++;
                     var node = childList[i];
                     markChildandRemove(node);
-                    if(node.tagName.toLowerCase() == "span"){
+                    if(node.tagName.toLowerCase() == "xhighlight"){
                         node.outerHTML = node.innerHTML;
                     }
                 }
@@ -357,8 +371,8 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                 isSearchWindowActive = false;
                 enableDBSelectText = false;
             }
-            // 窗口激活状态；或者是窗口之前是不激活，现在激活了
-            if(isSearchWindowActive == true || (isSearchWindowActive == false && document.hidden == false)) {
+            // （窗口激活状态；或者是窗口之前是不激活，现在激活了） && 必须要非 禁用高亮状态
+            if((isSearchWindowActive == true || (isSearchWindowActive == false && document.hidden == false)) && !disableHighLight) {
                 var searchValue = (window.location.search.substr(1) + "").split("&");
                 for (var i = 0; i < searchValue.length; i++) {
                     var key_value = searchValue[i].split("=");
@@ -372,7 +386,7 @@ var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
                     }
                 }
             }
-        }, 1000);
+        }, 200);
     }else{
         DoHighLightWithSearchText(GM_getValue("searchKeyWords", ""));
     }

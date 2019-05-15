@@ -12,7 +12,7 @@
 // @license         GPL-3.0-only
 // @create          2015-11-25
 // @run-at          document-start
-// @version         23.16
+// @version         23.18
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
@@ -31,9 +31,12 @@
 // @supportURL      https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
 // @home-url        https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2       https://github.com/langren1353/GM_script
+// @homepageURL     https://greasyfork.org/zh-TW/scripts/14178
 // @copyright       2017, AC
-// @lastmodified    2019-04-26
+// @lastmodified    2019-05-06
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
+// @note            2019.05.06-V23.18 修复Baidu学术的异常，上次修改了，但是代码没有生效
+// @note            2019.05.05-V23.17 修复Baidu首页的图标异常的问题
 // @note            2019.04.26-V23.15 修复护眼色调节；新增不显示lock按钮选项；新增谷歌伪装百度；修复谷歌和百度页面的搜索样式；修复百度学术页面异常
 // @note            2019.03.30-V23.14 更新一下说明文档 && 添加一个github的跳转按钮 && 新增背景色
 // @note            2019.03.28-V23.13 更新-移除部分异常的百度白屏问题.新域名baidu.mx并不是百度旗下的地址，所以跳过。顺便刷一个版本，修复谷歌的recapture的问题，感谢老司机“breath365”
@@ -191,8 +194,8 @@
 // @resource        baiduCommonStyle     http://xbaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.15
 // @resource        baiduOnePageStyle    http://xbaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.15
 // @resource        baiduTwoPageStyle    http://xbaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.15
-// @resource        googleCommonStyle    http://xbaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.15
-// @resource        googleOnePageStyle   http://xbaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.15
+// @resource        googleCommonStyle    http://xbaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.16
+// @resource        googleOnePageStyle   http://xbaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.16
 // @resource        googleTwoPageStyle   http://xbaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.15
 // @resource        bingCommonStyle      http://xbaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.15
 // @resource        bingOnePageStyle     http://xbaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.15
@@ -276,7 +279,7 @@
 			isGooleInBaiduModeEnable: false, // 是否开启谷歌搜索结果页的百度图标显示
 			UserBlockList: ["baijiahao.baidu.com"],
 			UserStyleText:
-`/**计数器的颜色样式*/
+				`/**计数器的颜色样式*/
 .AC-CounterT{
     background: #FD9999;
 }
@@ -373,6 +376,12 @@ body{
 			},
 			baidu_xueshu:{
 				SiteTypeID: 8,
+				MainType: "#content_left .result",
+				Stype_Normal: "h3.t>a, #results .c-container>.c-blocka",
+				FaviconType: ".result-op, .c-showurl", // baidu 似乎要改版了？
+				FaviconAddTo: "h3",
+				CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
+				BlockType: "h3 a",
 			},
 			other: {
 				SiteTypeID: 9,
@@ -416,12 +425,16 @@ body{
 			!function () {
 				var BaiduVersion = " V" + GM_info.script.version;
 				var insertLocked = false;
-				if (location.host.indexOf(".baidu.com") > -1) {
+				if (location.host.indexOf("xueshu.baidu.com") > -1) {
+					curSite = DBSite.baidu_xueshu;
+				}else if (location.host.indexOf(".baidu.com") > -1) {
 					if(navigator.userAgent.replace(/(android|mobile|iphone)/igm, "") != navigator.userAgent){
 						curSite = DBSite.mBaidu;
 					}else{
 						curSite = DBSite.baidu;
 					}
+				} else if (location.host.indexOf("zhihu.com") > -1) {
+					curSite = DBSite.zhihu;
 				} else if (location.host.indexOf("sogou") > -1) {
 					curSite = DBSite.sogou;
 				} else if (location.host.indexOf("so.com") > -1) {
@@ -430,11 +443,7 @@ body{
 					curSite = DBSite.google;
 				} else if (location.host.indexOf("bing") > -1) {
 					curSite = DBSite.bing;
-				} else if (location.host.indexOf("zhihu.com") > -1) {
-					curSite = DBSite.zhihu;
-				} else if (location.host.indexOf("xueshu.baidu.com") > -1) {
-					curSite = DBSite.baidu_xueshu;
-				} else {
+				}else {
 					curSite = DBSite.other;
 				}
 				if (curSite.SiteTypeID == SiteType.GOOGLE && location.href.replace(/tbm=(isch|lcl|shop|flm)/, "") != location.href) {
@@ -747,12 +756,14 @@ body{
 						if (curSite.Stype_Normal != null && curSite.Stype_Normal != ""){
 							// 百度搜狗去重定向-普通模式【注意不能为document.query..】
 							resetURLNormal(document.querySelectorAll(curSite.Stype_Normal));
-							document.querySelectorAll(".s_form .index-logo-src[src*='gif'], .s_form .index-logo-srcnew[src*='gif']").forEach(function (per) {
-								per.src = "https://pic.rmb.bdstatic.com/c86255e8028696139d3e3e4bb44c047b.png";
-								// 神奇的百度百家号
-								// https://imgsa.baidu.com/fex/pic/item/8718367adab44aedcc91ab2bbe1c8701a08bfb26.jpg
-								// https://baidu.ntaow.com/newcss/baidu.png
-							});
+							if(checkISBaiduMain()){
+								document.querySelectorAll(".s_form .index-logo-src[src*='gif'], .s_form .index-logo-srcnew[src*='gif']").forEach(function (per) {
+									per.src = "https://pic.rmb.bdstatic.com/c86255e8028696139d3e3e4bb44c047b.png";
+									// 神奇的百度百家号
+									// https://imgsa.baidu.com/fex/pic/item/8718367adab44aedcc91ab2bbe1c8701a08bfb26.jpg
+									// https://baidu.ntaow.com/newcss/baidu.png
+								});
+							}
 						}
 						if (curSite.SiteTypeID == SiteType.GOOGLE) removeOnMouseDownFunc(); // 移除onMouseDown事件，谷歌去重定向
 						if (curSite.SiteTypeID == SiteType.MBAIDU) removeMobileBaiduDirectLink(); // 处理百度手机版本的重定向地址
@@ -861,7 +872,7 @@ body{
 							"        <div id='sp-ac-main'>\n" +
 							"        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
 
-							"            <legend title='AC重定向功能相关设置'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-重定向设置" + BaiduVersion + "</a><iframe src='https://ghbtns.com/github-btn.html?user=langren1353&repo=GM_script&type=star&count=true' frameborder='0' scrolling='0' style='height: 20px;max-width: 90px;padding-left:5px;box-sizing: border-box;margin-bottom: -5px;display:unset !important;'></iframe></legend>\n" +
+							"            <legend title='AC重定向功能相关设置'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-重定向设置" + BaiduVersion + "</a><iframe src='https://ghbtns.com/github-btn.html?user=langren1353&repo=GM_script&type=star&count=true' frameborder='0' scrolling='0' style='height: 20px;max-width: 100px;padding-left:5px;box-sizing: border-box;margin-bottom: -5px;display:unset !important;'></iframe></legend>\n" +
 							"            <ul class='setting-main'>\n" +
 							"                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label></li>\n" +
 							"                <li><label title='AC-去广告' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label></li>\n" +
@@ -1380,7 +1391,7 @@ body{
 						callbackFunc(selector()[0]);
 					}
 				}, time);
-			};
+			}
 			function AC_addStyle(css, className, addToTarget, isReload, initType) { // 添加CSS代码，不考虑文本载入时间，带有className
 				var tout = setInterval(function () {
 					/**
@@ -1432,8 +1443,12 @@ body{
 					console.log("未知命令：" + cssSelector);
 				}
 			}
-
-
+			function checkISBaiduMain(){
+				// 如果是百度 &&  没有(百度搜索结果的标志-[存在]百度的内容) return;
+				return !(curSite.SiteTypeID == SiteType.BAIDU && !(location.href.replace(/(&|\?)(wd|word)=/, "") != location.href || document.querySelector("#content_left") ||
+						((document.querySelector("#kw") && document.querySelector("#kw").getAttribute("value")) || "") != "")
+				)
+			}
 			function FSBaidu() { // thanks for code from 浮生@未歇 @page https://greasyfork.org/zh-TW/scripts/31642
 				debug("初始化FSBAIDU");
 				/**
@@ -1588,7 +1603,6 @@ body{
 						if (curSite.SiteTypeID == SiteType.GOOGLE) {
 							try {
 								var tI = setInterval(function () {
-
 									if (document.querySelector("#center_col #extrares") != null) {
 										clearInterval(tI);
 										var insSrc = document.createElement("div");
@@ -1646,12 +1660,10 @@ body{
 							document.head.appendChild(xflag);
 							debug("in样式运行结束");
 						}
-						if (curSite.SiteTypeID != SiteType.BAIDU && curSite.SiteTypeID != SiteType.GOOGLE && curSite.SiteTypeID != SiteType.BING && curSite.SiteTypeID != SiteType.SOGOU) return;
+						if (curSite.SiteTypeID != SiteType.BAIDU && curSite.SiteTypeID != SiteType.BAIDU_XUESHU && curSite.SiteTypeID != SiteType.GOOGLE && curSite.SiteTypeID != SiteType.BING && curSite.SiteTypeID != SiteType.SOGOU) return;
 						// 如果是百度 &&  ((地址替换->包含wd关键词[替换之后不等-是百度结果页面]) || 有右边栏-肯定是百度搜索结果页 || value中存在搜索内容) return;
-						// 如果是百度 &&  没有(百度搜索结果的标志-[存在]百度的内容) return;
-						if (curSite.SiteTypeID == SiteType.BAIDU && !(location.href.replace(/(&|\?)(wd|word)=/, "") != location.href || document.querySelector("#content_left") ||
-							((document.querySelector("#kw") && document.querySelector("#kw").getAttribute("value")) || "") != ""
-						)) {
+
+						if (!checkISBaiduMain()) {
 							CONST.StyleManger.loadCSSToPlain();
 							return;
 						}
