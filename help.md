@@ -26,20 +26,20 @@
 点击安装此脚本 [安装地址1](https://greasyfork.org/zh-CN/scripts/14178) 或 [安装地址2](https://openuserjs.org/scripts/inDarkness/AC-baidu%E9%87%8D%E5%AE%9A%E5%90%91%E4%BC%98%E5%8C%96%E7%99%BE%E5%BA%A6%E6%90%9C%E7%8B%97%E8%B0%B7%E6%AD%8C%E6%90%9C%E7%B4%A2_%E5%8E%BB%E5%B9%BF%E5%91%8A_favicon_%E5%8F%8C%E5%88%97)
 
 
-![](https://i.loli.net/2019/05/15/5cdbe9c43c96531521.jpg)
+![](https://ae01.alicdn.com/kf/HTB1Yp9yX.GF3KVjSZFoq6zmpFXaR.jpg)
 
 点击安装
 
-![](https://i.loli.net/2019/05/15/5cdbe9eaeb57a64661.jpg)
+![](https://ae01.alicdn.com/kf/HTB16FWxX4iH3KVjSZPfq6xBiVXab.jpg)
 
 安装成功后脚本列表中会出现
 
-![](https://i.loli.net/2019/05/15/5cdbea027bc5482622.jpg)
+![](https://ae01.alicdn.com/kf/HTB1nC9yX79E3KVjSZFGq6A19XXal.jpg)
 
 **3. 打开百度首页**
 
 打开Baidu，并搜索“我爱你中国”
-![](https://i.loli.net/2019/05/15/5cdbea1a616ac55134.jpg)
+![](https://ae01.alicdn.com/kf/HTB1MmyxX2WG3KVjSZPcq6zkbXXaD.jpg)
 
 安装成功的一个表现就是页面已经变成了单列居中的效果，并且能看到右上角应该有一个自定义按钮，此时说明脚本已经生效并能够正常的运行，如果页面没有变化或者是自定义按钮没有出现的话，那就是安装步骤有问题
     
