@@ -12,7 +12,7 @@
 // @license         GPL-3.0-only
 // @create          2015-11-25
 // @run-at          document-start
-// @version         23.19
+// @version         23.21
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
@@ -33,9 +33,11 @@
 // @home-url2       https://github.com/langren1353/GM_script
 // @homepageURL     https://greasyfork.org/zh-TW/scripts/14178
 // @copyright       2017, AC
-// @lastmodified    2019-06-01
+// @lastmodified    2019-06-16
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
-// @note            2019.06.01-V23.19 修复由于去广告其他插件导致的本脚本异常的问题 修复必应上的样式部分异常问题
+// @note            2019.06.16-V23.21 修复在屏蔽列表中加入异常数据导致的部分数据异常，同时还无法移除的bug
+// @note            2019.06.15-V23.20 尽量修改在adguard上的部分兼容问题--如果有问题记得叫我
+// @note            2019.06.05-V23.19 修复由于去广告其他插件导致的本脚本异常的问题 修复必应上的样式部分异常问题 修复图标的地址异常问题
 // @note            2019.05.06-V23.18 修复Baidu学术的异常，上次修改了，但是代码没有生效 && 新增BaiduLite的样式效果-from yiclear _ pan_cao && 优化页面显示效果，加快样式的载入速度 && 根据申杰老司机的推荐修改了许多残留的bug并且优化了页面的数据提示
 // @note            2019.05.05-V23.17 修复Baidu首页的图标异常的问题
 // @note            2019.04.26-V23.15 修复护眼色调节；新增不显示lock按钮选项；新增谷歌伪装百度；修复谷歌和百度页面的搜索样式；修复百度学术页面异常
@@ -413,7 +415,11 @@ body[baidu] #s_lg_img_new{
         /**初始化所有的设置**/
         Promise.all([GM.getValue("Config")]).then(function (data) {
             if (data[0] != null) {
-                ACConfig = data[0];
+                try{
+                    ACConfig = JSON.parse(data[0]);
+                }catch (e) {
+                    ACConfig = data[0];
+                }
             } else {
                 ACConfig = DefaultConfig;
             }
@@ -537,7 +543,7 @@ body[baidu] #s_lg_img_new{
                         node.removeAttribute("ac-user-alter");
                         ACConfig.UserBlockList.push(host);
                         ACConfig.UserBlockList = acFuncdistinct(ACConfig.UserBlockList);
-                        GM.setValue("Config", ACConfig); // 点击一次，保存一次
+                        GM.setValue("Config", JSON.stringify(ACConfig)); // 点击一次，保存一次
                         reloadBlockList();
                         BlockBaidu.renderDisplay();
                         env.stopPropagation();
@@ -834,7 +840,7 @@ body[baidu] #s_lg_img_new{
                             document.querySelector("#sp-ac-content").style.display = 'none';
                         } else {
                             ACConfig.oldVersion = GM_info.script.version;
-                            GM.setValue("Config", ACConfig);
+                            GM.setValue("Config", JSON.stringify(ACConfig));
                             document.querySelector(".ac-newversionDisplay").style.display = 'none';
                             document.querySelector("#sp-ac-content").style.display = 'block';
                         }
@@ -865,8 +871,10 @@ body[baidu] #s_lg_img_new{
                         });
                         document.querySelector(".ac-blockList").addEventListener("click", function (e) {
                             var target = e.srcElement || e.target;
+                            console.log(target);
                             if(target.tagName.toLowerCase() == "label"){
                                 var host = target.dataset.host;
+
                                 ACConfig.UserBlockList = acFuncafterRemove(ACConfig.UserBlockList, host);
                                 document.querySelectorAll("button[ac-user-alter]").forEach(function (perNode) {
                                     // 移除用户diy之后的属性
@@ -878,7 +886,7 @@ body[baidu] #s_lg_img_new{
                         });
                         function ckAddRule(){
                             var inputN = document.querySelector(".sp-ac-addRuleOne");
-                            ACConfig.UserBlockList.push(getHost(inputN.value));
+                            ACConfig.UserBlockList.push(inputN.value);
                             ACConfig.UserBlockList = acFuncdistinct(ACConfig.UserBlockList);
                             inputN.value = "";
                             reloadBlockList();
@@ -1021,6 +1029,7 @@ body[baidu] #s_lg_img_new{
                                 ACConfig.HuYan_Bing = document.querySelector('input[name="sp-ac-huyan_style_bing"]').checked;
                                 ACConfig.HuYan_SoGou = document.querySelector('input[name="sp-ac-huyan_style_sogou"]').checked;
                                 var imgurl = document.querySelector("#sp-ac-faviconUrl").value.trim();
+                                imgurl = (imgurl == "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg") ? "" : imgurl; // 如果是旧的新浪地址，那么重置
                                 imgurl = (imgurl == "" || imgurl == null) ? "https://ae01.alicdn.com/kf/HTB1dRY0X8OD3KVjSZFFq6An9pXay.jpg" : imgurl;
                                 ACConfig.isUserColorEnable = document.querySelector("#sp-ac-usercolor").checked;
                                 ACConfig.defaultHuYanColor = document.querySelector(".sp-ac-menuhuyanColor").value;
@@ -1032,7 +1041,7 @@ body[baidu] #s_lg_img_new{
                                 ACConfig.isALineEnable = document.querySelector("#sp-ac-aline").checked;
                                 ACConfig.isUserStyleEnable = document.querySelector("#sp-ac-userstyle").checked;
                                 ACConfig.UserStyleText = document.querySelector("#sp-ac-userstyleTEXT").value.trim();
-                                GM.setValue("Config", ACConfig);
+                                GM.setValue("Config", JSON.stringify(ACConfig));
                                 setTimeout(function () {
                                     window.location.reload();
                                 }, 400);

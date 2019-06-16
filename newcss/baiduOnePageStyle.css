@@ -9,7 +9,10 @@ form.fm{
     width:50%;
 }
 .wrapper_l form.fm #kw{
-    width:98% !important;
+    width:94% !important;
+}
+body[baidu] .pagefoot.gj{
+    margin-top: 100px;
 }
 #result_logo{
     position: relative;
@@ -24,7 +27,7 @@ form.fm{
     position:absolute;
     left:calc(45vw - 500px);
 }
-#wrapper  #content_left,#wrapper  #rs,#wrapper  #page{
+#wrapper  #content_left,#wrapper  #rs, #wrapper  #page{
     top: 35px;
     position:relative;
     padding-left: 0;
@@ -33,6 +36,9 @@ form.fm{
     float:unset;
     margin-left: unset;
     margin: 0 auto;
+}
+#wrapper  #page{
+    background: unset;
 }
 #wrapper  #rs .tt{
     margin:0px -20px 1px 0px;
@@ -64,9 +70,9 @@ form.fm{
 .s_tab_inner{
     display:block !important;
 }
-.hint_common_restop{
+#container .hint_common_restop{
     position: absolute;
-    left: calc(50% - 502px);
+    left: calc(45vw - 500px);
     margin-top: 25px;
 }
 /*search engine jump*/

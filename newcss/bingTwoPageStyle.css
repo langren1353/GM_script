@@ -1,5 +1,6 @@
 /*存放双列样式*/
-#container #content_left .hit_top_new{
+#container #content_left .hit_top_new,
+#b_content aside{
     display:none;
 }
 #b_content #b_results{

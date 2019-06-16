@@ -1,49 +1,59 @@
 // ==UserScript==
-// @name         AC-∂¿º“-Ã‘±¶ÃÏ√®”≈ª›»Ø≤È—Ø¡Ï»°,¥Û∂Ó”≈ª›»Ø,°æ100‘™π∫ŒÔ…Ò»Ø°ø, °«Æπ∫ŒÔ,¡Ï»Øπ∫¬Ú∏¸”≈ª›,∆Ωæ˘”≈ª›20%
-// @version      6.0
-// @description  ∂¿º“≤È—ØÃ‘±¶…Ã∆∑≤È—Ø «∑Òæﬂ”–”≈ª›»Ø,∏˜÷÷¥Û∂Ó”≈ª›»Ø,°æ3‘™|10‘™|20‘™|40‘™°ø”≈ª›»Ø¡Ï»°,π∫ŒÔ±ÿ±∏
+// @name         AC-Áã¨ÂÆ∂-Ê∑òÂÆùÂ§©Áå´‰ºòÊÉ†Âà∏Êü•ËØ¢È¢ÜÂèñ,Â§ßÈ¢ù‰ºòÊÉ†Âà∏,„Äê100ÂÖÉË¥≠Áâ©Á•ûÂà∏„Äë,ÁúÅÈí±Ë¥≠Áâ©,È¢ÜÂà∏Ë¥≠‰π∞Êõ¥‰ºòÊÉ†,Âπ≥Âùá‰ºòÊÉ†20%
+// @version      7.1
+// @description  Áã¨ÂÆ∂Êü•ËØ¢Ê∑òÂÆùÂïÜÂìÅÊü•ËØ¢ÊòØÂê¶ÂÖ∑Êúâ‰ºòÊÉ†Âà∏,ÂêÑÁßçÂ§ßÈ¢ù‰ºòÊÉ†Âà∏,„Äê3ÂÖÉ|10ÂÖÉ|20ÂÖÉ|40ÂÖÉ„Äë‰ºòÊÉ†Âà∏È¢ÜÂèñ,Ë¥≠Áâ©ÂøÖÂ§á,ÁâπÂ§ß‰ºòÊÉ†
 // @author       AC
 // @include      https://item.taobao.com/item.htm*
 // @include      https://detail.tmall.com/item.htm*
 // @include      https://s.taobao.com/search*
 // @include      https://cart.taobao.com/*
 // @include      *://uland.taobao.com/coupon/*
-// @note         2018.08.11-V6.0 –¬‘ˆÀ—À˜∫Û”≈ª›√Ê÷µœ‘ æ£ª∆¡±Œ“ª–©ºÚµ•µƒ∑≥»Àµƒπ„∏Ê
-// @note         2018.07.25-V5.6 ”≈ªØ∞¥≈•À≥–Ú°£°£“‘«∞ƒ«∏ˆÀ≥–Ú’Êµƒ≤ª––
-// @note         2018.06.13-V5.5 –ﬁ∏¥≈º∂˚Œﬁ∑®ªÒ»°±ÍÃ‚£¨»ª∫ÛŒﬁ∑®’˝≥£À—À˜Ω·π˚µƒŒ Ã‚
-// @note         2018.06.13-V5.4 –ﬁ∏¥µ˜”√µƒŒ Ã‚£¨“‘º∞”– ±∫Ú≤È≤ª≥ˆ¿¥µƒŒ Ã‚
-// @note         2018.05.12-V5.3 –ﬁ∏¥‘⁄≤ø∑÷ÃÏ√®“≥√Ê√ª∑¥”¶µƒŒ Ã‚
-// @note         2018.04.30-V5.2 –¬‘ˆ”≈ª›»Ø√Ê∂Ó≤È—ØΩ·π˚
-// @note         2018.03.18-V5.1 ∏¸–¬œ¬±ÍÃ‚
-// @note         2018.03.18-V5.0 –¬‘ˆπ∫ŒÔ≥µ“≥√Ê…Ë÷√ ˝æ›
-// @note         2018.03.10-V4.9 –ﬁ’˝…œ∏ˆ∞Ê±æ∏¸–¬µƒŒ Ã‚
-// @note         2018.03.08-V4.8 ºÚµ•‘ˆº”“ª∏ˆ∞¥≈•—°œÓ
-// @note         2018.01.23-V4.5 –ﬁ’˝Œƒ◊÷Àµ√˜
-// @note         2018.01.22-V4.4 –ﬁ∏¥…œ∏ˆ∞Ê±æ∏¸–¬µº÷¬µƒBUG°£°£°£°£°£∫‹ﬁœﬁŒ
-// @note         2018.01.18-V4.3 ”≈ªØΩÁ√Êœ‘ æ–ßπ˚£¨œ‘ æÀ—À˜Ω·π˚÷–±ª◊‘∂Ø…æ≥˝µƒœÓƒø
-// @note         2018.01.07-V4.2 ∏¸ªª”Ú√˚
-// @note         2018.01.06-V4.1 “∆≥˝≤ª’˝≥£µƒÕ∆π„ƒ£ Ω2
-// @note         2018.01.06-V4.0 “∆≥˝≤ª’˝≥£µƒÕ∆π„ƒ£ Ω
-// @note         2018.01.02-V3.8 ∏¸–¬±ÍÃ‚∫ÕŒƒ◊÷Àµ√˜,À≥¥¯µ˜’˚¥˙¬ÎΩ·ππ
-// @note         2017.12.25-V3.7 –ﬁ∏¥≈º∂˚≤È’“∞¥≈• ß–ßµƒŒ Ã‚
-// @note         2017.12.25-V3.6 –ﬁ∏¥∏¸–¬µº÷¬µƒ–°Œ Ã‚2£¨≤ª”∞œÏ π”√
-// @note         2017.12.17-V3.5 –ﬁ∏¥∏¸–¬µº÷¬µƒ–°Œ Ã‚£¨≤ª”∞œÏ π”√
-// @note         2017.12.05-V3.4 –¬‘ˆ’æƒ⁄À—À˜ƒ£ Ω
-// @note         2017.11.22-V3.3 ‘Ÿ ‘ ‘“‘«∞µƒƒ£ Ω£¨–ﬁ∏¥BUG
-// @note         2017.11.17-V3.2 æ¯Õ˚µƒÀ—À˜BUG–ﬁ∏¥
-// @note         2017.11.17-V3.1 ”≈ªØ‘ÿ»Îª∫¬˝µƒŒ Ã‚
-// @note         2017.11.17-V3.0 –ﬁ∏¥…œ“ª∞Êπ˝”⁄¡˜≥©µƒbug£¨…œ“ª∞Ê∏¸–¬µº÷¬µƒbugÕ¶∂‡µƒ°£°£°£
-// @note         2017.11.17-V2.9 ’˝≥£∏¸–¬£¨æ°¡øºı…Ÿ”…”⁄÷ÿ∂®œÚ¥¯¿¥µƒ”∞œÏ£¨Õ¨ ±–ﬁ’˝πÊ‘Ú±‹√‚≥ˆ ¬
-// @note         2017.11.17-V2.8 …œ∏ˆ∞Ê±æ∏¸–¬µº÷¬µƒbug  ...P_P...
-// @note         2017.11.17-V2.7 –ﬁ∏¥”≈ª›»ØªÒ»°≤ª’˝»∑µƒŒ Ã‚£¨“‘º∞≤ø∑÷«Èøˆœ¬Œﬁ∑®œ‘ æ”≈ª›»ØµƒŒ Ã‚
-// @note         2017.11.12-V2.6 ºÚµ•∏¸–¬
-// @note         2017.11.11-V2.5 ≤È—ØÀŸ∂»∏¸øÏÀŸ£¨≤¢«“”≈ªØ¡À‘ÿ»Î«Èøˆ£¨º”»Î¡À∏ˆ»À ˝æ›
-// @note         2017.11.10-V2.4 »Áπ˚”–”≈ª›£¨ø…“‘’π æ≥ˆ”≈ª›–≈œ¢¡À
-// @note         2017.11.4-V2.3 ‘› ±–¬‘ˆ¡Ω÷÷ƒ£ Ωπ©—°‘Ò
-// @note         2017.11.2-V2.2 ≤Œ’’¡À“ª∏ˆ¥Û…ÒµƒΩ≈±æ÷Æ∫Ûƒ√µΩ¡À“ª–©css£¨”⁄ «”÷º”¡À–©∂´Œ˜£¨’π æ“ª–©À´ Æ“ªœ‡πÿµƒ±Í«©
-// @note         2017.11.1-V2.1 «–ªªŒ™includeπÊ‘Ú£¨∂¯∑«matchπÊ‘Ú£¨±‹√‚GreaseMonkey…œŒﬁ∑® π”√µƒŒ Ã‚
-// @note         2017.10.30-V2.0 –ﬁ∏¥‘⁄ƒ≥–©“≥√Ê…œ£¨±ÍÃ‚ªÒ»°≤ª’˝»∑µƒŒ Ã‚
-// @note         2017.10.28-V1.0 µ⁄“ª∞Ê±æ£¨edit from https://greasyfork.org/zh-TW/scripts/34604
+// @note         2019.03.08-V7.1 ‰øÆÂ§ç‰∏ÄÂ§ÑÂ∞èbug
+// @note         2019.01.06-V7.0 Âπ¥ÂâçÂà∑‰∏Ä‰∏ãÁâàÊú¨
+// @note         2018.10.15-V6.9 ÁßªÈô§Êó†ÂÖ≥ÁöÑ‰ª£Á†ÅÔºå‰ºòÂåñÁªìÊûÑÔºåÂØπ‰∫éÊó†ÊïàÁöÑÈìæÊé•‰∏çÊâìÂºÄ
+// @note         2018.09.26-V6.8 ÁßªÈô§ÊØî‰ª∑ÂäüËÉΩ~~
+// @note         2018.09.23-V6.7 Âú®Ê∑òÂÆùÂçïÈ°µÊèê‰æõÊØî‰ª∑ÂäüËÉΩ
+// @note         2018.09.19-V6.6 ‰øÆÂ§çÂú®Ê∑òÂÆùÊüê‰∫õÈ°µÈù¢ÁöÑÂ±ïÁ§∫‰∏çÊ≠£Â∏∏ÁöÑÈóÆÈ¢ò
+// @note         2018.09.17-V6.5 Êõ¥Êñ∞-ÊîØÊåÅÊâ©Â±ïÊ®°Âºè
+// @note         2018.09.06-V6.4 Êñ∞Â¢ûÂèØÁÇπÂáªÊåâÈíÆÁöÑÂèòËâ≤ÔºåÊõ¥ÂèãÂ•ΩÁöÑ‰∫§‰∫í
+// @note         2018.09.05-V6.3 ‰øÆÂ§çÂ§ö‰∏™Ëß¶ÂèëÂØºËá¥ÁöÑÂÜ≤Á™ÅÈóÆÈ¢òÔºåÊñ∞Â¢ûÊªöÂä®Êó∂‰æùÊóßÂèØ‰ª•ÁúãÂà∞‰ºòÊÉ†ÊäòÊâ£
+// @note         2018.08.24-V6.2 ‰øÆÂ§çËé∑ÂèñÂïÜÂìÅÊ†áÈ¢ò‰∏çÊ≠£Â∏∏ÂØºËá¥ÁöÑÊêúÁ¥¢Êó†ÁªìÊûúÁöÑÈóÆÈ¢ò
+// @note         2018.08.11-V6.0 Êñ∞Â¢ûÊêúÁ¥¢Âêé‰ºòÊÉ†Èù¢ÂÄºÊòæÁ§∫ÔºõÂ±èËîΩ‰∏Ä‰∫õÁÆÄÂçïÁöÑÁÉ¶‰∫∫ÁöÑÂπøÂëä[Á´ôÂÜÖÊêú]
+// @note         2018.07.25-V5.6 ‰ºòÂåñÊåâÈíÆÈ°∫Â∫è„ÄÇ„ÄÇ‰ª•ÂâçÈÇ£‰∏™È°∫Â∫èÁúüÁöÑ‰∏çË°å
+// @note         2018.06.13-V5.5 ‰øÆÂ§çÂÅ∂Â∞îÊó†Ê≥ïËé∑ÂèñÊ†áÈ¢òÔºåÁÑ∂ÂêéÊó†Ê≥ïÊ≠£Â∏∏ÊêúÁ¥¢ÁªìÊûúÁöÑÈóÆÈ¢ò
+// @note         2018.06.13-V5.4 ‰øÆÂ§çË∞ÉÁî®ÁöÑÈóÆÈ¢òÔºå‰ª•ÂèäÊúâÊó∂ÂÄôÊü•‰∏çÂá∫Êù•ÁöÑÈóÆÈ¢ò
+// @note         2018.05.12-V5.3 ‰øÆÂ§çÂú®ÈÉ®ÂàÜÂ§©Áå´È°µÈù¢Ê≤°ÂèçÂ∫îÁöÑÈóÆÈ¢ò
+// @note         2018.04.30-V5.2 Êñ∞Â¢û‰ºòÊÉ†Âà∏Èù¢È¢ùÊü•ËØ¢ÁªìÊûú
+// @note         2018.03.18-V5.1 Êõ¥Êñ∞‰∏ãÊ†áÈ¢ò
+// @note         2018.03.18-V5.0 Êñ∞Â¢ûË¥≠Áâ©ËΩ¶È°µÈù¢ËÆæÁΩÆÊï∞ÊçÆ
+// @note         2018.03.10-V4.9 ‰øÆÊ≠£‰∏ä‰∏™ÁâàÊú¨Êõ¥Êñ∞ÁöÑÈóÆÈ¢ò
+// @note         2018.03.08-V4.8 ÁÆÄÂçïÂ¢ûÂä†‰∏Ä‰∏™ÊåâÈíÆÈÄâÈ°π
+// @note         2018.01.23-V4.5 ‰øÆÊ≠£ÊñáÂ≠óËØ¥Êòé
+// @note         2018.01.22-V4.4 ‰øÆÂ§ç‰∏ä‰∏™ÁâàÊú¨Êõ¥Êñ∞ÂØºËá¥ÁöÑBUG„ÄÇ„ÄÇ„ÄÇ„ÄÇ„ÄÇÂæàÂ∞¥Â∞¨
+// @note         2018.01.18-V4.3 ‰ºòÂåñÁïåÈù¢ÊòæÁ§∫ÊïàÊûúÔºåÊòæÁ§∫ÊêúÁ¥¢ÁªìÊûú‰∏≠Ë¢´Ëá™Âä®Âà†Èô§ÁöÑÈ°πÁõÆ
+// @note         2018.01.07-V4.2 Êõ¥Êç¢ÂüüÂêç
+// @note         2018.01.06-V4.1 ÁßªÈô§‰∏çÊ≠£Â∏∏ÁöÑÊé®ÂπøÊ®°Âºè2
+// @note         2018.01.06-V4.0 ÁßªÈô§‰∏çÊ≠£Â∏∏ÁöÑÊé®ÂπøÊ®°Âºè
+// @note         2018.01.02-V3.8 Êõ¥Êñ∞Ê†áÈ¢òÂíåÊñáÂ≠óËØ¥Êòé,È°∫Â∏¶Ë∞ÉÊï¥‰ª£Á†ÅÁªìÊûÑ
+// @note         2017.12.25-V3.7 ‰øÆÂ§çÂÅ∂Â∞îÊü•ÊâæÊåâÈíÆÂ§±ÊïàÁöÑÈóÆÈ¢ò
+// @note         2017.12.25-V3.6 ‰øÆÂ§çÊõ¥Êñ∞ÂØºËá¥ÁöÑÂ∞èÈóÆÈ¢ò2Ôºå‰∏çÂΩ±Âìç‰ΩøÁî®
+// @note         2017.12.17-V3.5 ‰øÆÂ§çÊõ¥Êñ∞ÂØºËá¥ÁöÑÂ∞èÈóÆÈ¢òÔºå‰∏çÂΩ±Âìç‰ΩøÁî®
+// @note         2017.12.05-V3.4 Êñ∞Â¢ûÁ´ôÂÜÖÊêúÁ¥¢Ê®°Âºè
+// @note         2017.11.22-V3.3 ÂÜçËØïËØï‰ª•ÂâçÁöÑÊ®°ÂºèÔºå‰øÆÂ§çBUG
+// @note         2017.11.17-V3.2 ÁªùÊúõÁöÑÊêúÁ¥¢BUG‰øÆÂ§ç
+// @note         2017.11.17-V3.1 ‰ºòÂåñËΩΩÂÖ•ÁºìÊÖ¢ÁöÑÈóÆÈ¢ò
+// @note         2017.11.17-V3.0 ‰øÆÂ§ç‰∏ä‰∏ÄÁâàËøá‰∫éÊµÅÁïÖÁöÑbugÔºå‰∏ä‰∏ÄÁâàÊõ¥Êñ∞ÂØºËá¥ÁöÑbugÊå∫Â§öÁöÑ„ÄÇ„ÄÇ„ÄÇ
+// @note         2017.11.17-V2.9 Ê≠£Â∏∏Êõ¥Êñ∞ÔºåÂ∞ΩÈáèÂáèÂ∞ëÁî±‰∫éÈáçÂÆöÂêëÂ∏¶Êù•ÁöÑÂΩ±ÂìçÔºåÂêåÊó∂‰øÆÊ≠£ËßÑÂàôÈÅøÂÖçÂá∫‰∫ã
+// @note         2017.11.17-V2.8 ‰∏ä‰∏™ÁâàÊú¨Êõ¥Êñ∞ÂØºËá¥ÁöÑbug  ...P_P...
+// @note         2017.11.17-V2.7 ‰øÆÂ§ç‰ºòÊÉ†Âà∏Ëé∑Âèñ‰∏çÊ≠£Á°ÆÁöÑÈóÆÈ¢òÔºå‰ª•ÂèäÈÉ®ÂàÜÊÉÖÂÜµ‰∏ãÊó†Ê≥ïÊòæÁ§∫‰ºòÊÉ†Âà∏ÁöÑÈóÆÈ¢ò
+// @note         2017.11.12-V2.6 ÁÆÄÂçïÊõ¥Êñ∞
+// @note         2017.11.11-V2.5 Êü•ËØ¢ÈÄüÂ∫¶Êõ¥Âø´ÈÄüÔºåÂπ∂‰∏î‰ºòÂåñ‰∫ÜËΩΩÂÖ•ÊÉÖÂÜµÔºåÂä†ÂÖ•‰∫Ü‰∏™‰∫∫Êï∞ÊçÆ
+// @note         2017.11.10-V2.4 Â¶ÇÊûúÊúâ‰ºòÊÉ†ÔºåÂèØ‰ª•Â±ïÁ§∫Âá∫‰ºòÊÉ†‰ø°ÊÅØ‰∫Ü
+// @note         2017.11.4-V2.3 ÊöÇÊó∂Êñ∞Â¢û‰∏§ÁßçÊ®°Âºè‰æõÈÄâÊã©
+// @note         2017.11.2-V2.2 ÂèÇÁÖß‰∫Ü‰∏Ä‰∏™Â§ßÁ•ûÁöÑËÑöÊú¨‰πãÂêéÊãøÂà∞‰∫Ü‰∏Ä‰∫õcssÔºå‰∫éÊòØÂèàÂä†‰∫Ü‰∫õ‰∏úË•øÔºåÂ±ïÁ§∫‰∏Ä‰∫õÂèåÂçÅ‰∏ÄÁõ∏ÂÖ≥ÁöÑÊ†áÁ≠æ
+// @note         2017.11.1-V2.1 ÂàáÊç¢‰∏∫includeËßÑÂàôÔºåËÄåÈùûmatchËßÑÂàôÔºåÈÅøÂÖçGreaseMonkey‰∏äÊó†Ê≥ï‰ΩøÁî®ÁöÑÈóÆÈ¢ò
+// @note         2017.10.30-V2.0 ‰øÆÂ§çÂú®Êüê‰∫õÈ°µÈù¢‰∏äÔºåÊ†áÈ¢òËé∑Âèñ‰∏çÊ≠£Á°ÆÁöÑÈóÆÈ¢ò
+// @note         2017.10.28-V1.0 Á¨¨‰∏ÄÁâàÊú¨Ôºåedit from https://greasyfork.org/zh-TW/scripts/34604
 // @icon         https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @home-url     https://greasyfork.org/zh-TW/scripts/34606
 // @run-at       document-start
@@ -52,183 +62,186 @@
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 // .tb-detail-hd, .tb-main-title
-var goodTitle = "";
-function addStyle(css) {
-    var pi = document.createProcessingInstruction(
-        'xml-stylesheet',
-        'type="text/css" href="data:text/css;utf-8,' + encodeURIComponent(css) + '"'
-    );
-    return document.insertBefore(pi, document.documentElement);
-}
-function resetGD(){
-    var gd = setInterval(function () {
-        var nodes = document.querySelectorAll(".items .J_MouserOnverReq .search_coupon_tip");
-        if(nodes != null && nodes.length > 0){
-            clearInterval(gd);
-            nodes = document.querySelectorAll(".items .J_MouserOnverReq");
-            for(var i = 0; i<nodes.length; i++){
-                try{
-                    var name = node.querySelector(".J_IconMoreNew .J_ClickStat").innerText.trim();
-                    nodes[i].querySelector(".search_coupon_tip").href = 'https://cent.ntaow.com/coupon.html?mQuery='+encodeURI(name);
-                }catch (e) {
-                }
+
+setTimeout(function () {
+    if(typeof(acTB) == "undefined"){
+        acTB = 1;
+        (function(){
+            var goodTitle = "";
+            function addStyle(css) {
+                var pi = document.createProcessingInstruction(
+                    'xml-stylesheet',
+                    'type="text/css" href="data:text/css;utf-8,' + encodeURIComponent(css) + '"'
+                );
+                return document.insertBefore(pi, document.documentElement);
             }
-        }
-        gwcounter++;
-        if(gwcounter >= gwmax){
-            clearInterval(gd);
-        }
-    }, 100);
-}
-function loadGD(){
-    addStyle(".copon-search-list{background:url(https://cdn.gwdang.com/images/extensions/newbar/coupon_02.png) no-repeat;display:inline-block;position:absolute;top:0;right:0;font-size:14px;color:#FF173F!important;height:23px;width:92px;text-align:center;text-decoration:none!important;z-index:1;}");
-    var allNodes = document.querySelectorAll(".items .J_MouserOnverReq, #content .product");
-    for(var i = 0; i < allNodes.length; i++){
-        (function (node) {
-            var gid;
-            try{gid = node.querySelector(".pic>a").getAttribute("data-nid");} catch (e) { }
-            try{gid = gid || node.getAttribute("data-id");} catch (e) { }
-            GM_xmlhttpRequest({
-                method: "GET", url: "https://open.lesiclub.cn/coupon/get/10005/10001/" + gid,
-                onload: function (res) {
-                    res = JSON.parse(res.responseText);
-                    if(res.code == 200 && res.data != null && res.data.coupon.is_valid == true){
-                        var insNode = document.createElement("a");
-                        var name;
-                        try{name = node.querySelector(".J_IconMoreNew .J_ClickStat").innerText.trim();} catch (e) { }
-                        try{name = name || node.querySelector(".productTitle a").getAttribute("title");} catch (e) { }
-                        var price = res.data.coupon.coupon_money;
-                        insNode.setAttribute("title", "µ±«∞…Ã∆∑¡Ï»Øºı"+price+"‘™");
-                        insNode.href = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(name);
-                        insNode.target = "_blank";
-                        insNode.className = "copon-search-list";
-                        insNode.innerHTML = "£§"+price+"‘™”≈ª›»Ø";
-                        try{node.querySelector(".pic-box").appendChild(insNode);}catch (e) {}
-                        try{node.querySelector(".productImg-wrap").appendChild(insNode);}catch (e) {}
+            function timerDoOnce(node, functionName, checkTime){
+                var tt = setInterval(function(){
+                    if(document.querySelector(node) != null) {
+                        clearInterval(tt);
+                        try{
+                            functionName();
+                        }catch (e) {}
                     }
-                }
-            });
-        })(allNodes[i]);
-    }
-}
-if(location.href.indexOf("item.taobao.com") + location.href.indexOf("detail.tmall.com") >= 0) {
-    function getQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]);
-        return null;
-    }
-    var goodID = getQueryString("id");
-    queryData(goodID);
-    function AutoStart(time, cssSelector, dealFunc) {
-        var timerNode = setInterval(function () {
-            try {
-                if (document.querySelector(cssSelector).style.display == "") {
-                    clearInterval(timerNode);
-                    dealFunc();
-                }
-            } catch (e) {
+                }, checkTime);
             }
-        }, time);
-    }
-    function acBuyScript(result) {
-        var tt = setInterval(function () {
-            var node = document.querySelector(".acBuyScriptCoupon");
-            if (node != null) {
-                clearInterval(tt);
-                if (result.code == 200 && result.data && result.data.coupon.is_valid == true) {
-                    node.innerHTML = "!"+result.data.coupon.coupon_money+"‘™”≈ª›»Ø!";
-                    node.href = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(goodTitle);
-                    timerDoOnce(".gwd-minibar-bg #coupon_box", function() {
-                        document.querySelector(".gwd-minibar-bg #coupon_box").href = node.href;
-                        document.querySelector("#gwdang_main #top_coupon_btn").href = node.href;
-                    }, 200);
-                } else {
-                    node.innerHTML = "Œﬁ”≈ª›ªÚ“—¡Ï”≈ª›";
-                    node.setAttribute("style", "font-size: 11px;color:#6c6c6c");
+
+            function loadSC(){
+                // ÊêúÁ¥¢ÁöÑÊó∂ÂÄôÂ¢ûÂä†‰ºòÊÉ†‰ø°ÊÅØ
+                addStyle(".copon-search-list{cursor:pointer;background:url(https://ws1.sinaimg.cn/large/6a155794gy1fuxyyimkydj202k00n0bj.jpg) no-repeat;display:inline-block;position:absolute;top:0;right:0;font-size:14px;color:#f95d50 !important;height:23px;padding: 0 8px 0 8px;background-size: 100% 100%;text-align:center;text-decoration:none!important;z-index:1;}");
+                var allNodes = document.querySelectorAll(".items .J_MouserOnverReq, #content .product");
+                for(var i = 0; i < allNodes.length; i++){
+                    (function (node) {
+                        var gid;
+                        try{gid = node.querySelector(".pic>a").getAttribute("data-nid");} catch (e) { }
+                        try{gid = gid || node.getAttribute("data-id");} catch (e) { }
+                        GM_xmlhttpRequest({
+                            method: "GET", url: "https://open.lesiclub.cn/coupon/get/10005/10001/" + gid,
+                            onload: function (res) {
+                                res = JSON.parse(res.responseText);
+                                if(res.code == 200 && res.data != null && res.data.coupon.is_valid == true){
+                                    var insNode = document.createElement("span");
+                                    var name;
+                                    try{name = node.querySelector(".J_IconMoreNew .J_ClickStat").innerText.trim();} catch (e) { }
+                                    try{name = name || node.querySelector(".productTitle a").getAttribute("title");} catch (e) { }
+                                    var price = res.data.coupon.coupon_money;
+                                    insNode.setAttribute("title", "ÂΩìÂâçÂïÜÂìÅÈ¢ÜÂà∏Âáè"+price+"ÂÖÉ");
+                                    insNode.dataset.url = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(name);
+                                    insNode.setAttribute("onclick", "openUrl(this);");
+                                    insNode.className = "copon-search-list";
+                                    insNode.innerHTML = "Ôø•"+price+"ÂÖÉ‰ºòÊÉ†Âà∏";
+                                    try{node.querySelector(".pic-box").appendChild(insNode);}catch (e) {}
+                                    try{node.querySelector(".productImg-wrap").appendChild(insNode);}catch (e) {}
+                                }
+                            }
+                        });
+                    })(allNodes[i]);
                 }
             }
-        }, 50);
-    }
-    function queryData(goodID) {
-        var cgoodTitle = document.title+"";
-        var ret = GM_xmlhttpRequest({
-            method: "GET", url: "https://open.lesiclub.cn/coupon/get/10005/10001/" + goodID,
-            onload: function (res) {
-                res = JSON.parse(res.responseText);
-                acBuyScript(res);
-            }
-        });
-    }
-    AutoStart(100, ".tb-detail-hd, .tb-main-title", function () {
-        var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
-        goodTitle = TitleNode.firstChild.nodeValue.trim();
-        if(goodTitle == ""){
-            goodTitle = TitleNode.childNodes[1].innerHTML.trim();
-        }
-        var querySimilar = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(goodTitle);
-        var queryInSite = "https://s.taobao.com/search?q=" + encodeURI(goodTitle) + "&";
-        var faNode = document.querySelector("div#J_Title p.tb-subtitle, div.tb-detail-hd h1");
-        var insNode = document.createElement("div");
-        insNode.style = "font-size: 32px;font-weight: bold;font-family:microsoft yahei;";
-        var htmlText = "<a class='acBuyScriptCoupon' href='javascript:void(0);' target='_blank' style='color: red;'>=≤È’“÷–=</a>";
-        htmlText += "&nbsp;&nbsp;<a href=" + queryInSite + " target='_blank' style='color: red;'>[’æƒ⁄À—]</a>";
-        htmlText += "&nbsp;&nbsp;<a href=" + querySimilar + " target='_blank' style='color: red;'>[’“œ‡À∆]</a>";
-        insNode.innerHTML = htmlText;
-        faNode.appendChild(insNode);
-        var htmlTB = "<a style='padding: 6px 12px;ine-height:26px;text-align: center;display: inline-block;margin-bottom: 0;font-size: 14px;font-weight: normal;height:26px;lwhite-space: nowrap;vertical-align: middle;-ms-touch-action: manipulation;touch-action: manipulation;cursor: pointer;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;background-image: none;border: 1px solid transparent;border-radius:2px;color: #fff;background-color: #DF231C;#FF0036;margin-left:10px' href='https://cent.ntaow.com/coupon.html?mQuery="+encodeURI(goodTitle)+"'>ªÒ»°”≈ª›»Ø</a>";
-        var htmlTMALL = "<div class='tb-action' style='margin-top:0'><a style='display: inline-block;border-radius:2px;color: #fff;background-color: #DF231C;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: normal;height:26px;line-height:26px;width:156px;text-align: center;white-space: nowrap;vertical-align: middle;-ms-touch-action: manipulation;touch-action: manipulation;cursor: pointer;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;background-image: none;border: 1px solid transparent;' href='https://cent.ntaow.com/coupon.html?mQuery="+encodeURI(goodTitle)+"'>ªÒ»°”≈ª›»Ø</a></div>";
-        var anoInsNode = document.createElement("div");
-        if(location.host.indexOf('taobao') > 0){
-            anoInsNode.innerHTML = htmlTB;
-            document.querySelector('.tb-action').append(anoInsNode);
-        }else{
-            anoInsNode.innerHTML = htmlTMALL;
-            document.querySelector('.tb-sku').append(anoInsNode);
-        }
-    });
-}else if(location.href.indexOf("s.taobao.com/search") > 0 || location.href.indexOf("list.tmall.com/search_product") > 0){
-    var ttcounter = 0, ttmax = 10;
-    var gwcounter = 0, gwmax = 100;
-    var tt = setInterval(function () {
-        var nodes = document.querySelectorAll(".items .item-ad");
-        var allNodes = document.querySelectorAll(".items .J_MouserOnverReq, #content .product");
-        if(allNodes != null && (nodes.length > 0 || allNodes.length > 0)){
-            clearInterval(tt);
-            if(document.querySelector("script[src*='gwd']") != null){
-                resetGD();
-            }else{
-                loadGD();
-            }
-            for(var i = 0; i<nodes.length; i++){
-                nodes[i].className = "item J_MouserOnverReq  ";
-            }
-        }
-        ttcounter++;
-        if(ttcounter >= ttmax){
-            clearInterval(tt);
-        }
-    }, 100);
-} else if(location.host.indexOf("uland") >= 0){
-    addStyle("#J_MMREDBOX_MASK{display:none !important;}");
-} else if(location.href.indexOf("cart.taobao.com") >= 0){
-    setInterval(function(){
-        if(document.querySelector("#J_OrderList .item-basic-info") != null){
-            var htmlCart = "<a href='https://cent.ntaow.com/coupon.html?mQuery=AAAAAAAAAA' style='height:22px !important;color:red;font-size:16px;border-radius:1px;padding:2px;border-color:#fea356;border-style: dashed;'>≤È’“”≈ª›–≈œ¢</a>";
-            var nodes = document.querySelectorAll(".order-content .item-basic-info");
-            for(i = 0; i < nodes.length; i++){
-                var title = nodes[i].querySelector("a").getAttribute("title");
-                if(title != null){
-                    var addHTMLText = htmlCart.replace("AAAAAAAAAA", encodeURI(title));
+            openUrl = function(node){
+                if(node.dataset.url.indexOf("javascript:void") < 0)
+                    window.open(node.dataset.url);
+            };
+            addStyle(".ac-btn:hover,.copon-search-list:hover,.ac-btn-cart:hover,.tm-detailGo-btn:hover{color: rgba(255,200,0,30)!important;text-shadow: 0 0px rgba(242,33,49,30),0 0px 0px rgba(242,33,49,30),0 1px 1px rgba(242,33,49,30),1px 0 1px rgba(242,33,49,30),-1px 0 1px rgba(242,33,49,30),0 0 1px rgba(242,33,49,30)!important;}");
+            addStyle(".ac-btn:hover,.tm-detailGo-btn:hover{color: white!important;}");
+
+            if(location.href.indexOf("item.taobao.com") + location.href.indexOf("detail.tmall.com") >= 0) {
+                addStyle(".tm-detailGo-btn{line-height: 48px !important;cursor:pointer;padding: 0px 11px;color:#f95d50;float: right !important;font-weight: bold;border: 1px solid #f95f52;font-size: 1.3em;}");
+                function getQueryString(name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                    var r = window.location.search.substr(1).match(reg);
+                    if (r != null) return unescape(r[2]);
+                    return null;
+                }
+                var goodID = getQueryString("id");
+                queryData(goodID);
+                function AutoStart(time, cssSelector, dealFunc) {
+                    var timerNode = setInterval(function () {
+                        try {
+                            if (document.querySelector(cssSelector).style.display == "") {
+                                clearInterval(timerNode);
+                                dealFunc();
+                            }
+                        } catch (e) {
+                        }
+                    }, time);
+                }
+                function acBuyScript(result) {
+                    var tt = setInterval(function () {
+                        var node = document.querySelector(".acBuyScriptCoupon");
+                        if (node != null) {
+                            clearInterval(tt);
+                            if (result.code == 200 && result.data && result.data.coupon.is_valid == true) {
+                                node.innerHTML = "!"+result.data.coupon.coupon_money+"ÂÖÉ‰ºòÊÉ†Âà∏!";
+                                node.dataset.url = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(goodTitle);
+                            } else {
+                                node.innerHTML = "Êó†‰ºòÊÉ†ÊàñÂ∑≤È¢Ü‰ºòÊÉ†";
+                                node.setAttribute("style", "font-size: 11px;color:#6c6c6c");
+                            }
+                        }
+                    }, 50);
+                }
+                function queryData(goodID) {
+                    var cgoodTitle = document.title+"";
+                    var ret = GM_xmlhttpRequest({
+                        method: "GET", url: "https://open.lesiclub.cn/coupon/get/10005/10001/" + goodID,
+                        onload: function (res) {
+                            res = JSON.parse(res.responseText);
+                            acBuyScript(res);
+                        }
+                    });
+                }
+                AutoStart(100, ".tb-sku, .tb-action", function () {
+                    var TitleNode = document.querySelector("div#J_Title h3, div.tb-detail-hd h1");
+                    goodTitle = TitleNode.firstChild.nodeValue.trim();
+                    if(goodTitle == ""){
+                        goodTitle = TitleNode.childNodes[1].innerHTML.trim();
+                    }
+                    var querySimilar = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(goodTitle);
+                    var queryInSite = "https://s.taobao.com/search?q=" + encodeURI(goodTitle) + "&";
+                    var faNode = document.querySelector("div#J_Title p.tb-subtitle, div.tb-detail-hd h1");
                     var insNode = document.createElement("div");
-                    insNode.className = "ac-tb-add";
-                    insNode.style = "display: inline-block";
-                    insNode.innerHTML = addHTMLText;
-                    if(nodes[i].parentNode.querySelector(".item-icons") && nodes[i].parentNode.querySelector(".item-icons").querySelector(".ac-tb-add") == null){
-                        nodes[i].parentNode.querySelector(".item-icons").appendChild(insNode);
+                    insNode.style = "font-size: 32px;font-weight: bold;font-family:microsoft yahei;";
+                    var htmlText = "<span class='acBuyScriptCoupon ac-btn' data-url='javascript:void(0);' onclick='openUrl(this);' style='color: #f95f52;cursor:pointer;'>=Êü•Êâæ‰∏≠=</span>";
+                    htmlText += "&nbsp;&nbsp;<span class='ac-btn' data-url=" + queryInSite  + " onclick='openUrl(this);' style='color: #f95f52;cursor:pointer;'>[Á´ôÂÜÖÊêú]</span>";
+                    htmlText += "&nbsp;&nbsp;<span class='ac-btn' data-url=" + querySimilar + " onclick='openUrl(this);' style='color: #f95f52;cursor:pointer;'>[ÊâæÁõ∏‰ºº]</span>";
+                    insNode.innerHTML = htmlText;
+                    faNode.appendChild(insNode);
+                    var htmlTB = "<span class='ac-btn' style='padding: 6px 12px;ine-height:26px;text-align: center;display: inline-block;margin-bottom: 0;font-size: 14px;font-weight: normal;height:26px;lwhite-space: nowrap;vertical-align: middle;-ms-touch-action: manipulation;touch-action: manipulation;cursor: pointer;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;background-image: none;border: 1px solid transparent;border-radius:2px;color: #fff;background-color: #DF231C;#FF0036;margin-left:10px' data-url='https://cent.ntaow.com/coupon.html?mQuery="+encodeURI(goodTitle)+"' onclick='openUrl(this);'>Ëé∑Âèñ‰ºòÊÉ†Âà∏</span>";
+                    var htmlTMALL = "<div class='ac-btn' class='tb-action' style='margin-top:10px;margin-left: 66px;'><span style='display: inline-block;border-radius:2px;color: #fff;background-color: #DF231C;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: normal;height:26px;line-height:26px;width:156px;text-align: center;white-space: nowrap;vertical-align: middle;-ms-touch-action: manipulation;touch-action: manipulation;cursor: pointer;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;background-image: none;border: 1px solid transparent;' data-url='https://cent.ntaow.com/coupon.html?mQuery="+encodeURI(goodTitle)+"' onclick='openUrl(this);'>Ëé∑Âèñ‰ºòÊÉ†Âà∏</span></div>";
+                    var anoInsNode = document.createElement("div");
+                    anoInsNode.style = "font-weight: bold;font-family:microsoft yahei;";
+                    if(location.host.indexOf('taobao') > 0){
+                        anoInsNode.innerHTML = htmlTB;
+                        document.querySelector('.tb-action').append(anoInsNode);
+                    }else{
+                        anoInsNode.innerHTML = htmlTMALL;
+                        document.querySelector('.tb-sku').append(anoInsNode);
                     }
-                }
+                });
+            }else if(location.href.indexOf("s.taobao.com/search") > 0 || location.href.indexOf("list.tmall.com/search_product") > 0){
+                var ttcounter = 0, ttmax = 10;
+                var gwcounter = 0, gwmax = 100;
+                var tt = setInterval(function () {
+                    var nodes = document.querySelectorAll(".items .item-ad");
+                    var allNodes = document.querySelectorAll(".items .J_MouserOnverReq, #content .product");
+                    if(allNodes != null && (nodes.length > 0 || allNodes.length > 0)){
+                        clearInterval(tt);
+                        if(document.querySelector("script[src*='gwd']") == null){
+                            loadSC();
+                        }
+                        for(var i = 0; i<nodes.length; i++){
+                            nodes[i].className = "item J_MouserOnverReq ";
+                        }
+                    }
+                    ttcounter++;
+                    if(ttcounter >= ttmax){
+                        clearInterval(tt);
+                    }
+                }, 100);
+            } else if(location.host.indexOf("uland") >= 0){
+                addStyle("#J_MMREDBOX_MASK{display:none !important;}");
+            } else if(location.href.indexOf("cart.taobao.com") >= 0) {
+                setInterval(function(){
+                    if(document.querySelector("#J_OrderList .item-basic-info") != null){
+                        var htmlCart = "<span class='ac-btn-cart' data-url='https://cent.ntaow.com/coupon.html?mQuery=AAAAAAAAAA' onclick='openUrl(this);' style='cursor:pointer;22px !important;color:#f95f52;font-size:16px;border-radius:1px;padding:2px;border-color:#fea356;border-style: dashed;'>Êü•Êâæ‰ºòÊÉ†‰ø°ÊÅØ</span>";
+                        var nodes = document.querySelectorAll(".order-content .item-basic-info");
+                        for(i = 0; i < nodes.length; i++){
+                            var title = nodes[i].querySelector("a").getAttribute("title");
+                            if(title != null){
+                                var addHTMLText = htmlCart.replace("AAAAAAAAAA", encodeURI(title));
+                                var insNode = document.createElement("div");
+                                insNode.className = "ac-tb-add";
+                                insNode.style = "display: inline-block";
+                                insNode.innerHTML = addHTMLText;
+                                if(nodes[i].parentNode.querySelector(".item-icons") && nodes[i].parentNode.querySelector(".item-icons").querySelector(".ac-tb-add") == null){
+                                    nodes[i].parentNode.querySelector(".item-icons").appendChild(insNode);
+                                }
+                            }
+                        }
+                    }
+                }, 1000);
             }
-        }
-    }, 1000);
-}
+        })();
+    }
+}, 50);

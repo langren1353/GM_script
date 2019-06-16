@@ -1,6 +1,5 @@
 /******************* 屏蔽不需要的内容 *******************/
-/* 普通内容 */
-iframe,
+/* 普通内容 iframe可能是正常视频*/
 div.res_top_banner
 #foot,
 #page .fk,
@@ -337,6 +336,9 @@ cite{
 /**行距调整*/
 #res .r{
     line-height: 1.3;
+}
+#res{
+    padding: 0;
 }
 /**Google连接框距离及样式小改*/
 #rs, .bkWMgd .g {

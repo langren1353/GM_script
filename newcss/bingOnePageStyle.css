@@ -1,5 +1,7 @@
 /*存放单列居中样式*/
-/*存放双列样式*/
+#b_content aside{
+    display:none;
+}
 #b_content #b_results{
     width: 80vw;
 }

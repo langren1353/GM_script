@@ -8,6 +8,9 @@ form.fm{
     left: calc(12%);
     background-color: unset;
 }
+.wrapper_l form.fm #kw{
+    width:94% !important;
+}
 #wrapper .s_tab_inner,
 #s_tab .tab-wrapper{
     margin-left: 12%;

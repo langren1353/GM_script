@@ -2,7 +2,10 @@
 #center_col>*{
     padding-left: unset;
     padding-right: unset;
-    width: 100vw;
+    width: 99vw;
+}
+#center_col .med{
+    padding: 0;
 }
 #center_col .sp-separator{
     width: 890px;
@@ -47,7 +50,7 @@
     padding-left: calc(37vw - 200px);
 }
 #ires #rso{
-    width:100vw;
+    width:98vw;
 }
 #center_col{
     margin-left: 0 !important;
