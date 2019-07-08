@@ -17,7 +17,7 @@
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
 // @include         *://m.baidu.com/*
-// @include         *://xueshu.baidu.com/*
+// @include         *://xueshu.baidu.com/s*
 // @include         *://www.sogou.com/web*
 // @include         *://www.sogou.com/sie*
 // @include         *://www.so.com/s?*
@@ -35,7 +35,7 @@
 // @copyright       2017, AC
 // @lastmodified    2019-06-16
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
-// @note            2019.06.16-V23.21 修复在屏蔽列表中加入异常数据导致的部分数据异常，同时还无法移除的bug
+// @note            2019.06.16-V23.21 修复在屏蔽列表中加入异常数据导致的部分数据异常，同时还无法移除的bug && 修改Baidu学术的生效页面，避免导致其他学术页面的显示出问题 && 修复在缩放150%的情况下搜索框位置异常的问题
 // @note            2019.06.15-V23.20 尽量修改在adguard上的部分兼容问题--如果有问题记得叫我
 // @note            2019.06.05-V23.19 修复由于去广告其他插件导致的本脚本异常的问题 修复必应上的样式部分异常问题 修复图标的地址异常问题
 // @note            2019.05.06-V23.18 修复Baidu学术的异常，上次修改了，但是代码没有生效 && 新增BaiduLite的样式效果-from yiclear _ pan_cao && 优化页面显示效果，加快样式的载入速度 && 根据申杰老司机的推荐修改了许多残留的bug并且优化了页面的数据提示
@@ -194,20 +194,20 @@
 // @note            2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note            2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note            2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource        baiduCommonStyle     http://xbaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.18
-// @resource        baiduOnePageStyle    http://xbaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.18
-// @resource        baiduTwoPageStyle    http://xbaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.18
-// @resource        baiduLiteStyle       http://xbaidu.ntaow.com/newcss/baiduLiteStyle.css?t=23.18
-// @resource        googleCommonStyle    http://xbaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.18
-// @resource        googleOnePageStyle   http://xbaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.18
-// @resource        googleTwoPageStyle   http://xbaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.18
-// @resource        bingCommonStyle      http://xbaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.18
-// @resource        bingOnePageStyle     http://xbaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.18
-// @resource        bingTwoPageStyle     http://xbaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=23.18
-// @resource        sogouCommonStyle     http://xbaidu.ntaow.com/newcss/sogouCommonStyle.css?t=23.18
-// @resource        sogouOnePageStyle    http://xbaidu.ntaow.com/newcss/sogouOnePageStyle.css?t=23.18
-// @resource        sogouTwoPageStyle    http://xbaidu.ntaow.com/newcss/sogouTwoPageStyle.css?t=23.18
-// @resource        MainHuYanStyle       http://xbaidu.ntaow.com/newcss/HuYanStyle.css?t=23.18
+// @resource        baiduCommonStyle     http://xbaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.21
+// @resource        baiduOnePageStyle    http://xbaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.21
+// @resource        baiduTwoPageStyle    http://xbaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.21
+// @resource        baiduLiteStyle       http://xbaidu.ntaow.com/newcss/baiduLiteStyle.css?t=23.21
+// @resource        googleCommonStyle    http://xbaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.21
+// @resource        googleOnePageStyle   http://xbaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.21
+// @resource        googleTwoPageStyle   http://xbaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.21
+// @resource        bingCommonStyle      http://xbaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.21
+// @resource        bingOnePageStyle     http://xbaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.21
+// @resource        bingTwoPageStyle     http://xbaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=23.21
+// @resource        sogouCommonStyle     http://xbaidu.ntaow.com/newcss/sogouCommonStyle.css?t=23.21
+// @resource        sogouOnePageStyle    http://xbaidu.ntaow.com/newcss/sogouOnePageStyle.css?t=23.21
+// @resource        sogouTwoPageStyle    http://xbaidu.ntaow.com/newcss/sogouTwoPageStyle.css?t=23.21
+// @resource        MainHuYanStyle       http://xbaidu.ntaow.com/newcss/HuYanStyle.css?t=23.21
 // @grant           GM_getValue
 // @grant           GM.getValue
 // @grant           GM_setValue
