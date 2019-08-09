@@ -1,4 +1,4 @@
-/*存放单列居中样式*/
+/*Store BingOnePageStyle*/
 #b_content aside{
     display:none;
 }
@@ -8,6 +8,7 @@
 body #b_header{
     width: 79vw;
     background-color: #FFFFFF;
+    text-align: center;
     margin: 0 auto;
 }
 #b_content{

@@ -1,5 +1,5 @@
-/**HuYanStyle**/
-/*****百度护眼色*****/
+/**Store HuYanStyle**/
+/*****Baidu-HuYanStyle*****/
 body[baidu],
 #wrapper #head,
 #wrapper #s_tab,
@@ -19,18 +19,13 @@ form.fm .s_ipt_wr.bg{
 #wrapper #content_left .result:hover {
     background-color: #CCCCCC !important;
 }
-/**
-    CSS优先级：先有父元素优先级大于先有子元素优先级
-    且该规则优先级大于文件顺序优先级
-    后文件：#content_left .result-op h3 大于 先文件：.result-op h3
-**/
 #wrapper #content_left .result h3, 
 #wrapper #content_left .result-op h3, 
 #wrapper #content_left .c-container h3,
 #wrapper #rs .tt{
     background-color: #BBBBBB ;
 }
-/***必应护眼色****/
+/***Bing-HuYanStyle****/
 .na_cnt .nws_itm,
 .nws_itmb,
 #b_content #b_results li,
@@ -45,7 +40,7 @@ body #b_header{
 #b_content #b_results li h2{
     background-color: #BBBBBB ;
 }
-/***谷歌护眼色****/
+/***Google-HuYanStyle****/
 body[google]{
     background-color: #fDfDfD;
 }

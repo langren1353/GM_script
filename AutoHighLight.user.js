@@ -4,14 +4,16 @@
 // @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @author          AC
 // @create          2018-05-25
-// @version         2.1
+// @version         2.2
 // @include         *
+// @exclude         *://www.bilibili.com/*
 // @home-url        https://greasyfork.org/zh-TW/scripts/368418
 // @home-url2       https://github.com/langren1353/GM_script
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
-// @lastmodified    2019-06-05
+// @lastmodified    2019-08-09
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/368418
+// @note            2019.08.09-V2.2 排除bilibili的地址，避免导致bilibili无法播放
 // @note            2019.06.05-V2.1 修复样式加载刚开始的时候还是黑色的，颜色没有及时更新的问题 其次优化脚本的处理速速，减少不必要的查询和处理
 // @note            2018.10.08-V2.0 修复多次触发导致的卡顿现象；修复搜索时高亮的问题
 // @note            2018.10.03-V1.9 修复由于<span>标签导致的：1.样式被界面污染 2.特定关键词被百度重定向脚本删除；修复在部分代码界面导致的高亮失效问题；修复高亮导致的标题栏被格式化

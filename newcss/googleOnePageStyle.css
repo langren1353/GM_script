@@ -1,4 +1,4 @@
-/**加个注释**/
+/**Store GoogleOnePageStyle**/
 #center_col>*{
     padding-left: unset;
     padding-right: unset;
@@ -35,13 +35,14 @@
 }
 /*search engine jump*/
 .tsf-p>.logocont, #sej-container{
-    padding-left: calc(50vw - 450px) !important;
+    /*padding-left: calc(50vw - 450px) !important;*/
 }
 .tsf-p>.sfibbbc{
-    padding-left: calc(50vw - 470px) !important;
+    /*padding-left: calc(50vw - 470px) !important;*/
 }
-#top_nav #hdtb-s{
+#top_nav #hdtb-s,#top_nav #hdtbMenus{
     padding-left: calc(50vw - 580px);
+    width: 75vw;
 }
 .appbar #extabar #topabar{
     padding-left: calc(50vw - 580px);

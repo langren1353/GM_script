@@ -1,5 +1,5 @@
-/******************* 屏蔽不需要的内容 *******************/
-/* 普通内容 iframe可能是正常视频*/
+/******************* Store GoogleCommonStyle *******************/
+/* regular items, warring: iframes could be videos*/
 div.res_top_banner
 #foot,
 #page .fk,
@@ -18,7 +18,7 @@ div.res_top_banner
 #demo {
     display: none!important;
 }
-/******************* 初始化 *******************/
+/******************* init *******************/
 body[google] {
     background-color: #fDfDfD;
 }
@@ -32,7 +32,7 @@ a,
 a em {
     text-decoration: none;
 }
-/******************* 布局重写 - 头部 *******************/
+/******************* rewrite header *******************/
 
 #head,
 #s_tab {
@@ -72,13 +72,13 @@ a em {
 #u a {
     text-decoration: none;
 }
-/******************* 布局重写 - 搜索显示内容 *******************/
-/* 搜索工具 */
+/******************* rewrite - searchBox *******************/
+/* SearchTools */
 #container .head_nums_cont_outer .search_tool_conter,
 #container .head_nums_cont_outer .nums {
     width: 630px;
 }
-/* 条目 */
+/* SearchItmes */
 #search .srg, .med>#ires .bkWMgd>.srg{
     animation-name: left_logoR;
     -webkit-animation-duration: .1s;
@@ -96,12 +96,13 @@ a em {
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
 #rs, .bkWMgd .g div.rc .s{
     max-width:unset;
 }
 .bkWMgd .g:hover{
-    box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;
+    box-shadow:0 0 2px gray;background:#fafafa !important;
 }
 .bkWMgd .g[tpl='soft'] .op-soft-title,
 .bkWMgd .g div.r {
@@ -110,7 +111,7 @@ a em {
     padding: 8px 20px 5px;
     border-radius: 5px 5px 0px 0px;
 }
-/* 条目 - 颜色 */
+/* Items - Color */
 .srg .f13 a,
 .srg .f13 em,
 .srg .c-span18 a,
@@ -146,7 +147,7 @@ a em {
 .srg .f13 a {
     color: #008000;
 }
-/* 条目 - 调节 */
+/* Items - Adj */
 
 .srg .c-span18, .srg .c-span24{
     width: 100%;
@@ -170,7 +171,7 @@ a em {
     display: inline-block;
     margin-left: 10px;
 }
-/* 标题*/
+/* title */
 .bkWMgd .g[tpl='soft'] .op-soft-title a,
 .bkWMgd .g[tpl='soft'] .op-soft-title a em,
 .bkWMgd .g div.r> a,
@@ -179,7 +180,7 @@ a em {
     color: #2866bd;
     font-weight: bold;
 }
-/* 标题:visied */
+/* title:visied */
 .srg .op-soft-title a:visited,
 .srg .op-soft-title a:visited em,
 .bkWMgd .g div.r> a:visited,
@@ -240,7 +241,7 @@ a em {
     -moz-transition: width 350ms, left 350ms;
     transition: width 350ms, left 350ms;
 }
-/* 相关搜索 */
+/*  About Search Result */
 
 #rs {
     margin-top: 0px;
@@ -265,7 +266,7 @@ a em {
 #rs table tr a:hover {
     text-decoration: underline;
 }
-/* 页码 */
+/* page nums */
 
 #page {
     min-width: 710px;
@@ -295,7 +296,7 @@ a em {
     background: #4879bd;
     color: white;
 }
-/* 动画 */
+/* ani */
 @-webkit-keyframes left_logoR {
     0% {
         -webkit-transform: translateY(64px);
@@ -309,7 +310,7 @@ a em {
     }
 }
 .bkWMgd>div:not([class]){
-    width: 730px;
+    /*width: 730px;*/
 }
 .bkWMgd>div:not([class]){
     margin-left: 18px;
@@ -332,15 +333,15 @@ a em {
 cite{
     font-weight:normal;
 }
-/**Mooncan Start**/
-/**行距调整*/
+/**Mooncan -START**/
+/**Aja LineHeight*/
 #res .r{
     line-height: 1.3;
 }
 #res{
     padding: 0;
 }
-/**Google连接框距离及样式小改*/
+/**Google ConnectionBox*/
 #rs, .bkWMgd .g {
     margin-bottom: 20px;
     border-radius: 10px;
@@ -348,12 +349,12 @@ cite{
 .bkWMgd .g div.r {
     border-radius: 10px 10px 0px 0px;
 }
-/**改正首页答案摘要样式错误*/
+/**Rewrite main page -> web summary*/
  .c2xzTb .g, .ruTcId .g, .fm06If .g, .cUnQKe .g, .HanQmf .g {
     width: 758px;
     padding-left:  20px !important;
     padding-right: 20px !important;
-    box-shadow: 0 0 0px 0px rgba(0, 0, 0);/*答案摘要阴影去除*/
+    box-shadow: 0 0 0px 0px rgb(0, 0, 0); /*remove the shadow*/
 }
 div .xfxx5d {
     margin-bottom: -18px !important;
@@ -365,4 +366,4 @@ div .xaqJzf.xfxx5d .kno-ftr{
 div .kno-ftr a{
     position: sticky;
 }
-/**Mooncan Stop**/
+/**Thanks to Mooncan -END**/

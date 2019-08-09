@@ -1,6 +1,6 @@
-/*存放双列样式*/
+/*Store BingTwoPageStyle*/
 #container #content_left .hit_top_new,
-#b_content aside{
+#b_content aside, #b_results #mfa_root{
     display:none;
 }
 #b_content #b_results{
@@ -11,6 +11,9 @@
 #b_content #b_results>li{
     width:98%;
 }
+#b_results .b_algo .b_deep ul{
+    width: 50%;
+}
 #b_msg, #b_pag{
     grid-column-end: 3;
     grid-column-start: 1;
@@ -19,7 +22,16 @@
 body #b_content{
     margin-left: 5vw; 
 }
-
+body #b_header{
+    width: 79vw;
+    background-color: #FFFFFF;
+    text-align: center;
+    margin: 0 auto;
+}
+body #b_header #est_switch{
+    margin: 0 auto;
+    padding-right: 635px;
+}
 /*search engine jump*/
 body #sej-container{
     padding-left: calc(12% - 113px) !important;

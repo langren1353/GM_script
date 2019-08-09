@@ -1,4 +1,4 @@
-/**BaiduCommonStyle**/
+/**Store BaiduCommonStyle**/
 iframe,
 .res_top_banner
 #foot,
@@ -92,11 +92,12 @@ form.fm .s_btn:hover {
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
 #wrapper #content_left .result-op:hover,
 #wrapper #content_left .result:hover{
     box-shadow:0 0 2px gray!important;
-    background:rgba(230,230,230,0.1)!important;
+    background:#f3f3f3 !important;
 }
 #wrapper #rs[ac-needhide],
 #wrapper #content_left .result[ac-needhide],
@@ -290,6 +291,9 @@ form.fm .s_btn:hover {
 #wrapper #page strong .pc {
     background: #4879bd;
     color: white;
+}
+.op-img-address-divide-high{
+    overflow: hidden;
 }
 @-webkit-keyframes left_logoR {
     0% {

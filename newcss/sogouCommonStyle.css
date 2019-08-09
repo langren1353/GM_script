@@ -1,4 +1,4 @@
-/*样式: sogouCommonStyle*/
+/*Store: SogouCommonStyle*/
 body {
     background-color: #f5f5f5;
 }
@@ -26,6 +26,7 @@ body {
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
 .results .rb a,
 .results .vrwrap a,
@@ -35,7 +36,7 @@ body {
 }
 #main .results>div:hover {
     box-shadow: 0 0 2px gray!important;
-    background: rgba(230,230,230,0.1)!important;
+    background: #f3f3f3 !important;
 }
 #main .results>div h3 {
     background-color: #f8f8f8;
@@ -84,4 +85,7 @@ a, a strong {
     -webkit-transition: width 350ms;
     -moz-transition: width 350ms;
     transition: width 350ms;
+}
+body #pagebar_container a{
+    background-color: white;
 }
