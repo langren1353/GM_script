@@ -59,8 +59,8 @@
 
 
 ### 关于捐赠
-如果你觉得脚本还可以的，对您有那么些小帮助的，您可以通过支付宝或者微信扫一扫，捐助X元，谢谢众位大佬~
-嫌麻烦可以帮忙点一下右上角的Star小星星
+如果你觉得脚本还可以的，对您有那么些小帮助的，您可以通过支付宝或者微信扫一扫，捐助X元，1分不嫌少，5毛也是爱，谢谢众位大佬~![谢谢](https://ae01.alicdn.com/kf/H10467ba7961f4604a68454f95089bd54m.png)
+如果嫌麻烦可以帮忙点一下右上角的Star小星星
 
 微信：<img src="https://ae01.alicdn.com/kf/HTB1r1exX25G3KVjSZPxq6zI3XXa0.jpg" width=200 height=200/>支付宝：<img src="https://ae01.alicdn.com/kf/HTB15mWGXW1s3KVjSZFtq6yLOpXat.jpg" width=200 height=200/>
 
