@@ -12,7 +12,7 @@
 // @license         GPL-3.0-only
 // @create          2015-11-25
 // @run-at          document-start
-// @version         23.22
+// @version         23.26
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
@@ -36,8 +36,11 @@
 // @home-url2       https://github.com/langren1353/GM_script
 // @homepageURL     https://greasyfork.org/zh-TW/scripts/14178
 // @copyright       2017, AC
-// @lastmodified    2019-08-09
+// @lastmodified    2019-09-13
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
+// @note            2019.10-05-V23.25 修复谷歌样式、必应样式、百度的部分样式问题.修复屏蔽模式在chrome内核上的小bug 新增自动全英文模式 修复被翻译导致的bug
+// @note            2019.09-13-V23.24 修复谷歌由于页面改动导致的插入之后的样式变化 & 修复上次更新导致的重定向失效的问题
+// @note            2019.09-12-V23.23 紧急修复谷歌页面的bug & 增加时间判断是否重置最新的自定样式 & 修复整体页面的内存占用以及采用RAF来替代setInterval & 优化拦截列表并修复列表数据过多的删除失败的问题 & 新增支持通配符拦截模式 & 全部使用处理结果后的顺序
 // @note            2019.08-09-V23.22 1.移除手机百度的广告内容 2.更换数据来源地址为ibaidu.ntaow.com降低服务器负载 3.变更:页面加载不载入iframe，点击显示后载入iframe 4.未启用自定义样式时间过长会更新最新的样式表 5.修复各大搜索的样式问题-侧移+背景透明 6.修复edge首页的问题 7.block屏蔽之后可以直接取消了 8.采用错误页支持后续的google的iframe嵌入
 // @note            2019.06.16-V23.21 修复在屏蔽列表中加入异常数据导致的部分数据异常，同时还无法移除的bug && 修改Baidu学术的生效页面，避免导致其他学术页面的显示出问题 && 修复在缩放150%的情况下搜索框位置异常的问题
 // @note            2019.06.15-V23.20 尽量修改在adguard上的部分兼容问题--如果有问题记得叫我
@@ -198,20 +201,20 @@
 // @note            2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note            2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note            2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource        baiduCommonStyle     http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.22.1
-// @resource        baiduOnePageStyle    http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.22.1
-// @resource        baiduTwoPageStyle    http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.22.1
-// @resource        baiduLiteStyle       http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=23.22.1
-// @resource        googleCommonStyle    http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.22.1
-// @resource        googleOnePageStyle   http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.22.1
-// @resource        googleTwoPageStyle   http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.22.1
-// @resource        bingCommonStyle      http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.22.1
-// @resource        bingOnePageStyle     http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.22.1
-// @resource        bingTwoPageStyle     http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=23.22.1
-// @resource        sogouCommonStyle     http://ibaidu.ntaow.com/newcss/sogouCommonStyle.css?t=23.22.1
-// @resource        sogouOnePageStyle    http://ibaidu.ntaow.com/newcss/sogouOnePageStyle.css?t=23.22.1
-// @resource        sogouTwoPageStyle    http://ibaidu.ntaow.com/newcss/sogouTwoPageStyle.css?t=23.22.1
-// @resource        MainHuYanStyle       http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=23.22.1
+// @resource        baiduCommonStyle     http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.26
+// @resource        baiduOnePageStyle    http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.26
+// @resource        baiduTwoPageStyle    http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.26
+// @resource        baiduLiteStyle       http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=23.26
+// @resource        googleCommonStyle    http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.26
+// @resource        googleOnePageStyle   http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.26
+// @resource        googleTwoPageStyle   http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.26
+// @resource        bingCommonStyle      http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.26
+// @resource        bingOnePageStyle     http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.26
+// @resource        bingTwoPageStyle     http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=23.26
+// @resource        sogouCommonStyle     http://ibaidu.ntaow.com/newcss/sogouCommonStyle.css?t=23.26
+// @resource        sogouOnePageStyle    http://ibaidu.ntaow.com/newcss/sogouOnePageStyle.css?t=23.26
+// @resource        sogouTwoPageStyle    http://ibaidu.ntaow.com/newcss/sogouTwoPageStyle.css?t=23.26
+// @resource        MainHuYanStyle       http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=23.26
 // @grant           GM_getValue
 // @grant           GM.getValue
 // @grant           GM_setValue
@@ -222,14 +225,16 @@
 // @grant           GM_registerMenuCommand
 // ==/UserScript==
 !function () {
-    var isdebug = false;
-    var isLocalDebug = isdebug || false;
-    var debug = isdebug ? console.log.bind(console) : function () {
+    let isdebug = false;
+    let isLocalDebug = isdebug || false;
+    let debug = isdebug ? console.log.bind(console) : function () {
     };
-    var inExtMode = typeof(isExtension) != "undefined";
-    var inGMMode = typeof(GM_info.scriptHandler) != "undefined"; // = "Greasemonkey" || "Tampermonkey" || "ViolentMonkey"
+
+    let inExtMode = typeof(isExtension) != "undefined";
+    let inGMMode = typeof(GM_info.scriptHandler) != "undefined"; // = "Greasemonkey" || "Tampermonkey" || "ViolentMonkey"
     // 新版本的GreaseMonkey是带有scriptHandler，但是没有GM_getResourceText；旧版本不带scriptHandler，但是有GM_getResourceText
-    var isNewGM = typeof(GM_info.scriptHandler) != "undefined" && GM_info.scriptHandler.toLowerCase() == "greasemonkey";
+    let isNewGM = typeof(GM_info.scriptHandler) != "undefined" && GM_info.scriptHandler.toLowerCase() == "greasemonkey";
+    let isCNLan = window.navigator.language.indexOf("zh") >= 0; // 判定是否为中文模式
     // inExtMode & inGMMode
     // true        true =扩展下的GM代码 不执行
     // true        false=扩展下代码 执行
@@ -248,7 +253,7 @@
     }
     (function () {
         debug("程序执行");
-        var needDisplayNewFun = true; // 本次更新是否有新功能需要展示
+        let needDisplayNewFun = true; // 本次更新是否有新功能需要展示
         if (window.NodeList && !NodeList.prototype.forEach) {
             NodeList.prototype.forEach = function (callback, thisArg) {
                 thisArg = thisArg || window;
@@ -257,9 +262,33 @@
                 }
             };
         }
-        var ACConfig = {};
+        if(!Array.prototype.acpush){
+            /**
+             * 进行不重复插入，插入后执行回调函数
+             * @param data 待插入数据
+             * @param callback 回调函数
+             */
+            Array.prototype.acpush = function (data, callback) {
+                // 如果是垃圾数据，那么可以丢弃的
+                if(data == null) return;
+                // 如果数据中有回车，那数据也是无效的正文而已
+                if(data.replace(/({|}|,|\+|：|。|\n)/) != data) return;
+                if(this.findIndex(m => m == data) < 0){
+                    this.push(data);
+                    callback && callback(this);
+                }
+            };
+            Array.prototype.acremove = function (data, callback) {
+                let delId = this.findIndex(m => m == data);
+                if(delId >= 0){
+                    this.splice(delId, 1);
+                    callback && callback(this);
+                } // 删除delId的数据，删除一个
+            };
+        }
+        let ACConfig = {};
         /*存在对未初始化变量的初始化赋值-无需担心迭代兼容问题*/
-        var DefaultConfig = {
+        let DefaultConfig = {
             isRedirectEnable: true,  // 是否开启重定向功能
             isAdsEnable: true, // 是否开启去广告模式
             isBlockEnable: true, // 是否开启去拦截模式
@@ -290,7 +319,7 @@
             UserBlockList: ["baijiahao.baidu.com"],
             UserStyleText:
                 `/**计数器的颜色样式*/
-.AC-CounterT{
+div .AC-CounterT{
     background: #FD9999;
 }
 /**右侧栏的样式-其实不开启更好看一些*/
@@ -307,6 +336,7 @@
 body{
     background-repeat: repeat-y;
     background-size: 100%;
+    background-attachment:fixed;
     background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564756277250&di=868b9eac9be14df1dedd8c7d6a710844&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20130530%2FImg377502333.jpg');
 }
 /*****窗口背景的透明虚化效果*****/
@@ -323,7 +353,7 @@ body[baidu] #s_lg_img_new{
             oldVersion: "",
             lastSaveTime: new Date().getTime(),
         };
-        var CONST = {
+        let CONST = {
             hasNewFuncNeedDisplay: true,
             sortIndex: 1,
             isGoogleImageUrl: false,
@@ -332,7 +362,7 @@ body[baidu] #s_lg_img_new{
             StyleManger: function () {},
             curHosts: [],
         };
-        var curSite = {
+        let curSite = {
             SiteTypeID: 1,    // 当前站点的ID
             MainType:"",      // 主体节点，很多个的父节点
             Stype_Normal: "", // 重定向选择器，只有百度-搜狗-好搜
@@ -341,7 +371,7 @@ body[baidu] #s_lg_img_new{
             CounterType: "",  // 计数器添加的位置，一般和favicon位置一致
             BlockType: "",    // 屏蔽按钮的位置，一般在title之后
         };
-        var DBSite = {
+        let DBSite = {
             baidu: {
                 SiteTypeID: 1,
                 MainType: "#content_left .result",
@@ -375,7 +405,7 @@ body[baidu] #s_lg_img_new{
                 FaviconType: ".iUh30",
                 FaviconAddTo: "h3",
                 CounterType: ".srg>div[class~=g] *[class~=r] h3,._yE>div[class~=_kk] h3",
-                BlockType: ".rc a",
+                BlockType: ".rc>.r>a",
             },
             bing: {
                 SiteTypeID: 5,
@@ -418,7 +448,7 @@ body[baidu] #s_lg_img_new{
                 SiteTypeID: 9,
             }
         };
-        var SiteType = {
+        let SiteType = {
             BAIDU: DBSite.baidu.SiteTypeID,
             MBAIDU: DBSite.mBaidu.SiteTypeID,
             SOGOU: DBSite.sogou.SiteTypeID,
@@ -446,7 +476,7 @@ body[baidu] #s_lg_img_new{
                     ACConfig[key] = DefaultConfig[key];
                 }
             }
-            if(ACConfig.isUserStyleEnable == false && (new Date().getTime() - ACConfig.lastSaveTime > 259200000)){ // 大约3天时间
+            if(ACConfig.isUserStyleEnable == false && (new Date().getTime() - ACConfig.lastSaveTime > 2592000000)){ // 大约30天时间
                 // 如果用户取消了设置，并且长时间(3天)没有进行过处理，那么直接将数据置空 -> 用于刷新数据
                 console.log("ac-baidu css reset for time");
                 ACConfig.lastSaveTime = new Date().getTime();
@@ -473,8 +503,8 @@ body[baidu] #s_lg_img_new{
             }
 
             !function () {
-                var BaiduVersion = " V" + GM_info.script.version;
-                var insertLocked = false;
+                let BaiduVersion = " V" + GM_info.script.version;
+                let insertLocked = false;
                 if (location.host.indexOf("xueshu.baidu.com") > -1) {
                     curSite = DBSite.baidu_xueshu;
                 }else if (location.host.indexOf(".baidu.com") > -1) {
@@ -502,7 +532,7 @@ body[baidu] #s_lg_img_new{
                 }
                 if (curSite.SiteTypeID == SiteType.GOOGLE && location.href.replace(/tbm=(isch|lcl|shop|flm)/, "") != location.href) {
                     // 图片站 、地图站、购物站
-                    console.log("特殊站,不加载样式");
+                    console.log("特殊站,不加载样式，不添加menu");
                     CONST.isGoogleImageUrl = true;
                 }
                 if (ACConfig.AdsStyleEnable) {
@@ -527,7 +557,8 @@ body[baidu] #s_lg_img_new{
                     }
                     CONST.StyleManger = FSBaidu(); // 添加设置项-单双列显示
                 }
-                var bodyNameresetTimer = setInterval(function () {
+                console.log("%c[AC-Redirect] %cLet Me Introduce you a Very Good Search Engine：%c %s %cSearch Engine.", "font-weight:bold;color:cornflowerblue", "color:0", "font-weight:bold;color:darkorange", CONST.keySite.replace(CONST.keySite[0],CONST.keySite[0].toUpperCase()), "font-weight:normal;color:0");
+                let bodyNameresetTimer = setInterval(function () {
                     if (document.body != null) {
                         document.body.setAttribute(CONST.keySite, "1");
                         if (curSite.SiteTypeID == SiteType.BAIDU && location.href.indexOf("tn=news")) {
@@ -536,28 +567,30 @@ body[baidu] #s_lg_img_new{
                         clearInterval(bodyNameresetTimer);
                     }
                 }, 300);
-                var BlockBaidu = {
+                let BlockBaidu = {
                     /**
                      * 初始化Block样式
                      */
                     initStyle: function(){
-                        AC_addStyle("button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{position: absolute;right: 20px;margin-left:0;padding:0 20px;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;font-size:.85em;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}h3>button.ghhider{font-size:.75em}button.ghhider:hover{color:#006aff;background:#fff}", "AC-BlockStyle");
+                        AC_addStyle("button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;font-size:.85em;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}h3>button.ghhider{font-size:.75em}button.ghhider:hover{color:#006aff;background:#fff}", "AC-BlockStyle");
                     },
                     /**
                      * 初始化屏蔽按钮加载
                      */
                     init: function () {
-                        var checkNodes = document.querySelectorAll(curSite.MainType+":not([acblock])");
-                        for (var i = 0; i < checkNodes.length; i++) {
+                        let checkNodes = document.querySelectorAll(curSite.MainType+":not([acblock])");
+                        for (let i = 0; i < checkNodes.length; i++) {
                             try{
-                                var curNode = checkNodes[i];
+                                let curNode = checkNodes[i];
+                                let faviconNode = curNode.querySelector(curSite.FaviconType);
                                 // if(curNode.hasAttribute("acblock")) continue;
-                                var host = getBaiduHost(curNode.querySelector(curSite.FaviconType));
-                                if(host == null) continue;
-                                var faNode = curNode.querySelector(curSite.BlockType);
+                                let host = getBaiduHost(faviconNode);
+                                // if(host == null) continue;
+                                let faNode = curNode.querySelector(curSite.BlockType);
                                 if(ACConfig.isBlockBtnDisplay){
-                                    faNode.insertAdjacentHTML("afterend", `<button class='ghhider ghhb' meta="${host}" data-host="${host}" title='点击即可屏蔽 ${host} 放开，需要在自定义中手动配置放开'>block</button>`);
+                                    faNode.insertAdjacentHTML("afterend", `<button class='ghhider ghhb' href="${faviconNode.href || faviconNode.innerText}" meta="${host}" data-host="${host}" title='点击即可屏蔽 ${host} 放开，需要在自定义中手动配置放开'>block</button>`);
                                 }
+                                curNode.setAttribute("acblock", "0");
                                 curNode.setAttribute("acblock", "0");
                             }catch (e) {
                             }
@@ -566,28 +599,25 @@ body[baidu] #s_lg_img_new{
                         this.renderDisplay();
                     },
                     initListener: function(){
-                        var checkNodes = document.querySelectorAll("button.ghhider:not([acEnv])");
-                        for(var i = 0; i < checkNodes.length; i++){
+                        let checkNodes = document.querySelectorAll("button.ghhider:not([acEnv])");
+                        for(let i = 0; i < checkNodes.length; i++){
                             checkNodes[i].addEventListener("click", this.doHideEnv);
                             checkNodes[i].setAttribute("acEnv", "0");
                         }
                     },
                     doHideEnv: function(env){
                         // 先插入数据---记得还要写入存储
-                        var node = env.sourceTarget || env.target;
-                        var host = node.dataset.host; // TODO 这里是通过读取cite的文字内容的，如果文字内容不够长，那么可能出现地址不全的问题
+                        let node = env.sourceTarget || env.target;
+                        let host = node.dataset.host;
                         if(node.getAttribute("ac-user-alter") == 1){
                             // 已经屏蔽之后，再次点击block应该是取消状态
                             node.removeAttribute("ac-user-alter");
-                            let del = ACConfig.UserBlockList.findIndex((i)=>{return i==host});
-                            // console.log("移除："+del);
-                            del > 0 && ACConfig.UserBlockList.splice(del, 1);
+                            ACConfig.UserBlockList.acremove(host);
                             GM.setValue("Config", JSON.stringify(ACConfig)); // 点击一次，保存一次
                         }else{
                             // 正常屏蔽操作
                             node.removeAttribute("ac-user-alter");
-                            ACConfig.UserBlockList.push(host);
-                            ACConfig.UserBlockList = [...new Set([...ACConfig.UserBlockList])];
+                            ACConfig.UserBlockList.acpush(host);
                             GM.setValue("Config", JSON.stringify(ACConfig)); // 点击一次，保存一次
                         }
                         reloadBlockList();
@@ -596,23 +626,35 @@ body[baidu] #s_lg_img_new{
                     },
                     // 刷新显示效果--耗时操作
                     renderDisplay: function(){
-                        var checkNodes = document.querySelectorAll(curSite.MainType);
-                        var flag = "ac-needhide";
-                        for (var i = 0; i < checkNodes.length; i++) {
+                        let checkNodes = document.querySelectorAll(curSite.MainType);
+                        let flag = "ac-needhide";
+                        for (let i = 0; i < checkNodes.length; i++) {
                             try{
-                                var curNode = checkNodes[i];
-                                var curHost = getBaiduHost(curNode.querySelector(curSite.FaviconType));
+                                let curNode = checkNodes[i];
+                                let curHost = getBaiduHost(curNode.querySelector(curSite.FaviconType));
                                 if(curHost == null) continue;
-                                var curTitle = curNode.querySelector(curSite.BlockType);
-                                curTitle = curTitle.innerText || curTitle.textContent;
-                                // CONST.curHosts.push(curHost);
+                                {
+                                    let BlockBtn = curNode.querySelector(".ghhider.ghhb");
+                                    BlockBtn.dataset.host = BlockBtn.dataset.meta = curHost;
+                                }
                                 if(curNode.querySelector("button[ac-user-alter]") != null) continue; // 用户手动点过显示的，那么跳过check
-                                if(acFuncHasValue(ACConfig.UserBlockList, curHost)){
+                                if(ACConfig.UserBlockList.findIndex(
+                                    m => {
+                                        try {
+                                            return new RegExp(m.replace("*", ".*")).test(curHost);
+                                        }catch(e){
+                                            return m == curHost;
+                                        }
+                                    }
+                                ) >= 0){
+                                    // 只检查在屏蔽表中的数据
                                     if(! curNode.hasAttribute(flag)){
                                         if(ACConfig.isBlockDisplay){
                                             curNode.remove();
                                             continue;
                                         }
+                                        let curTitle = curNode.querySelector(curSite.BlockType);
+                                        curTitle = curTitle.innerText || curTitle.textContent;
                                         curNode.insertAdjacentHTML("afterBegin", `<span class="blockShow" title="如果需要一直显示，请在自定义中DIY目录移除本地址">${curTitle}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -block by ${curHost}</span>`);
                                         curNode.setAttribute(flag, "1");
                                         (function(xcur){
@@ -639,47 +681,25 @@ body[baidu] #s_lg_img_new{
                     }
                 };
                 function addStyle(css) { //添加CSS的代码--copy的
-                    var pi = document.createProcessingInstruction(
+                    let pi = document.createProcessingInstruction(
                         'xml-stylesheet',
                         'type="text/css" must="false" href="data:text/css;utf-8,' + encodeURIComponent(css) + '"'
                     );
                     return document.insertBefore(pi, document.documentElement);
                 }
-                var acFuncHasValue = function (array, obj) {
-                    for (var i = 0; i < array.length; i++) {
-                        if (array[i] == obj) {
-                            return true;
-                        }
-                    }
-                    return false;
-                };
-                /**
-                 * 返回移除某个节点之后的值
-                 * @param obj 待移除的值
-                 * @returns {Array} return Array - obj
-                 */
-                var acFuncafterRemove = function (array, obj) {
-                    var ano = [];
-                    for(var i = 0; i < array.length; i++){
-                        if(array[i] != obj){
-                            ano.push(array[i]);
-                        }
-                    }
-                    return ano;
-                };
 
                 if (ACConfig.isAdsEnable) {
                     // display已经无法隐藏他们了，需要用绝对的隐藏
                     addStyle("#bottomads{display:none;} #content_left>div:not([id])>div[cmatchid], #content_left>div[id*='300']:not([class*='result']),#content_right td>div:not([id]),#content_right>br{position:absolute;top:-6666px;}");
                 }
                 if (curSite.SiteTypeID == SiteType.GOOGLE && ACConfig.isGooleInBaiduModeEnable){
-                    safeWaitFunc("#logo img", function(node){
+                    safeWaitFunc("#logo img, #logocont img", function(node){
+                        let faNode = node.parentNode.parentNode;
+                        faNode.className = faNode.className.replace(/( baidu | baidu$)/, "") + " baidu";
                         node.removeAttribute("src");
                         node.src = "https://pic.rmb.bdstatic.com/c86255e8028696139d3e3e4bb44c047b.png";
                         node.width = "125";
                         node.removeAttribute("height");
-                        var faNode = node.parentNode.parentNode;
-                        faNode.className = faNode.className.replace(/( baidu | baidu$)/, "") + " baidu";
                     });
                     safeWaitFunc("#main img[alt='Google']", function(node){
                         node.removeAttribute("srcset");
@@ -688,36 +708,37 @@ body[baidu] #s_lg_img_new{
                         node.style = "padding-top: 59px;";
                     });
                     document.title = document.title.replace(/^Google/, "百度一下，你就知道").replace(/ - Google 搜索/, "_百度搜索");
-                    var linkTarget = document.querySelector("link[type='image/x-icon']") || document.createElement('link');
+                    let linkTarget = document.querySelector("link[type='image/x-icon']") || document.createElement('link');
                     linkTarget.type = 'image/x-icon';
                     linkTarget.rel = 'shortcut icon';
                     linkTarget.href = 'https://www.baidu.com/favicon.ico';
                     document.head.appendChild(linkTarget);
                 }
-                if(window.top != window){
-                    // 只有当前页面是处于iframe状态下才会发送消息-向父窗体传递当前搜索的串，便于父窗体改变相应的内容
-                    // 用于sheigan.com/search的搜索内容变化
-                    // 用于兼容搜索模式，不存在数据泄露
-                    window.top.postMessage({acv:getSearchValue()}, "*");
-                    if (curSite.SiteTypeID == SiteType.GOOGLE && curSite.is_acgoogle == true){
-                        // 地址跳转到google搜索
-                        document.head.innerHTML = "";
-                        document.body.innerHTML = "";
-                        GM_xmlhttpRequest({
-                            url: "https://www.google.com/search?q="+getSearchValue(),
-                            method: "GET",
-                            timeout: 5000,
-                            onload: function (response) {
-                                document.body.innerHTML = response.responseText;
-                            }
-                        });
-                    }
-                }
+                // ！没啥用了！
+                // if(window.top != window){
+                //     // 只有当前页面是处于iframe状态下才会发送消息-向父窗体传递当前搜索的串，便于父窗体改变相应的内容
+                //     // 用于sheigan.com/search的搜索内容变化
+                //     // 用于兼容搜索模式，不存在数据泄露
+                //     window.top.postMessage({acv:getSearchValue()}, "*");
+                //     if (curSite.SiteTypeID == SiteType.GOOGLE && curSite.is_acgoogle == true){
+                //         // 地址跳转到google搜索
+                //         document.head.innerHTML = "";
+                //         document.body.innerHTML = "";
+                //         GM_xmlhttpRequest({
+                //             url: "https://www.google.com/search?q="+getSearchValue(),
+                //             method: "GET",
+                //             timeout: 5000,
+                //             onload: function (response) {
+                //                 document.body.innerHTML = response.responseText;
+                //             }
+                //         });
+                //     }
+                // }
                 try {
                     if (curSite.SiteTypeID != SiteType.OTHERS) {
                         document.addEventListener('DOMNodeInserted', MainCallback, false);
                         document.addEventListener('keyup', MainCallback, false);
-                        setInterval(function(){
+                        RAFFunction(function(){
                             rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
                         }, 800);
                     }
@@ -730,6 +751,10 @@ body[baidu] #s_lg_img_new{
                         return;
                     } //屏蔽掉因为增加css导致的触发insert动作
                     rapidDeal();
+                }
+
+                function ShowSearchBox(){
+                    // TODO 待完成
                 }
 
                 function AutoRefresh() {
@@ -751,7 +776,7 @@ body[baidu] #s_lg_img_new{
                     AC_addStyle(
                         ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
                         ".res_top_banner{display:none!important;}" + // 移除可能的百度HTTPS劫持显示问题
-                        ".headBlock{display:none;}" // 移除百度的搜索结果顶部一条的建议文字
+                        ".headBlock, body>div.result-op{display:none;}" // 移除百度的搜索结果顶部一条的建议文字 & 移除可能出现的白屏现象
                         , "AC-special-BAIDU"
                     );
                     /*"自定义"按钮效果*/
@@ -771,7 +796,7 @@ body[baidu] #s_lg_img_new{
                         '   body[sogou]   #sp-ac-container .container-label[class*="sogou"]>labelhide\n' +
                         '{' +
                         'display:none;\n' +
-                        '}#sp-ac-container labelHide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container labelHide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body > #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}', "AC-MENU_Page");
+                        '}#sp-ac-container labelHide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container labelHide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body > #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}', "AC-MENU_Page");
                 }
                 AutoRefresh();
                 try {
@@ -784,7 +809,7 @@ body[baidu] #s_lg_img_new{
                 function getSearchValue() {
                     let kvl = location.search.substr(1).split("&");
                     let searchV = "";
-                    for(var i = 0; i < kvl.length; i++){
+                    for(let i = 0; i < kvl.length; i++){
                         let value = kvl[i].replace(/^(wd|query|q)=/, "");
                         if(value != kvl[i]){
                             searchV = value;
@@ -794,25 +819,43 @@ body[baidu] #s_lg_img_new{
                     searchV = searchV.replace("+", " ");
                     return searchV;
                 }
-
                 function rapidDeal() {
                     try {
                         if (insertLocked == false && curSite.SiteTypeID != SiteType.OTHERS) {
                             insertLocked = true;
+                            InsertSettingMenu();
                             ShowSetting();
-                            ACHandle();
+                            ACHandle(); // 处理主重定向
                             AutoRefresh();
                             if (ACConfig.isAdsEnable) { // 放进来，减少卡顿
                                 removeAD_baidu_sogou();
                             }
-                            if (ACConfig.isBlockEnable) {
-                                // 设置BLOCK模式的引入style
+                            if (ACConfig.AdsStyleEnable) { // 单独不需要定时器-頻繁触发-载入css
+                                FSBaidu();
+                            }
+                            if (ACConfig.isFaviconEnable) { // 显示favicon图标
+                                if(curSite.SiteTypeID != SiteType.GOOGLE){ // 谷歌似乎官方开启了图标功能，故不再手动添加图标
+                                    addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
+                                }
+                            }
+                            if (ACConfig.doDisableSug) { // 不启用移动预测[默认]
+                                acSetCookie("ORIGIN", 2, "www.baidu.com");
+                                acSetCookie("ISSW", 1);
+                                acSetCookie("ISSW", 1, "www.baidu.com");
+                            } else {
+                                // 启用移动预测-不知道为什么要设置两个-百度自己会变？，反正有效果
+                                acSetCookie("ORIGIN", 1, "www.baidu.com");
+                                acSetCookie("ISSW", 1);
+                                acSetCookie("ISSW", 1, "www.baidu.com");
+                            }
+                            if (ACConfig.isAdsEnable) { // 移除百度广告
+                                removeAD_baidu_sogou();
+                            }
+                            if (ACConfig.isCounterEnable) { // 显示计数器
+                                addCounter(document.querySelectorAll(curSite.CounterType));
+                            }
+                            if(ACConfig.isBlockEnable){ // 启用屏蔽功能
                                 BlockBaidu.initStyle();
-                            }
-                            if (ACConfig.AdsStyleEnable) {
-                                FSBaidu(); // 单独不需要定时器-頻繁触发-载入css
-                            }
-                            if(ACConfig.isBlockEnable){
                                 BlockBaidu.init();
                             }
                             setTimeout(function () {
@@ -822,21 +865,23 @@ body[baidu] #s_lg_img_new{
                     } catch (e) {
                         console.log(e);
                     }
-                }
-
-                function acSetCookie(cname, cvalue, domain, exdays) {
-                    exdays = exdays || 30;
-                    var d = new Date();
-                    domain = (domain ? "domain=" + domain : "") + ";";
-                    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-                    var expires = "expires=" + d.toUTCString();
-                    document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
+                    function acSetCookie(cname, cvalue, domain, exdays) {
+                        exdays = exdays || 30;
+                        let d = new Date();
+                        domain = (domain ? "domain=" + domain : "") + ";";
+                        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                        let expires = "expires=" + d.toUTCString();
+                        document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
+                    }
                 }
 
                 function getBaiduHost(sitetpNode){
                     if(curSite.SiteTypeID == SiteType.BAIDU){
-                        var href = sitetpNode.getAttribute("href");
-                        if(href!= null && href.indexOf("baidu.com/link") < 0){
+                        var href = null;
+                        if(sitetpNode instanceof HTMLElement){
+                            href = sitetpNode.getAttribute("href")
+                        }
+                        if(href != null && href.indexOf("baidu.com/link") < 0){
                             // 已经解析出来了
                             return getHost(href);
                         }
@@ -845,8 +890,8 @@ body[baidu] #s_lg_img_new{
                 }
 
                 function ACHandle() {
+                    // 处理主重定向
                     if (curSite.SiteTypeID == SiteType.OTHERS) return;
-                    InsertSettingMenu();
                     if (ACConfig.isRedirectEnable) {
                         if (curSite.Stype_Normal != null && curSite.Stype_Normal != ""){
                             // 百度搜狗去重定向-普通模式【注意不能为document.query..】
@@ -865,26 +910,7 @@ body[baidu] #s_lg_img_new{
                         removeRedirectLinkTarget(); // 只移除知乎的重定向问题 & 百度学术重定向问题
                         safeRemove(".res_top_banner"); // 移除百度可能显示的劫持
                     }
-                    if (ACConfig.isFaviconEnable) {
-                        addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
-                    }
-                    if (ACConfig.doDisableSug) { // 按钮勾上
-                        // 不启用移动预测[默认]
-                        acSetCookie("ORIGIN", 2, "www.baidu.com");
-                        acSetCookie("ISSW", 1);
-                        acSetCookie("ISSW", 1, "www.baidu.com");
-                    } else {
-                        // 启用移动预测-不知道为什么要设置两个-百度自己会变？，反正有效果
-                        acSetCookie("ORIGIN", 1, "www.baidu.com");
-                        acSetCookie("ISSW", 1);
-                        acSetCookie("ISSW", 1, "www.baidu.com");
-                    }
-                    if (ACConfig.isAdsEnable) {
-                        removeAD_baidu_sogou(); // 移除百度广告
-                    }
-                    if (ACConfig.isCounterEnable) {
-                        addCounter(document.querySelectorAll(curSite.CounterType));
-                    }
+
                     try{ // 放入异常捕获，防止由于html插入过慢导致的js终止
                         if(! document.querySelector("#sp-ac-style").checked){
                             document.querySelectorAll("input[name*='sp-ac-a_force_style_']" ).forEach(per => {per.setAttribute("disabled", "disabled");per.parentNode.setAttribute("title", "请开启自定义样式")});
@@ -920,9 +946,15 @@ body[baidu] #s_lg_img_new{
                 }
 
                 function getBlockList(){ // 同时处理高亮
-                    var insHTML = "";
-                    for(var i = 0; i < ACConfig.UserBlockList.length; i++){
-                        var insClass = acFuncHasValue(CONST.curHosts, ACConfig.UserBlockList[i]) ? " ac-block-high":""; // 如果当前页面存在，则高亮
+                    let insHTML = "";
+                    for(let i = 0; i < ACConfig.UserBlockList.length; i++){
+                        let insClass = CONST.curHosts.findIndex(m => {
+                            try {
+                                return new RegExp(ACConfig.UserBlockList[i].replace("*", ".*")).test(m);
+                            }catch(e){
+                                return m == ACConfig.UserBlockList[i];
+                            }
+                        }) >= 0 ? " ac-block-high":""; // 如果当前页面存在，则高亮
                         insHTML += `<li><label class="ac-block-item${insClass}" data-host="${ACConfig.UserBlockList[i]}">${ACConfig.UserBlockList[i]}</label><label class="ac-block-item ac-block-itemdel" data-host="${ACConfig.UserBlockList[i]}">x</label></li>\n`;
                     }
                     return insHTML;
@@ -935,36 +967,39 @@ body[baidu] #s_lg_img_new{
 
                 function initBlockPage(){
                     try{
-                        document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='返回'><-返回</span></label>&nbsp;拦截列表&nbsp;&nbsp;想要生效的话需要手动保存</li><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li>全拦截域名：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='新增' style='position: relative !important;line-height: 17px;'>新增</span></li>`;
+                        if(isCNLan){
+                            document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='返回'><-返回</span></label>&nbsp;拦截列表&nbsp;&nbsp;想要生效的话需要手动保存</li><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li>全匹配拦截：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='新增' style='position: relative !important;line-height: 17px;'>新增</span></li>`;
+                        }else{
+                            document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='Back'><-Back</span></label>&nbsp;Block List&nbsp;&nbsp;Click Save Button if you want wo save the list</li><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li>Same host Insert ：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='Insert' style='position: relative !important;line-height: 17px;'>Insert</span></li>`;
+                        }
                         document.querySelector("#sp-ac-blockdiybutton-back").addEventListener("click", function () {
                             document.querySelector(".setting-main").style = "";
                             document.querySelector(".setting-second").style = "display:none;";
                         });
                         document.querySelector(".ac-blockList").addEventListener("click", function (e) {
                             // 点击移除某个host数据时
-                            var target = e.srcElement || e.target;
+                            let target = e.srcElement || e.target;
                             if(target.tagName.toLowerCase() == "label"){
-                                var host = target.dataset.host;
-                                ACConfig.UserBlockList = acFuncafterRemove(ACConfig.UserBlockList, host);
-                                document.querySelectorAll("button[ac-user-alter]").forEach(function (perNode) {
-                                    // 移除用户diy之后的属性
-                                    perNode.removeAttribute("ac-user-alter");
+                                let host = target.dataset.host;
+                                ACConfig.UserBlockList.acremove(host, function(){
+                                    document.querySelectorAll("button[ac-user-alter]").forEach(function (perNode) {
+                                        // 移除用户diy之后的属性
+                                        perNode.removeAttribute("ac-user-alter");
+                                    });
+                                    BlockBaidu.renderDisplay();
+                                    reloadBlockList();
                                 });
-                                BlockBaidu.renderDisplay();
-                                reloadBlockList();
                             }
                         });
                         function ckAddRule(){
                             // 手动增加移除规则
-                            var inputN = document.querySelector(".sp-ac-addRuleOne");
-                            ACConfig.UserBlockList.push(inputN.value);
-                            ACConfig.UserBlockList = [...new Set([...ACConfig.UserBlockList])];
+                            let inputN = document.querySelector(".sp-ac-addRuleOne");
+                            ACConfig.UserBlockList.acpush(inputN.value, reloadBlockList);
                             inputN.value = "";
-                            reloadBlockList();
                         }
                         document.querySelector("#sp-ac-addRulebutton").addEventListener("click", ckAddRule);
                         document.querySelector(".sp-ac-addRuleOne").addEventListener("keypress", function(evt){
-                            var e = evt || window.event;
+                            let e = evt || window.event;
                             if(e.keyCode == 13) ckAddRule();
                         });
                     }catch (e) {
@@ -975,106 +1010,207 @@ body[baidu] #s_lg_img_new{
                     if (curSite.SiteTypeID == SiteType.OTHERS) return;
                     // 如果不存在的话，那么自己创建一个-copy from superPreload
                     if (document.body != null && document.querySelector("#sp-ac-container") == null) {
-                        var Container = document.createElement('div');
+                        let Container = document.createElement('div');
                         Container.id = "sp-ac-container";
-                        Container.innerHTML =
-                            "    <div id='sp-ac-content' style='display: none;'>\n" +
-                            "        <div id='sp-ac-main'>\n" +
-                            "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
+                        if(isCNLan){
+                            Container.innerHTML =
+                                "    <div id='sp-ac-content' style='display: none;'>\n" +
+                                "        <div id='sp-ac-main'>\n" +
+                                "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
 
-                            "            <legend class='iframe-father' title='AC重定向功能相关设置'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-重定向设置" + BaiduVersion + "</a></legend>\n" +
-                            "            <ul class='setting-main'>\n" +
-                            "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label></li>\n" +
-                            "                <li><label title='去除部分页面的广告信息，还你一个干净整洁的页面' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label></li>\n" +
-                            "                <li><label title='点击页面block按钮添加你想要隐藏的地址，脚本将自动隐藏部分结果为小横幅，DIY按钮中点击表格内容可以取消隐藏' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">附加2-自主拦截域名</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='自定义BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
-                            "                    <label><input title='自动移除已经屏蔽的域名' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">自动移除</label>" +
-                            "                    <label><input title='隐藏掉block按钮的显示' id='sp-ac-blockBtnDisplay' type='checkbox' " + (ACConfig.isBlockBtnDisplay ? '' : 'checked') + ">隐藏按钮</label>" +
-                            "                </li>\n" +
-                            "                <li><label title='AC-自定义样式'><input id='sp-ac-style' name='sp-ac-a_force' type='checkbox' " + (ACConfig.AdsStyleEnable ? 'checked' : '') + ">附加3-自定义样式</label>\n" +
-                            "                <label></label></li>\n" +
-                            "                <li>" +
-                            /****-百度样式-*****/
-                            "                   <labelMain class='container-label baidu'>" +
-                            "                       <labelHide>展开百度设置&gt;&gt;</labelHide>" +
-                            "                       <label title='百度-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_baidu' value='0' type='radio' " + (ACConfig.AdsStyleMode_Baidu == 0 ? 'checked' : '') + ">百度-原始模式</label>" +
-                            "                       <label title='百度-护眼模式'><input  name='sp-ac-huyan_style_baidu' type='checkbox' " + (ACConfig.HuYan_Baidu == true ? 'checked' : '') + ">百度-护眼模式</label>" +
-                            "                       <label title='百度Lite样式' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"'><input  name='sp-ac-a_force_style_baidulite' type='checkbox' " + (ACConfig.Style_BaiduLite == true ? 'checked' : '') + ">百度Lite样式</label>" +
-                            "                       <BR/><label title='百度-单列普通模式' style='margin-left:20px'><input title='百度-单列普通模式' name='sp-ac-a_force_style_baidu' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 1 ? 'checked' : '') + ">单列</label>" +
-                            "                       <label title='百度-单列居中'><input  name='sp-ac-a_force_style_baidu' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 2 ? 'checked' : '') + ">单列居中</label>" +
-                            "                       <label title='双列'><input name='sp-ac-a_force_style_baidu' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 3 ? 'checked' : '') + ">双列</label>" +
-                            "                       <label title='三列'><input name='sp-ac-a_force_style_baidu' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 4 ? 'checked' : '') + ">三列</label>" +
-                            "                       <label title='四列'><input name='sp-ac-a_force_style_baidu' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 5 ? 'checked' : '') + ">四列</label>" +
-                            "                   <BR/></labelMain>" +
-                            /****-百度样式-*****/
-                            "                    <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
-                            /****-谷歌样式-*****/
-                            "                   <labelMain class='container-label google'>" +
-                            "                       <labelHide>展开谷歌设置&gt;&gt;</labelHide>" +
-                            "                       <label title='谷歌-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_google' value='0' type='radio' " + (ACConfig.AdsStyleMode_Google == 0 ? 'checked' : '') + ">谷歌-原始模式</label>" +
-                            "                       <label title='谷歌-护眼模式'><input  name='sp-ac-huyan_style_google' type='checkbox' " + (ACConfig.HuYan_Google == true ? 'checked' : '') + ">谷歌-护眼模式</label>" +
-                            "                       <label title='谷歌-伪装百度' style='"+(CONST.hasNewFuncNeedDisplay ? "color:red;font-weight: 100;background-color: yellow;font-weight: 600;" : "")+"'><input  name='sp-ac-google_in_baidumode' type='checkbox' " + (ACConfig.isGooleInBaiduModeEnable == true ? 'checked' : '') + ">谷歌-伪装百度</label>" +
-                            "                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='谷歌-单列普通模式' name='sp-ac-a_force_style_google' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Google == 1 ? 'checked' : '') + ">单列</label>" +
-                            "                       <label title='谷歌-单列居中'><input  name='sp-ac-a_force_style_google' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Google == 2 ? 'checked' : '') + ">单列居中</label>" +
-                            "                       <label title='双列'><input  name='sp-ac-a_force_style_google' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Google == 3 ? 'checked' : '') + ">双列</label>" +
-                            "                       <label title='三列'><input  name='sp-ac-a_force_style_google' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Google == 4 ? 'checked' : '') + ">三列</label>" +
-                            "                       <label title='四列'><input  name='sp-ac-a_force_style_google' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Google == 5 ? 'checked' : '') + ">四列</label>" +
-                            "                   <BR/></labelMain>" +
-                            /****-谷歌样式-*****/
-                            "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
-                            /****-必应样式-*****/
-                            "                   <labelMain class='container-label bing'>" +
-                            "                       <labelHide>展开必应设置&gt;&gt;</labelHide>" +
-                            "                       <label title='必应-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_bing' value='0' type='radio' " + (ACConfig.AdsStyleMode_Bing == 0 ? 'checked' : '') + ">必应-原始模式</label>" +
-                            "                       <label title='必应-护眼模式'><input name='sp-ac-huyan_style_bing' type='checkbox' " + (ACConfig.HuYan_Bing == true ? 'checked' : '') + ">必应-护眼模式</label>" +
-                            "                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='必应-单列普通模式' name='sp-ac-a_force_style_bing' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 1 ? 'checked' : '') + ">单列</label>" +
-                            "                       <label title='必应-单列居中'><input  name='sp-ac-a_force_style_bing' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 2 ? 'checked' : '') + ">单列居中</label>" +
-                            "                       <label title='双列'><input name='sp-ac-a_force_style_bing' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 3 ? 'checked' : '') + ">双列</label>" +
-                            "                       <label title='三列'><input name='sp-ac-a_force_style_bing' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 4 ? 'checked' : '') + ">三列</label>" +
-                            "                       <label title='四列'><input name='sp-ac-a_force_style_bing' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 5 ? 'checked' : '') + ">四列</label>" +
-                            "                   </labelMain>" +
-                            /****-必应样式-*****/
-                            "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
-                            /****-搜狗样式-*****/
-                            "                   <labelMain class='container-label sogou'>" +
-                            "                       <labelHide>展开搜狗设置&gt;&gt;</labelHide>" +
-                            "                       <label title='搜狗-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_sogou' value='0' type='radio' " + (ACConfig.AdsStyleMode_SoGou == 0 ? 'checked' : '') + ">搜狗-原始模式</label>" +
-                            "                       <label title='搜狗-护眼模式'><input name='sp-ac-huyan_style_sogou' type='checkbox' " + (ACConfig.HuYan_SoGou == true ? 'checked' : '') + ">搜狗-护眼模式</label>" +
-                            "                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='搜狗-单列普通模式' name='sp-ac-a_force_style_sogou' value='1'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 1 ? 'checked' : '') + ">单列</label>" +
-                            "                       <label title='搜狗-单列居中'><input  name='sp-ac-a_force_style_sogou' value='2'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 2 ? 'checked' : '') + ">单列居中</label>" +
-                            "                       <label title='双列'><input name='sp-ac-a_force_style_sogou' value='3'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 3 ? 'checked' : '') + ">双列</label>" +
-                            "                       <label title='三列'><input name='sp-ac-a_force_style_sogou' value='4'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 4 ? 'checked' : '') + ">三列</label>" +
-                            "                       <label title='四列'><input name='sp-ac-a_force_style_sogou' value='5'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 5 ? 'checked' : '') + ">四列</label>" +
-                            "                   </labelMain>" +
-                            /****-搜狗样式-*****/
+                                "            <legend class='iframe-father' title='AC重定向功能相关设置'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-重定向设置" + BaiduVersion + "</a></legend>\n" +
+                                "            <ul class='setting-main'>\n" +
+                                "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label></li>\n" +
+                                "                <li><label title='去除部分页面的广告信息，还你一个干净整洁的页面' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label></li>\n" +
+                                "                <li><label title='点击页面block按钮添加你想要隐藏的地址，脚本将自动隐藏部分结果为小横幅，DIY按钮中点击表格内容可以取消隐藏' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">附加2-自主拦截域名</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='自定义BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
+                                "                    <label><input title='自动移除已经屏蔽的域名' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">自动移除</label>" +
+                                "                    <label><input title='隐藏掉block按钮的显示' id='sp-ac-blockBtnDisplay' type='checkbox' " + (ACConfig.isBlockBtnDisplay ? '' : 'checked') + ">隐藏按钮</label>" +
+                                "                </li>\n" +
+                                "                <li><label title='AC-自定义样式'><input id='sp-ac-style' name='sp-ac-a_force' type='checkbox' " + (ACConfig.AdsStyleEnable ? 'checked' : '') + ">附加3-自定义样式</label>\n" +
+                                "                <label></label></li>\n" +
+                                "                <li>" +
+                                /****-百度样式-*****/
+                                "                   <labelMain class='container-label baidu'>" +
+                                "                       <labelHide>展开百度设置&gt;&gt;</labelHide>" +
+                                "                       <label title='百度-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_baidu' value='0' type='radio' " + (ACConfig.AdsStyleMode_Baidu == 0 ? 'checked' : '') + ">百度-原始模式</label>" +
+                                "                       <label title='百度-护眼模式'><input  name='sp-ac-huyan_style_baidu' type='checkbox' " + (ACConfig.HuYan_Baidu == true ? 'checked' : '') + ">百度-护眼模式</label>" +
+                                "                       <label title='百度Lite样式' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"'><input  name='sp-ac-a_force_style_baidulite' type='checkbox' " + (ACConfig.Style_BaiduLite == true ? 'checked' : '') + ">百度Lite样式</label>" +
+                                "                       <BR/><label title='百度-单列普通模式' style='margin-left:20px'><input title='百度-单列普通模式' name='sp-ac-a_force_style_baidu' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 1 ? 'checked' : '') + ">单列</label>" +
+                                "                       <label title='百度-单列居中'><input  name='sp-ac-a_force_style_baidu' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 2 ? 'checked' : '') + ">单列居中</label>" +
+                                "                       <label title='双列'><input name='sp-ac-a_force_style_baidu' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 3 ? 'checked' : '') + ">双列</label>" +
+                                "                       <label title='三列'><input name='sp-ac-a_force_style_baidu' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 4 ? 'checked' : '') + ">三列</label>" +
+                                "                       <label title='四列'><input name='sp-ac-a_force_style_baidu' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 5 ? 'checked' : '') + ">四列</label>" +
+                                "                   <BR/></labelMain>" +
+                                /****-百度样式-*****/
+                                "                    <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
+                                /****-谷歌样式-*****/
+                                "                   <labelMain class='container-label google'>" +
+                                "                       <labelHide>展开谷歌设置&gt;&gt;</labelHide>" +
+                                "                       <label title='谷歌-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_google' value='0' type='radio' " + (ACConfig.AdsStyleMode_Google == 0 ? 'checked' : '') + ">谷歌-原始模式</label>" +
+                                "                       <label title='谷歌-护眼模式'><input  name='sp-ac-huyan_style_google' type='checkbox' " + (ACConfig.HuYan_Google == true ? 'checked' : '') + ">谷歌-护眼模式</label>" +
+                                "                       <label title='谷歌-伪装百度' style='"+(CONST.hasNewFuncNeedDisplay ? "color:red;font-weight: 100;background-color: yellow;font-weight: 600;" : "")+"'><input  name='sp-ac-google_in_baidumode' type='checkbox' " + (ACConfig.isGooleInBaiduModeEnable == true ? 'checked' : '') + ">谷歌-伪装百度</label>" +
+                                "                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='谷歌-单列普通模式' name='sp-ac-a_force_style_google' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Google == 1 ? 'checked' : '') + ">单列</label>" +
+                                "                       <label title='谷歌-单列居中'><input  name='sp-ac-a_force_style_google' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Google == 2 ? 'checked' : '') + ">单列居中</label>" +
+                                "                       <label title='双列'><input  name='sp-ac-a_force_style_google' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Google == 3 ? 'checked' : '') + ">双列</label>" +
+                                "                       <label title='三列'><input  name='sp-ac-a_force_style_google' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Google == 4 ? 'checked' : '') + ">三列</label>" +
+                                "                       <label title='四列'><input  name='sp-ac-a_force_style_google' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Google == 5 ? 'checked' : '') + ">四列</label>" +
+                                "                   <BR/></labelMain>" +
+                                /****-谷歌样式-*****/
+                                "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
+                                /****-必应样式-*****/
+                                "                   <labelMain class='container-label bing'>" +
+                                "                       <labelHide>展开必应设置&gt;&gt;</labelHide>" +
+                                "                       <label title='必应-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_bing' value='0' type='radio' " + (ACConfig.AdsStyleMode_Bing == 0 ? 'checked' : '') + ">必应-原始模式</label>" +
+                                "                       <label title='必应-护眼模式'><input name='sp-ac-huyan_style_bing' type='checkbox' " + (ACConfig.HuYan_Bing == true ? 'checked' : '') + ">必应-护眼模式</label>" +
+                                "                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='必应-单列普通模式' name='sp-ac-a_force_style_bing' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 1 ? 'checked' : '') + ">单列</label>" +
+                                "                       <label title='必应-单列居中'><input  name='sp-ac-a_force_style_bing' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 2 ? 'checked' : '') + ">单列居中</label>" +
+                                "                       <label title='双列'><input name='sp-ac-a_force_style_bing' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 3 ? 'checked' : '') + ">双列</label>" +
+                                "                       <label title='三列'><input name='sp-ac-a_force_style_bing' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 4 ? 'checked' : '') + ">三列</label>" +
+                                "                       <label title='四列'><input name='sp-ac-a_force_style_bing' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 5 ? 'checked' : '') + ">四列</label>" +
+                                "                   </labelMain>" +
+                                /****-必应样式-*****/
+                                "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
+                                /****-搜狗样式-*****/
+                                "                   <labelMain class='container-label sogou'>" +
+                                "                       <labelHide>展开搜狗设置&gt;&gt;</labelHide>" +
+                                "                       <label title='搜狗-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_sogou' value='0' type='radio' " + (ACConfig.AdsStyleMode_SoGou == 0 ? 'checked' : '') + ">搜狗-原始模式</label>" +
+                                "                       <label title='搜狗-护眼模式'><input name='sp-ac-huyan_style_sogou' type='checkbox' " + (ACConfig.HuYan_SoGou == true ? 'checked' : '') + ">搜狗-护眼模式</label>" +
+                                "                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='搜狗-单列普通模式' name='sp-ac-a_force_style_sogou' value='1'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 1 ? 'checked' : '') + ">单列</label>" +
+                                "                       <label title='搜狗-单列居中'><input  name='sp-ac-a_force_style_sogou' value='2'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 2 ? 'checked' : '') + ">单列居中</label>" +
+                                "                       <label title='双列'><input name='sp-ac-a_force_style_sogou' value='3'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 3 ? 'checked' : '') + ">双列</label>" +
+                                "                       <label title='三列'><input name='sp-ac-a_force_style_sogou' value='4'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 4 ? 'checked' : '') + ">三列</label>" +
+                                "                       <label title='四列'><input name='sp-ac-a_force_style_sogou' value='5'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 5 ? 'checked' : '') + ">四列</label>" +
+                                "                   </labelMain>" +
+                                /****-搜狗样式-*****/
 
-                            "                </li>\n" +
-                            "                <li><label title='！需要在自定义样式中启用护眼模式'><input title='AC-自定义护眼' id='sp-ac-usercolor' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserColorEnable ? 'checked' : '') + ">附加4-护眼颜色配置-自定义3中需对应开启</label></li>\n" +
-                            "                <li><label class='menu-box-container' title='！需要在自定义样式中启用护眼模式'><label style='margin-left:20px;'>默认护眼颜色：</label>" +
-                            "                       <input class='sp-ac-menuhuyanColor' type='color' title='自定义的护眼颜色' style='cursor: pointer;margin-top:-0.05rem;height:23px;' value='" + ACConfig.defaultHuYanColor + "'>" +
-                            "                       <label class='menu-box-small' data-color='#DEF1EF' style='background-color:#DEF1EF;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-                            "                       <label class='menu-box-small' data-color='#F3F2EE' style='background-color:#F3F2EE;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-                            "                       <label class='menu-box-small' data-color='#E5E5E5' style='background-color:#E5E5E5;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-                            "                       <label class='linkhref' data-href='https://www.ntaow.com/colorpicker.html'  style='cursor:pointer;margin-right: 10px;' onclick='window.open(this.dataset.href)'>更多颜色选择</label>" +
-                            "                </label></li>\n" +
-                            "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isFaviconEnable ? 'checked' : '') + ">附加5-Favicon功能</label></li>\n" +
-                            "                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='" + ACConfig.defaultFaviconUrl + "' style='width:55%;margin-top:-0.3rem;' type='input' " + (ACConfig.isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
-                            "                <li><label><input title='AC-移除搜索预测' id='sp-ac-sug_origin' name='sp-ac-a_force' type='checkbox' " + (ACConfig.doDisableSug ? 'checked' : '') + ">附加6-移除百度搜索预测(文字自动搜索)</label></li>\n" +
-                            // 有更新-高亮 <label style=''> ||  style='"+(CONST.hasNewFuncNeedDisplay?"color:red;font-weight: 100;background-color: yellow;font-weight: 600;":"")+"'
-                            "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' type='checkbox' " + (ACConfig.isRightDisplayEnable ? 'checked' : '') + ">附加7-显示右侧栏</label><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isCounterEnable ? 'checked' : '') + ">附加8-编号功能</label><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isALineEnable ? 'checked' : '') + ">附加9-文字下划线</label></li>\n" +
-                            "                <li><label><input title='AC-自定义样式' id='sp-ac-userstyle' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserStyleEnable ? 'checked' : '') + ">附加10-自定义样式</label></li>\n" +
-                            "                <li><textarea  id='sp-ac-userstyleTEXT' name='sp-ac-a_force' value='这个是用户自定义样式' style='width:85%;height: 66px;margin-left:30px;' type='input'>" + ACConfig.UserStyleText + "</textarea></label></li>\n" +
-                            "                <li><a class='linkhref' target='_blank' href='https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_' >联系作者,提建议,寻求帮助,自定义样式,脚本定制点我</a></li>" +
-                            "            </ul>" +
+                                "                </li>\n" +
+                                "                <li><label title='！需要在自定义样式中启用护眼模式'><input title='AC-自定义护眼' id='sp-ac-usercolor' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserColorEnable ? 'checked' : '') + ">附加4-护眼颜色配置-自定义3中需对应开启</label></li>\n" +
+                                "                <li><label class='menu-box-container' title='！需要在自定义样式中启用护眼模式'><label style='margin-left:20px;'>默认护眼颜色：</label>" +
+                                "                       <input class='sp-ac-menuhuyanColor' type='color' title='自定义的护眼颜色' style='cursor: pointer;margin-top:-0.05rem;height:23px;' value='" + ACConfig.defaultHuYanColor + "'>" +
+                                "                       <label class='menu-box-small' data-color='#DEF1EF' style='background-color:#DEF1EF;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+                                "                       <label class='menu-box-small' data-color='#F3F2EE' style='background-color:#F3F2EE;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+                                "                       <label class='menu-box-small' data-color='#E5E5E5' style='background-color:#E5E5E5;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+                                "                       <label class='linkhref' data-href='https://www.ntaow.com/colorpicker.html'  style='cursor:pointer;margin-right: 10px;' onclick='window.open(this.dataset.href)'>更多颜色选择</label>" +
+                                "                </label></li>\n" +
+                                "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isFaviconEnable ? 'checked' : '') + ">附加5-Favicon功能</label></li>\n" +
+                                "                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='" + ACConfig.defaultFaviconUrl + "' style='width:55%;margin-top:-0.3em;' type='input' " + (ACConfig.isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
+                                "                <li><label><input title='AC-移除搜索预测' id='sp-ac-sug_origin' name='sp-ac-a_force' type='checkbox' " + (ACConfig.doDisableSug ? 'checked' : '') + ">附加6-移除百度搜索预测(文字自动搜索)</label></li>\n" +
+                                // 有更新-高亮 <label style=''> ||  style='"+(CONST.hasNewFuncNeedDisplay?"color:red;font-weight: 100;background-color: yellow;font-weight: 600;":"")+"'
+                                "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' type='checkbox' " + (ACConfig.isRightDisplayEnable ? 'checked' : '') + ">附加7-显示右侧栏</label><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isCounterEnable ? 'checked' : '') + ">附加8-编号功能</label><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isALineEnable ? 'checked' : '') + ">附加9-文字下划线</label></li>\n" +
+                                "                <li><label><input title='AC-自定义样式' id='sp-ac-userstyle' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserStyleEnable ? 'checked' : '') + ">附加10-自定义样式</label></li>\n" +
+                                "                <li><textarea  id='sp-ac-userstyleTEXT' name='sp-ac-a_force' value='这个是用户自定义样式' style='width:85%;height: 66px;margin-left:30px;' type='input'>" + ACConfig.UserStyleText + "</textarea></label></li>\n" +
+                                "                <li><a class='linkhref' target='_blank' href='https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_' >联系作者,提建议,寻求帮助,自定义样式,脚本定制点我</a></li>" +
+                                "            </ul>" +
 
-                            "            <ul class='setting-second' style='display:none'>" +
-                            "            </ul>"+
+                                "            <ul class='setting-second' style='display:none'>" +
+                                "            </ul>"+
 
-                            "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton endbutton' title='取消' style='position: relative;float: left;'>取消</span>\n" +
-                            "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton endbutton' title='保存设置' style='position: relative;float: right;'>保存</span>\n" +
+                                "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton endbutton' title='取消' style='position: relative;float: left;'>取消</span>\n" +
+                                "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton endbutton' title='保存设置' style='position: relative;float: right;'>保存</span>\n" +
 
-                            "        </fieldset>\n" +
-                            "        </div>\n" +
-                            "    </div>";
+                                "        </fieldset>\n" +
+                                "        </div>\n" +
+                                "    </div>";
+                        }else{
+                            Container.innerHTML =
+                                "    <div id='sp-ac-content' style='display: none;'>\n" +
+                                "        <div id='sp-ac-main'>\n" +
+                                "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
+
+                                "            <legend class='iframe-father' title='AC Redirect Settings'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-Redirect Settings" + BaiduVersion + "</a></legend>\n" +
+                                "            <ul class='setting-main'>\n" +
+                                "                <li><label title='Turn on or off redirect'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">Main-Redict Func</label></li>\n" +
+                                "                <li><label title='Remove the ads on the page, and return you a clean page' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">Add1-Remove Ads</label></li>\n" +
+                                "                <li><label title='Click the \'Block\' button to add the address which you want to hide. The script will hide it with small banner automatically. \'DIY\' button for editting the hiding list' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">Add2-Block host</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='Edit BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
+                                "                    <label><input title='remove the block results automatically' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">Auto remove</label>" +
+                                "                    <label><input title='hide the \'Block\' button' id='sp-ac-blockBtnDisplay' type='checkbox' " + (ACConfig.isBlockBtnDisplay ? '' : 'checked') + ">Hide \'Block\' button</label>" +
+                                "                </li>\n" +
+                                "                <li><label title='AC-CustomStyle'><input id='sp-ac-style' name='sp-ac-a_force' type='checkbox' " + (ACConfig.AdsStyleEnable ? 'checked' : '') + ">Add3-CustomStyle</label>\n" +
+                                "                <label></label></li>\n" +
+                                "                <li>" +
+                                /****-百度样式-*****/
+                                "                   <labelMain class='container-label baidu'>" +
+                                "                       <labelHide>Expand Baidu Settings&gt;&gt;</labelHide>" +
+                                "                       <label title='Baidu-Origin' style='margin-left:20px'><input name='sp-ac-a_force_style_baidu' value='0' type='radio' " + (ACConfig.AdsStyleMode_Baidu == 0 ? 'checked' : '') + ">Baidu-Origin</label>" +
+                                "                       <label title='Baidu-EyeSave'><input  name='sp-ac-huyan_style_baidu' type='checkbox' " + (ACConfig.HuYan_Baidu == true ? 'checked' : '') + ">Baidu-EyeSave</label>" +
+                                "                       <label title='BaiduLiteStyle' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"'><input  name='sp-ac-a_force_style_baidulite' type='checkbox' " + (ACConfig.Style_BaiduLite == true ? 'checked' : '') + ">BaiduLiteStyle</label>" +
+                                "                       <BR/><label title='Baidu-SingleRow' style='margin-left:20px'><input title='Baidu-SingleRowMode' name='sp-ac-a_force_style_baidu' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 1 ? 'checked' : '') + ">SingleRow</label>" +
+                                "                       <label title='Baidu-SingleCenter'><input  name='sp-ac-a_force_style_baidu' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 2 ? 'checked' : '') + ">SingleCenter</label>" +
+                                "                       <label title='Baidu-TwoRowsCenter'><input name='sp-ac-a_force_style_baidu' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 3 ? 'checked' : '') + ">Two</label>" +
+                                "                       <label title='Baidu-ThreeRowsCenter'><input name='sp-ac-a_force_style_baidu' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 4 ? 'checked' : '') + ">Three</label>" +
+                                "                       <label title='Baidu-FourRowsCenter'><input name='sp-ac-a_force_style_baidu' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 5 ? 'checked' : '') + ">Four</label>" +
+                                "                   <BR/></labelMain>" +
+                                /****-百度样式-*****/
+                                "                    <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
+                                /****-谷歌样式-*****/
+                                "                   <labelMain class='container-label google'>" +
+                                "                       <labelHide>Expand Google Settings&gt;&gt;</labelHide>" +
+                                "                       <label title='Google-Origin' style='margin-left:20px'><input name='sp-ac-a_force_style_google' value='0' type='radio' " + (ACConfig.AdsStyleMode_Google == 0 ? 'checked' : '') + ">Google-Origin</label>" +
+                                "                       <label title='Google-EyeSave'><input  name='sp-ac-huyan_style_google' type='checkbox' " + (ACConfig.HuYan_Google == true ? 'checked' : '') + ">Google-EyeSave</label>" +
+                                "                       <label title='Google-as Baidu' style='"+(CONST.hasNewFuncNeedDisplay ? "color:red;font-weight: 100;background-color: yellow;font-weight: 600;" : "")+"'><input  name='sp-ac-google_in_baidumode' type='checkbox' " + (ACConfig.isGooleInBaiduModeEnable == true ? 'checked' : '') + ">Fake Baidu</label>" +
+                                "                       <BR/><label title='Google-SingleRow' style='margin-left:20px'><input title='Google-SingleRowMode' name='sp-ac-a_force_style_google' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Google == 1 ? 'checked' : '') + ">SingleRow</label>" +
+                                "                       <label title='Google-SingleCenter'><input  name='sp-ac-a_force_style_google' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Google == 2 ? 'checked' : '') + ">SingleCenter</label>" +
+                                "                       <label title='Google-TwoRowsCenter'><input  name='sp-ac-a_force_style_google' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Google == 3 ? 'checked' : '') + ">Two</label>" +
+                                "                       <label title='Google-ThreeRowsCenter'><input  name='sp-ac-a_force_style_google' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Google == 4 ? 'checked' : '') + ">Three</label>" +
+                                "                       <label title='Google-FourRowsCenter'><input  name='sp-ac-a_force_style_google' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Google == 5 ? 'checked' : '') + ">Four</label>" +
+                                "                   <BR/></labelMain>" +
+                                /****-谷歌样式-*****/
+                                "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
+                                /****-必应样式-*****/
+                                "                   <labelMain class='container-label bing'>" +
+                                "                       <labelHide>Expand Bing Settings&gt;&gt;</labelHide>" +
+                                "                       <label title='Bing-Origin' style='margin-left:20px'><input name='sp-ac-a_force_style_bing' value='0' type='radio' " + (ACConfig.AdsStyleMode_Bing == 0 ? 'checked' : '') + ">Bing-Origin</label>" +
+                                "                       <label title='Bing-EyeSave'><input name='sp-ac-huyan_style_bing' type='checkbox' " + (ACConfig.HuYan_Bing == true ? 'checked' : '') + ">Bing-EyeSave</label>" +
+                                "                       <BR/><label title='Bing-SingleRow' style='margin-left:20px'><input title='Bing-SingleRowMode' name='sp-ac-a_force_style_bing' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 1 ? 'checked' : '') + ">SingleRow</label>" +
+                                "                       <label title='Bing-SingleCenter'><input  name='sp-ac-a_force_style_bing' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 2 ? 'checked' : '') + ">SingleCenter</label>" +
+                                "                       <label title='Bing-TwoRowsCenter'><input name='sp-ac-a_force_style_bing' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 3 ? 'checked' : '') + ">Two</label>" +
+                                "                       <label title='Bing-ThreeRowsCenter'><input name='sp-ac-a_force_style_bing' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 4 ? 'checked' : '') + ">Three</label>" +
+                                "                       <label title='Bing-FourRowsCenter'><input name='sp-ac-a_force_style_bing' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 5 ? 'checked' : '') + ">Four</label>" +
+                                "                   </labelMain>" +
+                                /****-必应样式-*****/
+                                "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
+                                /****-搜狗样式-*****/
+                                "                   <labelMain class='container-label sogou'>" +
+                                "                       <labelHide>Expand Sogou Settings&gt;&gt;</labelHide>" +
+                                "                       <label title='Sogou-Origin' style='margin-left:20px'><input name='sp-ac-a_force_style_sogou' value='0' type='radio' " + (ACConfig.AdsStyleMode_SoGou == 0 ? 'checked' : '') + ">Sogou-Origin</label>" +
+                                "                       <label title='Sogou-EyeSave'><input name='sp-ac-huyan_style_sogou' type='checkbox' " + (ACConfig.HuYan_SoGou == true ? 'checked' : '') + ">Sogou-EyeSave</label>" +
+                                "                       <BR/><label title='Sogou-SingleRow' style='margin-left:20px'><input title='Sogou-SingleRowMode' name='sp-ac-a_force_style_sogou' value='1'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 1 ? 'checked' : '') + ">SingleRow</label>" +
+                                "                       <label title='Sogou-SingleCenter'><input  name='sp-ac-a_force_style_sogou' value='2'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 2 ? 'checked' : '') + ">SingleCenter</label>" +
+                                "                       <label title='Sogou-TwoRowsCenter'><input name='sp-ac-a_force_style_sogou' value='3'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 3 ? 'checked' : '') + ">Two</label>" +
+                                "                       <label title='Sogou-ThreeRowsCenter'><input name='sp-ac-a_force_style_sogou' value='4'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 4 ? 'checked' : '') + ">Three</label>" +
+                                "                       <label title='Sogou-FourRowsCenter'><input name='sp-ac-a_force_style_sogou' value='5'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 5 ? 'checked' : '') + ">Four</label>" +
+                                "                   </labelMain>" +
+                                /****-搜狗样式-*****/
+
+                                "                </li>\n" +
+                                "                <li><label title='！Open EyeSave Mode in CustomStyle is Must'><input title='AC-CustomEyeSave' id='sp-ac-usercolor' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserColorEnable ? 'checked' : '') + ">Add4-EyeSave Color Setting-Need opened in Add3</label></li>\n" +
+                                "                <li><label class='menu-box-container' title='！Need Opend in Add3'><label style='margin-left:20px;'>Default EyeSave Color：</label>" +
+                                "                       <input class='sp-ac-menuhuyanColor' type='color' title='The color of EyeSave' style='cursor: pointer;margin-top:-0.05rem;height:23px;' value='" + ACConfig.defaultHuYanColor + "'>" +
+                                "                       <label class='menu-box-small' data-color='#DEF1EF' style='background-color:#DEF1EF;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+                                "                       <label class='menu-box-small' data-color='#F3F2EE' style='background-color:#F3F2EE;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+                                "                       <label class='menu-box-small' data-color='#E5E5E5' style='background-color:#E5E5E5;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+                                "                       <label class='linkhref' data-href='https://www.ntaow.com/colorpicker.html'  style='cursor:pointer;margin-right: 10px;' onclick='window.open(this.dataset.href)'>More Color</label>" +
+                                "                </label></li>\n" +
+                                "                <li><label><input title='AC-AddFavicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isFaviconEnable ? 'checked' : '') + ">Add5-Favicon.Func</label></li>\n" +
+                                "                <li><label><label style='margin-left:20px;'>FaviconFailedImg：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='" + ACConfig.defaultFaviconUrl + "' style='width:55%;margin-top:-0.3rem;' type='input' " + (ACConfig.isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
+                                "                <li><label><input title='AC-Remove Baidu AutoPredict in text search' id='sp-ac-sug_origin' name='sp-ac-a_force' type='checkbox' " + (ACConfig.doDisableSug ? 'checked' : '') + ">Add6-Remove Baidu AutoPredict in text search</label></li>\n" +
+                                // 有更新-高亮 <label style=''> ||  style='"+(CONST.hasNewFuncNeedDisplay?"color:red;font-weight: 100;background-color: yellow;font-weight: 600;":"")+"'
+                                "                <li><label><input title='AC-Display the Right Side Column' id='sp-ac-right' type='checkbox' " + (ACConfig.isRightDisplayEnable ? 'checked' : '') + ">Add7-Right Side Column</label><label><input title='AC-AddNumber' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isCounterEnable ? 'checked' : '') + ">Add8-NumFunc</label><label><input title='AC-TextUnderLine' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isALineEnable ? 'checked' : '') + ">Add9-TextUnderLine</label></li>\n" +
+                                "                <li><label><input title='AC-Edit your own style' id='sp-ac-userstyle' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserStyleEnable ? 'checked' : '') + ">Add10-Your own Style</label></li>\n" +
+                                "                <li><textarea  id='sp-ac-userstyleTEXT' name='sp-ac-a_force' value='this is user own style' style='width:85%;height: 66px;margin-left:30px;' type='input'>" + ACConfig.UserStyleText + "</textarea></label></li>\n" +
+                                "                <li><a class='linkhref' target='_blank' href='https://github.com/langren1353/GM_script/' >For contact the writter, suggests, ask for help then click me</a></li>" +
+                                "            </ul>" +
+
+                                "            <ul class='setting-second' style='display:none'>" +
+                                "            </ul>"+
+
+                                "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton endbutton' title='close' style='position: relative;float: left;'>close</span>\n" +
+                                "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton endbutton' title='save' style='position: relative;float: right;'>save</span>\n" +
+
+                                "        </fieldset>\n" +
+                                "        </div>\n" +
+                                "    </div>";
+                        }
                         try {
                             document.body.appendChild(Container);
                         } catch (e) {
@@ -1099,7 +1235,7 @@ body[baidu] #s_lg_img_new{
                                 ACConfig.isGooleInBaiduModeEnable = document.querySelector('input[name="sp-ac-google_in_baidumode"]').checked;
                                 ACConfig.HuYan_Bing = document.querySelector('input[name="sp-ac-huyan_style_bing"]').checked;
                                 ACConfig.HuYan_SoGou = document.querySelector('input[name="sp-ac-huyan_style_sogou"]').checked;
-                                var imgurl = document.querySelector("#sp-ac-faviconUrl").value.trim();
+                                let imgurl = document.querySelector("#sp-ac-faviconUrl").value.trim();
                                 imgurl = (imgurl == "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg") ? "" : imgurl; // 如果是旧的新浪地址，那么重置
                                 imgurl = (imgurl == "" || imgurl == null) ? "https://ae01.alicdn.com/kf/HTB1dRY0X8OD3KVjSZFFq6An9pXay.jpg" : imgurl;
                                 ACConfig.isUserColorEnable = document.querySelector("#sp-ac-usercolor").checked;
@@ -1127,7 +1263,7 @@ body[baidu] #s_lg_img_new{
                             });
 
                             document.querySelector(".menu-box-container").addEventListener("click", function (e) {
-                                var cur = e.srcElement || e.target;
+                                let cur = e.srcElement || e.target;
                                 if (typeof(cur.dataset.color) != "undefined") {
                                     document.querySelector(".sp-ac-menuhuyanColor").value = cur.dataset.color;
                                     CONST.StyleManger.loadHuYanStyle(cur.dataset.color);
@@ -1140,8 +1276,8 @@ body[baidu] #s_lg_img_new{
                             });
                             document.querySelectorAll("labelHide").forEach(function (per) {
                                 per.addEventListener("click", function (e) {
-                                    var cur = e.srcElement || e.target;
-                                    var className = cur.parentNode.className.replace("container-label ", "");
+                                    let cur = e.srcElement || e.target;
+                                    let className = cur.parentNode.className.replace("container-label ", "");
                                     AC_addStyle(".XX>label,.XX>br{display:unset !important;}.XX>labelhide{display:none !important;}".replace(/XX/gm, className), "AC-ShowHideItem-" + className, "body");
                                     e.stopPropagation();
                                 });
@@ -1149,8 +1285,8 @@ body[baidu] #s_lg_img_new{
                         } catch (e) {
                         }
                     }
-                    var allNodes = document.querySelectorAll(".AC-faviconT, .AC-CounterT");
-                    for (var i = 0; i < allNodes.length; i++) {
+                    let allNodes = document.querySelectorAll(".AC-faviconT, .AC-CounterT");
+                    for (let i = 0; i < allNodes.length; i++) {
                         if (allNodes[i].getAttribute('acClick') == null) {
                             allNodes[i].setAttribute('acClick', '1');
                             try {
@@ -1182,12 +1318,12 @@ body[baidu] #s_lg_img_new{
                 }
 
                 function removeMobileBaiduDirectLink(){
-                    var nodes = document.querySelectorAll("#page #page-bd #results .result:not([ac_redirectStatus])");
-                    for(var i = 0; i < nodes.length; i++){
-                        var curNode = nodes[i];
+                    let nodes = document.querySelectorAll("#page #page-bd #results .result:not([ac_redirectStatus])");
+                    for(let i = 0; i < nodes.length; i++){
+                        let curNode = nodes[i];
                         safeFunction(function(){
-                            var curData = JSON.parse(curNode.dataset.log.replace(/'/gm, "\""));
-                            var trueLink = curData.mu;
+                            let curData = JSON.parse(curNode.dataset.log.replace(/'/gm, "\""));
+                            let trueLink = curData.mu;
                             curNode.querySelector("article").setAttribute("rl-link-href", trueLink);
                             curNode.querySelectorAll("a").forEach(function (per) {
                                 per.setAttribute("href", trueLink);
@@ -1199,9 +1335,9 @@ body[baidu] #s_lg_img_new{
 
                 function removeOnMouseDownFunc() {
                     try {
-                        var resultNodes = document.querySelectorAll(".g .rc .r a");
-                        for (var i = 0; i < resultNodes.length; i++) {
-                            var one = resultNodes[i];
+                        let resultNodes = document.querySelectorAll(".g .rc .r a");
+                        for (let i = 0; i < resultNodes.length; i++) {
+                            let one = resultNodes[i];
                             one.setAttribute("onmousedown", ""); // 谷歌去重定向干扰
                             one.setAttribute("target", "_blank"); // 谷歌链接新标签打开
                         }
@@ -1212,15 +1348,15 @@ body[baidu] #s_lg_img_new{
 
                 function removeRedirectLinkTarget() {
                     if (curSite.SiteTypeID == SiteType.ZHIHU) {
-                        var nodes = document.querySelectorAll(".RichText a[href*='//link.zhihu.com/?target']");
-                        for (var i = 0; i < nodes.length; i++) {
-                            var url = decodeURIComponent(nodes[i].href.replace(/https?:\/\/link\.zhihu\.com\/\?target=/, ""));
+                        let nodes = document.querySelectorAll(".RichText a[href*='//link.zhihu.com/?target']");
+                        for (let i = 0; i < nodes.length; i++) {
+                            let url = decodeURIComponent(nodes[i].href.replace(/https?:\/\/link\.zhihu\.com\/\?target=/, ""));
                             nodes[i].href = url;
                         }
                     } else if (curSite.SiteTypeID == SiteType.BAIDU_XUESHU) {
-                        var xnodes = document.querySelectorAll("a[href*='sc_vurl=http']");
-                        for (var j = 0; i < xnodes.length; j++) {
-                            var xurl = getUrlAttribute(xnodes[j].href, "sc_vurl", true);
+                        let xnodes = document.querySelectorAll("a[href*='sc_vurl=http']");
+                        for (let j = 0; i < xnodes.length; j++) {
+                            let xurl = getUrlAttribute(xnodes[j].href, "sc_vurl", true);
                             xnodes[j].href = xurl;
                         }
                     }
@@ -1228,12 +1364,12 @@ body[baidu] #s_lg_img_new{
 
                 // 提取url元素的参数值
                 function getUrlAttribute(url, attribute, needDecode) {
-                    var searchValueS = (url.substr(1) + "").split("&");
-                    for (var i = 0; i < searchValueS.length; i++) {
-                        var key_value = searchValueS[i].split("=");
-                        var reg = new RegExp("^" + attribute + "$");
+                    let searchValueS = (url.substr(1) + "").split("&");
+                    for (let i = 0; i < searchValueS.length; i++) {
+                        let key_value = searchValueS[i].split("=");
+                        let reg = new RegExp("^" + attribute + "$");
                         if (reg.test(key_value[0])) {
-                            var searchWords = key_value[1];
+                            let searchWords = key_value[1];
                             return needDecode ? decodeURIComponent(searchWords) : searchWords;
                         }
                     }
@@ -1243,8 +1379,8 @@ body[baidu] #s_lg_img_new{
                     for (var i = 0; i < list.length; i++) {
                         // 此方法是异步，故在结束的时候使用i会出问题-严重!
                         // 采用闭包的方法来进行数据的传递
-                        var curNode = list[i];
-                        var curhref = curNode.href;
+                        let curNode = list[i];
+                        let curhref = curNode.href;
                         if (list[i] != null && list[i].getAttribute("ac_redirectStatus") == null) {
                             list[i].setAttribute("ac_redirectStatus", "0");
                             if (curhref.indexOf("www.baidu.com/link") > -1 ||
@@ -1252,12 +1388,12 @@ body[baidu] #s_lg_img_new{
                                 curhref.indexOf("www.sogou.com/link") > -1 ||
                                 curhref.indexOf("so.com/link") > -1) {
                                 (function (c_curnode, c_curhref) {
-                                    var url = c_curhref.replace(/^http:/, "https:");
+                                    let url = c_curhref.replace(/^http:/, "https:");
                                     if (curSite.SiteTypeID == SiteType.BAIDU && url.indexOf("eqid") < 0) {
                                         // 如果是百度，并且没有带有解析参数，那么手动带上
                                         url = url + "&wd=&eqid=";
                                     }
-                                    var gmRequestNode = GM_xmlhttpRequest({
+                                    let gmRequestNode = GM_xmlhttpRequest({
                                         // from: "acxhr",
                                         extData: c_curhref, // 用于扩展
                                         url: url,
@@ -1269,7 +1405,7 @@ body[baidu] #s_lg_img_new{
                                             DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'")
                                             // 这个是在上面无法处理的情况下，备用的 tm-finalurldhdg  tm-finalurlmfdh
                                             if (response.responseHeaders.indexOf("tm-finalurl") >= 0) {
-                                                var relURL = Reg_Get(response.responseHeaders, "tm-finalurl\\w+: ([^\\s]+)");
+                                                let relURL = Reg_Get(response.responseHeaders, "tm-finalurl\\w+: ([^\\s]+)");
                                                 if (relURL == null || relURL == "" || relURL.indexOf("www.baidu.com/search/error") > 0) return;
                                                 DealRedirect(gmRequestNode, c_curhref, relURL);
                                             }
@@ -1281,9 +1417,9 @@ body[baidu] #s_lg_img_new{
                     }
                 }
 
-                var DealRedirect = function (request, curNodeHref, respText, RegText) {
+                let DealRedirect = function (request, curNodeHref, respText, RegText) {
                     if (respText == null || typeof(respText) == "undefined") return;
-                    var resultResponseUrl = "";
+                    let resultResponseUrl = "";
                     if (RegText != null) {
                         resultResponseUrl = Reg_Get(respText, RegText);
                     } else {
@@ -1292,19 +1428,22 @@ body[baidu] #s_lg_img_new{
                     if (resultResponseUrl != null && resultResponseUrl != "" && resultResponseUrl.indexOf("www.baidu.com/link") < 0) {
                         try {
                             if (curSite.SiteTypeID == SiteType.SOGOU) curNodeHref = curNodeHref.replace(/^https:\/\/www.sogou.com/, "");
-                            var host = getHost(resultResponseUrl);
-                            document.querySelectorAll("a[href*='" + curNodeHref + "']").forEach(function (per) {
+                            let host = getHost(resultResponseUrl);
+                            document.querySelectorAll("*[href*='" + curNodeHref + "']").forEach(function (per) {
                                 if(per.querySelector("span") != null){
                                     per.lastChild.insertAdjacentHTML("beforeEnd", "&nbsp;-&nbsp;" + host);
                                 }
                                 per.setAttribute("ac_redirectStatus", "2");
                                 per.setAttribute("href", resultResponseUrl);
+                                if(per.hasAttribute("meta")){
+                                    per.setAttribute("meta", host);
+                                    per.dataset.host = host;
+                                }
                             });
-                            CONST.curHosts.push(host);
-                            CONST.curHosts  = [...Set(...CONST.curHosts )];
-                            reloadBlockList();
+                            CONST.curHosts.acpush(host, reloadBlockList);
                             request.abort();
                         } catch (e) {
+                            // console.log(e);
                         }
                     }
                 };
@@ -1367,60 +1506,62 @@ body[baidu] #s_lg_img_new{
                 }
 
                 function addCounter(citeList) {
-                    var cssText = "position:relative;z-index:1;margin-right:4px;display:inline-block;color:white;font-family:'微软雅黑';font-size:16px;text-align:center;width:22px;line-height:22px;border-radius:50%;";
-                    var div = document.createElement('div');
-                    for (var i = 0; i < citeList.length; i++) {
-                        if (citeList[i].getAttribute('SortIndex')) {
-                            continue;
-                        } else {
+                    let cssText = "position:relative;z-index:1;margin-right:4px;display:inline-block;color:white;font-family:'微软雅黑';font-size:16px;text-align:center;width:22px;line-height:22px;border-radius:50%;";
+                    let div = document.createElement('div');
+                    for (let i = 0; i < citeList.length; i++) {
+                        let index = citeList[i].getAttribute('SortIndex');
+                        if (index==null || typeof(index) == "undefined") {
                             citeList[i].setAttribute('SortIndex', CONST.sortIndex);
                             citeList[i].inner = citeList[i].innerHTML;
-                            if (IsNumber(citeList[i].parentNode.id)) {
-                                // 如果是百度的数据
-                                div.innerHTML = "<div class='AC-CounterT' style=" + cssText + ">" + (citeList[i].parentNode.id % 100) + "</div>";
-                                citeList[i].innerHTML = div.innerHTML + citeList[i].inner;
-                            } else {
-                                div.innerHTML = "<div class='AC-CounterT' style=" + cssText + ">" + CONST.sortIndex + "</div>";
-                                citeList[i].innerHTML = div.innerHTML + citeList[i].inner;
-                            }
+                            div.innerHTML = "<em class='AC-CounterT' style=" + cssText + ">" + CONST.sortIndex + "</em>";
+                            citeList[i].innerHTML = div.innerHTML + citeList[i].inner;
                             CONST.sortIndex++;
+                        } else {
+                            if(index != (i + 1) % 100){ // 按需更新
+                                citeList[i].querySelector(".AC-CounterT").innerText = (i + 1) % 100;
+                            }
                         }
                     }
                 }
 
                 function getHost(sbefore) {
-                    var send;
-                    var result = sbefore.split('-');
-                    if (curSite.SiteTypeID == SiteType.SOGOU && location.href.indexOf("sogou") < 20) {
-                        // --搜狗专用；如果第一个是中文的话，地址就是第二个
+                    sbefore = (sbefore && sbefore.trim()) || "";
+                    let send;
+                    let result = sbefore.split('-');
+                    // --搜狗百度专用；如果第一个是中文的话，地址就是第二个
+                    if((result.length > 1 && new RegExp("[\\u4E00-\\u9FFF]+","g").test(sbefore)) && (curSite.SiteTypeID == SiteType.BAIDU || curSite.SiteTypeID == SiteType.SOGOU)){
                         sbefore = result[1];
                     }
                     send = sbefore.replace(/(\/[^/]*|\s*)/, "").replace(/<[^>]*>/g, "").replace(/https?:\/\//g, "").replace(/<\/?strong>/g, "").replace(/<\/?b>/g, "").replace(/<?>?/g, "").replace(/( |\/).*/g, "").replace(/\.\..*/, "");
                     if(send.indexOf(".") < 0) return null;
+                    if(send.indexOf("↵")>=0)  return null;
                     return send.trim();
                 }
 
                 function addFavicon(citeList) {
-                    for (var index = 0; index < citeList.length; index++) {
+                    for (let index = 0; index < citeList.length; index++) {
                         if (null == citeList[index].getAttribute("ac_faviconStatus")) {
-                            var url = getBaiduHost(citeList[index]);
+                            let curNode = citeList[index];
+                            let targetNode = curNode;
+                            let url = getBaiduHost(targetNode);
                             if(url == null){ // 跳过baidu.click
                                 continue;
+                            }else{
+                                CONST.curHosts.acpush(url);
                             }
-                            var curNode = citeList[index];
-                            var faviconUrl = url;
-                            var II = 0;
+                            let faviconUrl = url;
+                            let II = 0;
                             for (; II <= 5; II++) {
-                                curNode = curNode.parentNode;
-                                if (curNode != null && curNode.querySelector(curSite.FaviconAddTo) != null) {
+                                targetNode = targetNode.parentNode;
+                                if (targetNode != null && targetNode.querySelector(curSite.FaviconAddTo) != null) {
                                     break;
                                 }
                             }
                             //console.log(index+"."+faviconUrl+"--"+II);
                             if (II <= 5) {
                                 // 先用父节点判断一下是否存在img
-                                var tmpHTML = curNode.innerHTML;
-                                var pos = tmpHTML.indexOf("fav-url")
+                                let tmpHTML = targetNode.innerHTML;
+                                let pos = tmpHTML.indexOf("fav-url")
                                     & tmpHTML.indexOf("favurl")
                                     & tmpHTML.indexOf("tit-ico")
                                     & tmpHTML.indexOf("img_fav rms_img")
@@ -1429,10 +1570,10 @@ body[baidu] #s_lg_img_new{
                                 //他自己已经做了favicon了
                                 if (pos > -1) {
                                     // console.log("已有图片：");
-                                    citeList[index].setAttribute("ac_faviconStatus", "-2");
+                                    curNode.setAttribute("ac_faviconStatus", "-2");
                                     continue;
                                 }
-                                curNode = curNode.querySelector(curSite.FaviconAddTo);
+                                targetNode = targetNode.querySelector(curSite.FaviconAddTo);
                                 // 特殊处理BING
                                 // if (curSite.SiteTypeID == SiteType.BING) curNode = curNode.querySelector("h2");
                                 //https://api.byi.pw/favicon/?url=???? 不稳定
@@ -1441,11 +1582,11 @@ body[baidu] #s_lg_img_new{
                                 //https://statics.dnspod.cn/proxy_favicon/_/favicon?domain=sina.cn
                                 //www.google.com/s2/favicons?domain=764350177.lofter.com
                                 //如果地址不正确，那么丢弃
-                                var host = faviconUrl.replace(/[^.]+\.([^.]+)\.([^.]+)/, "$1.$2");
-                                if (curNode.querySelector(".AC-faviconT") == null && host.length > 3) {
-                                    var insNode = document.createElement("img");
+                                let host = faviconUrl.replace(/[^.]+\.([^.]+)\.([^.]+)/, "$1.$2");
+                                if (targetNode.querySelector(".AC-faviconT") == null && host.length > 3) {
+                                    let insNode = document.createElement("img");
                                     // curNode = curNode.children[0] || curNode.firstChild ; // firstChild容易遇到text对象
-                                    citeList[index].setAttribute("ac_faviconStatus", "1");
+                                    curNode.setAttribute("ac_faviconStatus", "1");
                                     // curNode.insertBefore(insNode, curNode.firstChild);
                                     insNode.className = "AC-faviconT";
                                     insNode.setAttribute("referrerpolicy", "no-referrer");
@@ -1455,19 +1596,19 @@ body[baidu] #s_lg_img_new{
                                     insNode.setAttribute("faviconID", "0");
                                     // curNode.innerHTML = insNode.outerHTML + curNode.innerHTML;
                                     // curNode.insertAdjacentHTML("afterEnd", insNode.innerHTML);
-                                    var beforeIndex = 0;
-                                    if(curNode.childNodes[beforeIndex].className == "AC-CounterT"){beforeIndex = 1;}
-                                    curNode.insertBefore(insNode, curNode.childNodes[beforeIndex]);
+                                    let beforeIndex = 0;
+                                    if(targetNode.childNodes[beforeIndex].className == "AC-CounterT"){beforeIndex = 1;}
+                                    targetNode.insertBefore(insNode, targetNode.childNodes[beforeIndex]);
                                     (function(xcur){
                                         insNode.onload = function(env){
-                                            var imgNode = xcur.querySelector(".AC-faviconT");
+                                            let imgNode = xcur.querySelector(".AC-faviconT");
                                             if(imgNode.naturalWidth < 10){
                                                 imgNode.setAttribute("old-src", imgNode.src);
                                                 imgNode.src = ACConfig.defaultFaviconUrl;
                                             }
                                             imgNode.onload = "javascript:void(0);";
                                         };
-                                    })(curNode);
+                                    })(targetNode);
                                 }
                             }
                         }
@@ -1475,13 +1616,17 @@ body[baidu] #s_lg_img_new{
                 }
 
                 function InsertSettingMenu() {
-                    if (document.querySelector("#myuser") == null) {
+                    if ((curSite.SiteTypeID != SiteType.OTHERS) &&  document.querySelector("#myuser") == null) {
                         try {
-                            var parent = document.querySelector("#u, #gbw>div>div, #b_header>#id_h, .top-bar .sogou-set-box"); //baidu; google; bing
+                            let parent = document.querySelector("#u, #gb>div>div>div, #b_header>#id_h, .top-bar .sogou-set-box"); //baidu; google; bing; 搜狗
                             parent.style = "width: auto;";
-                            var userAdiv = document.createElement("div");
+                            let userAdiv = document.createElement("div");
                             userAdiv.id = "myuser";
-                            userAdiv.innerHTML = "<input type='submit' class='myuserconfig' value='自定义'/><span class='ac-newversionDisplay' style='background-color: red;float: left;height: 8px;width: 8px;border-radius: 4px;display:" + (CONST.hasNewFuncNeedDisplay ? "unset" : "none") + "'>&nbsp;</span>";
+                            if(isCNLan){
+                                userAdiv.innerHTML = "<input type='submit' class='myuserconfig' value='自定义'/><span class='ac-newversionDisplay' style='background-color: red;float: left;height: 8px;width: 8px;border-radius: 4px;display:" + (CONST.hasNewFuncNeedDisplay ? "unset" : "none") + "'>&nbsp;</span>";
+                            }else{
+                                userAdiv.innerHTML = "<input type='submit' class='myuserconfig' value='CUSTOM'/><span class='ac-newversionDisplay' style='background-color: red;float: left;height: 8px;width: 8px;border-radius: 4px;display:" + (CONST.hasNewFuncNeedDisplay ? "unset" : "none") + "'>&nbsp;</span>";
+                            }
                             parent.insertBefore(userAdiv, parent.childNodes[0]);
                             document.querySelector("#myuser .myuserconfig").addEventListener("click", function (e) {
                                 return ACtoggleSettingDisplay(e);
@@ -1491,46 +1636,65 @@ body[baidu] #s_lg_img_new{
                     }
                 }
             }(); // 读取个人设置信息
+            /**
+             * @param callback 回调函数，需要返回是否结束True、False、否则相当于定时器
+             * @param period 周期，如:200ms
+             */
+            function RAFFunction(callback, period){
+                // 一秒60次，对应1秒1000ms
+                let needCount = period / 1000 * 60;
+                let times = 0;
+                let hasFinish = false;
+                function step(){
+                    if(!hasFinish) requestAnimationFrame(step);
+                    if(times == 0){
+                        times = needCount;
+                        hasFinish = callback(); // 只有返回true才会终止，不返回也会继续
+                    }
+                    times--;
+                }
+                requestAnimationFrame(step);
+            }
             function safeFunction(func){
                 safeRemove(func);
             }
             function safeWaitFunc(selector, callbackFunc, time, notClear){
                 time = time || 50;
                 notClear = notClear || false;
-                var doClear = !notClear;
-                var id = setInterval(function(){
+                let doClear = !notClear;
+                RAFFunction(function () {
                     if((typeof (selector) == "string" && document.querySelector(selector) != null)) {
-                        if(doClear) clearInterval(id);
                         callbackFunc(document.querySelector(selector));
+                        if(doClear) return true;
                     }else if((typeof(selector) == "function" && selector().length > 0)){
-                        if(doClear) clearInterval(id);
                         callbackFunc(selector()[0]);
+                        if(doClear)  return true;
                     }
                 }, time);
             }
             function AC_addStyle(css, className, addToTarget, isReload, initType) { // 添加CSS代码，不考虑文本载入时间，带有className
-                var tout = setInterval(function () {
+                RAFFunction(function() {
                     /**
                      * addToTarget这里不要使用head标签,head标签的css会在html载入时加载，
                      * html加载后似乎不会再次加载，body会自动加载
                      * **/
-                    var addTo = document.querySelector(addToTarget);
+                    let addTo = document.querySelector(addToTarget);
                     if (typeof(addToTarget) == "undefined")
                         addTo = (document.head || document.body || document.documentElement || document);
                     isReload = isReload || false; // 默认是非加载型
                     initType = initType || "text/css";
                     // 如果没有目标节点(则直接加) || 有目标节点且找到了节点(进行新增)
                     if (typeof(addToTarget) == "undefined" || (typeof(addToTarget) != "undefined" && document.querySelector(addToTarget) != null)) {
-                        clearInterval(tout);
+                        // clearInterval(tout);
                         // 如果true 强行覆盖，不管有没有--先删除
                         // 如果false，不覆盖，但是如果有的话，要退出，不存在则新增--无需删除
                         if (isReload == true) {
                             safeRemove("." + className);
                         } else if (isReload == false && document.querySelector("." + className) != null) {
                             // 节点存在 && 不准备覆盖
-                            return;
+                            return true;
                         }
-                        var cssNode = document.createElement("style");
+                        let cssNode = document.createElement("style");
                         if (className != null) cssNode.className = className;
                         cssNode.setAttribute("type", initType);
                         cssNode.innerHTML = css;
@@ -1539,14 +1703,15 @@ body[baidu] #s_lg_img_new{
                         } catch (e) {
                             console.log(e.message);
                         }
+                        return true;
                     }
                 }, 20);
             }
             function safeRemove(cssSelector_OR_NEWfunction) {
                 if (typeof(cssSelector_OR_NEWfunction) == "string") {
                     try {
-                        var removeNodes = document.querySelectorAll(cssSelector_OR_NEWfunction);
-                        for (var i = 0; i < removeNodes.length; i++)
+                        let removeNodes = document.querySelectorAll(cssSelector_OR_NEWfunction);
+                        for (let i = 0; i < removeNodes.length; i++)
                             removeNodes[i].remove();
                     } catch (e) {
                     }
@@ -1573,7 +1738,7 @@ body[baidu] #s_lg_img_new{
                  * @returns {boolean} T|F
                  */
                 function checkDocmentHasNode(nodeClass) {
-                    for (var i = 0; i < document.childNodes.length; i++) {
+                    for (let i = 0; i < document.childNodes.length; i++) {
                         if (document.childNodes[i].data && document.childNodes[i].data.indexOf(nodeClass) > 0)
                             return true;
                     }
@@ -1594,7 +1759,7 @@ body[baidu] #s_lg_img_new{
                             // data = data.replace(/baidu.com#\$#/igm, '');
                             if (data.indexOf("http") != 0) data = "data:text/css;utf-8," + encodeURIComponent(data);
                             if (!checkDocmentHasNode(toClassName)) {
-                                var pi = document.createProcessingInstruction(
+                                let pi = document.createProcessingInstruction(
                                     "xml-stylesheet",
                                     `type="text/css" must="${mustLoad}" class="${toClassName}" href="${data}"`
                                 ); // 注意必须要双引号
@@ -1634,7 +1799,7 @@ body[baidu] #s_lg_img_new{
                     },
                     //加载护眼模式样式
                     loadHuYanStyle: function (color) {
-                        var style = "body[baidu],#wrapper #head,#wrapper #s_tab,form.fm .s_ipt_wr.bg{background-color:#fff}#container #content_left .result-op,#container #content_left .result,#container #rs,#container #content_right{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#container #content_left .result-op:hover,#container #content_left .result:hover{background-color:#ccc!important}#container #content_left .result-op h3,#container #content_left .c-container h3,#container #rs .tt{background-color:#bbb}.na_cnt .nws_itm,.nws_itmb,#b_content #b_results li,body #b_header{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#b_content #b_results li:hover{background-color:#ccc!important}#b_content #b_results li h2{background-color:#bbb}.srg .g,.bkWMgd>.g,.bkWMgd g-inner-card,#rhscol #rhs,#rhscol #rhs .g>div,.c2xzTb .g,.ruTcId .g,.fm06If .g,.cUnQKe .g,.HanQmf .g{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}.srg .g:hover,.bkWMgd>.g:hover{background-color:#ccc!important}.bkWMgd .g div.r,.srg .g h3{background-color:#bbb}";
+                        let style = "body[baidu],#wrapper #head,#wrapper #s_tab,form.fm .s_ipt_wr.bg{background-color:#fff}#container #content_left .result-op,#container #content_left .result,#container #rs,#container #content_right{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#container #content_left .result-op:hover,#container #content_left .result:hover{background-color:#ccc!important}#container #content_left .result-op h3,#container #content_left .c-container h3,#container #rs .tt{background-color:#bbb}.na_cnt .nws_itm,.nws_itmb,#b_content #b_results li,body #b_header{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#b_content #b_results li:hover{background-color:#ccc!important}#b_content #b_results li h2{background-color:#bbb}.srg .g,.bkWMgd>.g,.bkWMgd g-inner-card,#rhscol #rhs,#rhscol #rhs .g>div,.c2xzTb .g,.ruTcId .g,.fm06If .g,.cUnQKe .g,.HanQmf .g{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}.srg .g:hover,.bkWMgd>.g:hover{background-color:#ccc!important}.bkWMgd .g div.r,.srg .g h3{background-color:#bbb}";
                         if (ACConfig.isUserColorEnable) {
                             color = color || ACConfig.defaultHuYanColor || "#FFFFFF";
                         } else {
@@ -1658,14 +1823,14 @@ body[baidu] #s_lg_img_new{
                     Lighter:function (oriRGB, deltaY) {
                         // 按比例缩放 + 1/deltaY
                         // HEX 2 RGB
-                        var rgb = oriRGB.replace("#", "");
-                        var R = parseInt("0x" + rgb.substr(0, 2));
-                        var G = parseInt("0x" + rgb.substr(2, 2));
-                        var B = parseInt("0x" + rgb.substr(4, 2));
+                        let rgb = oriRGB.replace("#", "");
+                        let R = parseInt("0x" + rgb.substr(0, 2));
+                        let G = parseInt("0x" + rgb.substr(2, 2));
+                        let B = parseInt("0x" + rgb.substr(4, 2));
                         // RGB 2 YUV
-                        var Y = ((66 * R + 129 * G + 25 * B + 128) >> 8) + 16;
-                        var U = ((-38 * R - 74 * G + 112 * B + 128) >> 8) + 128;
-                        var V = ((112 * R - 94 * G - 18 * B + 128) >> 8) + 128;
+                        let Y = ((66 * R + 129 * G + 25 * B + 128) >> 8) + 16;
+                        let U = ((-38 * R - 74 * G + 112 * B + 128) >> 8) + 128;
+                        let V = ((112 * R - 94 * G - 18 * B + 128) >> 8) + 128;
                         Y = Y * (1 + 1.0 / deltaY);// 提高亮度
                         // YUV 2 RGB
                         R = this.clip255((298 * (Y - 16) + 409 * (V - 128) + 128) >> 8);
@@ -1683,7 +1848,7 @@ body[baidu] #s_lg_img_new{
                     },
                     // 加载三列样式
                     loadThreePageStyle: function () {
-                        var cssHead = "";
+                        let cssHead = "";
                         if (curSite.SiteTypeID == SiteType.BAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
                         if (curSite.SiteTypeID == SiteType.GOOGLE) cssHead = ".srg,#acid_src";
                         if (curSite.SiteTypeID == SiteType.BING) cssHead = "#b_content #b_results";
@@ -1692,7 +1857,7 @@ body[baidu] #s_lg_img_new{
                     },
                     // 加载四列样式
                     loadFourPageStyle: function () {
-                        var cssHead = "";
+                        let cssHead = "";
                         if (curSite.SiteTypeID == SiteType.BAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
                         if (curSite.SiteTypeID == SiteType.GOOGLE) cssHead = ".srg,#acid_src";
                         if (curSite.SiteTypeID == SiteType.BING) cssHead = "#b_content #b_results";
@@ -1700,8 +1865,8 @@ body[baidu] #s_lg_img_new{
                         AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(25%,1fr));} #container #content_left>*:not([class*='result']),#acid_src div:last-child{grid-column-end: 5;}", "AC-FourPageStyle", "head");
                     },
                     loadPlainToCSS: function(){
-                        for (var i = 0; i < document.childNodes.length; i++) {
-                            var curNode = document.childNodes[i];
+                        for (let i = 0; i < document.childNodes.length; i++) {
+                            let curNode = document.childNodes[i];
                             if(curNode.del) curNode.remove();
                         }
                         document.querySelectorAll("style[class*='AC'][del='1']").forEach(function (per) {
@@ -1710,8 +1875,8 @@ body[baidu] #s_lg_img_new{
                     },
                     // 禁止独立的样式加载
                     loadCSSToPlain: function(){
-                        for (var i = 0; i < document.childNodes.length; i++) {
-                            var curNode = document.childNodes[i];
+                        for (let i = 0; i < document.childNodes.length; i++) {
+                            let curNode = document.childNodes[i];
                             // 如果是存在css， 且非必须数据
                             if (curNode.target == "xml-stylesheet" && curNode.data.indexOf("must=\"true") < 0) {
                                 curNode.data = "";
@@ -1724,14 +1889,14 @@ body[baidu] #s_lg_img_new{
                         }
                     }
                 };
-                var ControlManager = {
+                let ControlManager = {
                     //居中显示 --- 必须是百度和谷歌的搜索结果页面，其他页面不能加载的--已经通过脚本include标签限制了一部分
                     centerDisplay: function () {
-                        AC_addStyle("body[google] .logo.baidu{margin-top:-1rem;left: -200px;}.minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;}", "AC-style-logo", "head");
-                        var result = CONST.AdsStyleMode || null;
+                        AC_addStyle("body[google] .baidu{transform: translate(-10px, -1rem);transition:all 0.3s ease}.minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;}", "AC-style-logo", "head");
+                        let result = CONST.AdsStyleMode || null;
                         if (document.querySelector(".acCssLoadFlag") == null && document.querySelector(".ACExtension") == null) {
                             debug("in样式即将加载:"+result);
-                            var expandStyle = "#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}#wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .c-container{min-width:670px;margin-bottom:14px!important;}.c-span18{width:78%!important;min-width:550px;}.c-span24{width: auto!important;}";
+                            let expandStyle = "#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}#wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .c-container{min-width:670px;margin-bottom:14px!important;}.c-span18{width:78%!important;min-width:550px;}.c-span24{width: auto!important;}";
                             if (result == 1) {
                                 AC_addStyle(expandStyle, "AC-Style-expand", "head");
                                 CONST.StyleManger.loadCommonStyle();
@@ -1751,7 +1916,7 @@ body[baidu] #s_lg_img_new{
                                 CONST.StyleManger.loadTwoPageStyle();
                                 CONST.StyleManger.loadFourPageStyle();
                             }
-                            var xflag = document.createElement("div");
+                            let xflag = document.createElement("div");
                             xflag.className = "acCssLoadFlag";
                             document.head.appendChild(xflag);
                             debug("in样式运行结束");

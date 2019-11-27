@@ -95,7 +95,8 @@ form.fm .s_btn:hover {
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
 #wrapper #content_left .result-op:hover,
-#wrapper #content_left .result:hover{
+#wrapper #content_left .result:hover,
+#wrapper #content_left .result-op article:hover{
     box-shadow:0 0 2px gray!important;
     background:#f3f3f3 !important;
 }
@@ -307,4 +308,17 @@ form.fm .s_btn:hover {
         opacity: 1;
     }
 }
-
+#head .head_wrapper{
+    width: unset; /* warring: over 1920: reset width */
+}
+/*#wrapper #content_left .c-container .wenda-abstract-wrap{*/
+/*    padding: 20px 20px 15px 15px;*/
+/*    min-width: 630px;*/
+/*    width: 630px*/
+/*}*/
+.result-op.c-container .c-result-content{
+    padding-top: 20px;
+}
+#wrapper #content_left  .result-op article{
+    padding-top: 15px;
+}

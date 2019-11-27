@@ -1,7 +1,7 @@
 /*
 ! Version: 20180427000
 ! Title:  baidu-lite[20180427000]
-! Last modified: 2018/04/27 03:26 +0800
+! Last modified: 2019/09/05
 ! Expires: 1 days (update frequency)
 
 This style is from www.yiclear.com, and thanks the author of the site.
@@ -43,7 +43,7 @@ em{text-decoration:none!important}
 #head_wrapper{padding-bottom:0}
 #s_form_wrapper{margin-top:auto}
 #s_lg_img{display:none!important}
-#form .s_ipt_wr{border:none;border-radius:3px;transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;background-position:100%!important;z-index:-1;width:calc(100% - 37px);height:39px;font-family:-apple-system,"Helvetica Neue",Helvetica,"Nimbus Sans L",Arial,"Liberation Sans","PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC","Microsoft YaHei","Wenquanyi Micro Hei","WenQuanYi Zen Hei","ST Heiti",SimHei,"WenQuanYi Zen Hei Sharp",sans-serif;padding-top:4px}
+#form .s_ipt_wr{border:none;border-radius:3px;transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;background-position:100%!important;width:calc(100% - 110px);height:39px;font-family:-apple-system,"Helvetica Neue",Helvetica,"Nimbus Sans L",Arial,"Liberation Sans","PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC","Microsoft YaHei","Wenquanyi Micro Hei","WenQuanYi Zen Hei","ST Heiti",SimHei,"WenQuanYi Zen Hei Sharp",sans-serif;padding-top:4px}
 .s_ipt{font-family:-apple-system,"Helvetica Neue",Helvetica,"Nimbus Sans L",Arial,"Liberation Sans","PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC","Microsoft YaHei","Wenquanyi Micro Hei","WenQuanYi Zen Hei","ST Heiti",SimHei,"WenQuanYi Zen Hei Sharp",sans-serif}
 #form .s_ipt_wr:hover{border:none;border-radius:2px;transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s}
 .ipthover{transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s}
@@ -53,11 +53,11 @@ em{text-decoration:none!important}
 #form .s_btn_wr{width:32px;height:32px;border-radius:50%;font-size:0;background-color:rgba(0,0,0,0);background-position:50%;border:none;box-shadow:none;margin-left:5px;z-index:100;transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;margin-top:6px}
 #form .s_btn_wr:hover{opacity:.5;background:rgba(0,0,0,0);border:none;box-shadow:none;transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s}
 .self-btn{display:none}
+#wrapper form.fm #kw{width:94%;}
 .btnhover{opacity:.5;background-color:rgba(0,0,0,0)!important;border:none!important;box-shadow:none;transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s}
 .hint_toprq_tips{margin-bottom:12px}
 .s_form{height:75px;padding-top:10px}
-#s_tab{padding:87px 0 0 121px}
-!#content_right{display:none}
+#s_tab{padding:87px 0 0 121px;}
 #head.s_down{box-shadow:0 0 5px #666;padding-bottom: 8px;}
 .bdsug{top:42px!important;box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);border:none;border-radius:0 0 2px 2px;font-family:-apple-system,"Helvetica Neue",Helvetica,"Nimbus Sans L",Arial,"Liberation Sans","PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC","Microsoft YaHei","Wenquanyi Micro Hei","WenQuanYi Zen Hei","ST Heiti",SimHei,"WenQuanYi Zen Hei Sharp",sans-serif;width:598px!important}
 .bgsug li{font-family:Helvetica,"Microsoft Yahei UI"!important;width:100%!important;line-height:36px!important}
@@ -103,13 +103,13 @@ em{text-decoration:none!important}
 #u .lb:active{box-shadow:0 10px 30px rgba(0,0,0,.19),0 6px 10px rgba(0,0,0,.23);transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s}
 .tang-foreground{border-radius:2px;box-shadow:0 19px 60px rgba(0,0,0,.3),0 15px 20px rgba(0,0,0,.22)}
 #s_upfunc_menus{display:none}
-#bg{background-color:#FFF!important;border:none;border-radius:3px;background:#FFF;transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;background-position:100%!important;z-index:-1;width:600px;height:39px;font-family:-apple-system,"Helvetica Neue",Helvetica,"Nimbus Sans L",Arial,"Liberation Sans","PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC","Microsoft YaHei","Wenquanyi Micro Hei","WenQuanYi Zen Hei","ST Heiti",SimHei,"WenQuanYi Zen Hei Sharp",sans-serif;padding-top:5px!important}
+#bg{background-color:#FFFFFF!important;border:none;border-radius:3px;transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;background-position:100%!important;z-index:-1;width:600px;height:39px;font-family:-apple-system,"Helvetica Neue",Helvetica,"Nimbus Sans L",Arial,"Liberation Sans","PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC","Microsoft YaHei","Wenquanyi Micro Hei","WenQuanYi Zen Hei","ST Heiti",SimHei,"WenQuanYi Zen Hei Sharp",sans-serif;padding-top:5px!important}
 #head_wrapper .s_ipt{border:0!important;height:20px!important;border-radius:2px;width:586px!important}
 #head_wrapper .nobg_s_fm_hover{border:0!important}
 #head_wrapper .nobg_s_fm_focus{border:0!important;border-top:0 solid #fff!important;border-bottom:0 solid #fff!important;border-left:0 solid #fff!important;border-right:1px solid #38f}
 .s-title-image{border:none!important;border-top:0 solid #fff!important;border-bottom:0 solid #fff!important;border-left:0 solid #fff!important;border-right:0 solid #fff!important}
 #s_lg_img{display:none}
-#form{-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;animation-fill-mode:both;animation-name:fadeInUp;-webkit-animation-name:fadeInUp;animation-delay:.3s;-webkit-animation-delay:.3s}
+#form{-webkit-animation-duration:0.2s;animation-duration:0.2s;-webkit-animation-fill-mode:both;animation-fill-mode:both;animation-name:fadeInUp;-webkit-animation-name:fadeInUp;animation-delay:.3s;-webkit-animation-delay:.3s}
 .s-p-top{transform:scale(.8);bottom:9px!important}
 .mnav{display:none}
 #u_sp .mnav{display:none}
@@ -164,7 +164,6 @@ em{text-decoration:none!important}
 .tang-pass-pop-login div.tang-title{border-radius:2px 2px 0 0!important}
 .pass-checkbox-input{width:17px;height:17px;border:#e0e0e0 3px solid!important;background-color:#fff!important;box-shadow:none}
 .tang-pass-pop-login-color-blue .pass-button:focus{box-shadow:rgba(0,0,0,.156863) 0 3px 10px,rgba(0,0,0,.227451) 0 3px 10px!important;-webkit-box-shadow:rgba(0,0,0,.156863) 0 3px 10px,rgba(0,0,0,.227451) 0 3px 10px!important}
-!#content_right,.c-recommend,body>div[class="result-op xpath-log"]{display:none!important}
 .rrecom-btn-parent{display:none!important}
 .s-p-top{bottom:-8px!important}
 input[type=text]:focus{border:none!important;border-top:0 solid #fff!important;border-bottom:0 solid #fff!important;border-left:0 solid #fff!important;border-right:0 solid #fff!important}
@@ -243,8 +242,6 @@ body{background-color:#F7F7F7}
 #u1 a.bri{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IuWbvuWxgl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgMzIgMzIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDMyIDMyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6IzZENkQ2RDt9Cjwvc3R5bGU+CjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zLjcsOS44aDYuMlYzLjdIMy43VjkuOHogTTEyLjksMjguM2g2LjJ2LTYuMmgtNi4yVjI4LjN6IE0zLjcsMjguM2g2LjJ2LTYuMkgzLjdWMjguM3ogTTMuNywxOS4xaDYuMnYtNi4yCglIMy43VjE5LjF6IE0xMi45LDE5LjFoNi4ydi02LjJoLTYuMlYxOS4xeiBNMjIuMiwzLjd2Ni4yaDYuMlYzLjdIMjIuMnogTTEyLjksOS44aDYuMlYzLjdoLTYuMlY5Ljh6IE0yMi4yLDE5LjFoNi4ydi02LjJoLTYuMlYxOS4xCgl6IE0yMi4yLDI4LjNoNi4ydi02LjJoLTYuMlYyOC4zeiIvPgo8L3N2Zz4K")}
 #s_usersetting_top{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IuWbvuWxgl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgMzIgMzIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDMyIDMyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6IzZENkQ2RDt9Cjwvc3R5bGU+CjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yNS4yLDE3LjJjMC0wLjQsMC4xLTAuOCwwLjEtMS4yYzAtMC40LDAtMC44LTAuMS0xLjJsMi42LTJjMC4yLTAuMiwwLjMtMC41LDAuMS0wLjhsLTIuNS00LjMKCWMtMC4xLTAuMy0wLjUtMC40LTAuOC0wLjNsLTMuMSwxLjJjLTAuNi0wLjUtMS4zLTAuOS0yLjEtMS4ybC0wLjUtMy4zYzAtMC4zLTAuMy0wLjUtMC42LTAuNWgtNWMtMC4zLDAtMC42LDAuMi0wLjYsMC41bC0wLjUsMy4zCgljLTAuOCwwLjMtMS40LDAuNy0yLjEsMS4yTDcuMyw3LjRDNyw3LjMsNi43LDcuNCw2LjUsNy43TDQsMTEuOWMtMC4yLDAuMy0wLjEsMC42LDAuMSwwLjhsMi42LDJjMCwwLjQtMC4xLDAuOC0wLjEsMS4yCgljMCwwLjQsMCwwLjgsMC4xLDEuMmwtMi42LDJjLTAuMiwwLjItMC4zLDAuNS0wLjEsMC44bDIuNSw0LjNjMC4xLDAuMywwLjUsMC40LDAuOCwwLjNsMy4xLTEuMmMwLjYsMC41LDEuMywwLjksMi4xLDEuMmwwLjUsMy4zCgljMCwwLjMsMC4zLDAuNSwwLjYsMC41aDVjMC4zLDAsMC42LTAuMiwwLjYtMC41bDAuNS0zLjNjMC44LTAuMywxLjQtMC43LDIuMS0xLjJsMy4xLDEuMmMwLjMsMC4xLDAuNiwwLDAuOC0wLjNsMi41LTQuMwoJYzAuMS0wLjMsMC4xLTAuNi0wLjEtMC44TDI1LjIsMTcuMnogTTE2LDIwLjNjLTIuNCwwLTQuMy0xLjktNC4zLTQuM3MxLjktNC4zLDQuMy00LjNzNC4zLDEuOSw0LjMsNC4zUzE4LjQsMjAuMywxNiwyMC4zeiIvPgo8L3N2Zz4K")}
 #imsg{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4yLjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0i5Zu+5bGCXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMzIgMzIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDMyIDMyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojNkQ2RDZEO30NCjwvc3R5bGU+DQo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjUuMyw0LjZoLTE5QzUsNC42LDMuOSw1LjcsMy45LDdsMCwyMS40bDQuOC00LjhoMTYuNmMxLjMsMCwyLjQtMS4xLDIuNC0yLjRWN0MyNy43LDUuNywyNi42LDQuNiwyNS4zLDQuNnoNCgkgTTIyLjksMTguOUg4LjZ2LTIuNGgxNC4zVjE4Ljl6IE0yMi45LDE1LjNIOC42di0yLjRoMTQuM1YxNS4zeiBNMjIuOSwxMS43SDguNlY5LjRoMTQuM1YxMS43eiIvPg0KPC9zdmc+DQo=")}
-!#content_left>div:not([id]),#contnet_left>div[id="10"]~div[id="1"],#contnet_left>div[id="20"]~div[id="1"],#contnet_left>div[id="40"]~div[id="1"],#contnet_left>div[id="60"]~div[id="1"],#contnet_left>div[id="80"]~div[id="1"],#contnet_left>div[id="100"]~div[id="1"],body>div[style*='position: absolute;'],body>div[style*='position: fixed;']{display:none!important}
-!#content_left>div[style*="display:block !important"]{position:absolute!important;top:-5000px!important}
 .c-container{background:#fff;border-radius:2px;padding:25px;transition:all 450ms cubic-bezier(.23,1,.32,1) 0s;box-shadow:0 1px 4px 0 rgba(0,0,0,.14);width:549px}
 h3 a:visited{opacity:.4!important;color:#bbb!important}
 .c-container:hover{transition:all .5s cubic-bezier(.23,1,.32,1) 0s;box-shadow:rgba(0,0,0,.117647) 0 1px 6px,rgba(0,0,0,.117647) 0 1px 4px}

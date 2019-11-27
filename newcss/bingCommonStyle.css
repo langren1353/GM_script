@@ -84,3 +84,27 @@ body #b_header{
 #b_content .b_underSearchbox{
     margin-top: 10px;
 }
+#b_header .b_scopebar{
+    margin: unset;
+}
+/*search engine jump*/
+.tsf-p>.logocont, #sej-container{
+    margin-right: 350px;
+    text-align: center;
+}
+.tsf-p>.sfibbbc{
+    margin-right: 350px;
+    text-align: center;
+}
+.b_searchboxForm .sa_tm{
+    text-align: left; /* SearchBox text Center */
+}
+body #b_header #est_switch{
+    margin: 0 auto;
+    padding-right: 34rem;
+}
+@media (max-width: 1100px){
+    body #b_header #est_switch{
+        transform: translateX(1.2rem);
+    }
+}

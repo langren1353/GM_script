@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name            TU-破解视频VIP集合-去广告-音乐直接解析播放-VIP视频解析，接口每日更新，一键免广告免费观看各大视频网站
-// @description     VIP视频破解集合；支持【爱奇艺，优酷视频，乐视TV，腾讯视频，土豆视频，搜狐视频，哔哩哔哩，音悦台，PPTV，华数TV】；移除部分干扰广告。【女王节】新增精选接口，解析速度飞快，支持更多网站，可供选择的更多。各种VIP节点播放，并且自动解析使用对应的播放节点，更快的播放速度，更稳定的播放效果。支持[Tampermonkey | Violentmonkey | Greasymonkey]。购物优惠信息获取
+// @description     VIP视频破解集合；支持【爱奇艺，优酷视频，乐视TV，腾讯视频，土豆视频，搜狐视频，哔哩哔哩，音悦台，PPTV，华数TV】；移除部分干扰广告。【双十一】新增精选接口，解析速度飞快，支持更多网站，可供选择的更多。各种VIP节点播放，并且自动解析使用对应的播放节点，更快的播放速度，更稳定的播放效果。支持[Tampermonkey | Violentmonkey | Greasymonkey]。购物优惠信息获取
 // @icon            http://ww1.sinaimg.cn/large/6a155794ly1fubb8dy4pzj205k05kdg3.jpg
 // @author          AC
 // @create          2018-08-16
 // @run-at          document-start
-// @version         3.32
+// @version         3.66
 // @include         *//www.iqiyi.com/v_*
 // @include         *//www.iqiyi.com/w_*
 // @include         *//v.youku.com/v_show/*
@@ -38,10 +38,13 @@
 // @supportURL      https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
 // @copyright       2018, AC
-// @lastmodified    2019.05.15
-// @note            2019.05.15-3.32 修改跳转地址
-// @note            2018.08.22-2.1 新增好几个节点，并且暴露出url地址，方便在手机上观看视频
-// @note            2018.08.16-1.1 第一版新增支持爱奇艺，优酷视频，乐视TV，腾讯视频，土豆视频，搜狐视频，哔哩哔哩，音悦台，PPTV，华数TV
+// @lastmodified    2019.11.14
+// @note            2019.11.14 更新-修复无法全屏的bug，加快网站打开速度
+// @note            2019.11.09 再次切换镜像，这次应该能打开了
+// @note            2019.11.03 更新切换镜像地址
+// @note            2019.10.22 修改跳转地址
+// @note            2018.08.22 新增好几个节点，并且暴露出url地址，方便在手机上观看视频
+// @note            2018.08.16 第一版新增支持爱奇艺，优酷视频，乐视TV，腾讯视频，土豆视频，搜狐视频，哔哩哔哩，音悦台，PPTV，华数TV
 // @require         https://greasyfork.org/scripts/34606-ac-%E7%8B%AC%E5%AE%B6-%E6%B7%98%E5%AE%9D%E5%A4%A9%E7%8C%AB%E4%BC%98%E6%83%A0%E5%88%B8%E6%9F%A5%E8%AF%A2%E9%A2%86%E5%8F%96-%E5%A4%A7%E9%A2%9D%E4%BC%98%E6%83%A0%E5%88%B8-100%E5%85%83%E8%B4%AD%E7%89%A9%E7%A5%9E%E5%88%B8-%E7%9C%81%E9%92%B1%E8%B4%AD%E7%89%A9-%E9%A2%86%E5%88%B8%E8%B4%AD%E4%B9%B0%E6%9B%B4%E4%BC%98%E6%83%A0-%E5%B9%B3%E5%9D%87%E4%BC%98%E6%83%A020/code/AC-%E7%8B%AC%E5%AE%B6-%E6%B7%98%E5%AE%9D%E5%A4%A9%E7%8C%AB%E4%BC%98%E6%83%A0%E5%88%B8%E6%9F%A5%E8%AF%A2%E9%A2%86%E5%8F%96,%E5%A4%A7%E9%A2%9D%E4%BC%98%E6%83%A0%E5%88%B8,%E3%80%90100%E5%85%83%E8%B4%AD%E7%89%A9%E7%A5%9E%E5%88%B8%E3%80%91,%E7%9C%81%E9%92%B1%E8%B4%AD%E7%89%A9,%E9%A2%86%E5%88%B8%E8%B4%AD%E4%B9%B0%E6%9B%B4%E4%BC%98%E6%83%A0,%E5%B9%B3%E5%9D%87%E4%BC%98%E6%83%A020%25.user.js
 // ==/UserScript==
 (function(){
@@ -253,11 +256,10 @@
 			debugX(e);
 		}
 		title = title.replace(/VIP解析$/, "");
-		var url = "https://vip.tujidu.com/vip/?url=" + getTrueUrl() + "&title=" + title;
+		var url = "https://thinkibm.now.sh/?url=" + getTrueUrl() + "&title=" + title;
 		insertNode.dataset.url = url;
 		insertNode.setAttribute("onclick", "window.open(this.dataset.url);");
 		var faNodes = document.querySelectorAll(mCurSite.insertTo);
-
 		for(var i = 0; i < faNodes.length; i++){
 			if(faNodes[i].querySelector(".acInG:not([title])") == null){
 				debugX("新增按钮");

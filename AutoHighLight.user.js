@@ -167,6 +167,7 @@ function sayLength(){
 				document.addEventListener('DOMSubtreeModified', DOMRapidHighLightFunc, false);
 			}
 		}
+		// bug-卡顿严重
 		function DOMRapidHighLightFunc(e) {
 			if(dataRapidLock == false){
 				dataRapidLock = true;
@@ -254,6 +255,7 @@ function sayLength(){
 			doHighLightAll_Text_Inner();
 			dataConflictLock = false;
 		}
+		// BUG- 卡顿严重，注意时间消耗
 		function doHighLightAll_Text_Inner(){
 			if(keySets.keywords.length == 0) {
 				return; // 退出1

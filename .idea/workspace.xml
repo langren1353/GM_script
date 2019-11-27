@@ -2,14 +2,53 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/newcss/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/baiduCommonStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/googleCommonStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/googleMyMenuStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/googleOnePageStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/googleTwoPageStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AutoHighLight.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AutoHighLight.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSDN-AutoReply-AutoPager.js" beforeDir="false" afterPath="$PROJECT_DIR$/CSDN-AutoReply-AutoPager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Movie.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/Movie.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingOnePageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
@@ -18,41 +57,33 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/GM_script.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
-        <option value="$PROJECT_DIR$/.idea/dictionaries/AC.xml" />
-        <option value="$PROJECT_DIR$/.idea/encodings.xml" />
-      </list>
-    </option>
-  </component>
   <component name="ProjectId" id="1P00jjeKHs16oFl0ZYO9GSw4U4W" />
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/newcss" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.zeroturnaround.javarebel.idea.plugin.settings.AdvancedConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\newcss" />
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\temp" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script\newcss" />
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script\temp" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -66,6 +97,16 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="test.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/test.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.test.html" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />

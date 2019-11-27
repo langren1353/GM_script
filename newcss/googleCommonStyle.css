@@ -84,7 +84,12 @@ a em {
     -webkit-animation-duration: .1s;
     -webkit-animation-timing-function: ease;
 }
-
+.bkWMgd .jUmkFb:hover {
+    margin: 0 auto;
+    border-left:unset;
+    padding: 0px 20px 15px;
+    margin-bottom: 40px;
+}
 #rs, .bkWMgd .g {
     width: 760px;
     padding: 0px 20px 15px;
@@ -367,3 +372,7 @@ div .kno-ftr a{
     position: sticky;
 }
 /**Thanks to Mooncan -END**/
+.mw #res h3, .mw #extrares h3{
+    /**reset font size**/
+    font-size: 18px;
+}

@@ -3,21 +3,17 @@
     display:none;
 }
 #b_content #b_results{
-    width: 80vw;
+    width: 73vw;
 }
 body #b_header{
-    width: 79vw;
+    width: 72vw;
     background-color: #FFFFFF;
     text-align: center;
     margin: 0 auto;
 }
 #b_content{
-    margin-left: 5vw; 
+    margin-left: 8vw;
 }
 #b_content #b_results>li{
     width:98%;
-}
-/*search engine jump*/
-body #sej-container{
-    padding-left: calc(12% - 113px) !important;
 }

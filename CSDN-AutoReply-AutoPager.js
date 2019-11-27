@@ -1,13 +1,14 @@
 // ==UserScript==
-// @name        AC-CSDN自动展开-CSDN自动评论
+// @name        AC-CSDN自动展开-CSDN自动评论-去广告
 // @author      AC 原作:King.Sollyu
 // @namespace   Sollyu
 // @description 自动展开CSDN博客的内容，无需点击展开  &&  自动评论,返还下载积分
-// @version     3.7
+// @version     3.8
 // @require     https://code.jquery.com/jquery-1.9.0.min.js
 // @include     https://download.csdn.net/*
 // @include     /https?://blog.csdn.net/[^/]+/article/details/.*/
 // @include     /https?://lib.csdn.net/article/.*/
+// @note        2018-08-28 V3.8    新增部分广告的拦截
 // @note        2018-05-17 V3.7    再次修复csdn更新导致的问题
 // @note        2018-04-30 V3.6    修复csdn网页更新导致的兼容失败问题
 // @note        2018-04-06 V3.5    新增支持lib.csdn.net
@@ -164,6 +165,7 @@ if(location.host == "download.csdn.net"){
         }
     }, 1000);
 }else if(location.host == "blog.csdn.net" || location.host == "lib.csdn.net"){
+    // 1. 自动展开搜索的内容主体
     var acCSDNT = setInterval(function(){
         if(document.querySelector("div") != null){
             clearInterval(acCSDNT);
@@ -175,4 +177,6 @@ if(location.host == "download.csdn.net"){
             addStyle(".hide-article-box{display:none !important;}");
         }
     }, 100);
+    // 2. 移除多余的广告内容
+    addStyle(".recommend-ad-box{display:none;}body>div[id*='kp_box_']{display:none;}");
 }

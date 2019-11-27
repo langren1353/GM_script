@@ -3,6 +3,10 @@
     position: relative;
     float: unset;
 }
+.bkWMgd .jUmkFb:hover {
+    margin-bottom: 30px;
+    margin-left: 20px;
+}
 .srg>.g, .bkWMgd>.g{
     width: unset;
     margin-left: 20px;
@@ -33,12 +37,10 @@
 #acid_src>div{
     width: unset;
     margin-left: 20px;
-    /**直接横占一行**/
     grid-column-start: 1;
     grid-column-end: 6;
 }
 .bkWMgd .COEoid{
-    /*视频点-禁止边界问题*/
     margin: unset;
 }
 .col{

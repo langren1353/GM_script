@@ -8,8 +8,8 @@ form.fm{
     background-color: unset;
     width:50%;
 }
-.wrapper_l form.fm #kw{
-    width:94% !important;
+#wrapper form.fm #kw{
+    width:94%;
 }
 body[baidu] .pagefoot.gj{
     margin-top: 100px;
