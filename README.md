@@ -1,4 +1,6 @@
-﻿# AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
+如果有任何问题的话，可以直接联系我，我的邮件：1353464539@qq.com 或者是提交一个issue
+If you have any problems on using the script, please mail me for 1353464539@qq.com or submit a issue
+# AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.8-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)
 
 ### 使用必读
