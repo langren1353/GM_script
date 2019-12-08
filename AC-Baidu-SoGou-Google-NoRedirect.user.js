@@ -12,7 +12,7 @@
 // @license         GPL-3.0-only
 // @create          2015-11-25
 // @run-at          document-start
-// @version         23.26
+// @version         23.27
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
@@ -38,6 +38,7 @@
 // @copyright       2017, AC
 // @lastmodified    2019-09-13
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
+// @note            2019.11-28-V23.27 修复上次更新导致的某些模式下window对象无法获取导致的异常进而导致的脚本无法运行的bug & 优化百度样式内容和谷歌单列的偏右的情况以及必应中英文的偏移位置 修复屏蔽功能失效的bug
 // @note            2019.10-05-V23.25 修复谷歌样式、必应样式、百度的部分样式问题.修复屏蔽模式在chrome内核上的小bug 新增自动全英文模式 修复被翻译导致的bug
 // @note            2019.09-13-V23.24 修复谷歌由于页面改动导致的插入之后的样式变化 & 修复上次更新导致的重定向失效的问题
 // @note            2019.09-12-V23.23 紧急修复谷歌页面的bug & 增加时间判断是否重置最新的自定样式 & 修复整体页面的内存占用以及采用RAF来替代setInterval & 优化拦截列表并修复列表数据过多的删除失败的问题 & 新增支持通配符拦截模式 & 全部使用处理结果后的顺序
@@ -201,20 +202,20 @@
 // @note            2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note            2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note            2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource        baiduCommonStyle     http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.26
-// @resource        baiduOnePageStyle    http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.26
-// @resource        baiduTwoPageStyle    http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.26
-// @resource        baiduLiteStyle       http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=23.26
-// @resource        googleCommonStyle    http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.26
-// @resource        googleOnePageStyle   http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.26
-// @resource        googleTwoPageStyle   http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.26
-// @resource        bingCommonStyle      http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.26
-// @resource        bingOnePageStyle     http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.26
-// @resource        bingTwoPageStyle     http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=23.26
-// @resource        sogouCommonStyle     http://ibaidu.ntaow.com/newcss/sogouCommonStyle.css?t=23.26
-// @resource        sogouOnePageStyle    http://ibaidu.ntaow.com/newcss/sogouOnePageStyle.css?t=23.26
-// @resource        sogouTwoPageStyle    http://ibaidu.ntaow.com/newcss/sogouTwoPageStyle.css?t=23.26
-// @resource        MainHuYanStyle       http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=23.26
+// @resource        baiduCommonStyle     http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.276
+// @resource        baiduOnePageStyle    http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.276
+// @resource        baiduTwoPageStyle    http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.276
+// @resource        baiduLiteStyle       http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=23.276
+// @resource        googleCommonStyle    http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.276
+// @resource        googleOnePageStyle   http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.276
+// @resource        googleTwoPageStyle   http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.276
+// @resource        bingCommonStyle      http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.276
+// @resource        bingOnePageStyle     http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.276
+// @resource        bingTwoPageStyle     http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=23.276
+// @resource        sogouCommonStyle     http://ibaidu.ntaow.com/newcss/sogouCommonStyle.css?t=23.276
+// @resource        sogouOnePageStyle    http://ibaidu.ntaow.com/newcss/sogouOnePageStyle.css?t=23.276
+// @resource        sogouTwoPageStyle    http://ibaidu.ntaow.com/newcss/sogouTwoPageStyle.css?t=23.276
+// @resource        MainHuYanStyle       http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=23.276
 // @grant           GM_getValue
 // @grant           GM.getValue
 // @grant           GM_setValue
@@ -227,14 +228,14 @@
 !function () {
     let isdebug = false;
     let isLocalDebug = isdebug || false;
-    let debug = isdebug ? console.log.bind(console) : function () {
-    };
+    let debug = isdebug ? console.log.bind(console) : function () {};
 
     let inExtMode = typeof(isExtension) != "undefined";
     let inGMMode = typeof(GM_info.scriptHandler) != "undefined"; // = "Greasemonkey" || "Tampermonkey" || "ViolentMonkey"
     // 新版本的GreaseMonkey是带有scriptHandler，但是没有GM_getResourceText；旧版本不带scriptHandler，但是有GM_getResourceText
     let isNewGM = typeof(GM_info.scriptHandler) != "undefined" && GM_info.scriptHandler.toLowerCase() == "greasemonkey";
-    let isCNLan = window.navigator.language.indexOf("zh") >= 0; // 判定是否为中文模式
+    let isCNLan = true; // 判定是否为中文模式
+    try{isCNLan = (navigator.systemLanguage?navigator.systemLanguage:navigator.language).indexOf("zh") >= 0;}catch (e) {} // 拦截异常情况
     // inExtMode & inGMMode
     // true        true =扩展下的GM代码 不执行
     // true        false=扩展下代码 执行
@@ -561,10 +562,12 @@ body[baidu] #s_lg_img_new{
                 let bodyNameresetTimer = setInterval(function () {
                     if (document.body != null) {
                         document.body.setAttribute(CONST.keySite, "1");
-                        if (curSite.SiteTypeID == SiteType.BAIDU && location.href.indexOf("tn=news")) {
+                        if (curSite.SiteTypeID == SiteType.BAIDU && location.href.indexOf("tn=news") >= 0) {
                             document.body.setAttribute("news", "1");
+                        }else{
+                            document.body.removeAttribute("news");
                         }
-                        clearInterval(bodyNameresetTimer);
+                        // clearInterval(bodyNameresetTimer);
                     }
                 }, 300);
                 let BlockBaidu = {
@@ -587,9 +590,12 @@ body[baidu] #s_lg_img_new{
                                 let host = getBaiduHost(faviconNode);
                                 // if(host == null) continue;
                                 let faNode = curNode.querySelector(curSite.BlockType);
+                                let nodeStyle = "display:unset;";
                                 if(ACConfig.isBlockBtnDisplay){
-                                    faNode.insertAdjacentHTML("afterend", `<button class='ghhider ghhb' href="${faviconNode.href || faviconNode.innerText}" meta="${host}" data-host="${host}" title='点击即可屏蔽 ${host} 放开，需要在自定义中手动配置放开'>block</button>`);
+                                    nodeStyle = "display:none;";
                                 }
+                                faNode.insertAdjacentHTML("afterend", `<button style='${nodeStyle}' class='ghhider ghhb' href="${faviconNode.href || faviconNode.innerText}" meta="${host}" data-host="${host}" title='点击即可屏蔽 ${host} 放开，需要在自定义中手动配置放开'>block</button>`);
+
                                 curNode.setAttribute("acblock", "0");
                                 curNode.setAttribute("acblock", "0");
                             }catch (e) {
@@ -1119,7 +1125,7 @@ body[baidu] #s_lg_img_new{
 
                                 "            <legend class='iframe-father' title='AC Redirect Settings'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-Redirect Settings" + BaiduVersion + "</a></legend>\n" +
                                 "            <ul class='setting-main'>\n" +
-                                "                <li><label title='Turn on or off redirect'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">Main-Redict Func</label></li>\n" +
+                                "                <li><label title='Turn on or off redirect'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">Main-Redirect Func</label></li>\n" +
                                 "                <li><label title='Remove the ads on the page, and return you a clean page' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">Add1-Remove Ads</label></li>\n" +
                                 "                <li><label title='Click the \'Block\' button to add the address which you want to hide. The script will hide it with small banner automatically. \'DIY\' button for editting the hiding list' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">Add2-Block host</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='Edit BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
                                 "                    <label><input title='remove the block results automatically' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">Auto remove</label>" +
@@ -1751,6 +1757,11 @@ body[baidu] #s_lg_img_new{
                      * @param toClassName 预期的类名
                      */
                     importStyle: function (data, toClassName, useNormalCSS, mustLoad) {
+                        if(typeof(data) == "undefined") {
+                            // 这个居然在VM上出问题了，很奇怪
+                            console.error("GM_getResourceText获取内容数据异常");
+                            return
+                        }
                         useNormalCSS = useNormalCSS || false;
                         mustLoad = mustLoad || false;
                         // 普通浏览器模式--但是似乎样式加载的优先级低于head中的style优先级
@@ -1789,7 +1800,7 @@ body[baidu] #s_lg_img_new{
                         } else if (isNewGM == true) {
                             // 仅用于GreaseMonkey4.0+
                             debug("特殊模式-加载样式：" + insClassName);
-                            setUrl = setUrl || "https://ibaidu.ntaow.com/newcss/" + styleName + ".css";
+                            setUrl = setUrl || "https://baidu.ntaow.com/newcss/" + styleName + ".css";
                             this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
                         } else {
                             debug("加载样式：" + insClassName);

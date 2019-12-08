@@ -308,14 +308,11 @@ form.fm .s_btn:hover {
         opacity: 1;
     }
 }
-#head .head_wrapper{
-    width: unset; /* warring: over 1920: reset width */
+@media screen and (max-width:1940px){
+    #head .head_wrapper{
+        width: unset; /*edit: fix baidu banner position*/
+    }
 }
-/*#wrapper #content_left .c-container .wenda-abstract-wrap{*/
-/*    padding: 20px 20px 15px 15px;*/
-/*    min-width: 630px;*/
-/*    width: 630px*/
-/*}*/
 .result-op.c-container .c-result-content{
     padding-top: 20px;
 }

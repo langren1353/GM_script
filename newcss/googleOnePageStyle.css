@@ -32,10 +32,7 @@
 }
 #main #cnt{
     width: 50vw;
-    margin-left: 25vw;
-}
-#cnt #hdtbSum, #cnt>#appbar{
-    background: unset;
+    margin: 0 auto;
 }
 #acid_src>div{
     width: unset;
@@ -60,7 +57,13 @@
 #acid_src div:last-child{
     grid-column-end: 3;
 }
+.jsrp.big #tsf{
+    width: 833px;
+}
 /**search box align center**/
 .jsrp>form{
     margin-left: calc(50vw - 395px);
+}
+#top_nav{
+    min-width: unset;
 }

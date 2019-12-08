@@ -101,7 +101,12 @@ body #b_header{
 }
 body #b_header #est_switch{
     margin: 0 auto;
-    padding-right: 34rem;
+}
+#est_cn.est_selected{
+    margin-left: -44.2em;
+}
+#est_cn.est_unselected{
+    margin-left: -39.2em;
 }
 @media (max-width: 1100px){
     body #b_header #est_switch{

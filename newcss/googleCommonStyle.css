@@ -22,6 +22,9 @@ div.res_top_banner
 body[google] {
     background-color: #fDfDfD;
 }
+#cnt #hdtbSum, #cnt>#appbar{
+    background: #fDfDfD;
+}
 #form .bdsug{
     width: 76%;
 }

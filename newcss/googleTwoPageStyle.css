@@ -32,7 +32,7 @@
 }
 #main #cnt{
     width: 80vw;
-    margin-left: 10vw;
+    margin: 0 auto;
 }
 #acid_src>div{
     width: unset;

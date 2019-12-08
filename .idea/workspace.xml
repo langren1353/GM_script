@@ -2,35 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/newcss/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/VideoJumper.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/baiduCommonStyle.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/baiduMyMenuStyle.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/baiduOnePageStyle.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/baiduTwoPageStyle.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/googleCommonStyle.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/googleMyMenuStyle.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/googleOnePageStyle.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACFile/CSS/AC_Baidu/googleTwoPageStyle.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AutoHighLight.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AutoHighLight.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CSDN-AutoReply-AutoPager.js" beforeDir="false" afterPath="$PROJECT_DIR$/CSDN-AutoReply-AutoPager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Movie.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/Movie.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingOnePageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,6 +49,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1P00jjeKHs16oFl0ZYO9GSw4U4W" />
+  <component name="ProjectViewState">
+    <option name="abbreviatePackageNames" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
@@ -73,30 +61,18 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.zeroturnaround.javarebel.idea.plugin.settings.AdvancedConfigurable" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script\newcss" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script\temp" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="test.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/test.html" useBuiltInWebServerPort="true">
@@ -107,6 +83,18 @@
         <item itemvalue="JavaScript Debug.test.html" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -123,6 +111,32 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="640" y="249" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1575008249010">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="640" y="249" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575008249010" />
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1575800840522">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575800840522" />
+    <state x="484" y="256" key="FileChooserDialogImpl" timestamp="1575008239324">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="484" y="256" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1575008239324" />
+    <state x="207" y="143" key="SettingsEditor" timestamp="1575008243934">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="207" y="143" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1575008243934" />
+    <state x="647" y="280" width="626" height="480" key="find.popup" timestamp="1575549039996">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="647" y="280" width="626" height="480" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1575549039996" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1575548915008">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1575548915008" />
   </component>
   <component name="masterDetails">
     <states>
