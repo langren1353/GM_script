@@ -2,16 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/VideoJumper.user.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/YoudaoGW/gwd-AC.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/YoudaoGW/gwd-add.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/YoudaoGW/gwd.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/YoudaoGW/test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/YoudaoGW/test2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gwd-AC.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gwd-add.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gwd.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test2.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VideoJumper.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/VideoJumper.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,21 +59,23 @@
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/YoudaoGW" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\newcss" />
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\temp" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script\YoudaoGW" />
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script\newcss" />
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script\temp" />
     </key>
   </component>
   <component name="RunManager">
@@ -125,18 +129,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="484" y="256" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1575008239324" />
-    <state x="207" y="143" key="SettingsEditor" timestamp="1575008243934">
+    <state x="207" y="143" key="SettingsEditor" timestamp="1576244352057">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="207" y="143" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1575008243934" />
-    <state x="647" y="280" width="626" height="480" key="find.popup" timestamp="1575549039996">
+    <state x="207" y="143" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1576244352057" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1576476973930">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="647" y="280" width="626" height="480" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1575549039996" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1575548915008">
+    <state width="498" height="446" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1576476973930" />
+    <state x="647" y="280" width="626" height="490" key="find.popup" timestamp="1577974567816">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1575548915008" />
+    <state x="647" y="280" width="626" height="490" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577974567816" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1577967424386">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577967424386" />
   </component>
   <component name="masterDetails">
     <states>

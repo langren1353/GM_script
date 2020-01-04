@@ -19,7 +19,7 @@
 // @connect      alicdn.com
 // ==/UserScript==
 (function () {
-	var goodId = "";
+	var goodId = getUrlAttribute("id");;
 	// 提取url中的参数
 	function getUrlAttribute(attribute, needDecode) {
 		var searchValue = (window.location.search.substr(1) + "").split("&");
@@ -60,6 +60,23 @@
 		node.src = src;
 		node.charset = "UTF-8";
 		document.head.appendChild(node);
+	}
+
+	function initGWD() {
+		let extName = "gwdv1.js";
+		var hideStyle = "";
+		if (location.host == "jd.com") {
+			extName = "gwdv2.js";
+			hideStyle = ".gwd-minibar-bg, #favor_box{display:none}" +
+				"#gwdang_main > a.gwd-topbar-logo, #gwdang_main > div.gwd-topbar-right{display:none}";
+		} else {
+			hideStyle = "#gwdang-main>div.logo, #gwdang-feed-close, #gwdang-history, #coupon_box, #bjd_yifenqian_detail{display:none}" +
+				"#favor_box{display:none}";
+		}
+		// addScript("https://cdn.jsdelivr.net/gh/chenzelin01/wechatproxy/public/" + extName);
+		addScript("https://browser.gwdang.com/get.js?f=/js/gwdang_extension.js");
+		addStyle(hideStyle);
+
 	}
 
 	function init() {
@@ -230,28 +247,35 @@ pChart.setOption(option);
 				OpenWindow.focus();
 			}
 		}
-		GM_xmlhttpRequest({
-			url: "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(location.href),
-			method: 'GET',
-			timeout: 10000,
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'Cache-Control': 'public'
-			},
-			onload: function (res) {
-				const json = JSON.parse(res.responseText)
-				if (json.is_ban == null) {
-					console.log(json);
+		// localStorage.getItem("gwdang-fp") == null
+		if(true){
+			// 首次加载数据
+			initGWD();
+		}else{
+			let qdata = "fp="+localStorage.getItem("gwdang-fp")+"&dfp="+localStorage.getItem("gwdang-dfp");
+			GM_xmlhttpRequest({
+				url: "https://browser.gwdang.com/extension/price_towards?ver=1&format=jsonp&&url=" + encodeURIComponent(location.href),
+				method: 'GET',
+				timeout: 10000,
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'Cache-Control': 'public'
+				},
+				onload: function (res) {
+					const json = JSON.parse(res.responseText)
+					if (json.is_ban == null) {
+						console.log(json);
 
-					let data = dealRes(json);
-					opWind('', 0, '比价', data);
-				} else {
-					console.log(json.action.to);
-					opWind(json.action.to, '1', '请验证后刷新页面！', '');
+						let data = dealRes(json);
+						opWind('', 0, '比价', data);
+					} else {
+						console.log(json.action.to);
+						opWind(json.action.to, '1', '请验证后刷新页面！', '');
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 	init();
 })()

@@ -12,7 +12,7 @@
 // @license         GPL-3.0-only
 // @create          2015-11-25
 // @run-at          document-start
-// @version         23.27
+// @version         23.29
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
@@ -36,8 +36,10 @@
 // @home-url2       https://github.com/langren1353/GM_script
 // @homepageURL     https://greasyfork.org/zh-TW/scripts/14178
 // @copyright       2017, AC
-// @lastmodified    2019-09-13
+// @lastmodified    2019-12-16
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
+// @note            2019.12-16-V23.29 自定义英文和中文的显示效果 && 修复上个版本导致的block按钮丢失的问题 && 修复部分百度内容无法拦截的情况
+// @note            2019.12-15-V23.28 由于域名备案丢失了，只能换一个 && 修复自己认为的谷歌favicon已存在的问题，实际上谷歌favicon并没有显示
 // @note            2019.11-28-V23.27 修复上次更新导致的某些模式下window对象无法获取导致的异常进而导致的脚本无法运行的bug & 优化百度样式内容和谷歌单列的偏右的情况以及必应中英文的偏移位置 修复屏蔽功能失效的bug
 // @note            2019.10-05-V23.25 修复谷歌样式、必应样式、百度的部分样式问题.修复屏蔽模式在chrome内核上的小bug 新增自动全英文模式 修复被翻译导致的bug
 // @note            2019.09-13-V23.24 修复谷歌由于页面改动导致的插入之后的样式变化 & 修复上次更新导致的重定向失效的问题
@@ -202,20 +204,20 @@
 // @note            2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note            2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note            2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource        baiduCommonStyle     http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=23.276
-// @resource        baiduOnePageStyle    http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=23.276
-// @resource        baiduTwoPageStyle    http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=23.276
-// @resource        baiduLiteStyle       http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=23.276
-// @resource        googleCommonStyle    http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=23.276
-// @resource        googleOnePageStyle   http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=23.276
-// @resource        googleTwoPageStyle   http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=23.276
-// @resource        bingCommonStyle      http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=23.276
-// @resource        bingOnePageStyle     http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=23.276
-// @resource        bingTwoPageStyle     http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=23.276
-// @resource        sogouCommonStyle     http://ibaidu.ntaow.com/newcss/sogouCommonStyle.css?t=23.276
-// @resource        sogouOnePageStyle    http://ibaidu.ntaow.com/newcss/sogouOnePageStyle.css?t=23.276
-// @resource        sogouTwoPageStyle    http://ibaidu.ntaow.com/newcss/sogouTwoPageStyle.css?t=23.276
-// @resource        MainHuYanStyle       http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=23.276
+// @resource        baiduCommonStyle     http://ibaidu.htt5.com/newcss/baiduCommonStyle.css?t=23.276
+// @resource        baiduOnePageStyle    http://ibaidu.htt5.com/newcss/baiduOnePageStyle.css?t=23.276
+// @resource        baiduTwoPageStyle    http://ibaidu.htt5.com/newcss/baiduTwoPageStyle.css?t=23.276
+// @resource        baiduLiteStyle       http://ibaidu.htt5.com/newcss/baiduLiteStyle.css?t=23.276
+// @resource        googleCommonStyle    http://ibaidu.htt5.com/newcss/googleCommonStyle.css?t=23.276
+// @resource        googleOnePageStyle   http://ibaidu.htt5.com/newcss/googleOnePageStyle.css?t=23.276
+// @resource        googleTwoPageStyle   http://ibaidu.htt5.com/newcss/googleTwoPageStyle.css?t=23.276
+// @resource        bingCommonStyle      http://ibaidu.htt5.com/newcss/bingCommonStyle.css?t=23.276
+// @resource        bingOnePageStyle     http://ibaidu.htt5.com/newcss/bingOnePageStyle.css?t=23.276
+// @resource        bingTwoPageStyle     http://ibaidu.htt5.com/newcss/bingTwoPageStyle.css?t=23.276
+// @resource        sogouCommonStyle     http://ibaidu.htt5.com/newcss/sogouCommonStyle.css?t=23.276
+// @resource        sogouOnePageStyle    http://ibaidu.htt5.com/newcss/sogouOnePageStyle.css?t=23.276
+// @resource        sogouTwoPageStyle    http://ibaidu.htt5.com/newcss/sogouTwoPageStyle.css?t=23.276
+// @resource        MainHuYanStyle       http://ibaidu.htt5.com/newcss/HuYanStyle.css?t=23.276
 // @grant           GM_getValue
 // @grant           GM.getValue
 // @grant           GM_setValue
@@ -234,8 +236,7 @@
     let inGMMode = typeof(GM_info.scriptHandler) != "undefined"; // = "Greasemonkey" || "Tampermonkey" || "ViolentMonkey"
     // 新版本的GreaseMonkey是带有scriptHandler，但是没有GM_getResourceText；旧版本不带scriptHandler，但是有GM_getResourceText
     let isNewGM = typeof(GM_info.scriptHandler) != "undefined" && GM_info.scriptHandler.toLowerCase() == "greasemonkey";
-    let isCNLan = true; // 判定是否为中文模式
-    try{isCNLan = (navigator.systemLanguage?navigator.systemLanguage:navigator.language).indexOf("zh") >= 0;}catch (e) {} // 拦截异常情况
+    let useCNLan = true; // 暂定，之后需要逻辑处理
     // inExtMode & inGMMode
     // true        true =扩展下的GM代码 不执行
     // true        false=扩展下代码 执行
@@ -316,6 +317,7 @@
             isCounterEnable: false, // 是否显示计数器
             isALineEnable: false, // 是否禁止下划线
             isUserStyleEnable: false, // 是否开启自定义样式
+            isEnLang: false,
             isGooleInBaiduModeEnable: false, // 是否开启谷歌搜索结果页的百度图标显示
             UserBlockList: ["baijiahao.baidu.com"],
             UserStyleText:
@@ -375,7 +377,7 @@ body[baidu] #s_lg_img_new{
         let DBSite = {
             baidu: {
                 SiteTypeID: 1,
-                MainType: "#content_left .result",
+                MainType: "#content_left .c-container",
                 Stype_Normal: "h3.t>a, #results .c-container>.c-blocka",
                 FaviconType: ".result-op, .c-showurl", // baidu 似乎要改版了？
                 FaviconAddTo: "h3",
@@ -483,6 +485,7 @@ body[baidu] #s_lg_img_new{
                 ACConfig.lastSaveTime = new Date().getTime();
                 ACConfig.UserStyleText = DefaultConfig.UserStyleText;
             }
+            useCNLan = !ACConfig.isEnLang;
             // 初始化完成之后才能调用正常函数
             callback();
         }).catch(function (except) {
@@ -591,7 +594,7 @@ body[baidu] #s_lg_img_new{
                                 // if(host == null) continue;
                                 let faNode = curNode.querySelector(curSite.BlockType);
                                 let nodeStyle = "display:unset;";
-                                if(ACConfig.isBlockBtnDisplay){
+                                if(!ACConfig.isBlockBtnDisplay){
                                     nodeStyle = "display:none;";
                                 }
                                 faNode.insertAdjacentHTML("afterend", `<button style='${nodeStyle}' class='ghhider ghhb' href="${faviconNode.href || faviconNode.innerText}" meta="${host}" data-host="${host}" title='点击即可屏蔽 ${host} 放开，需要在自定义中手动配置放开'>block</button>`);
@@ -840,9 +843,7 @@ body[baidu] #s_lg_img_new{
                                 FSBaidu();
                             }
                             if (ACConfig.isFaviconEnable) { // 显示favicon图标
-                                if(curSite.SiteTypeID != SiteType.GOOGLE){ // 谷歌似乎官方开启了图标功能，故不再手动添加图标
-                                    addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
-                                }
+                                addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
                             }
                             if (ACConfig.doDisableSug) { // 不启用移动预测[默认]
                                 acSetCookie("ORIGIN", 2, "www.baidu.com");
@@ -973,7 +974,7 @@ body[baidu] #s_lg_img_new{
 
                 function initBlockPage(){
                     try{
-                        if(isCNLan){
+                        if(useCNLan){
                             document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='返回'><-返回</span></label>&nbsp;拦截列表&nbsp;&nbsp;想要生效的话需要手动保存</li><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li>全匹配拦截：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='新增' style='position: relative !important;line-height: 17px;'>新增</span></li>`;
                         }else{
                             document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='Back'><-Back</span></label>&nbsp;Block List&nbsp;&nbsp;Click Save Button if you want wo save the list</li><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li>Same host Insert ：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='Insert' style='position: relative !important;line-height: 17px;'>Insert</span></li>`;
@@ -1018,7 +1019,7 @@ body[baidu] #s_lg_img_new{
                     if (document.body != null && document.querySelector("#sp-ac-container") == null) {
                         let Container = document.createElement('div');
                         Container.id = "sp-ac-container";
-                        if(isCNLan){
+                        if(useCNLan){
                             Container.innerHTML =
                                 "    <div id='sp-ac-content' style='display: none;'>\n" +
                                 "        <div id='sp-ac-main'>\n" +
@@ -1026,7 +1027,8 @@ body[baidu] #s_lg_img_new{
 
                                 "            <legend class='iframe-father' title='AC重定向功能相关设置'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-重定向设置" + BaiduVersion + "</a></legend>\n" +
                                 "            <ul class='setting-main'>\n" +
-                                "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label></li>\n" +
+                                "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
+                                "                   <label title='Using English language to display'><input id='sp-ac-isEnLang' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isEnLang ? 'checked' : '') + ">En-Language</label></li>\n" +
                                 "                <li><label title='去除部分页面的广告信息，还你一个干净整洁的页面' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label></li>\n" +
                                 "                <li><label title='点击页面block按钮添加你想要隐藏的地址，脚本将自动隐藏部分结果为小横幅，DIY按钮中点击表格内容可以取消隐藏' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">附加2-自主拦截域名</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='自定义BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
                                 "                    <label><input title='自动移除已经屏蔽的域名' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">自动移除</label>" +
@@ -1125,7 +1127,8 @@ body[baidu] #s_lg_img_new{
 
                                 "            <legend class='iframe-father' title='AC Redirect Settings'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-Redirect Settings" + BaiduVersion + "</a></legend>\n" +
                                 "            <ul class='setting-main'>\n" +
-                                "                <li><label title='Turn on or off redirect'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">Main-Redirect Func</label></li>\n" +
+                                "                <li><label title='Turn on or off redirect'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">Main-Redirect Func</label>\n" +
+                                "                   <label title='使用英文显示页面'><input id='sp-ac-isEnLang' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isEnLang ? 'checked' : '') + ">使用英文</label></li>\n" +
                                 "                <li><label title='Remove the ads on the page, and return you a clean page' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">Add1-Remove Ads</label></li>\n" +
                                 "                <li><label title='Click the \'Block\' button to add the address which you want to hide. The script will hide it with small banner automatically. \'DIY\' button for editting the hiding list' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">Add2-Block host</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='Edit BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
                                 "                    <label><input title='remove the block results automatically' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">Auto remove</label>" +
@@ -1226,6 +1229,7 @@ body[baidu] #s_lg_img_new{
                             document.querySelector("#sp-ac-savebutton").addEventListener("click", function () {
                                 // 点击之后的保存功能
                                 ACConfig.isRedirectEnable = document.querySelector("#sp-ac-redirect").checked;
+                                ACConfig.isEnLang = document.querySelector("#sp-ac-isEnLang").checked; // 是否选择为对立语言
                                 ACConfig.isAdsEnable = document.querySelector("#sp-ac-ads").checked;
                                 ACConfig.isBlockEnable = document.querySelector("#sp-ac-block").checked;
                                 ACConfig.isBlockDisplay = document.querySelector("#sp-ac-removeBlock").checked;
@@ -1572,7 +1576,8 @@ body[baidu] #s_lg_img_new{
                                     & tmpHTML.indexOf("tit-ico")
                                     & tmpHTML.indexOf("img_fav rms_img")
                                     & tmpHTML.indexOf("c-tool-")
-                                    & tmpHTML.indexOf("span class=\"c-icon c-icon-");
+                                    & tmpHTML.indexOf("span class=\"c-icon c-icon-")
+                                    & tmpHTML.indexOf("img class=\"xA33Gc");
                                 //他自己已经做了favicon了
                                 if (pos > -1) {
                                     // console.log("已有图片：");
@@ -1628,7 +1633,7 @@ body[baidu] #s_lg_img_new{
                             parent.style = "width: auto;";
                             let userAdiv = document.createElement("div");
                             userAdiv.id = "myuser";
-                            if(isCNLan){
+                            if(useCNLan){
                                 userAdiv.innerHTML = "<input type='submit' class='myuserconfig' value='自定义'/><span class='ac-newversionDisplay' style='background-color: red;float: left;height: 8px;width: 8px;border-radius: 4px;display:" + (CONST.hasNewFuncNeedDisplay ? "unset" : "none") + "'>&nbsp;</span>";
                             }else{
                                 userAdiv.innerHTML = "<input type='submit' class='myuserconfig' value='CUSTOM'/><span class='ac-newversionDisplay' style='background-color: red;float: left;height: 8px;width: 8px;border-radius: 4px;display:" + (CONST.hasNewFuncNeedDisplay ? "unset" : "none") + "'>&nbsp;</span>";
@@ -1644,6 +1649,10 @@ body[baidu] #s_lg_img_new{
             }(); // 读取个人设置信息
             /**
              * @param callback 回调函数，需要返回是否结束True、False、否则相当于定时器
+             * callback return:
+             *      true = 定时器
+             *      false = 计时器
+             *      none = 计时器
              * @param period 周期，如:200ms
              */
             function RAFFunction(callback, period){
@@ -1800,7 +1809,7 @@ body[baidu] #s_lg_img_new{
                         } else if (isNewGM == true) {
                             // 仅用于GreaseMonkey4.0+
                             debug("特殊模式-加载样式：" + insClassName);
-                            setUrl = setUrl || "https://baidu.ntaow.com/newcss/" + styleName + ".css";
+                            setUrl = setUrl || "https://baidu.htt5.com/newcss/" + styleName + ".css";
                             this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
                         } else {
                             debug("加载样式：" + insClassName);
