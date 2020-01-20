@@ -1901,8 +1901,9 @@ body[baidu] #s_lg_img_new{
                             if (curNode.target == "xml-stylesheet" && curNode.data.indexOf("must=\"true") < 0) {
                                 curNode.data = "";
                                 curNode.del = true;
-                                if(navigator.userAgent.toLowerCase().indexOf("edge") > 0){
-                                    // edge下特殊处理
+
+                                // 对于edge和safari都特殊处理一下吧
+                                if(navigator.userAgent.toLowerCase().indexOf("edge") > 0 || navigator.userAgent.toLowerCase().indexOf("safari") > 0){
                                     curNode.remove();
                                 }
                             }

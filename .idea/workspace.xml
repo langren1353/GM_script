@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/YoudaoGW/gwd-AC.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/YoudaoGW/gwd-add.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/YoudaoGW/gwd.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/YoudaoGW/test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/YoudaoGW/test2.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gwd-AC.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gwd-add.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gwd.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test2.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VideoJumper.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/VideoJumper.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,14 +127,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1576476973930" />
-    <state x="647" y="280" width="626" height="490" key="find.popup" timestamp="1577974567816">
+    <state x="647" y="280" width="626" height="490" key="find.popup" timestamp="1578550630202">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="647" y="280" width="626" height="490" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577974567816" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1577967424386">
+    <state x="647" y="280" width="626" height="490" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1578550630202" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1578115597178">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577967424386" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1578115597178" />
   </component>
   <component name="masterDetails">
     <states>
