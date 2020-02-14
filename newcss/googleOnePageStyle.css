@@ -57,11 +57,11 @@
 #acid_src div:last-child{
     grid-column-end: 3;
 }
-.jsrp.big #tsf{
+.srp .big #tsf{
     width: 833px;
 }
 /**search box align center**/
-.jsrp>form{
+.srp form{
     margin-left: calc(50vw - 395px);
 }
 #top_nav{
