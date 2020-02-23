@@ -333,16 +333,16 @@ a em {
 #res .g .ts{
     max-width: unset;
 }
-@media screen and (max-width:1400px){   
-  .mw #rhs{   
+@media screen and (max-width:1400px){
+  .mw #rhs{
     display:none;
-  }   
+  }
 }
 cite{
     font-weight:normal;
 }
 /**Mooncan -START**/
-/**Aja LineHeight*/
+/**Aja LineHeight*/div.res_top_banner #foot,#pag
 #res .r{
     line-height: 1.3;
 }
@@ -378,4 +378,8 @@ div .kno-ftr a{
 .mw #res h3, .mw #extrares h3{
     /**reset font size**/
     font-size: 18px;
+}
+/*deal with cite too long and title too short*/
+.srg>.g .r>a>div{
+    width: 35rem;
 }
