@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         AC-购物党比价工具【精简版】
+// @name         购物党比价工具【精简优化版】
 // @namespace    none
-// @version      1.0
-// @description  AC-精简版购物党数据
+// @version      1.1
+// @description  【精简版】购物党，优化了页面的部分元素，减少页面弹窗和显示，保留菜单栏。购物党提供淘宝/京东/亚马逊/当当/苏宁/等百家商城的比价系统，能让你以较优惠的方式购买到你称心如意的商品，提供商品的历史价格情况，多种相似商品推荐，同款购买，降价提醒。
 // @author       淘宝老司机
 // @include      http*://item.taobao.com/*
 // @include      http*://s.taobao.com/*
@@ -17,6 +17,7 @@
 // @connect      chenzelin.herokuapp.com
 // @connect      gwdang.com
 // @connect      alicdn.com
+// @license      GPL-3.0-only
 // ==/UserScript==
 (function () {
 	var goodId = getUrlAttribute("id");;
@@ -67,16 +68,15 @@
 		var hideStyle = "";
 		if (location.host == "jd.com") {
 			extName = "gwdv2.js";
-			hideStyle = ".gwd-minibar-bg, #favor_box{display:none}" +
-				"#gwdang_main > a.gwd-topbar-logo, #gwdang_main > div.gwd-topbar-right{display:none}";
+			hideStyle = ".gwd-minibar-bg, #favor_box{display:none !important;}" +
+				"#gwdang_main > a.gwd-topbar-logo, #gwdang_main > div.gwd-topbar-right{display:none !important;}";
 		} else {
 			hideStyle = "#gwdang-main>div.logo, #gwdang-feed-close, #gwdang-history, #coupon_box, #bjd_yifenqian_detail{display:none}" +
-				"#favor_box{display:none}";
+				"#favor_box{display:none !important;}";
 		}
 		// addScript("https://cdn.jsdelivr.net/gh/chenzelin01/wechatproxy/public/" + extName);
 		addScript("https://browser.gwdang.com/get.js?f=/js/gwdang_extension.js");
 		addStyle(hideStyle);
-
 	}
 
 	function init() {
@@ -111,17 +111,8 @@
 			hml = hml + "<div id='hisprice' style='width: 720px;height:350px;margin: 0;padding: 0'></div>";
 
 			return `
-<html>
-<head>
-<meta charset="gbk" />
-<meta name="renderer" content="webkit"/>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
-</head>
-<TITLE>历史价格</TITLE>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.3.0/echarts.min.js"></script>
-<BODY BGCOLOR=#ffffff>
 ${hml}
-</BODY>
 <script>
 var pChart = echarts.init(document.getElementById('hisprice'));
 showPrice();
@@ -230,7 +221,6 @@ data: [
 pChart.setOption(option);
 };
 </script>
-</html>
 `
 		}
 		function opWind(purl, pisweb, pname, phml) {
@@ -240,18 +230,24 @@ pChart.setOption(option);
 			var iHeight = 450;
 			var iTop = (window.screen.height - 30 - iHeight) / 2;
 			var iLeft = (window.screen.width - 10 - iWidth) / 2;
-			var OpenWindow = window.open(url, name, 'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
-			if (pisweb == 0) {
-				OpenWindow.document.write(phml);
-				OpenWindow.document.close();
-				OpenWindow.focus();
-			}
+			// var OpenWindow = window.open(url, name, 'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
+			// if (pisweb == 0) {
+			// 	OpenWindow.document.write(phml);
+			// 	OpenWindow.document.close();
+			// 	OpenWindow.focus();
+			// }
+			console.log("这里");
+			var insWind = document.createElement("iframe");
+			// insWind.src = "javascript:(function(){document.write("+insWind+")})()";
+			insWind.innerHTML = phml;
+			document.body.appendChild(insWind);
 		}
 		// localStorage.getItem("gwdang-fp") == null
 		if(true){
 			// 首次加载数据
 			initGWD();
 		}else{
+			// TODO 待完成，似乎这里不好处理
 			let qdata = "fp="+localStorage.getItem("gwdang-fp")+"&dfp="+localStorage.getItem("gwdang-dfp");
 			GM_xmlhttpRequest({
 				url: "https://browser.gwdang.com/extension/price_towards?ver=1&format=jsonp&&url=" + encodeURIComponent(location.href),
