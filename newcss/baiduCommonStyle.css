@@ -23,7 +23,7 @@ body[baidu] {
     background-color: #f5f5f5;
 }
 form.fm .bdsug{
-    width: 76%;
+    width: calc(100% - 110px);
 }
 #ala_img_results{
     overflow:hidden;
@@ -74,9 +74,14 @@ form.fm .s_btn:hover {
     width: 630px;
 }
 #wrapper #content_left {
-    animation-name: left_logoR;
-    -webkit-animation-duration: .1s;
+    animation-name: ani_bottomTotop;
+    -webkit-animation-duration: .8s;
     -webkit-animation-timing-function: ease;
+}
+#head .head_wrapper{
+    animation-name: ani_topTobuttom;
+    -webkit-animation-duration: .5s;
+    -webkit-animation-timing-function: ease-out;
 }
 
 #wrapper #rs,
@@ -89,15 +94,17 @@ form.fm .s_btn:hover {
     border-radius: 0;
     background-color: #fff;
     box-sizing: border-box;
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-    -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-    -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 2px gray;
+    border: 1px solid rgba(0,0,0,0);
+    -webkit-box-shadow: 0 0 2px gray;
+    -moz-box-shadow: 0 0 2px gray;
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
 #wrapper #content_left .result-op:hover,
 #wrapper #content_left .result:hover,
 #wrapper #content_left .result-op article:hover{
-    box-shadow:0 0 2px gray!important;
+    box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
+    border: 1px solid rgba(0,0,0,0.2);
     background:#f3f3f3 !important;
 }
 #wrapper #rs[ac-needhide],
@@ -150,7 +157,7 @@ form.fm .s_btn:hover {
     color: #008000;
 }
 
-#wrapper #content_left .c-span18, 
+#wrapper #content_left .c-span18,
 #wrapper #content_left .c-span24{
     width: 100%;
     min-width: unset;
@@ -279,9 +286,9 @@ form.fm .s_btn:hover {
 #wrapper #page strong {
     color:#2866bd;
     height: auto;
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-    -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-    -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 2px gray;
+    -webkit-box-shadow: 0 0 2px gray;
+    -moz-box-shadow: 0 0 2px gray;
 }
 #wrapper #page .n:hover,
 #wrapper #page a:hover .pc {
@@ -296,13 +303,46 @@ form.fm .s_btn:hover {
 .op-img-address-divide-high{
     overflow: hidden;
 }
-@-webkit-keyframes left_logoR {
+@-webkit-keyframes ani_bottomTotop {
     0% {
-        -webkit-transform: translateY(64px);
+        -webkit-transform: translateY(128px);
         opacity: 0;
     }
-    50% {
+    30% {
         opacity: 0;
+    }
+    60% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes ani_leftToright {
+    0% {
+        -webkit-transform: translateX(-128px);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes ani_topTobuttom {
+    0% {
+        -webkit-transform: translateY(-128px);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 0.5;
     }
     100% {
         opacity: 1;
