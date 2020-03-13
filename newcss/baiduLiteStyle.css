@@ -59,7 +59,7 @@ em{text-decoration:none!important}
 .s_form{height:75px;padding-top:10px}
 #s_tab{padding:87px 0 0 121px;}
 #head.s_down{box-shadow:0 0 5px #666;padding-bottom: 8px;}
-.bdsug{top:42px!important;box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);border:none;border-radius:0 0 2px 2px;font-family:-apple-system,"Helvetica Neue",Helvetica,"Nimbus Sans L",Arial,"Liberation Sans","PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC","Microsoft YaHei","Wenquanyi Micro Hei","WenQuanYi Zen Hei","ST Heiti",SimHei,"WenQuanYi Zen Hei Sharp",sans-serif;width:598px!important}
+.bdsug{top:42px;box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);border:none;border-radius:0 0 2px 2px;font-family:-apple-system,"Helvetica Neue",Helvetica,"Nimbus Sans L",Arial,"Liberation Sans","PingFang SC","Hiragino Sans GB","Source Han Sans CN","Source Han Sans SC","Microsoft YaHei","Wenquanyi Micro Hei","WenQuanYi Zen Hei","ST Heiti",SimHei,"WenQuanYi Zen Hei Sharp",sans-serif;width:598px;}
 .bgsug li{font-family:Helvetica,"Microsoft Yahei UI"!important;width:100%!important;line-height:36px!important}
 .bgsug ul li{line-height:32px!important}
 .bdsug-overflow{font-family:Helvetica,"Microsoft Yahei UI"!important;width:583px!important}
@@ -110,7 +110,7 @@ em{text-decoration:none!important}
 .s-title-image{border:none!important;border-top:0 solid #fff!important;border-bottom:0 solid #fff!important;border-left:0 solid #fff!important;border-right:0 solid #fff!important}
 #s_lg_img{display:none}
 #form{-webkit-animation-duration:0.2s;animation-duration:0.2s;-webkit-animation-fill-mode:both;animation-fill-mode:both;animation-name:fadeInUp;-webkit-animation-name:fadeInUp;animation-delay:.3s;-webkit-animation-delay:.3s}
-body:not([news]) #form.fm{min-width: 50%;}
+body:not([news]) #head_wrapper #form.fm{min-width: 50%;width: 110%;}
 .s-p-top{transform:scale(.8);bottom:9px!important}
 .mnav{display:none}
 #u_sp .mnav{display:none}
