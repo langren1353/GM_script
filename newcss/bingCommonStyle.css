@@ -10,9 +10,10 @@ body {
     border-radius: 5px;
     background-color: #fff;
     box-sizing: border-box;
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-    -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-    -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 2px gray;
+    border: 1px solid rgba(0,0,0,0);
+    -webkit-box-shadow: 0 0 2px gray;
+    -moz-box-shadow: 0 0 2px gray;
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
 #b_content #b_results a,
@@ -24,8 +25,9 @@ body {
     font-size: medium;
 }
 #b_content #b_results>li:hover {
-    box-shadow: 0 0 2px gray!important;
-    background: #f3f3f3 !important;
+    box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
+    border: 1px solid rgba(0,0,0,0.2);
+    background: #FCFCFC !important;
 }
 #b_content >#b_results li h2 {
     background-color: #f8f8f8;
@@ -111,5 +113,86 @@ body #b_header #est_switch{
 @media (max-width: 1100px){
     body #b_header #est_switch{
         transform: translateX(1.2rem);
+    }
+}
+/* SearchItmes Bottom to Top ani */
+#b_content{
+    animation-name: ani_bottomTotop;
+    animation-duration: 0.3s;
+    animation-timing-function: ease;
+}
+
+/* SearchBar Left to Right ani */
+body #b_header {
+    animation-name: ani_topTobuttom;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-out;
+}
+body{
+    animation-name: ani_hideToShow;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-out;
+}
+@keyframes ani_leftToright {
+    0% {
+        transform: translateX(-128px);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+/* ani */
+@keyframes ani_bottomTotop {
+    0% {
+        transform: translateY(64px);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes ani_topTobuttom {
+    0% {
+        -webkit-transform: translateY(-128px);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes ani_hideToShow {
+    0% {
+        display:none;
+        opacity: 0;
+    }
+    30% {
+        display:none;
+        opacity: 0.3;
+    }
+    60% {
+        display:none;
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 1;
     }
 }
