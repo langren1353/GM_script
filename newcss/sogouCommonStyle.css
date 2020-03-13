@@ -23,9 +23,10 @@ body {
     border-radius: 5px;
     background-color: #fff;
     box-sizing: border-box;
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-    -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-    -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 2px gray;
+    border: 1px solid rgba(0,0,0,0);
+    -webkit-box-shadow: 0 0 2px gray;
+    -moz-box-shadow: 0 0 2px gray;
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
 .results .rb a,
@@ -35,7 +36,8 @@ body {
     position: relative;
 }
 #main .results>div:hover {
-    box-shadow: 0 0 2px gray!important;
+    box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
+    border: 1px solid rgba(0,0,0,0.2);
     background: #f3f3f3 !important;
 }
 #main .results>div h3 {
@@ -88,4 +90,48 @@ a, a strong {
 }
 body #pagebar_container a{
     background-color: white;
+}
+/* SearchItmes Bottom to Top ani */
+#main .results{
+    animation-name: ani_bottomTotop;
+    animation-duration: .8s;
+    animation-timing-function: ease;
+}
+
+/* SearchBar Left to Right ani */
+.wrap .header-box{
+    animation-name: ani_leftToright;
+    animation-duration: .3s;
+    animation-timing-function: ease-out;
+}
+@keyframes ani_leftToright {
+    0% {
+        transform: translateX(-128px);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+/* ani */
+@keyframes ani_bottomTotop {
+    0% {
+        transform: translateY(64px);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
 }
