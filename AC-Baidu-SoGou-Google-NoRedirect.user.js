@@ -38,6 +38,7 @@
 // @copyright       2017, AC
 // @lastmodified    2019-12-16
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
+// @note            2020.03-13-V23.30 小改代码with GoogleLOGO
 // @note            2019.12-16-V23.29 自定义英文和中文的显示效果 && 修复上个版本导致的block按钮丢失的问题 && 修复部分百度内容无法拦截的情况
 // @note            2019.12-15-V23.28 由于域名备案丢失了，只能换一个 && 修复自己认为的谷歌favicon已存在的问题，实际上谷歌favicon并没有显示
 // @note            2019.11-28-V23.27 修复上次更新导致的某些模式下window对象无法获取导致的异常进而导致的脚本无法运行的bug & 优化百度样式内容和谷歌单列的偏右的情况以及必应中英文的偏移位置 修复屏蔽功能失效的bug
@@ -704,7 +705,7 @@ body[baidu] #s_lg_img_new{
                 if (curSite.SiteTypeID == SiteType.GOOGLE && ACConfig.isGooleInBaiduModeEnable){
                     safeWaitFunc("#logo img, #logocont img", function(node){
                         let faNode = node.parentNode.parentNode;
-                        faNode.className = faNode.className.replace(/( baidu | baidu$)/, "") + " baidu";
+                        faNode.classList.add("baidu");
                         node.removeAttribute("src");
                         node.src = "https://pic.rmb.bdstatic.com/c86255e8028696139d3e3e4bb44c047b.png";
                         node.width = "125";
@@ -1913,7 +1914,7 @@ body[baidu] #s_lg_img_new{
                 let ControlManager = {
                     //居中显示 --- 必须是百度和谷歌的搜索结果页面，其他页面不能加载的--已经通过脚本include标签限制了一部分
                     centerDisplay: function () {
-                        AC_addStyle("body[google] .baidu{transform: translate(-10px, -1rem);transition:all 0.3s ease}.minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;}", "AC-style-logo", "head");
+                        AC_addStyle(".minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;}", "AC-style-logo", "head");
                         let result = CONST.AdsStyleMode || null;
                         if (document.querySelector(".acCssLoadFlag") == null && document.querySelector(".ACExtension") == null) {
                             debug("in样式即将加载:"+result);
