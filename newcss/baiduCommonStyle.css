@@ -22,9 +22,6 @@ body>div.result-op,
 body[baidu] {
     background-color: #f5f5f5;
 }
-form.fm .bdsug{
-    width: calc(100% - 110px);
-}
 #ala_img_results{
     overflow:hidden;
 }
@@ -51,7 +48,8 @@ form.fm .bdsug li {
 }
 form.fm .s_ipt_wr.bg{
     background: #fff;
-    width: 76%;
+    width: 66%;
+    min-width: 570px;
 }
 form.fm .s_btn {
     background: #2866bd;
@@ -79,7 +77,7 @@ form.fm .s_btn:hover {
     -webkit-animation-timing-function: ease;
 }
 #head .head_wrapper{
-    animation-name: ani_topTobuttom;
+    animation-name: ani_leftToright;
     -webkit-animation-duration: .5s;
     -webkit-animation-timing-function: ease-out;
 }
@@ -98,7 +96,7 @@ form.fm .s_btn:hover {
     border: 1px solid rgba(0,0,0,0);
     -webkit-box-shadow: 0 0 2px gray;
     -moz-box-shadow: 0 0 2px gray;
-    transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
+    transition: all 0.2s cubic-bezier(.23,1,.32,1) 0s;
 }
 #wrapper #content_left .result-op:hover,
 #wrapper #content_left .result:hover,
@@ -303,6 +301,9 @@ form.fm .s_btn:hover {
 .op-img-address-divide-high{
     overflow: hidden;
 }
+#wrapper #kw{
+    width: 94%;
+}
 @-webkit-keyframes ani_bottomTotop {
     0% {
         -webkit-transform: translateY(128px);
@@ -320,7 +321,7 @@ form.fm .s_btn:hover {
 }
 @-webkit-keyframes ani_leftToright {
     0% {
-        -webkit-transform: translateX(-128px);
+        -webkit-transform: translateX(-196px);
         opacity: 0;
     }
     30% {
@@ -348,14 +349,18 @@ form.fm .s_btn:hover {
         opacity: 1;
     }
 }
-@media screen and (max-width:1940px){
+@media screen and (max-width:1388px){
     #head .head_wrapper{
         width: unset; /*edit: fix baidu banner position*/
     }
+    form.fm .s_ipt_wr.bg{
+        background: #fff;
+        width: 66%;
+    }
 }
 .result-op.c-container .c-result-content{
-    padding-top: 20px;
+padding-top: 20px;
 }
 #wrapper #content_left  .result-op article{
-    padding-top: 15px;
+padding-top: 15px;
 }
