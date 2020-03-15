@@ -5,11 +5,7 @@
 form.fm{
     position: relative;
     width: 50%;
-    left: calc(12%);
     background-color: unset;
-}
-#wrapper form.fm #kw{
-    width:94%;
 }
 #wrapper .s_tab_inner,
 #s_tab .tab-wrapper{
@@ -17,10 +13,6 @@ form.fm{
 }
 #s_tab b, #s_tab a {
     position: relative;
-}
-#result_logo, .s_logo{
-    position: relative;
-    left: calc(12%);
 }
 #wrapper .head_nums_cont_outer .search_tool_conter,
 #wrapper .head_nums_cont_outer .nums {
@@ -85,4 +77,18 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 /*search engine jump*/
 #sej-container{
     padding-left: calc(12% - 113px) !important;
+}
+.s_form_wrapper {
+    justify-content: center;
+    display: flex;
+    margin-left: 101px;
+}
+#wrapper .head_nums_cont_outer .search_tool_conter,
+#wrapper .head_nums_cont_outer .nums {
+    width: 80%;
+}
+@media screen and (max-width:1388px){
+    form.fm .s_ipt_wr.bg{
+        min-width: 370px;
+    }
 }
