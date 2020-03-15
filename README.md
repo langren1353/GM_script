@@ -72,6 +72,6 @@ If you have any problems on using the script, please mail me for 1353464539@qq.c
 其次本脚本禁止使用并修改用于制作脚本集合之类的聚合性脚本
 
 ### 脚本反馈
-**QQ交流群: （[点击加群](https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_)）**
+**QQ交流群: （[点击加群585532681](https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_)）**
 ### 脚本推荐
 [TUJIDU-去广告-VIP视频解析助手](https://greasyfork.org/zh-CN/scripts/371262)
