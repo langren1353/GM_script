@@ -81,7 +81,7 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 .s_form_wrapper {
     justify-content: center;
     display: flex;
-    margin-left: 101px;
+    margin-left: calc(18% - 110px);
 }
 #wrapper .head_nums_cont_outer .search_tool_conter,
 #wrapper .head_nums_cont_outer .nums {
@@ -89,6 +89,6 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 }
 @media screen and (max-width:1388px){
     form.fm .s_ipt_wr.bg{
-        min-width: 370px;
+        min-width: 300px;
     }
 }

@@ -78,7 +78,7 @@ body[baidu] .pagefoot.gj{
 .s_form_wrapper {
     justify-content: center;
     display: flex;
-    margin-left: 101px;
+    margin-left: calc(18% - 110px);
 }
 #wrapper #s_tab{
     display: flex;
