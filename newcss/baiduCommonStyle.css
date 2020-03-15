@@ -51,6 +51,10 @@ form.fm .s_ipt_wr.bg{
     width: 66%;
     min-width: 570px;
 }
+/***fix 2k+ problem***/
+#head .head_wrapper{
+    width: unset; /*edit: fix baidu banner position*/
+}
 form.fm .s_btn {
     background: #2866bd;
     border-bottom: 1px solid #4879bd;
@@ -349,18 +353,10 @@ form.fm .s_btn:hover {
         opacity: 1;
     }
 }
-@media screen and (max-width:1388px){
-    #head .head_wrapper{
-        width: unset; /*edit: fix baidu banner position*/
-    }
-    form.fm .s_ipt_wr.bg{
-        background: #fff;
-        width: 66%;
-    }
-}
+
 .result-op.c-container .c-result-content{
-padding-top: 20px;
+    padding-top: 20px;
 }
 #wrapper #content_left  .result-op article{
-padding-top: 15px;
+    padding-top: 15px;
 }
