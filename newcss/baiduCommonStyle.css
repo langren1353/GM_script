@@ -92,7 +92,7 @@ form.fm .s_btn:hover {
     width: 670px;
     padding: 0px 20px 15px;
     margin-top: 0px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     border-radius: 0;
     background-color: #fff;
     box-sizing: border-box;
@@ -359,4 +359,9 @@ form.fm .s_btn:hover {
 }
 #wrapper #content_left  .result-op article{
     padding-top: 15px;
+}
+@media screen and (max-width:1280px){
+    #u .toindex, #u #imsg{
+        display: none;
+    }
 }

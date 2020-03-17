@@ -4,7 +4,6 @@
 }
 form.fm{
     position: relative;
-    width: 50%;
     background-color: unset;
 }
 #wrapper .s_tab_inner,
@@ -63,7 +62,6 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 #wrapper  #content_left .c-container {
     width: unset !important;
     max-width: 100%;
-    margin-bottom: 30px;
     margin-left: 5px;
     margin-right: 15px;
 }
@@ -81,7 +79,6 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 .s_form_wrapper {
     justify-content: center;
     display: flex;
-    margin-left: calc(18% - 110px);
 }
 #wrapper .head_nums_cont_outer .search_tool_conter,
 #wrapper .head_nums_cont_outer .nums {

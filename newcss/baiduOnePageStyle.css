@@ -5,7 +5,6 @@
 form.fm{
     position:relative;
     background-color: unset;
-    width:50%;
 }
 body[baidu] .pagefoot.gj{
     margin-top: 100px;
@@ -42,7 +41,6 @@ body[baidu] .pagefoot.gj{
 #wrapper  #content_left .c-container{
     width: 100% !important;
     min-width:650px;
-    margin: 0 auto;
 }
 @media screen and (min-width: 1000px) {
     #wrapper  #content_left, #wrapper  #rs{
@@ -78,7 +76,6 @@ body[baidu] .pagefoot.gj{
 .s_form_wrapper {
     justify-content: center;
     display: flex;
-    margin-left: calc(18% - 110px);
 }
 #wrapper #s_tab{
     display: flex;
@@ -94,3 +91,4 @@ body[baidu] .pagefoot.gj{
         min-width: 370px;
     }
 }
+
