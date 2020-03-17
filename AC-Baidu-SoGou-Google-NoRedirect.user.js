@@ -38,7 +38,7 @@
 // @copyright       2017, AC
 // @lastmodified    2019-12-16
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
-// @note            2020.03-13-V23.30 小改代码with GoogleLOGO
+// @note            2020.03-13-V23.30 小改代码with GoogleLOGO && 修复在inject极速模式下的小问题
 // @note            2019.12-16-V23.29 自定义英文和中文的显示效果 && 修复上个版本导致的block按钮丢失的问题 && 修复部分百度内容无法拦截的情况
 // @note            2019.12-15-V23.28 由于域名备案丢失了，只能换一个 && 修复自己认为的谷歌favicon已存在的问题，实际上谷歌favicon并没有显示
 // @note            2019.11-28-V23.27 修复上次更新导致的某些模式下window对象无法获取导致的异常进而导致的脚本无法运行的bug & 优化百度样式内容和谷歌单列的偏右的情况以及必应中英文的偏移位置 修复屏蔽功能失效的bug
@@ -228,10 +228,12 @@
 // @grant           GM_getResourceText
 // @grant           GM_registerMenuCommand
 // ==/UserScript==
+
 !function () {
     let isdebug = false;
     let isLocalDebug = isdebug || false;
     let debug = isdebug ? console.log.bind(console) : function () {};
+    let acCssLoadFlag = false;
 
     let inExtMode = typeof(isExtension) != "undefined";
     let inGMMode = typeof(GM_info.scriptHandler) != "undefined"; // = "Greasemonkey" || "Tampermonkey" || "ViolentMonkey"
@@ -1916,9 +1918,9 @@ body[baidu] #s_lg_img_new{
                     centerDisplay: function () {
                         AC_addStyle(".minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;}", "AC-style-logo", "head");
                         let result = CONST.AdsStyleMode || null;
-                        if (document.querySelector(".acCssLoadFlag") == null && document.querySelector(".ACExtension") == null) {
+                        if (acCssLoadFlag == false && document.querySelector(".ACExtension") == null) {
                             debug("in样式即将加载:"+result);
-                            let expandStyle = "#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}#wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .c-container{min-width:670px;margin-bottom:14px!important;}.c-span18{width:78%!important;min-width:550px;}.c-span24{width: auto!important;}";
+                            let expandStyle = "#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}#wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .c-container{min-width:670px;}.c-span18{width:78%!important;min-width:550px;}.c-span24{width: auto!important;}";
                             if (result == 1) {
                                 AC_addStyle(expandStyle, "AC-Style-expand", "head");
                                 CONST.StyleManger.loadCommonStyle();
@@ -1938,11 +1940,10 @@ body[baidu] #s_lg_img_new{
                                 CONST.StyleManger.loadTwoPageStyle();
                                 CONST.StyleManger.loadFourPageStyle();
                             }
-                            let xflag = document.createElement("div");
-                            xflag.className = "acCssLoadFlag";
-                            document.head.appendChild(xflag);
+                            acCssLoadFlag = true;
                             debug("in样式运行结束");
                         }
+
                         if(curSite.SiteTypeID == SiteType.BAIDU && ACConfig.Style_BaiduLite == true){
                             CONST.StyleManger.loadBaiduLiteStyle();
                         }
@@ -1959,7 +1960,8 @@ body[baidu] #s_lg_img_new{
                         }
                         /**护眼Style最后载入**/
                         if (CONST.HuYanMode == true || document.querySelector("style[class*='darkreader']") != null) CONST.StyleManger.loadHuYanStyle();
-                        // 启用所有样式表
+
+                        // TODO 之前是在这里的启用所有样式表
                         CONST.StyleManger.loadPlainToCSS();
                     },
                     init: function () {
