@@ -313,11 +313,11 @@ form.fm .s_btn:hover {
         -webkit-transform: translateY(128px);
         opacity: 0;
     }
-    30% {
+    20% {
         opacity: 0;
     }
-    60% {
-        opacity: 0.5;
+    30% {
+        opacity: 0.8;
     }
     100% {
         opacity: 1;
@@ -328,11 +328,11 @@ form.fm .s_btn:hover {
         -webkit-transform: translateX(-196px);
         opacity: 0;
     }
-    30% {
+    20% {
         opacity: 0;
     }
-    60% {
-        opacity: 0.5;
+    30% {
+        opacity: 0.8;
     }
     100% {
         opacity: 1;
@@ -343,11 +343,11 @@ form.fm .s_btn:hover {
         -webkit-transform: translateY(-128px);
         opacity: 0;
     }
-    30% {
+    20% {
         opacity: 0;
     }
-    60% {
-        opacity: 0.5;
+    30% {
+        opacity: 0.8;
     }
     100% {
         opacity: 1;
@@ -363,5 +363,15 @@ form.fm .s_btn:hover {
 @media screen and (max-width:1280px){
     #u .toindex, #u #imsg{
         display: none;
+    }
+}
+@media screen and (min-width: 1921px){
+    /*Baidu in 2K screen default in : center*/
+    #head .head_wrapper{
+        -webkit-transform: translate3d(-140px,0,1px);
+        transform: translate3d(-140px,0,1px);
+
+        justify-content: center;
+        display: flex;
     }
 }

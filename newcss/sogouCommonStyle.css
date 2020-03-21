@@ -109,11 +109,11 @@ body #pagebar_container a{
         transform: translateX(-128px);
         opacity: 0;
     }
-    30% {
+    20% {
         opacity: 0;
     }
-    60% {
-        opacity: 0.5;
+    30% {
+        opacity: 0.8;
     }
     100% {
         opacity: 1;
@@ -125,11 +125,11 @@ body #pagebar_container a{
         transform: translateY(64px);
         opacity: 0;
     }
-    30% {
+    20% {
         opacity: 0;
     }
-    60% {
-        opacity: 0.5;
+    30% {
+        opacity: 0.8;
     }
     100% {
         opacity: 1;

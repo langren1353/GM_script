@@ -320,11 +320,11 @@ a em {
         transform: translateY(64px);
         opacity: 0;
     }
-    30% {
+    20% {
         opacity: 0;
     }
-    60% {
-        opacity: 0.5;
+    30% {
+        opacity: 0.8;
     }
     100% {
         opacity: 1;
@@ -335,11 +335,11 @@ a em {
         transform: translateX(-128px);
         opacity: 0;
     }
-    30% {
+    20% {
         opacity: 0;
     }
-    60% {
-        opacity: 0.5;
+    30% {
+        opacity: 0.8;
     }
     100% {
         opacity: 1;
