@@ -19,8 +19,8 @@ form.fm .s_ipt_wr.bg{
 #wrapper #content_left .result:hover {
     background-color: #CCCCCC !important;
 }
-#wrapper #content_left .result h3, 
-#wrapper #content_left .result-op h3, 
+#wrapper #content_left .result h3,
+#wrapper #content_left .result-op h3,
 #wrapper #content_left .c-container h3,
 #wrapper #rs .tt{
     background-color: #BBBBBB ;
@@ -52,7 +52,9 @@ body[google]{
 .ruTcId .g,
 .fm06If .g,
 .cUnQKe .g,
-.HanQmf .g{
+.HanQmf .g,
+#rso .g,
+#rso>div:not(.g)>*{
     background-color: #AAAAAA ;
     border: 1px double #A2D7D4 ;
     border-radius: 0px;
