@@ -4,15 +4,15 @@
 // @name:zh         AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 // @name:zh-CN      AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 // @name:ja         AC-baidu:重定向最適化Baiduの搜狗Google検索結果のリダイレクト除去+に広告_favicon
-// @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.新增拦截百度百家号的无用推广数据-支持其他站点 3.去除百度的多余广告 4添加Favicon显示 5.页面CSS 6.添加计数 7.开关选择以上功能
-// @description:en  1.bypass the redirect link at baidu\sogou\google\haosou; 2.remove ads at baidu; 3.add Favicon for each website; 4.render your own style; 5.counter; Switch to handle all
-// @description:ja  1.迂回Baidu、Sogou、Google、Haosou検索検索結果の中の自分の遷移リンク; 2.Baiduの余分な広告を取り除く; 3.コメントを追加; 4.ページのカスタムCSP; 5.カウントを追加; 6.スイッチは以上の機能を選択します。
-// @icon https://raw.githubusercontent.com/langren1353/zbImg/master/img0/icon.jpg
+// @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.新增拦截百度百家号的无用推广数据-支持其他站点 3.去除百度的多余广告 4添加Favicon显示 5.页面CSS 6.添加计数 7.开关选择以上功能 8.自动翻页功能
+// @description:en  1.bypass the redirect link at baidu\sogou\google\haosou; 2.remove ads at baidu; 3.add Favicon for each website; 4.render your own style; 5.counter; 6.Switch to handle all 7.Auto Pager
+// @description:ja  1.迂回Baidu、Sogou、Google、Haosou検索検索結果の中の自分の遷移リンク; 2.Baiduの余分な広告を取り除く; 3.コメントを追加; 4.ページのカスタムCSP; 5.カウントを追加; 6.スイッチは以上の機能を選択します; 7.自動ページめくり.
+// @icon            https://img.tujidu.com/image/5e7ba0d6b0062.jpg
 // @author          AC
 // @license         GPL-3.0-only
 // @create          2015-11-25
 // @run-at          document-start
-// @version         23.29
+// @version         23.30
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
@@ -27,7 +27,6 @@
 // @include         *://encrypted.google.*/search*
 // @include         *://*.google*/search*
 // @include         *://*.google*/webhp*
-// @include         *://www.google*/ac-notexist*
 // @include         *://*.zhihu.com/*
 // @exclude         *://*.google*/sorry*
 // @namespace       1353464539@qq.com
@@ -36,9 +35,9 @@
 // @home-url2       https://github.com/langren1353/GM_script
 // @homepageURL     https://greasyfork.org/zh-TW/scripts/14178
 // @copyright       2017, AC
-// @lastmodified    2019-12-16
+// @lastmodified    2020-03-26
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
-// @note            2020.03-13-V23.30 小改代码with GoogleLOGO && 修复在inject极速模式下的小问题
+// @note            2020.03-26-V23.30 小改代码with GoogleLOGO && 修复在inject极速模式下的小问题 && 修复各种样式问题 && 自定义样式开启动态模式 && 新增自动翻页功能-妈妈再也不用担心我翻页问题了-[推荐更新]
 // @note            2019.12-16-V23.29 自定义英文和中文的显示效果 && 修复上个版本导致的block按钮丢失的问题 && 修复部分百度内容无法拦截的情况
 // @note            2019.12-15-V23.28 由于域名备案丢失了，只能换一个 && 修复自己认为的谷歌favicon已存在的问题，实际上谷歌favicon并没有显示
 // @note            2019.11-28-V23.27 修复上次更新导致的某些模式下window对象无法获取导致的异常进而导致的脚本无法运行的bug & 优化百度样式内容和谷歌单列的偏右的情况以及必应中英文的偏移位置 修复屏蔽功能失效的bug
@@ -205,20 +204,20 @@
 // @note            2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note            2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note            2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource        baiduCommonStyle     http://ibaidu.htt5.com/newcss/baiduCommonStyle.css?t=23.276
-// @resource        baiduOnePageStyle    http://ibaidu.htt5.com/newcss/baiduOnePageStyle.css?t=23.276
-// @resource        baiduTwoPageStyle    http://ibaidu.htt5.com/newcss/baiduTwoPageStyle.css?t=23.276
-// @resource        baiduLiteStyle       http://ibaidu.htt5.com/newcss/baiduLiteStyle.css?t=23.276
-// @resource        googleCommonStyle    http://ibaidu.htt5.com/newcss/googleCommonStyle.css?t=23.276
-// @resource        googleOnePageStyle   http://ibaidu.htt5.com/newcss/googleOnePageStyle.css?t=23.276
-// @resource        googleTwoPageStyle   http://ibaidu.htt5.com/newcss/googleTwoPageStyle.css?t=23.276
-// @resource        bingCommonStyle      http://ibaidu.htt5.com/newcss/bingCommonStyle.css?t=23.276
-// @resource        bingOnePageStyle     http://ibaidu.htt5.com/newcss/bingOnePageStyle.css?t=23.276
-// @resource        bingTwoPageStyle     http://ibaidu.htt5.com/newcss/bingTwoPageStyle.css?t=23.276
-// @resource        sogouCommonStyle     http://ibaidu.htt5.com/newcss/sogouCommonStyle.css?t=23.276
-// @resource        sogouOnePageStyle    http://ibaidu.htt5.com/newcss/sogouOnePageStyle.css?t=23.276
-// @resource        sogouTwoPageStyle    http://ibaidu.htt5.com/newcss/sogouTwoPageStyle.css?t=23.276
-// @resource        MainHuYanStyle       http://ibaidu.htt5.com/newcss/HuYanStyle.css?t=23.276
+// @resource        baiduCommonStyle     http://ibaidu.htt5.com/newcss/baiduCommonStyle.css?t=23.30
+// @resource        baiduOnePageStyle    http://ibaidu.htt5.com/newcss/baiduOnePageStyle.css?t=23.30
+// @resource        baiduTwoPageStyle    http://ibaidu.htt5.com/newcss/baiduTwoPageStyle.css?t=23.30
+// @resource        baiduLiteStyle       http://ibaidu.htt5.com/newcss/baiduLiteStyle.css?t=23.30
+// @resource        googleCommonStyle    http://ibaidu.htt5.com/newcss/googleCommonStyle.css?t=23.30
+// @resource        googleOnePageStyle   http://ibaidu.htt5.com/newcss/googleOnePageStyle.css?t=23.30
+// @resource        googleTwoPageStyle   http://ibaidu.htt5.com/newcss/googleTwoPageStyle.css?t=23.30
+// @resource        bingCommonStyle      http://ibaidu.htt5.com/newcss/bingCommonStyle.css?t=23.30
+// @resource        bingOnePageStyle     http://ibaidu.htt5.com/newcss/bingOnePageStyle.css?t=23.30
+// @resource        bingTwoPageStyle     http://ibaidu.htt5.com/newcss/bingTwoPageStyle.css?t=23.30
+// @resource        sogouCommonStyle     http://ibaidu.htt5.com/newcss/sogouCommonStyle.css?t=23.30
+// @resource        sogouOnePageStyle    http://ibaidu.htt5.com/newcss/sogouOnePageStyle.css?t=23.30
+// @resource        sogouTwoPageStyle    http://ibaidu.htt5.com/newcss/sogouTwoPageStyle.css?t=23.30
+// @resource        MainHuYanStyle       http://ibaidu.htt5.com/newcss/HuYanStyle.css?t=23.30
 // @grant           GM_getValue
 // @grant           GM.getValue
 // @grant           GM_setValue
@@ -296,6 +295,7 @@
         let DefaultConfig = {
             isRedirectEnable: true,  // 是否开启重定向功能
             isAdsEnable: true, // 是否开启去广告模式
+            isAutopage: true,  // 是否开启自动翻页功能
             isBlockEnable: true, // 是否开启去拦截模式
             isBlockDisplay: false, // 是否删除已拦截的条目
             isBlockBtnDisplay: true, // 是否显示block按钮
@@ -386,6 +386,16 @@ body[baidu] #s_lg_img_new{
                 FaviconAddTo: "h3",
                 CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
                 BlockType: "h3 a",
+                pager:{
+                    nextLink: '//div[@id="page"]/a[contains(text(),"下一页")][@href]',
+                    pageElement: "css;div#content_left > *",
+                    HT_insert: [ "css;div#content_left", 2 ],
+                    replaceE: "css;#page",
+                    stylish: ".autopagerize_page_info, div.sp-separator {margin-bottom: 10px !important;}",
+                    startFilter: function startFilter() {
+                        document.cookie = "ISSW=1";
+                    }
+                }
             },
             sogou: {
                 SiteTypeID: 2,
@@ -395,6 +405,12 @@ body[baidu] #s_lg_img_new{
                 FaviconAddTo: "h3",
                 CounterType: ".results>div",
                 BlockType: "h3 a",
+                pager:{
+                    nextLink: "//div[@id=\"pagebar_container\"]/a[@id=\"sogou_next\"]",
+                    pageElement: "//div[@class=\"results\"]",
+                    HT_insert: ["//div[@class=\"results\"]", 1],
+                    replaceE: "id(\"pagebar_container\")"
+                }
             },
             haosou: {
                 SiteTypeID: 3,
@@ -404,6 +420,12 @@ body[baidu] #s_lg_img_new{
                 FaviconAddTo: "h3",
                 CounterType: ".results>div",
                 BlockType: "h3 a",
+                pager:{
+                    nextLink: "//div[@id=\"page\"]/a[text()=\"下一页>\"] | id(\"snext\")",
+                    pageElement: "//div[@id=\"container\"]/div",
+                    HT_insert: ["//div[@id=\"container\"]", 1],
+                    replaceE: "id(\"page\")"
+                }
             },
             google: {
                 SiteTypeID: 4,
@@ -412,6 +434,12 @@ body[baidu] #s_lg_img_new{
                 FaviconAddTo: "h3",
                 CounterType: ".srg>div[class~=g] *[class~=r] h3,._yE>div[class~=_kk] h3",
                 BlockType: ".rc>.r>a",
+                pager:{
+                    nextLink: 'id("pnnext") | id("navbar navcnt nav")//td[span]/following-sibling::td[1]/a | id("nn")/parent::a',
+                    pageElement: '//div[@id="res"]',
+                    HT_insert: [ "css;#res", 2 ],
+                    replaceE: '//div[@id="navcnt"] | //div[@id="foot"][@role="navigation"]'
+                }
             },
             bing: {
                 SiteTypeID: 5,
@@ -420,6 +448,12 @@ body[baidu] #s_lg_img_new{
                 FaviconAddTo: "h2",
                 CounterType: "#b_results>li[class~=b_ans]>h2,#b_results>li[class~=b_algo]>h2,#b_results>li[class~=b_algo]>h2",
                 BlockType: "h2 a",
+                pager:{
+                    nextLink: "//a[contains(@class,\"sb_pagN\")]",
+                    pageElement: "id(\"b_results\")/li[not(contains(@class,\"b_pag\") or contains(@class,\"b_ans b_top\"))]",
+                    HT_insert: ["id(\"b_results\")/li[@class=\"b_pag\"]", 1],
+                    replaceE: "id(\"b_results\")//nav[@role=\"navigation\"]",
+                }
             },
             mBaidu:{
                 SiteTypeID: 6,
@@ -441,15 +475,6 @@ body[baidu] #s_lg_img_new{
                 CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
                 BlockType: "h3 a",
             },
-            ac_google:{
-                SiteTypeID: 4,
-                MainType: ".srg>div[class~=g] *[class~=rc]",
-                FaviconType: ".iUh30",
-                FaviconAddTo: "h3",
-                CounterType: ".srg>div[class~=g] *[class~=r] h3,._yE>div[class~=_kk] h3",
-                BlockType: ".rc a",
-                is_acgoogle: true,
-            },
             other: {
                 SiteTypeID: 9,
             }
@@ -460,7 +485,6 @@ body[baidu] #s_lg_img_new{
             SOGOU: DBSite.sogou.SiteTypeID,
             SO: DBSite.haosou.SiteTypeID,
             GOOGLE: DBSite.google.SiteTypeID,
-            AC_GOOGLE: DBSite.ac_google.SiteTypeID,
             BING: DBSite.bing.SiteTypeID,
             ZHIHU: DBSite.zhihu.SiteTypeID,
             BAIDU_XUESHU: DBSite.baidu_xueshu.SiteTypeID,
@@ -502,6 +526,42 @@ body[baidu] #s_lg_img_new{
                 return "";
             }
         }
+        function getElementByXpath(e, t, r) {
+            r = r || document, t = t || r;
+            try {
+                return r.evaluate(e, t, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            } catch (t) {
+                return void console.error("无效的xpath");
+            }
+        }
+        function getAllElementsByXpath(e, t, r) {
+            return r = r || document, t = t || r, r.evaluate(e, t, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+        }
+        function getAllElements(e, t, r, n, o) {
+            var i, s = [];
+            if (!e) return s;
+            if (r = r || document, n = n || window, o = o || void 0, t = t || r, "string" == typeof e) i = 0 === e.search(/^css;/i) ? function getAllElementsByCSS(e, t) {
+                return (t || document).querySelectorAll(e);
+            }(e.slice(4), t) : getAllElementsByXpath(e, t, r); else {
+                if (!(i = e(r, n, o))) return s;
+                if (i.nodeType) return s[0] = i, s;
+            }
+            return function makeArray(e) {
+                var t, r, n, o = [];
+                if (e.pop) {
+                    for (t = 0, r = e.length; t < r; t++) (n = e[t]) && (n.nodeType ? o.push(n) : o = o.concat(makeArray(n)));
+                    return a()(o);
+                }
+                if (e.item) {
+                    for (t = e.length; t; ) o[--t] = e[t];
+                    return o;
+                }
+                if (e.iterateNext) {
+                    for (t = e.snapshotLength; t; ) o[--t] = e.snapshotItem(t);
+                    return o;
+                }
+            }(i);
+        }
         function callback() {
             if (ACConfig.oldVersion == GM_info.script.version) {
                 CONST.hasNewFuncNeedDisplay = false;
@@ -527,16 +587,15 @@ body[baidu] #s_lg_img_new{
                 } else if (location.host.indexOf("so.com") > -1) {
                     curSite = DBSite.haosou;
                 } else if (location.host.indexOf("google") > -1) {
-                    if(location.pathname.indexOf("ac-notexist") > -1){
-                        curSite = DBSite.ac_google;
-                    }else{
-                        curSite = DBSite.google;
-                    }
+                    curSite = DBSite.google;
                 } else if (location.host.indexOf("bing") > -1) {
                     curSite = DBSite.bing;
                 }else {
                     curSite = DBSite.other;
                 }
+                curSite.pageNum = 1; // 当前页数
+                curSite.pageLoading = false;
+                curSite.pageUrl = "";
                 if (curSite.SiteTypeID == SiteType.GOOGLE && location.href.replace(/tbm=(isch|lcl|shop|flm)/, "") != location.href) {
                     // 图片站 、地图站、购物站
                     console.log("特殊站,不加载样式，不添加menu");
@@ -581,7 +640,8 @@ body[baidu] #s_lg_img_new{
                      * 初始化Block样式
                      */
                     initStyle: function(){
-                        AC_addStyle("button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;font-size:.85em;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}h3>button.ghhider{font-size:.75em}button.ghhider:hover{color:#006aff;background:#fff}", "AC-BlockStyle");
+                        AC_addStyle("button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;font-size:.85em;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}h3>button.ghhider{font-size:.75em}button.ghhider:hover{color:#006aff;background:#fff}",
+                            "AC-BlockStyle");
                     },
                     /**
                      * 初始化屏蔽按钮加载
@@ -726,26 +786,6 @@ body[baidu] #s_lg_img_new{
                     linkTarget.href = 'https://www.baidu.com/favicon.ico';
                     document.head.appendChild(linkTarget);
                 }
-                // ！没啥用了！
-                // if(window.top != window){
-                //     // 只有当前页面是处于iframe状态下才会发送消息-向父窗体传递当前搜索的串，便于父窗体改变相应的内容
-                //     // 用于sheigan.com/search的搜索内容变化
-                //     // 用于兼容搜索模式，不存在数据泄露
-                //     window.top.postMessage({acv:getSearchValue()}, "*");
-                //     if (curSite.SiteTypeID == SiteType.GOOGLE && curSite.is_acgoogle == true){
-                //         // 地址跳转到google搜索
-                //         document.head.innerHTML = "";
-                //         document.body.innerHTML = "";
-                //         GM_xmlhttpRequest({
-                //             url: "https://www.google.com/search?q="+getSearchValue(),
-                //             method: "GET",
-                //             timeout: 5000,
-                //             onload: function (response) {
-                //                 document.body.innerHTML = response.responseText;
-                //             }
-                //         });
-                //     }
-                // }
                 try {
                     if (curSite.SiteTypeID != SiteType.OTHERS) {
                         document.addEventListener('DOMNodeInserted', MainCallback, false);
@@ -768,15 +808,134 @@ body[baidu] #s_lg_img_new{
                 function ShowSearchBox(){
                     // TODO 待完成
                 }
+                function windowscroll( fn ) {
+                    var beforeScrollTop = document.documentElement.scrollTop,
+                        fn = fn || function() {};
+                    window.addEventListener("scroll", function(e) {
+                        var afterScrollTop = document.documentElement.scrollTop,
+                            delta = afterScrollTop - beforeScrollTop;
+                        if( delta === 0 ) return false;
+                        fn( delta > 0 ? "down" : "up" , e);
+                        beforeScrollTop = afterScrollTop;
+                    }, false);
+                }
+                windowscroll(function(direction, e){
+                    if(direction === "down"){ // 下滑才准备翻页
+                        let spl = document.querySelector("#sp-fw-a_enable");
+                        // 开启后，且在非（suprepreloader启用）时均可
+                        if(ACConfig.isAutopage == true && !(spl && spl.checked == true)){
+                            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+                            if(document.documentElement.scrollHeight <= document.documentElement.clientHeight + scrollTop + 666 && curSite.pageLoading == false) {
+                                curSite.pageLoading = true;
+                                ShowPager.loadMorePage();
+                                // setTimeout(function(){curSite.pageLoading = false;}, 800);
+                            }
+                        }
+                    }
+                })
+                var ShowPager = {
+                    getFullHref: function(e) {
+                        "string" != typeof e && (e = e.getAttribute("href"));
+                        var t = this.getFullHref.a;
+                        return t || (this.getFullHref.a = t = document.createElement("a")), t.href = e, t.href;
+                    },
+                    createDocumentByString : function(e) {
+                        if (e) {
+                            if ("HTML" != document.documentElement.nodeName) return (new DOMParser).parseFromString(e, "application/xhtml+xml");
+                            var t;
+                            try {
+                                t = (new DOMParser).parseFromString(e, "text/html");
+                            } catch (e) {}
+                            if (t) return t;
+                            if (document.implementation.createHTMLDocument) t = document.implementation.createHTMLDocument("superPreloader"); else try {
+                                (t = document.cloneNode(!1)).appendChild(t.importNode(document.documentElement, !1)),
+                                    t.documentElement.appendChild(t.createElement("head")), t.documentElement.appendChild(t.createElement("body"));
+                            } catch (e) {}
+                            if (t) {
+                                var r = document.createRange();
+                                r.selectNodeContents(document.body);
+                                var n = r.createContextualFragment(e);
+                                t.body.appendChild(n);
+                                for (var a, o = {
+                                    TITLE: !0,
+                                    META: !0,
+                                    LINK: !0,
+                                    STYLE: !0,
+                                    BASE: !0
+                                }, i = t.body, s = i.childNodes, c = s.length - 1; c >= 0; c--) o[(a = s[c]).nodeName] && i.removeChild(a);
+                                return t;
+                            }
+                        } else console.error("[AC-Script]", "没有找到要转成DOM的字符串");
+                    },
+                    loadMorePage : function() {
+                        if(curSite.pager){
+                            console.log("准备加载翻页数据");
+                            AC_addStyle(".sp-separator{line-height:1.8 !important;opacity:1 !important;position:relative !important;float:none !important;top:0 !important;left:0 !important;min-width:366px;width:auto;text-align:center !important;font-size:14px !important;display:block !important;padding:3px 0 !important;margin:5px 10px 8px;clear:both !important;border-style:solid !important;border-color:#cccccc !important;border-width:1px !important;-moz-border-radius:30px !important;border-radius:30px !important;background-color:#ffffff !important;}.sp-separator:hover{box-shadow:0 0 11px rgba(33,33,33,0.2);}#sp-separator-hover{display:none;}.sp-separator:hover #sp-separator-hover{display:block;}.sp-separator .sp-someinfo{position:absolute !important;right:10px !important;font-size:12px !important;font-style:italic !important;background:none !important;}.sp-separator img{vertical-align:middle !important;cursor:pointer !important;padding:0 !important;margin:0 5px !important;border:none !important;display:inline-block !important;float:none !important;width:auto;height:auto;}.sp-separator a{margin:0 20px 0 -6px !important;display:inline !important;text-shadow:#fff 0 1px 0 !important;background:none !important;color:#595959 !important;}.sp-separator input{padding:0 !important;line-height:23px !important;}.sp-separator .sp-md-span{font-weight:bold !important;margin:0 20px !important;}#sp-sp-md-number{width:6ch !important;vertical-align:middle !important;display:inline-block !important;text-align:left !important;}",
+                                "AC-Preload")
+                            let curPageEle = getElementByXpath(curSite.pager.nextLink);
+                            var url = this.getFullHref(curPageEle);
+                            if(curSite.pageUrl === url){
+                                console.error("[AC-Script]", "翻页到达底部了");
+                                return;
+                            }// 不会重复加载相同的页面
+                            curSite.pageUrl = url;
+                            // 对url的数据进行读取
+                            curSite.pager.startFilter && curSite.pager.startFilter();
+                            GM_xmlhttpRequest({
+                                url: url,
+                                method: "GET",
+                                timeout: 5000,
+                                onload: function (response) {
+                                    try{
+                                        var newBody = ShowPager.createDocumentByString(response.responseText);
+                                        let pageElems = getAllElements(curSite.pager.pageElement, newBody);
+                                        let toElement = getAllElements(curSite.pager.HT_insert[0])[0];
+                                        if(pageElems.length >= 0){
+                                            // 插入翻页按钮元素
+                                            curSite.pageNum++;
+                                            let addTo = "beforeend";
+                                            if(curSite.pager.HT_insert[1] == 1) addTo = "beforebegin";
+
+                                            toElement.insertAdjacentHTML(addTo, "<div class='sp-separator AC' id='sp-separator-ACX'><a class='sp-sp-nextlink' target='_blank'><b>第 <span style='color:#595959!important;'>ACX</span> 页</b></a><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAWtJREFUeNrclE0rRGEUx8c1GUpRJIVIZGdhZCVr38GGhaI0ZXwCkliglChZEcvJxhdgYWOjLEUpm/EyiLzze+o8dTzdO3PljoVTv7rPc8/5d+6555xYrEhWop6boda5+6l9wjWcWpF+WIbqCJJ9hFRcDr3QAIkIhKugz5PDfkSixkphz5aiAnqgE8rgWRxGoSOPyBkswQuUwyscw4HrmFCZL8Kt/JAg7mEFPEmo4FdPwk0BUcsdzIap0TQ8qMAPuICcEjLnd+VjSjcfJNgIc/DkZGSymYGsnK9EZMrxe4MFaNGiZjC2fT5zQ3p7QDK1dR2GSljziclAvRUe8nHYVA4jjvC43NfAuk/smB2QNqcsWxKcLbAKTFnS0hWD6n27Fd6FLqiDI5iQmQ9jpiVT0sNJ6aYd7dAE3QHBbinSAX5JWWaxuLo8F35jh/bBK9Y+/r/Cl6pLcnna8NvuDGMnslpbZRpXZYT/3r4EGACZL3ZL2afNFAAAAABJRU5ErkJggg==' class='sp-sp-gotop' alt='去到顶部' title='去到顶部'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAslJREFUeNrclTtMWmEUxz/uvTzlIUhpNMR0aGNjrNHSmHTqRJyadujQDbSGRwJUaYCmDizqUEw6ODVNGgbpYCfSpFINCQzFR9oyMXRsXFCsAXkIKNL/R7gGWxOsSdPEk5zc3O+e87vn+59zv0vIpbSJiQmyubn5LBKJpNbX11+4XC5Buxy2XYDNZiMOh2OW4ziPTCbTi8XikeHh4SsSieQTXnIxsN1uJ1ardVYgEDgPDw+V9Xqd1Go1Mcuyg7AuuVy+sra29ndgVEnGx8dnhEKhs1qtKgE/eXZ8fCzC+q3+/n6tSqVaSSQS5wM7nU5iMplmsF1XpVI5BeXt6OhIBFkGAe9SKpV/wNmzKjWbzRT6tFwuK86CUqPrkIVWPjQwMKBWKBSn4Ozv0LGxsRmRSDSFSjua0Do8TRWAS+B5+B68g/IhixCNvQPN1WjuieZsS/f1aNQ0wzBuaCqlUCQRtVr9Es1K4kVDWJNhrQjAIiqMlkqle804FnkjBoOhEzv4vrGxkW2ALRaLFrq+QoAV2nE8tLe3dzEYDE5vb2939vX1PcBkiKVSaQ1jForFYq+NRqMum83ebsYzmJq7sGu4xhkKxsDfB/AxnO860ev1oeXlZU8gEMgmk0kFqmw8o9dUKiWfn58vhMPh54h7S+OpQXNSLBYfejyeR1yzw9dbRon09PS8W11dnfL5fJl8Pk+0Wi3hk5vyCNBY4vV6f0Im9+joKJNOp818o8G70ah4aWnpIzSKYCa/dXd3B+PxuHNycjKzs7NzAms1+qFQy+VydDRz0WjUpdPp3tB8TFM0FAqFGxXPzc19plJrNJqraMoXt9tNt3Suc+Tg4ICeJfmFhQVLoVAwoKG7fr//B8cHAL6Fy9ZFDinaG/r5w77ya8y/OhEvKRhjtIup2YMTeBb3mXY53HnAmNkP+/v7NzHTTwAO4f79f/ud/RJgAOLcRNZqLojMAAAAAElFTkSuQmCC' class='sp-sp-gopre' title='上滚一页'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAtxJREFUeNrclc9L2mEcx7/6NbVZqRVj7pIOlIUuZ1HMgv0BDcqT7JrskH13ELPBF7eTvz10HznWQBlBRIfBXIfBLmqXscvYZWPKrMNIU9Apmrr34/w6i0ovMZjw+H0+z/N8Xt+Pn/fn80hR/+WHYRhBIpFwRKPRz/F4/KnD4RB28xH0Ah4cHHyoUCjsIpFIIZPJHkml0m9Yfn2ZD78XcL1eH6rValIMCmMUtqKbD7/HbNQxaq15oxcH/lXpcmXgtnh2u/2mXC6/DqE+sSxLlUqlniE0TVPBYJAqFot6+GV9Pt+PJthms80sLS2xEonkhlgs/jgwMOBcXV3N5fP5rlCcp9bX1yWLi4uecrk8U6lUshDY3wRbLJYFGKZsNksq4N78/LwY9hOn05k5Ojqi+PzTGePxeFwZUl6vd8hkMvkPDg6sZJ2M5eXlr1wqUu2kA5JOpy2IAO+oO9fW1n5mMpk2nDjmcjkKNU25XC652Wx2pVIp65mXJ2nyjUPpqakpNZxuA8Y5T87OzsobjcYHpVKpGhsbe1CtVkXYqxQKhTdqtfqL1Wr1JpPJxxyU5Lq/vz8aCoX8TTDatYiFhF6vxx5tAJwm8OPj48m5ubmKSqUaAWwSa9eQw6JGo/luNBoNh4eHbAe0JhAINsLh8LNAIJCiudhxB+Qh2ludTifDAQLvI3AIch+Rkl8jJlrhCbOqgfoLmDepOF/BfGNra2sFFZFtvqgzMbFYjAiyp9Vqh4VC4cTJyYmQ90epIQJtHRO1bA5aRhAvdnZ2GI/H87cEz5YPgeOS2RsfHx9B7u+gOi68yQAtYX9zd3eXgZCna/s8By5ypGUUzhOISHgO9BfWXwG6chZ6IbiVc6LwnsFgGIVAepLzjk4rYW1ze3ubcbvd53fjZV2FaqGQ63fT09PDMO9i9BEoon0J9Rm/339xm3dr2f39fVLX7wFvoMVvoYWfRyIRFndD/Z/8nf0WYAA8EC1Z/ZNm4gAAAABJRU5ErkJggg==' class='sp-sp-gonext' title='下滚一页'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXFJREFUeNrM1c8rBGEcx/FdtCEkLqYtpdwkKSUHUhxwITdK+Z3yM2cOLnJ39Cc44SgHScmJwlFxsIdlCScO6/2t76Onp52dXTtbnno1M8+Pz84+zzMzkcg/KA3oRTzM0A4cI4VTdIUVPIM3pPGO5aABJTkGx1BqjYmFFZxW7nnBwXmXogWX6bEGc2jEIU7+kNWDUSSwZyqndSvJ3N1g2Bm0oLtB2j+w7rQP4MpqXzRT0YRaPW/BthMedYLs60HsoE2vq9BsPwAJa8XFLUa0fUrvROo/saT1Q9adGimdlt8yj6TT6Q6d2vaida9YRbtP6EqmBZC5fHA6X+AAz1bwEc6cfk9+oaZM4NoZJL70+J2hTaZtNpet041zK8yP/Mgl+rOF1emr0UM1xnAfEPyISd0Jno6vtx+QuM6PZ22lpO7dbEV2Siv6rPeIjNs1HdYC7ixfG+YBqdTVDqPIv6iIWvO7iXGUFxAqi72PraJ9IH8EGACQcYjYRd5GHwAAAABJRU5ErkJggg==' class='sp-sp-gobottom' alt='去到底部' title='去到底部'></div>"
+                                                .replace(/ACX/gm, curSite.pageNum));
+                                            // 插入新页面元素
+                                            pageElems.forEach(function(one){
+                                                toElement.insertAdjacentElement(addTo, one);
+                                            });
+                                            // 替换待替换元素
+                                            try {
+                                                let oriE = getAllElements(curSite.pager.replaceE);
+                                                let repE = getAllElements(curSite.pager.replaceE, newBody);
+                                                if(oriE.length == repE.length){
+                                                    for(var i = 0; i < oriE.length; i++){
+                                                        oriE[i].innerHTML = repE[i].innerHTML;
+                                                    }
+                                                }
+                                            }catch (e) {
+                                            }
+                                        }
+                                    }catch (e) {
+                                    }
+                                    curSite.pageLoading = false;
+                                },
+                                onerror:function(){
+                                    curSite.pageLoading = false;
+                                }
+                            });
+                        }
+                    },
+                };
 
                 function AutoRefresh() {
                     if (!ACConfig.isRightDisplayEnable) {
                         // 移除右边栏 -注意在#wrapper>#con-at>#result-op xpath-log有时候很重要，不能隐藏
-                        AC_addStyle("#content_right{display:none !important;}#content_right td>div:not([id]){display:none;}#content_right .result-op:not([id]){display:none!important;}#rhs{display:none;}", "AC-RightRemove");
+                        AC_addStyle("#content_right{display:none !important;}#content_right td>div:not([id]){display:none;}#content_right .result-op:not([id]){display:none!important;}#rhs{display:none;}",
+                            "AC-RightRemove");
                     } else {
                         if (CONST.AdsStyleMode == 2) {
                             // 非双列模式下尽可能的显示右侧栏
-                            AC_addStyle("@media screen and (min-width: 1250px) {#container{width: 80% !important;}.container_l #content_right{margin-right: calc(18% - 210px);position: absolute;right: -200px;display:block !important;overflow:hidden;width: 22vw !important;}", "AC-RightRemove");
+                            AC_addStyle("@media screen and (min-width: 1250px) {#container{width: 80% !important;}.container_l #content_right{margin-right: calc(18% - 210px);position: absolute;right: -200px;display:block !important;overflow:hidden;width: 22vw !important;}",
+                                "AC-RightRemove");
                         }
                     }
                     if (!ACConfig.isALineEnable) {
@@ -792,7 +951,8 @@ body[baidu] #s_lg_img_new{
                         , "AC-special-BAIDU"
                     );
                     /*"自定义"按钮效果*/
-                    AC_addStyle(".newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline}#myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#2866bd;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1)}#myuser .myuserconfig:hover{background:#2970d4 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}", "AC-MENU_Btn");
+                    AC_addStyle(".newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline}#myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#2866bd;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1)}#myuser .myuserconfig:hover{background:#2970d4 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}",
+                        "AC-MENU_Btn");
                     /*自定义页面内容效果*/
                     AC_addStyle('body[baidu]  #sp-ac-container .container-label:not([class*="baidu"])>label,\n' +
                         '   body[google] #sp-ac-container .container-label:not([class*="google"])>label,\n' +
@@ -808,7 +968,8 @@ body[baidu] #s_lg_img_new{
                         '   body[sogou]   #sp-ac-container .container-label[class*="sogou"]>labelhide\n' +
                         '{' +
                         'display:none;\n' +
-                        '}#sp-ac-container labelHide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container labelHide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body > #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}', "AC-MENU_Page");
+                        '}#sp-ac-container labelHide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container labelHide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body > #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
+                        "AC-MENU_Page");
                 }
                 AutoRefresh();
                 try {
@@ -838,7 +999,7 @@ body[baidu] #s_lg_img_new{
                             InsertSettingMenu();
                             ShowSetting();
                             ACHandle(); // 处理主重定向
-                            AutoRefresh();
+                            // AutoRefresh();
                             if (ACConfig.isAdsEnable) { // 放进来，减少卡顿
                                 removeAD_baidu_sogou();
                             }
@@ -883,6 +1044,11 @@ body[baidu] #s_lg_img_new{
                         let expires = "expires=" + d.toUTCString();
                         document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
                     }
+                }
+
+                function AutoLoadCustomCSS(){ // 按键触发reload
+                    var cssValue = document.querySelector("#sp-ac-userstyleTEXT").value;
+                    AC_addStyle(cssValue, "AC-userStyle", "head", true); // 用户自定义的样式表
                 }
 
                 function getBaiduHost(sitetpNode){
@@ -1032,8 +1198,9 @@ body[baidu] #s_lg_img_new{
                                 "            <ul class='setting-main'>\n" +
                                 "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
                                 "                   <label title='Using English language to display'><input id='sp-ac-isEnLang' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isEnLang ? 'checked' : '') + ">En-Language</label></li>\n" +
-                                "                <li><label title='去除部分页面的广告信息，还你一个干净整洁的页面' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label></li>\n" +
-                                "                <li><label title='点击页面block按钮添加你想要隐藏的地址，脚本将自动隐藏部分结果为小横幅，DIY按钮中点击表格内容可以取消隐藏' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">附加2-自主拦截域名</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='自定义BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
+                                "                <li><label title='去除部分页面的广告信息，还你一个干净整洁的页面' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label>\n" +
+                                "                   <label title='自动翻页' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"'><input id='sp-ac-isAutopage' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAutopage ? 'checked' : '') + ">自动翻页</label></li>\n" +
+                                "                <li><label title='点击页面block按钮添加你想要隐藏的地址，脚本将自动隐藏部分结果为小横幅，DIY按钮中点击表格内容可以取消隐藏' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">附加2-自主拦截域名</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='自定义BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
                                 "                    <label><input title='自动移除已经屏蔽的域名' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">自动移除</label>" +
                                 "                    <label><input title='隐藏掉block按钮的显示' id='sp-ac-blockBtnDisplay' type='checkbox' " + (ACConfig.isBlockBtnDisplay ? '' : 'checked') + ">隐藏按钮</label>" +
                                 "                </li>\n" +
@@ -1132,7 +1299,8 @@ body[baidu] #s_lg_img_new{
                                 "            <ul class='setting-main'>\n" +
                                 "                <li><label title='Turn on or off redirect'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">Main-Redirect Func</label>\n" +
                                 "                   <label title='使用英文显示页面'><input id='sp-ac-isEnLang' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isEnLang ? 'checked' : '') + ">使用英文</label></li>\n" +
-                                "                <li><label title='Remove the ads on the page, and return you a clean page' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">Add1-Remove Ads</label></li>\n" +
+                                "                <li><label title='Remove the ads on the page, and return you a clean page' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">Add1-Remove Ads</label>\n" +
+                                "                   <label title='Auto load next page'><input id='sp-ac-isAutopage' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAutopage ? 'checked' : '') + ">Auto Page</label></li>\n" +
                                 "                <li><label title='Click the \'Block\' button to add the address which you want to hide. The script will hide it with small banner automatically. \'DIY\' button for editting the hiding list' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">Add2-Block host</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='Edit BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
                                 "                    <label><input title='remove the block results automatically' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">Auto remove</label>" +
                                 "                    <label><input title='hide the \'Block\' button' id='sp-ac-blockBtnDisplay' type='checkbox' " + (ACConfig.isBlockBtnDisplay ? '' : 'checked') + ">Hide \'Block\' button</label>" +
@@ -1234,6 +1402,7 @@ body[baidu] #s_lg_img_new{
                                 ACConfig.isRedirectEnable = document.querySelector("#sp-ac-redirect").checked;
                                 ACConfig.isEnLang = document.querySelector("#sp-ac-isEnLang").checked; // 是否选择为对立语言
                                 ACConfig.isAdsEnable = document.querySelector("#sp-ac-ads").checked;
+                                ACConfig.isAutopage = document.querySelector("#sp-ac-isAutopage").checked;
                                 ACConfig.isBlockEnable = document.querySelector("#sp-ac-block").checked;
                                 ACConfig.isBlockDisplay = document.querySelector("#sp-ac-removeBlock").checked;
                                 ACConfig.isBlockBtnDisplay = !document.querySelector("#sp-ac-blockBtnDisplay").checked;
@@ -1291,10 +1460,16 @@ body[baidu] #s_lg_img_new{
                                 per.addEventListener("click", function (e) {
                                     let cur = e.srcElement || e.target;
                                     let className = cur.parentNode.className.replace("container-label ", "");
-                                    AC_addStyle(".XX>label,.XX>br{display:unset !important;}.XX>labelhide{display:none !important;}".replace(/XX/gm, className), "AC-ShowHideItem-" + className, "body");
+                                    AC_addStyle(".XX>label,.XX>br{display:unset !important;}.XX>labelhide{display:none !important;}".replace(/XX/gm, className),
+                                        "AC-ShowHideItem-" + className, "body");
                                     e.stopPropagation();
                                 });
                             });
+                            if(ACConfig.isUserStyleEnable){
+                                document.querySelector("#sp-ac-userstyleTEXT").addEventListener("paste", AutoLoadCustomCSS);
+                                document.querySelector("#sp-ac-userstyleTEXT").addEventListener("keyup", AutoLoadCustomCSS);
+                                document.querySelector("#sp-ac-userstyleTEXT").addEventListener("change", AutoLoadCustomCSS);
+                            }
                         } catch (e) {
                         }
                     }
@@ -1430,7 +1605,7 @@ body[baidu] #s_lg_img_new{
                     }
                 }
 
-                let DealRedirect = function (request, curNodeHref, respText, RegText) {
+                var DealRedirect = function (request, curNodeHref, respText, RegText) {
                     if (respText == null || typeof(respText) == "undefined") return;
                     let resultResponseUrl = "";
                     if (RegText != null) {
@@ -1690,7 +1865,7 @@ body[baidu] #s_lg_img_new{
                     }
                 }, time);
             }
-            function AC_addStyle(css, className, addToTarget, isReload, initType) { // 添加CSS代码，不考虑文本载入时间，带有className
+            function AC_addStyle(css, className, addToTarget, isReload, initType) { // 添加CSS代码，不考虑文本载入时间，只执行一次-无论成功与否，带有className
                 RAFFunction(function() {
                     /**
                      * addToTarget这里不要使用head标签,head标签的css会在html载入时加载，
@@ -1836,7 +2011,7 @@ body[baidu] #s_lg_img_new{
                             .replace(/#aaa(a*)/igm, color)
                             .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
                             .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
-                        AC_addStyle(style, "AC-" + CONST.keySite + "HuYanStyle" + (isNewGM ? "" : "-File"), "head", true, "text/css"); // 需要修改的，所以为true
+                        AC_addStyle(style, "AC-" + CONST.keySite + "HuYanStyle" + (isNewGM ? "" : "-File"), "head"); // 需要修改的，所以为true
                     },
                     clip255: function (value) {
                         if (value > 255) return 255;
@@ -1873,19 +2048,21 @@ body[baidu] #s_lg_img_new{
                     loadThreePageStyle: function () {
                         let cssHead = "";
                         if (curSite.SiteTypeID == SiteType.BAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-                        if (curSite.SiteTypeID == SiteType.GOOGLE) cssHead = ".srg,#acid_src";
+                        if (curSite.SiteTypeID == SiteType.GOOGLE) cssHead = ".srg, #rso";
                         if (curSite.SiteTypeID == SiteType.BING) cssHead = "#b_content #b_results";
                         if (curSite.SiteTypeID == SiteType.SOGOU) cssHead = "#main .results";
-                        AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(33%,1fr));} #container #content_left>*:not([class*='result']),#acid_src div:last-child{grid-column-end: 4;}", "AC-ThreePageStyle", "head");
+                        AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(33%,1fr));} #container #content_left>*:not([class*='result']):last-child, #rso>div:not(.g), #rso .srg{grid-column-end: 4;}",
+                            "AC-ThreePageStyle", "head");
                     },
                     // 加载四列样式
                     loadFourPageStyle: function () {
                         let cssHead = "";
                         if (curSite.SiteTypeID == SiteType.BAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-                        if (curSite.SiteTypeID == SiteType.GOOGLE) cssHead = ".srg,#acid_src";
+                        if (curSite.SiteTypeID == SiteType.GOOGLE) cssHead = ".srg, #rso";
                         if (curSite.SiteTypeID == SiteType.BING) cssHead = "#b_content #b_results";
                         if (curSite.SiteTypeID == SiteType.SOGOU) cssHead = "#main .results";
-                        AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(25%,1fr));} #container #content_left>*:not([class*='result']),#acid_src div:last-child{grid-column-end: 5;}", "AC-FourPageStyle", "head");
+                        AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(25%,1fr));} #container #content_left>*:not([class*='result']), #rso>div:not(.g), #rso .srg{grid-column-end: 5;}",
+                            "AC-FourPageStyle", "head");
                     },
                     loadPlainToCSS: function(){
                         for (let i = 0; i < document.childNodes.length; i++) {
@@ -1961,7 +2138,6 @@ body[baidu] #s_lg_img_new{
                         /**护眼Style最后载入**/
                         if (CONST.HuYanMode == true || document.querySelector("style[class*='darkreader']") != null) CONST.StyleManger.loadHuYanStyle();
 
-                        // TODO 之前是在这里的启用所有样式表
                         CONST.StyleManger.loadPlainToCSS();
                     },
                     init: function () {
