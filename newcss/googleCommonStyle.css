@@ -6,15 +6,16 @@ div.res_top_banner
 #head .headBlock,
 #rs_top_new,
 #content_right,
-.srg>table,
-.srg>div[id*="30"],
-.srg .c-recommend,
-.srg .leftBlock,
-.srg .hit_top_new,
-.srg #fld,
-.srg div.rrecom-btn-parent,
+#rso>table,
+#rso>div[id*="30"],
+#rso .c-recommend,
+#rso .leftBlock,
+#rso .hit_top_new,
+#rso #fld,
+#rso div.rrecom-btn-parent,
 #content_right,
 #center_col>#taw,
+#fld
 #demo {
     display: none!important;
 }
@@ -85,7 +86,7 @@ a em {
 /* SearchItmes Bottom to Top ani */
 #search .srg, .med>#ires .srg{
     animation-name: ani_bottomTotop;
-    animation-duration: .8s;
+    animation-duration: .3s;
     animation-timing-function: ease;
 }
 /* SearchBar Left to Right ani */
@@ -194,7 +195,9 @@ a em {
 .srg .g[tpl='soft'] .op-soft-title a em,
 .srg .g div.r> a,
 .srg .g a h3,
-.srg .g div.r> a em {
+.srg .g div.r> a em,
+.mw #res h3,
+.mw #extrares h3{
     color: #2866bd;
     font-weight: bold;
 }
@@ -317,7 +320,7 @@ a em {
 /* ani */
 @keyframes ani_bottomTotop {
     0% {
-        transform: translateY(64px);
+        transform: translateY(32px);
         opacity: 0;
     }
     20% {
@@ -332,7 +335,7 @@ a em {
 }
 @keyframes ani_leftToright {
     0% {
-        transform: translateX(-128px);
+        transform: translateX(-32px);
         opacity: 0;
     }
     20% {
