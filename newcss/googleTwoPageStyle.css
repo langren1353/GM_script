@@ -34,12 +34,6 @@
     width: 80vw;
     margin: 0 auto;
 }
-#acid_src>div{
-    width: unset;
-    margin-left: 20px;
-    grid-column-start: 1;
-    grid-column-end: 6;
-}
 .srg .COEoid{
     margin: unset;
 }
@@ -50,15 +44,16 @@
     width: 100% !important;
     margin-left: unset !important;
 }
-#acid_src{
+.srg, #rso{
 	display: grid;
 	grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
 }
-.srg{
-	display: grid;
-	grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
+#rso .srg{
+    grid-column-start: 1;
+    grid-column-end: 3; /**bigger will cause items more than you think**/
 }
-#acid_src div:last-child{
+#rso>div:not(.g){
+    grid-column-start: 1;
     grid-column-end: 3;
 }
 /**search box align center**/

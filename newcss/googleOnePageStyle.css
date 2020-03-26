@@ -34,12 +34,6 @@
     width: 50vw;
     margin: 0 auto;
 }
-#acid_src>div{
-    width: unset;
-    margin-left: 20px;
-    grid-column-start: 1;
-    grid-column-end: 6;
-}
 #rso g-scrolling-carousel{
     margin: unset;
     margin-left: 20px;
@@ -50,13 +44,6 @@
 .col #center_col{
     width: 100% !important;
     margin-left: unset !important;
-}
-#acid_src, .srg{
-    display: grid;
-    margin: 0 auto;
-}
-#acid_src div:last-child{
-    grid-column-end: 3;
 }
 .srp .big #tsf{
     width: 833px;
