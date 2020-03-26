@@ -94,7 +94,7 @@ body #pagebar_container a{
 /* SearchItmes Bottom to Top ani */
 #main .results{
     animation-name: ani_bottomTotop;
-    animation-duration: .8s;
+    animation-duration: .3s;
     animation-timing-function: ease;
 }
 
@@ -106,7 +106,7 @@ body #pagebar_container a{
 }
 @keyframes ani_leftToright {
     0% {
-        transform: translateX(-128px);
+        transform: translateX(-32px);
         opacity: 0;
     }
     20% {
@@ -122,7 +122,7 @@ body #pagebar_container a{
 /* ani */
 @keyframes ani_bottomTotop {
     0% {
-        transform: translateY(64px);
+        transform: translateY(32px);
         opacity: 0;
     }
     20% {

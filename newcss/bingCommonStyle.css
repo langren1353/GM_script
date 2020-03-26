@@ -135,7 +135,7 @@ body{
 }
 @keyframes ani_leftToright {
     0% {
-        transform: translateX(-128px);
+        transform: translateX(-32px);
         opacity: 0;
     }
     20% {
@@ -151,7 +151,7 @@ body{
 /* ani */
 @keyframes ani_bottomTotop {
     0% {
-        transform: translateY(64px);
+        transform: translateY(32px);
         opacity: 0;
     }
     20% {
@@ -166,7 +166,7 @@ body{
 }
 @-webkit-keyframes ani_topTobuttom {
     0% {
-        -webkit-transform: translateY(-128px);
+        -webkit-transform: translateY(-32px);
         opacity: 0;
     }
     20% {

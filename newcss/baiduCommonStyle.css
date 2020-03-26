@@ -77,12 +77,12 @@ form.fm .s_btn:hover {
 }
 #wrapper #content_left {
     animation-name: ani_bottomTotop;
-    -webkit-animation-duration: .8s;
+    -webkit-animation-duration: .2s;
     -webkit-animation-timing-function: ease;
 }
 #head .head_wrapper{
     animation-name: ani_leftToright;
-    -webkit-animation-duration: .5s;
+    -webkit-animation-duration: .2s;
     -webkit-animation-timing-function: ease-out;
 }
 
@@ -310,7 +310,7 @@ form.fm .s_btn:hover {
 }
 @-webkit-keyframes ani_bottomTotop {
     0% {
-        -webkit-transform: translateY(128px);
+        -webkit-transform: translateY(32px);
         opacity: 0;
     }
     20% {
@@ -325,7 +325,7 @@ form.fm .s_btn:hover {
 }
 @-webkit-keyframes ani_leftToright {
     0% {
-        -webkit-transform: translateX(-196px);
+        -webkit-transform: translateX(-32px);
         opacity: 0;
     }
     20% {
@@ -340,7 +340,7 @@ form.fm .s_btn:hover {
 }
 @-webkit-keyframes ani_topTobuttom {
     0% {
-        -webkit-transform: translateY(-128px);
+        -webkit-transform: translateY(-32px);
         opacity: 0;
     }
     20% {
@@ -370,7 +370,6 @@ form.fm .s_btn:hover {
     #head .head_wrapper{
         -webkit-transform: translate3d(-140px,0,1px);
         transform: translate3d(-140px,0,1px);
-
         justify-content: center;
         display: flex;
     }
