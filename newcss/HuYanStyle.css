@@ -44,7 +44,7 @@ body #b_header{
 body[google]{
     background-color: #fDfDfD;
 }
-.srg .g, .bkWMgd>.g,
+#rso .g, .bkWMgd>.g,
 .bkWMgd g-inner-card,
 #rhscol #rhs,
 #rhscol #rhs .g>div,
@@ -56,14 +56,16 @@ body[google]{
 #rso .g,
 #rso>div:not(.g)>*{
     background-color: #AAAAAA ;
-    border: 1px double #A2D7D4 ;
+    border: 1px solid #9cd2cfAA;
     border-radius: 0px;
 }
-.srg .g:hover,
+#rso .g:hover,
 .bkWMgd>.g:hover {
     background-color: #CCCCCC !important;
+    border: 1px double #9cd2cf;
+    box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
 }
 .bkWMgd .g div.r,
-.srg .g h3{
+#rso .g h3{
     background-color: #BBBBBB ;
 }
