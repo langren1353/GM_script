@@ -3,7 +3,6 @@
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/shell/up.sh" line="97" />
     <bookmark url="file://$PROJECT_DIR$/shell/up.sh" line="87" />
-    <bookmark url="file://$PROJECT_DIR$/shell/qb_auto_rclone.sh" line="141" />
     <bookmark url="file://$PROJECT_DIR$/newcss/googleCommonStyle.css" line="113" />
     <bookmark url="file://$PROJECT_DIR$/newcss/googleCommonStyle.css" line="112" />
     <bookmark url="file://$PROJECT_DIR$/newcss/googleCommonStyle.css" line="114" />
@@ -17,17 +16,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/AC-DBHighLight" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/SiteConfigRules.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/HuYanStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/HuYanStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/sogouCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notepad/Notepad2.js" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/Notepad2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shell/qb_auto_rclone.sh" beforeDir="false" afterPath="$PROJECT_DIR$/shell/qb_auto_rclone.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,162 +50,12 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js">
+        <entry file="file://$PROJECT_DIR$/shell/qb_auto_rclone.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="223" column="31" lean-forward="true" selection-start-line="223" selection-start-column="31" selection-end-line="223" selection-end-column="31" />
-              <folding>
-                <element signature="e#75#81#0" expanded="true" />
-                <element signature="e#81#87#0" expanded="true" />
-                <element signature="e#87#93#0" expanded="true" />
-                <element signature="e#93#99#0" expanded="true" />
-                <element signature="e#99#105#0" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#b#0;n#a#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#src#0;n#img#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#src#0;n#img#1;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#src#0;n#img#2;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#src#0;n#img#3;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#iframe#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#li#0;n#!!top" expanded="true" />
-                <element signature="e#142#148#0" expanded="true" />
-                <element signature="e#152#158#0" expanded="true" />
-                <element signature="e#158#164#0" expanded="true" />
-                <element signature="n#style#0;n#li#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#li#2;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#li#2;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#li#0;n#!!top" expanded="true" />
-                <element signature="e#146#152#0" expanded="true" />
-                <element signature="e#162#168#0" expanded="true" />
-                <element signature="e#168#174#0" expanded="true" />
-                <element signature="n#style#0;n#li#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#li#2;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#li#2;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#li#2;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#1749#1753#0" expanded="true" />
-                <element signature="e#1753#1757#0" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#labelMain#0;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#3;n#labelMain#0;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#3071#3075#0" expanded="true" />
-                <element signature="e#3075#3079#0" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#labelMain#1;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#3;n#labelMain#1;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#4391#4395#0" expanded="true" />
-                <element signature="e#4395#4399#0" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#labelMain#2;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#2;n#labelMain#2;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#2;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#5561#5565#0" expanded="true" />
-                <element signature="e#5565#5569#0" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#labelMain#3;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#2;n#labelMain#3;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#1;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#7102#7108#0" expanded="true" />
-                <element signature="e#7108#7114#0" expanded="true" />
-                <element signature="e#7114#7120#0" expanded="true" />
-                <element signature="e#7120#7126#0" expanded="true" />
-                <element signature="n#style#0;n#label#2;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#7242#7248#0" expanded="true" />
-                <element signature="e#7248#7254#0" expanded="true" />
-                <element signature="e#7254#7260#0" expanded="true" />
-                <element signature="e#7260#7266#0" expanded="true" />
-                <element signature="n#style#0;n#label#3;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#7382#7388#0" expanded="true" />
-                <element signature="e#7388#7394#0" expanded="true" />
-                <element signature="e#7394#7400#0" expanded="true" />
-                <element signature="e#7400#7406#0" expanded="true" />
-                <element signature="n#style#0;n#label#4;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#label#0;n#li#8;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#label#0;n#li#8;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#textarea#0;n#li#12;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#ul#1;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#1;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#li#2;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#2030#2034#0" expanded="true" />
-                <element signature="e#2034#2038#0" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#labelMain#0;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#3;n#labelMain#0;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#3504#3508#0" expanded="true" />
-                <element signature="e#3508#3512#0" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#labelMain#1;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#3;n#labelMain#1;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#4986#4990#0" expanded="true" />
-                <element signature="e#4990#4994#0" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#labelMain#2;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#2;n#labelMain#2;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#2;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#6288#6292#0" expanded="true" />
-                <element signature="e#6292#6296#0" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#labelMain#3;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#2;n#labelMain#3;n#li#4;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#1;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#8044#8050#0" expanded="true" />
-                <element signature="e#8050#8056#0" expanded="true" />
-                <element signature="e#8056#8062#0" expanded="true" />
-                <element signature="e#8062#8068#0" expanded="true" />
-                <element signature="n#style#0;n#label#2;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#8184#8190#0" expanded="true" />
-                <element signature="e#8190#8196#0" expanded="true" />
-                <element signature="e#8196#8202#0" expanded="true" />
-                <element signature="e#8202#8208#0" expanded="true" />
-                <element signature="n#style#0;n#label#3;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="e#8324#8330#0" expanded="true" />
-                <element signature="e#8330#8336#0" expanded="true" />
-                <element signature="e#8336#8342#0" expanded="true" />
-                <element signature="e#8342#8348#0" expanded="true" />
-                <element signature="n#style#0;n#label#4;n#label#0;n#li#6;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#label#0;n#label#0;n#li#8;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#label#0;n#li#8;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#textarea#0;n#li#12;n#ul#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#ul#1;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#1;n#fieldset#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-                <element signature="e#183#189#1" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-                <element signature="e#186#192#1" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/newcss/googleCommonStyle.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="19" column="28" lean-forward="true" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/newcss/googleTwoPageStyle.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="5" column="20" lean-forward="true" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/newcss/HuYanStyle.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="44" column="30" lean-forward="true" selection-start-line="44" selection-start-column="30" selection-end-line="44" selection-end-column="30" />
+            <state relative-caret-position="252">
+              <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -226,36 +73,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>localstorage</find>
-      <find>getValue</find>
-      <find>window.</find>
-      <find>loadMorePage</find>
-      <find>isAutopage</find>
-      <find>isRedirectEnable</find>
-      <find>sp-sep</find>
-      <find>sp-ac-sp</find>
-      <find>ac_google</find>
-      <find>sp-ac-userstyleTEXT</find>
-      <find>UserStyleText</find>
-      <find>AutoRefresh</find>
-      <find>&quot;AC-userStyle&quot;</find>
-      <find>三列</find>
-      <find>AdsStyleMode_SoGou</find>
-      <find>AdsStyleMode</find>
-      <find>result</find>
-      <find>acid_</find>
-      <find>loadFourPageStyle</find>
-      <find>AC_addStyle</find>
-      <find>acid_src</find>
-      <find>todo</find>
-      <find>.mw #res h3, .mw #extrares h3</find>
-      <find>font</find>
-      <find>huyan</find>
-      <find>HuYan_Baidu</find>
-      <find>HuYanMode</find>
-      <find>loadHuYanStyle</find>
-      <find>google</find>
-      <find>#rso</find>
+      <find>sp_transition</find>
+      <find>prefs</find>
+      <find>sp-sp-gopre</find>
+      <find>getRelativeDiv(&quot;pre&quot;);</find>
+      <find>进入</find>
+      <find>ac_spfunc</find>
+      <find>pager</find>
+      <find>sogouTwoPageStyle</find>
+      <find>baiduCommonStyle</find>
+      <find>GM_getResourceText</find>
+      <find>conf</find>
+      <find>http://</find>
+      <find>online</find>
+      <find>下一页</find>
+      <find>#rso .g:hover</find>
+      <find>onlineDB</find>
+      <find>:hover</find>
+      <find>.srg</find>
+      <find>hover</find>
+      <find>box-shadow</find>
+      <find>border</find>
+      <find>qb_web_url</find>
+      <find>from_dc_tag</find>
+      <find>unfinished_tag_NoUpload</find>
+      <find>uploading_tag_NoUpload</find>
+      <find>uploading_tag</find>
+      <find>qbup.lock</find>
+      <find>这里</find>
+      <find>donotSeed</find>
+      <find>当前</find>
     </findStrings>
     <replaceStrings>
       <replace>ani_leftToright</replace>
@@ -272,7 +119,6 @@
         <option value="$PROJECT_DIR$/shell/up.sh" />
         <option value="$PROJECT_DIR$/shell/qb_autoUP.sh" />
         <option value="$PROJECT_DIR$/shell/ori.sh" />
-        <option value="$PROJECT_DIR$/shell/qb_auto_rclone.sh" />
         <option value="$PROJECT_DIR$/shell/tmp.sh" />
         <option value="$PROJECT_DIR$/AC-Taobao-Coupon.user.js" />
         <option value="$PROJECT_DIR$/gwd-AC.js" />
@@ -282,14 +128,21 @@
         <option value="$PROJECT_DIR$/AutoHighLight.user.js" />
         <option value="$PROJECT_DIR$/AC-DBHighLight" />
         <option value="$PROJECT_DIR$/newcss/bingCommonStyle.css" />
-        <option value="$PROJECT_DIR$/newcss/baiduCommonStyle.css" />
         <option value="$PROJECT_DIR$/newcss/sogouCommonStyle.css" />
         <option value="$PROJECT_DIR$/notepad/Notepad2.js" />
+        <option value="$PROJECT_DIR$/newcss/baiduCommonStyle.css" />
         <option value="$PROJECT_DIR$/newcss/googleOnePageStyle.css" />
         <option value="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" />
-        <option value="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" />
+        <option value="$PROJECT_DIR$/newcss/SiteRules.json" />
+        <option value="$PROJECT_DIR$/newcss/me.json" />
+        <option value="$PROJECT_DIR$/newcss/SiteRules.js" />
+        <option value="$PROJECT_DIR$/newcss/SiteRules2.json" />
+        <option value="$PROJECT_DIR$/newcss/SiteRules2.conf" />
+        <option value="$PROJECT_DIR$/newcss/SiteConfigRules.conf" />
         <option value="$PROJECT_DIR$/newcss/googleCommonStyle.css" />
         <option value="$PROJECT_DIR$/newcss/HuYanStyle.css" />
+        <option value="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" />
+        <option value="$PROJECT_DIR$/shell/qb_auto_rclone.sh" />
       </list>
     </option>
   </component>
@@ -300,13 +153,16 @@
     <option name="height" value="744" />
   </component>
   <component name="ProjectId" id="1P00jjeKHs16oFl0ZYO9GSw4U4W" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -317,7 +173,7 @@
             <path>
               <item name="GM_script" type="b2602c69:ProjectViewProjectNode" />
               <item name="GM_script" type="462c0819:PsiDirectoryNode" />
-              <item name="newcss" type="462c0819:PsiDirectoryNode" />
+              <item name="shell" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -337,10 +193,13 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="jsx.switch.disabled" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/YoudaoGW" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -415,11 +274,18 @@
       <workItem from="1585126757746" duration="1391000" />
       <workItem from="1585141441907" duration="19842000" />
       <workItem from="1585217575644" duration="1263000" />
+      <workItem from="1585221474168" duration="1144000" />
+      <workItem from="1585228091041" duration="222000" />
+      <workItem from="1585228536523" duration="1386000" />
+      <workItem from="1585230568414" duration="734000" />
+      <workItem from="1585239271093" duration="184000" />
+      <workItem from="1585307100964" duration="15127000" />
+      <workItem from="1585335687142" duration="2332000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77520000" />
+    <option name="totallyTimeSpent" value="98649000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -446,6 +312,7 @@
       <window_info anchor="bottom" id="JRebel Console" order="13" side_tool="true" />
       <window_info anchor="bottom" id="JRebel Executor" order="14" />
       <window_info anchor="bottom" id="Terminal" order="15" />
+      <window_info anchor="bottom" id="TypeScript" order="16" />
       <window_info anchor="right" id="Database" order="0" />
       <window_info anchor="right" id="Palette&#9;" order="1" />
       <window_info anchor="right" id="SciView" order="2" />
@@ -479,6 +346,7 @@
       <window_info anchor="bottom" id="JRebel Console" order="13" side_tool="true" />
       <window_info anchor="bottom" id="JRebel Executor" order="14" />
       <window_info anchor="bottom" id="Terminal" order="15" />
+      <window_info anchor="bottom" id="TypeScript" order="16" />
       <window_info anchor="right" id="Database" order="0" />
       <window_info anchor="right" id="Palette&#9;" order="1" />
       <window_info anchor="right" id="SciView" order="2" />
@@ -492,6 +360,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -569,13 +440,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/newcss/baidu.gif">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shell/qb_auto_rclone.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="20" column="23" lean-forward="true" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/shell/ori.sh">
       <provider selected="true" editor-type-id="text-editor">
@@ -666,13 +530,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/newcss/bingOnePageStyle.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/AutoHighLight.user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -690,24 +547,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/newcss/baiduCommonStyle.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7140">
-          <caret line="340" column="34" selection-start-line="340" selection-start-column="19" selection-end-line="340" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/newcss/bingCommonStyle.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2562">
           <caret line="122" column="1" selection-start-line="122" selection-start-column="1" selection-end-line="122" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/newcss/googleOnePageStyle.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1029">
-          <caret line="49" column="11" selection-start-line="49" selection-start-column="11" selection-end-line="49" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -734,10 +577,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/newcss/baiduCommonStyle.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="104" column="39" selection-start-line="104" selection-start-column="34" selection-end-line="104" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/newcss/googleOnePageStyle.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="12" column="21" lean-forward="true" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/newcss/googleTwoPageStyle.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="14" column="20" lean-forward="true" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/newcss/me.json" />
+    <entry file="file://$PROJECT_DIR$/newcss/SiteRules.js" />
+    <entry file="file://$PROJECT_DIR$/newcss/SiteRules.json" />
     <entry file="file://$PROJECT_DIR$/notepad/Notepad2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="3192" column="58" selection-start-line="3192" selection-start-column="58" selection-end-line="3192" selection-end-column="58" />
+        <state relative-caret-position="-84">
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#6753#8260#0" />
@@ -747,6 +613,7 @@
             <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#b#2;n#!!top" expanded="true" />
+            <element signature="e#273538#278577#0" />
             <element signature="e#1009#1015#0" expanded="true" />
             <element signature="e#1016#1022#0" expanded="true" />
             <element signature="n#style#0;n#button#0;n#div#1;n#!!top" expanded="true" />
@@ -769,42 +636,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/newcss/HuYanStyle.css">
+    <entry file="file://$PROJECT_DIR$/newcss/bingOnePageStyle.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="44" column="30" lean-forward="true" selection-start-line="44" selection-start-column="30" selection-end-line="44" selection-end-column="30" />
+        <state relative-caret-position="196">
+          <caret line="7" column="15" selection-end-line="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/newcss/googleCommonStyle.css">
+    <entry file="file://$PROJECT_DIR$/newcss/SiteConfigRules.conf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="19" column="28" lean-forward="true" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/newcss/googleTwoPageStyle.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="20" lean-forward="true" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
+        <state relative-caret-position="392">
+          <caret line="14" column="66" selection-start-line="14" selection-start-column="66" selection-end-line="14" selection-end-column="66" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="223" column="31" lean-forward="true" selection-start-line="223" selection-start-column="31" selection-end-line="223" selection-end-column="31" />
+        <state relative-caret-position="28">
+          <caret line="1037" column="61" selection-start-line="1037" selection-start-column="61" selection-end-line="1037" selection-end-column="61" />
           <folding>
+            <element signature="n#!!doc" expanded="true" />
             <element signature="e#75#81#0" expanded="true" />
             <element signature="e#81#87#0" expanded="true" />
             <element signature="e#87#93#0" expanded="true" />
             <element signature="e#93#99#0" expanded="true" />
             <element signature="e#99#105#0" expanded="true" />
+            <element signature="e#47066#48898#0" />
+            <element signature="e#47228#52267#0" />
+            <element signature="e#48943#49514#0" />
             <element signature="n#style#0;n#span#0;n#b#0;n#a#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#src#0;n#img#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#src#0;n#img#1;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#src#0;n#img#2;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#src#0;n#img#3;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#iframe#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#li#0;n#!!top" expanded="true" />
             <element signature="e#142#148#0" expanded="true" />
@@ -917,6 +777,27 @@
             <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
             <element signature="e#186#192#1" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/newcss/googleCommonStyle.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="122" column="14" selection-start-line="122" selection-start-column="4" selection-end-line="122" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/newcss/HuYanStyle.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1764">
+          <caret line="63" column="41" lean-forward="true" selection-start-line="63" selection-start-column="41" selection-end-line="63" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shell/qb_auto_rclone.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
         </state>
       </provider>
     </entry>
