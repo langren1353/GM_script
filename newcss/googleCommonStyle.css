@@ -1,6 +1,6 @@
 /******************* Store GoogleCommonStyle *******************/
 /* regular items, warring: iframes could be videos*/
-div.res_top_banner
+div.res_top_banner,
 #foot,
 #page .fk,
 #head .headBlock,
@@ -15,7 +15,7 @@ div.res_top_banner
 #rso div.rrecom-btn-parent,
 #content_right,
 #center_col>#taw,
-#fld
+#fld,
 #demo {
     display: none!important;
 }
@@ -84,7 +84,7 @@ a em {
 }
 
 /* SearchItmes Bottom to Top ani */
-#search .srg, .med>#ires .srg{
+#search #rso{
     animation-name: ani_bottomTotop;
     animation-duration: .3s;
     animation-timing-function: ease;
@@ -96,13 +96,13 @@ a em {
     animation-timing-function: ease-out;
 }
 
-.srg .jUmkFb:hover {
+#rso .jUmkFb:hover {
     margin: 0 auto;
     border-left:unset;
     padding: 0px 20px 15px;
     margin-bottom: 40px;
 }
-#rs, .srg>.g, #rso>.g{
+#rs, #rso>.g{
     width: 760px;
     padding: 0px 20px 15px;
     margin-top: 0px;
@@ -116,63 +116,63 @@ a em {
     -moz-box-shadow: 0 0 2px gray;
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
-#rs, .srg .g div.rc .s{
+#rs, #rso .g div.rc .s{
     max-width:unset;
 }
-.srg .g:hover{
+#rso .g:hover{
     box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
     border: 1px solid rgba(0,0,0,0.2);
-    background:#fafafa !important;
+    background-color: #fafafa;
 }
-.srg .g[tpl='soft'] .op-soft-title,
-.srg .g div.r {
+#rso .g[tpl='soft'] .op-soft-title,
+#rso .g div.r {
     margin: 0px -20px 10px -20px;
     padding: 8px 20px 5px;
     border-radius: 5px 5px 0px 0px;
 }
 /* Items - Color */
-.srg .f13 a,
-.srg .f13 em,
-.srg .c-span18 a,
-.srg .subLink_factory a,
-.srg .c-tabs-content a,
-.srg .op_offical_weibo_content a,
-.srg .op_offical_weibo_pz a,
-.srg .op_tieba2_tablinks_container a,
-.srg .op-tieba-general-right,
-.srg .op_dq01_title,
-.srg .op_dq01_table a,
-.srg .op_dq01_morelink a,
-.srg .op-tieba-general-mainpl a,
-.srg .op-se-listen-recommend,
-.srg .c-offset>div a {
+#rso .f13 a,
+#rso .f13 em,
+#rso .c-span18 a,
+#rso .subLink_factory a,
+#rso .c-tabs-content a,
+#rso .op_offical_weibo_content a,
+#rso .op_offical_weibo_pz a,
+#rso .op_tieba2_tablinks_container a,
+#rso .op-tieba-general-right,
+#rso .op_dq01_title,
+#rso .op_dq01_table a,
+#rso .op_dq01_morelink a,
+#rso .op-tieba-general-mainpl a,
+#rso .op-se-listen-recommend,
+#rso .c-offset>div a {
     text-decoration: none;
     color: #2866bd;
 }
-.srg .f13 a:hover,
-.srg .f13 em:hover,
-.srg .subLink_factory a:hover,
-.srg .c-tabs-content a:hover,
-.srg .op_tieba2_tablinks_container a:hover,
-.srg .op-tieba-general-right:hover,
-.srg .op_dq01_title:hover,
-.srg .op_dq01_table a:hover,
-.srg .op_dq01_morelink a:hover,
-.srg .op-tieba-general-mainpl a:hover,
-.srg .op-se-listen-recommend:hover,
-.srg .c-offset>div a:hover {
+#rso .f13 a:hover,
+#rso .f13 em:hover,
+#rso .subLink_factory a:hover,
+#rso .c-tabs-content a:hover,
+#rso .op_tieba2_tablinks_container a:hover,
+#rso .op-tieba-general-right:hover,
+#rso .op_dq01_title:hover,
+#rso .op_dq01_table a:hover,
+#rso .op_dq01_morelink a:hover,
+#rso .op-tieba-general-mainpl a:hover,
+#rso .op-se-listen-recommend:hover,
+#rso .c-offset>div a:hover {
     text-decoration: underline!important;
 }
-.srg .f13 a {
+#rso .f13 a {
     color: #008000;
 }
 /* Items - Adj */
 
-.srg .c-span18, .srg .c-span24{
+#rso .c-span18, #rso .c-span24{
     width: 100%;
     min-width: unset;
 }
-.srg .c-border {
+#rso .c-border {
     width: auto;
     border: none;
     border-bottom-color: transparent;
@@ -184,49 +184,49 @@ a em {
 }
 /* Img */
 
-.srg .se_com_irregular_gallery ul li,
-.srg .op_jingyan_list,
-.srg .g .op-img-address-link-type {
+#rso .se_com_irregular_gallery ul li,
+#rso .op_jingyan_list,
+#rso .g .op-img-address-link-type {
     display: inline-block;
     margin-left: 10px;
 }
 /* title */
-.srg .g[tpl='soft'] .op-soft-title a,
-.srg .g[tpl='soft'] .op-soft-title a em,
-.srg .g div.r> a,
-.srg .g a h3,
-.srg .g div.r> a em,
+#rso .g[tpl='soft'] .op-soft-title a,
+#rso .g[tpl='soft'] .op-soft-title a em,
+#rso .g div.r> a,
+#rso .g a h3,
+#rso .g div.r> a em,
 .mw #res h3,
 .mw #extrares h3{
     color: #2866bd;
     font-weight: bold;
 }
 /* title:visied */
-.srg .op-soft-title a:visited,
-.srg .op-soft-title a:visited em,
-.srg .g div.r> a:visited,
-.srg .g div.r> a:visited em,
-.srg .g a:visited h3 {
+#rso .op-soft-title a:visited,
+#rso .op-soft-title a:visited em,
+#rso .g div.r> a:visited,
+#rso .g div.r> a:visited em,
+#rso .g a:visited h3 {
     color: #660099;
 }
-.srg .op-soft-title a,
-.srg .g div.r> a {
+#rso .op-soft-title a,
+#rso .g div.r> a {
     position: relative;
 }
-.srg .op-soft-title a em,
-.srg .g div.r> a em {
+#rso .op-soft-title a em,
+#rso .g div.r> a em {
     text-decoration: none;
 }
-.srg .op-soft-title a:hover:after,
-.srg .g div.r> a:hover:after {
+#rso .op-soft-title a:hover:after,
+#rso .g div.r> a:hover:after {
     left: 0;
     width: 100%;
     -webkit-transition: width 350ms;
     -moz-transition: width 350ms;
     transition: width 350ms;
 }
-.srg .op-soft-title a:after,
-.srg .g div.r> a:after {
+#rso .op-soft-title a:after,
+#rso .g div.r> a:after {
     content: "";
     position: absolute;
     border-bottom: 2px solid #2866bd;
@@ -238,20 +238,20 @@ a em {
     transition: width 350ms, left 350ms;
 }
 
-.srg .op-soft-title a .srg .g div.r> a {
+#rso .op-soft-title a, #rso .g div.r> a {
     position: relative;
 }
 
-.srg .op-soft-title a:visited:hover:after,
-.srg .g div.r> a:visited:hover:after {
+#rso .op-soft-title a:visited:hover:after,
+#rso .g div.r> a:visited:hover:after {
     left: 0;
     width: 100%;
     -webkit-transition: width 350ms;
     -moz-transition: width 350ms;
     transition: width 350ms;
 }
-.srg .op-soft-title a:visited:after,
-.srg .g div.r> a:visited:after {
+#rso .op-soft-title a:visited:after,
+#rso .g div.r> a:visited:after {
     content: "";
     position: absolute;
     border-bottom: 2px solid #660099;
@@ -348,11 +348,11 @@ a em {
         opacity: 1;
     }
 }
-.srg>div:not([class]){
+#rso>div:not([class]){
     margin-left: 18px;
     margin-right: 18px;
 }
-.srg .g .exp-outline{
+#rso .g .exp-outline{
     display:none;
 }
 #main .mw #rhs {
@@ -379,11 +379,11 @@ div.res_top_banner #foot,#pag
     padding: 0;
 }
 /**Google ConnectionBox*/
-#rs, .srg .g {
+#rs, #rso .g {
     margin-bottom: 20px;
     border-radius: 10px;
 }
-.srg .g div.r {
+#rso .g div.r {
     border-radius: 10px 10px 0px 0px;
 }
 /**Rewrite main page -> web summary*/
@@ -409,7 +409,7 @@ div .kno-ftr a{
     font-size: 18px;
 }
 /*deal with cite too long and title too short*/
-.srg>.g .r>a>div{
+#rso>.g .r>a>div{
     width: 35rem;
 }
 /*reset logo position at drop */
