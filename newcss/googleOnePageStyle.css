@@ -1,13 +1,13 @@
 /**Store GoogleTwoPageStyle**/
-.srg {
+#rso {
     position: relative;
     float: unset;
 }
-.srg .jUmkFb:hover {
+#rso .jUmkFb:hover {
     margin-bottom: 30px;
     margin-left: 20px;
 }
-.srg>.g, #rso>.g{
+#rso .g{
     width: unset;
     margin-left: 20px;
     overflow: hidden;
@@ -21,7 +21,7 @@
     -moz-box-shadow: 0 0 2px gray;
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
-.search>#ires .srg>.g{
+.search>#ires #rso>.g{
     max-width: unset;
 }
 #main .mw #rhs{
