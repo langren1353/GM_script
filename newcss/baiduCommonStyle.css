@@ -104,10 +104,10 @@ form.fm .s_btn:hover {
 }
 #wrapper #content_left .result-op:hover,
 #wrapper #content_left .result:hover,
-#wrapper #content_left .result-op article:hover{
+#wrapper #content_left .result-op:hover article{
     box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
     border: 1px solid rgba(0,0,0,0.2);
-    background:#f3f3f3 !important;
+    background:#f3f3f3;
 }
 #wrapper #rs[ac-needhide],
 #wrapper #content_left .result[ac-needhide],

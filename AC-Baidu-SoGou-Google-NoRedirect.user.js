@@ -407,7 +407,7 @@ body[baidu] #s_lg_img_new{
                 pager:{
                     nextLink: "//div[@id=\"pagebar_container\"]/a[@id=\"sogou_next\"]",
                     pageElement: "//div[@class=\"results\"]",
-                    HT_insert: ["//div[@class=\"results\"]", 1],
+                    HT_insert: ["//div[@class=\"results\"]", 2],
                     replaceE: "id(\"pagebar_container\")"
                 }
             },

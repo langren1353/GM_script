@@ -8,15 +8,17 @@ form.fm .s_ipt_wr.bg{
 }
 #wrapper #content_left .result-op,
 #wrapper #content_left .result,
-#wrapper #rs ,
-#wrapper #rs ,
+#wrapper #content_left article,
+#wrapper #content_left .c-container,
+#wrapper #rs,
 #wrapper #content_right{
     background-color: #AAAAAA ;
     border: 1px double #A2D7D4 ;
     border-radius: 0px;
 }
 #wrapper #content_left .result-op:hover,
-#wrapper #content_left .result:hover {
+#wrapper #content_left .result:hover,
+#wrapper #content_left .result-op:hover article{
     background-color: #CCCCCC !important;
 }
 #wrapper #content_left .result h3,
