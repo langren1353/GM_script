@@ -34,8 +34,9 @@ body a em {
     background-color: #f8f8f8;
 }
 body #head{
-    background-color: #f8f8f8;
+    background-color: rgba(248, 248, 248, 0.4);
     border-bottom: none;
+    backdrop-filter: blur(10px)
 }
 form.fm {
     background-color: unset;

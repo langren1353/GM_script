@@ -196,7 +196,11 @@ em{color:#EA4335}
 .op-video-vast-ul li a{margin-bottom: unset;}
 body{background-color:#F7F7F7}
 #form .s_btn{background-color:rgba(0,0,0,0)}
-#wrapper #head{background-color:#f8f8f8}
+#wrapper #head {
+    background-color: rgba(248, 248, 248, 0.4);
+    border-bottom: none;
+    backdrop-filter: blur(10px)
+}
 .c-tabs-nav{background-color:#EEE}
 .c-tabs-nav-selected{border-bottom:#F44336 2px solid!important;background-color:#2196F3!important;color:#fff!important}
 #page a{background:#fff;color:#424242}
