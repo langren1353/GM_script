@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>莫顿码空间位置互相转换</title>
+  <script rel='subresource' src="https://cdn.staticfile.org/vue/2.6.10/vue.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <label>八叉树层数</label><input @keyup="calcRadix" type="text" v-model="level">
+    <label>莫顿八进制：</label><input @keyup="mortonOx2Morton" type="text" v-model="morton_ox">
+    <label>莫顿十进制：</label><input @keyup="morton2XYZ" type="text" v-model="morton">
+    <br>
+    <br><label>空间位置-x：</label><input @keyup="xyz2Morton" type="text" v-model="xyz.x">
+    <br><label>空间位置-y：</label><input @keyup="xyz2Morton" type="text" v-model="xyz.y">
+    <br><label>空间位置-z：</label><input @keyup="xyz2Morton" type="text" v-model="xyz.z">
+  </div>
+  <script>
+    function toRadio(number, from, to, level) {
+        from = from || 10;
+        number = parseInt(number, from);
+        var res = number.toString(to);
+        if (typeof level == "undefined") {
+            return res;
+        }
+        level = parseInt(level);
+        return (Array(level).join(0) + res).slice(-level);
+    }
+
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            level: "4",
+            morton: "0",
+            morton_ox:"0",
+            xyz: {
+                str: "",
+                x: "0",
+                y: "0",
+                z: "0"
+            }
+        },
+        methods: {
+            morton2XYZ() {
+                let ox = toRadio(this.morton, 10, 8, this.level);
+                this.morton_ox = ox;
+                let high = "", mid = "", low = "";
+                for (var i = 0; i < this.level; i++) {
+                    let curBin = toRadio(ox[i], 8, 2, 3); // 必须是3位，不足补零
+                    high += curBin[0];
+                    mid += curBin[1];
+                    low += curBin[2];
+                }
+                this.xyz.x = toRadio(high, 2, 10);
+                this.xyz.z = toRadio(mid, 2, 10);
+                this.xyz.y = toRadio(low, 2, 10);
+            },
+            mortonOx2Morton(){
+              this.morton = toRadio(this.morton_ox, 8, 10, this.level);
+              this.morton2XYZ();
+            },
+            xyz2Morton() {
+                // x转二进制，y转二进制，z转二进制
+                let high = toRadio(this.xyz.x, 10, 2, this.level);
+                let middle = toRadio(this.xyz.z, 10, 2, this.level);
+                let low = toRadio(this.xyz.y, 10, 2, this.level);
+
+                var array = new Array();
+                var res = "";
+                // 遍历每一位，进行融合
+                for (var i = 0; i < this.level; i++) {
+                    let x = high[i];
+                    let y = middle[i];
+                    let z = low[i];
+                    let per = toRadio(x + y + z, 2, 8); // 从(x,y,z)抽取的单个二进制数组合起来
+                    array[i] = per;
+                    res += per; // 数据拼接
+                }
+                this.morton_ox = res;
+                res = toRadio(res, 8, 10);
+                console.log(res);
+                this.morton = res;
+            },
+            calcRadix() {
+                return 1 << this.level;
+            }
+        },
+        computed: {}
+    });
+  </script>
+</body>
+</html>

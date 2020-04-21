@@ -625,7 +625,7 @@ body[baidu] #s_lg_img_new{
                         CONST.HuYanMode = ACConfig.HuYan_SoGou;
                         CONST.keySite = "sogou";
                     } else if(curSite.SiteTypeID == SiteType.BAIDU_XUESHU){
-                        CONST.AdsStyleMode = 2;
+                        CONST.AdsStyleMode = 2; // 单列居中即可
                     }
                     CONST.StyleManger = FSBaidu(); // 添加设置项-单双列显示
                 }
@@ -779,18 +779,29 @@ body[baidu] #s_lg_img_new{
                         node.width = "125";
                         node.removeAttribute("height");
                     });
-                    safeWaitFunc("#main img[alt='Google']", function(node){
+                    safeWaitFunc("#main .logo img[alt='Google']", function(node){
                         node.removeAttribute("srcset");
                         node.src = "https://www.baidu.com/img/bd_logo1.png?where=super";
                         node.setAttribute("height", "129");
                         node.style = "padding-top: 59px;";
-                    });
-                    document.title = document.title.replace(/^Google/, "百度一下，你就知道").replace(/ - Google 搜索/, "_百度搜索");
-                    let linkTarget = document.querySelector("link[type='image/x-icon']") || document.createElement('link');
-                    linkTarget.type = 'image/x-icon';
-                    linkTarget.rel = 'shortcut icon';
-                    linkTarget.href = 'https://www.baidu.com/favicon.ico';
-                    document.head.appendChild(linkTarget);
+                    }, 300);
+                    safeWaitFunc("form[role='search'] .logo img", function(node){
+                        node.removeAttribute("srcset");
+                        node.src = "https://www.baidu.com/img/bd_logo1.png?where=super";
+                        node.setAttribute("height", "129");
+                        node.style = "padding-top: 59px;";
+                    }, 300);
+                    document.title = document.title.replace(/^Google/, "百度一下，你就知道")
+                        .replace(/ - Google 搜索/, "_百度搜索")
+                        .replace(/ - Google Search/, "_百度搜索");
+                    safeWaitFunc("head", function(){
+                        console.log("缇欧换");
+                        let linkTarget = document.querySelector("link[type='image/x-icon']") || document.createElement('link');
+                        linkTarget.type = 'image/x-icon';
+                        linkTarget.rel = 'shortcut icon';
+                        linkTarget.href = 'https://www.baidu.com/favicon.ico';
+                        document.head.appendChild(linkTarget);
+                    })
                 }
                 try {
                     if (curSite.SiteTypeID != SiteType.OTHERS) {
