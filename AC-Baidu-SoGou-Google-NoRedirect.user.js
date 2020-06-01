@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name            AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
-// @name:en         AC-baidu:google_sogou_RedirectRemove_favicon_adaway_TwoLine
-// @name:zh         AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
-// @name:zh-CN      AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
-// @name:ja         AC-baidu:重定向最適化Baiduの搜狗Google検索結果のリダイレクト除去+に広告_favicon
-// @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.新增拦截百度百家号的无用推广数据-支持其他站点 3.去除百度的多余广告 4添加Favicon显示 5.页面CSS 6.添加计数 7.开关选择以上功能 8.自动翻页功能
+// @name            AC-baidu:重定向优化百度搜狗谷歌必应搜索_favicon_双列
+// @name:en         AC-baidu:google_sogou_bing_RedirectRemove_favicon_adaway_TwoLine
+// @name:zh         AC-baidu:重定向优化百度搜狗谷歌必应搜索_favicon_双列
+// @name:zh-CN      AC-baidu:重定向优化百度搜狗谷歌必应搜索_favicon_双列
+// @name:ja         AC-baidu:重定向最適化Baiduの搜狗のGoogleのBing検索結果のリダイレクト除去+favicon
+// @description     1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.新增自定义网站拦截功能 3添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能 7.自动翻页功能
 // @description:en  1.bypass the redirect link at baidu\sogou\google\haosou; 2.remove ads at baidu; 3.add Favicon for each website; 4.render your own style; 5.counter; 6.Switch to handle all 7.Auto Pager
 // @description:ja  1.迂回Baidu、Sogou、Google、Haosou検索検索結果の中の自分の遷移リンク; 2.Baiduの余分な広告を取り除く; 3.コメントを追加; 4.ページのカスタムCSP; 5.カウントを追加; 6.スイッチは以上の機能を選択します; 7.自動ページめくり.
 // @icon            https://img.tujidu.com/image/5e7ba0d6b0062.jpg
@@ -12,7 +12,7 @@
 // @license         GPL-3.0-only
 // @create          2015-11-25
 // @run-at          document-start
-// @version         23.31
+// @version         23.33
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
@@ -35,8 +35,10 @@
 // @home-url2       https://github.com/langren1353/GM_script
 // @homepageURL     https://greasyfork.org/zh-TW/scripts/14178
 // @copyright       2015-2020, AC
-// @lastmodified    2020-03-27
-// @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
+// @lastmodified    2020-06-01
+// @feedback-url    https://ac.tujidu.com
+// @note            2020.06-01-V23.33 儿童节更新一个版本；
+// @note            2020.04-24-V23.32 版本倒退：安全起见：默认关闭搜狗的自定义域名拦截功能和重定向功能-以后考虑更换方式；默认不开启重定向功能、默认不开启广告拦截功能；更新部分说明内容；同时也对部分支持不到位的，兼容不好的效果向大家说一声抱歉，之后我会更加努力让搜索结果更加方便查看和使用
 // @note            2020.03-27-V23.31 修复google由于页面结构更新导致的block功能失效的问题，同时修复谷歌护眼模式也失效的问题。新增翻页的按钮事件，新增使用在线config，避免由于页面结构改动又需要重新提交脚本更新
 // @note            2020.03-26-V23.30 小改代码with GoogleLOGO && 修复在inject极速模式下的小问题 && 修复各种样式问题 && 自定义样式开启动态模式 && 新增自动翻页功能-妈妈再也不用担心我翻页问题了-[推荐更新]
 // @note            2019.12-16-V23.29 自定义英文和中文的显示效果 && 修复上个版本导致的block按钮丢失的问题 && 修复部分百度内容无法拦截的情况
@@ -75,7 +77,7 @@
 // @note            2018.12.19-V21.15 修复上次更新导致的护眼模式失效的问题
 // @note            2018.12.19-V21.14 修复在edge上样式没有生效的问题
 // @note            2018.12.19-V21.13 修复上次更新代码忘记修改导致的bug，修复百度移动预测的遗留bug
-// @note            2018.12.18-V21.12 继续加快移除广告的内容，尽量减少闪烁的情况；吐槽一下，百度的广告是越来越烦了
+// @note            2018.12.18-V21.12 继续加快移除广告的内容，尽量减少闪烁的情况；
 // @note            2018.12.18-V21.11 修复在特殊情况下的样式表没有生效的问题，同时能够更快速的移除广告内容
 // @note            2018.12.18-V21.10 修复特殊关键内容搜索下，由于移除广告导致的页面顶部特殊标记显示不正确的问题。
 // @note            2018.12.18-V21.9 再次优化样式表加载速度，能更好的更快速的加载样式而不影响代码运行
@@ -295,10 +297,10 @@
         let ACConfig = {};
         /*存在对未初始化变量的初始化赋值-无需担心迭代兼容问题*/
         let DefaultConfig = {
-            isRedirectEnable: true,  // 是否开启重定向功能
-            isAdsEnable: true, // 是否开启去广告模式
+            isRedirectEnable: false,  // 是否开启重定向功能
+            isAdsEnable: false, // 是否开启去广告模式
             isAutopage: true,  // 是否开启自动翻页功能
-            isBlockEnable: true, // 是否开启去拦截模式
+            isBlockEnable: false, // 是否开启去拦截模式
             isBlockDisplay: false, // 是否删除已拦截的条目
             isBlockBtnDisplay: true, // 是否显示block按钮
             AdsStyleEnable: true, // 是否开启自定义样式模式
@@ -324,7 +326,7 @@
             isUserStyleEnable: false, // 是否开启自定义样式
             isEnLang: false,
             isGooleInBaiduModeEnable: false, // 是否开启谷歌搜索结果页的百度图标显示
-            UserBlockList: ["baijiahao.baidu.com"],
+            UserBlockList: [],
             UserStyleText:
                 `/**计数器的颜色样式*/
 div .AC-CounterT{
@@ -641,7 +643,7 @@ body[baidu] #s_lg_img_new{
                         // clearInterval(bodyNameresetTimer);
                     }
                 }, 300);
-                let BlockBaidu = {
+                let SiteBlock = {
                     /**
                      * 初始化Block样式
                      */
@@ -699,7 +701,7 @@ body[baidu] #s_lg_img_new{
                             GM.setValue("Config", JSON.stringify(ACConfig)); // 点击一次，保存一次
                         }
                         reloadBlockList();
-                        BlockBaidu.renderDisplay();
+                        SiteBlock.renderDisplay();
                         env.stopPropagation();
                     },
                     // 刷新显示效果--耗时操作
@@ -1242,15 +1244,15 @@ body[baidu] #s_lg_img_new{
                                 acSetCookie("ISSW", 1);
                                 acSetCookie("ISSW", 1, "www.baidu.com");
                             }
-                            if (ACConfig.isAdsEnable) { // 移除百度广告
+                            if (ACConfig.isAdsEnable) { // 移除多余的广告内容
                                 removeAD_baidu_sogou();
                             }
                             if (ACConfig.isCounterEnable) { // 显示计数器
                                 addCounter(document.querySelectorAll(curSite.CounterType));
                             }
-                            if(ACConfig.isBlockEnable){ // 启用屏蔽功能
-                                BlockBaidu.initStyle();
-                                BlockBaidu.init();
+                            if(ACConfig.isBlockEnable && curSite.SiteTypeID != SiteType.SOGOU){ // 启用屏蔽功能
+                                SiteBlock.initStyle();
+                                SiteBlock.init();
                             }
                             setTimeout(function () {
                                 insertLocked = false;
@@ -1290,7 +1292,7 @@ body[baidu] #s_lg_img_new{
 
                 function ACHandle() {
                     // 处理主重定向
-                    if (curSite.SiteTypeID == SiteType.OTHERS) return;
+                    if (curSite.SiteTypeID == SiteType.OTHERS || curSite.SiteTypeID == SiteType.SOGOU) return;
                     if (ACConfig.isRedirectEnable) {
                         if (curSite.Stype_Normal != null && curSite.Stype_Normal != ""){
                             // 百度搜狗去重定向-普通模式【注意不能为document.query..】
@@ -1385,7 +1387,7 @@ body[baidu] #s_lg_img_new{
                                         // 移除用户diy之后的属性
                                         perNode.removeAttribute("ac-user-alter");
                                     });
-                                    BlockBaidu.renderDisplay();
+                                    SiteBlock.renderDisplay();
                                     reloadBlockList();
                                 });
                             }
@@ -1859,7 +1861,7 @@ body[baidu] #s_lg_img_new{
                     }
                 };
 
-                function removeAD_baidu_sogou() { // 移除百度自有广告
+                function removeAD_baidu_sogou() { // 移除网站自有广告
                     if (curSite.SiteTypeID == SiteType.BAIDU) {
                         // safeRemove(".c-container /deep/ .c-container");
                         // 移除shadowDOM广告；搜索关键字：淘宝；然后点击搜索框，广告会多次重现shadowdom

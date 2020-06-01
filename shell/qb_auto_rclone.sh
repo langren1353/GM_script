@@ -1,6 +1,6 @@
 #!/bin/sh
 
-qb_version="4.2.1"
+qb_version="4.2.4"
 qb_username="admin"
 qb_password="tujidu"
 qb_web_url="http://127.0.0.1:2017"
@@ -8,11 +8,11 @@ log_dir="/home/qbauto"
 rclone_dest="BG:" #rclone destination关键字 运行rclone config查看name字段即可
 #########这个参数小心一点-小心硬盘速度慢##########
 rclone_parallel="32" #rclone上传线程 默认4
-from_dc_tag="Hosthatch" # 来源服务器标记
+from_dc_tag="云筏KVM" # 来源服务器标记
 
 unfinished_tag="【待上传云端】" # 这个是手动设置某些tag，因为有用才上传
 uploading_tag="【正在上传】"
-unfinished_tag_NoUpload="【待上传云端-不做种】" # 这个是手动设置某些tag，因为有用才上传
+unfinished_tag_NoUpload="【待上传云端-不做种】" # 这个是手动设置某些tag，因为有用才上传；上传结束后会暂停做种但是不会删除
 uploading_tag_NoUpload="【正在上传-不做种】"
 finished_tag="【结束】"
 noupload_tag="无效-不上传"
@@ -32,7 +32,7 @@ function qb_login(){
 	then
 		qb_v="1"
 		cookie=$(curl -i --header "Referer: ${qb_web_url}" --data "username=${qb_username}&password=${qb_password}" "${qb_web_url}/api/v2/auth/login" | grep -P -o 'SID=\S{32}')
-		if [ -n ${cookie} ]
+		if [ -n "${cookie}" ]
 		then
 			echo "[$(date '+%Y-%m-%d %H:%M:%S')] 登录成功！cookie:${cookie}"
 
@@ -43,7 +43,7 @@ function qb_login(){
 	then
 		qb_v="2"
 		cookie=$(curl -i --header "Referer: ${qb_web_url}" --data "username=${qb_username}&password=${qb_password}" "${qb_web_url}/login" | grep -P -o 'SID=\S{32}')
-		if [ -n ${cookie} ]
+		if [ -n "${cookie}" ]
 		then
 			echo "[$(date '+%Y-%m-%d %H:%M:%S')] 登录成功！cookie:${cookie}"
 		else
@@ -104,7 +104,7 @@ function rclone_copy(){
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] 未知类型，取消上传"
         echo "[$(date '+%Y-%m-%d %H:%M:%S')] 未知类型，取消上传" >> ${log_dir}/qb.log
         # tag = 不上传
-		if [ ${donotSeed} == "true" ]
+		if [ "${donotSeed}" == "true" ]
 		then
 			qb_change_hash_tag ${torrent_hash} ${unfinished_tag_NoUpload} ${noupload_tag}
 		else
@@ -113,7 +113,7 @@ function rclone_copy(){
        return
     fi
     # tag = 上传中
-    if [ ${donotSeed} == "true" ]
+    if [ "${donotSeed}" == "true" ]
     then
         qb_change_hash_tag ${torrent_hash} ${unfinished_tag_NoUpload} ${uploading_tag_NoUpload}
 	else
@@ -138,10 +138,13 @@ function rclone_copy(){
     use_min=$((use_seconds/60));
     use_sec=$((use_seconds%60));
 
-        # 不做种，发送结束
-    if [ ${donotSeed} == "true" ]
+    # 不做种，发送结束
+    if [ "${donotSeed}" == "true" ]
     then
+		# 手动暂停他的上传
 		curl -s -X POST -d "hashes=${file_hash}" "${qb_web_url}/api/v2/torrents/pause" --cookie ${cookie}
+        # 添加分享率限制
+        curl -s -X POST -d "hashes=${file_hash}&ratioLimit=0.1&seedingTimeLimit=10" "${qb_web_url}/api/v2/torrents/setShareLimits"
 	else
 	    curl "http://212.64.10.203:5700/send_private_msg?user_id=1353464539&message=${from_dc_tag}：${torrent_name} 上传完成-耗时:${use_min}分${use_sec}秒"
     fi
@@ -218,10 +221,12 @@ function qb_get_status(){
 			then
 				curtag="null"
 			fi
+			# 对于是“待上传-不做种”的种子，标记为不做种
 			if [ ${curtag} == "${unfinished_tag_NoUpload}" ]
 			then
 				donotSeed="true"
 			fi
+			# 如果“待上传” 或者是 “未完成”
 			if [ ${curtag} == "${unfinished_tag}" -o ${curtag} == "${unfinished_tag_NoUpload}" ]
 			then
 			    torrentInfo=$(curl -s "${qb_web_url}/api/v2/torrents/info?filter=completed" --cookie "${cookie}")
