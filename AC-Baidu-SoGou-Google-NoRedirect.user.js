@@ -30,14 +30,14 @@
 // @include         *://*.zhihu.com/*
 // @exclude         *://*.google*/sorry*
 // @namespace       1353464539@qq.com
-// @supportURL      https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
+// @supportURL      https://ac.tujidu.com
 // @home-url        https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2       https://github.com/langren1353/GM_script
 // @homepageURL     https://greasyfork.org/zh-TW/scripts/14178
 // @copyright       2015-2020, AC
 // @lastmodified    2020-06-01
 // @feedback-url    https://ac.tujidu.com
-// @note            2020.06-01-V23.33 儿童节更新一个版本；
+// @note            2020.06-01-V23.33 儿童节更新一个版本；修复bing的顶部切换错位的问题；
 // @note            2020.04-24-V23.32 版本倒退：安全起见：默认关闭搜狗的自定义域名拦截功能和重定向功能-以后考虑更换方式；默认不开启重定向功能、默认不开启广告拦截功能；更新部分说明内容；同时也对部分支持不到位的，兼容不好的效果向大家说一声抱歉，之后我会更加努力让搜索结果更加方便查看和使用
 // @note            2020.03-27-V23.31 修复google由于页面结构更新导致的block功能失效的问题，同时修复谷歌护眼模式也失效的问题。新增翻页的按钮事件，新增使用在线config，避免由于页面结构改动又需要重新提交脚本更新
 // @note            2020.03-26-V23.30 小改代码with GoogleLOGO && 修复在inject极速模式下的小问题 && 修复各种样式问题 && 自定义样式开启动态模式 && 新增自动翻页功能-妈妈再也不用担心我翻页问题了-[推荐更新]
@@ -1369,13 +1369,18 @@ body[baidu] #s_lg_img_new{
                 function initBlockPage(){
                     try{
                         if(useCNLan){
-                            document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='返回'><-返回</span></label>&nbsp;拦截列表&nbsp;&nbsp;想要生效的话需要手动保存</li><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li>全匹配拦截：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='新增' style='position: relative !important;line-height: 17px;'>新增</span></li>`;
+                            document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='返回'><-返回</span></label>&nbsp;拦截列表&nbsp;&nbsp;想要生效的话需要手动保存</li><li style='margin-bottom: 8px !important;'><span id='sp-ac-blockdiybutton-diylist' class='sp-ac-spanbutton'>编辑列表</span></li><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li>全匹配拦截：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='新增' style='position: relative !important;line-height: 17px;'>新增</span></li>`;
                         }else{
-                            document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='Back'><-Back</span></label>&nbsp;Block List&nbsp;&nbsp;Click Save Button if you want wo save the list</li><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li>Same host Insert ：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='Insert' style='position: relative !important;line-height: 17px;'>Insert</span></li>`;
+                            document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='Back'><-Back</span></label>&nbsp;Block List&nbsp;&nbsp;Click Save Button if you want wo save the list</li><li style='margin-bottom: 8px !important;'><span id='sp-ac-blockdiybutton-diylist' class='sp-ac-spanbutton'>Edit List</span><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li>Same host Insert ：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='Insert' style='position: relative !important;line-height: 17px;'>Insert</span></li>`;
                         }
                         document.querySelector("#sp-ac-blockdiybutton-back").addEventListener("click", function () {
                             document.querySelector(".setting-main").style = "";
                             document.querySelector(".setting-second").style = "display:none;";
+                        });
+                        document.querySelector("#sp-ac-blockdiybutton-diylist").addEventListener("click", function(){
+                            // TODO 完成点击之后变成列表
+                            // TODO 隐藏原始的数据，并将数据转换到列表中去
+                            // TODO 如果列表的数据编辑完成，那么数据需要转换为新的数据并生成原始的数据
                         });
                         document.querySelector(".ac-blockList").addEventListener("click", function (e) {
                             // 点击移除某个host数据时
@@ -1502,7 +1507,7 @@ body[baidu] #s_lg_img_new{
                                 "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' type='checkbox' " + (ACConfig.isRightDisplayEnable ? 'checked' : '') + ">附加7-显示右侧栏</label><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isCounterEnable ? 'checked' : '') + ">附加8-编号功能</label><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isALineEnable ? 'checked' : '') + ">附加9-文字下划线</label></li>\n" +
                                 "                <li><label><input title='AC-自定义样式' id='sp-ac-userstyle' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserStyleEnable ? 'checked' : '') + ">附加10-自定义样式</label></li>\n" +
                                 "                <li><textarea  id='sp-ac-userstyleTEXT' name='sp-ac-a_force' value='这个是用户自定义样式' style='width:85%;height: 66px;margin-left:30px;' type='input'>" + ACConfig.UserStyleText + "</textarea></label></li>\n" +
-                                "                <li><a class='linkhref' target='_blank' href='https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_' >联系作者,提建议,寻求帮助,自定义样式,脚本定制点我</a></li>" +
+                                "                <li><a class='linkhref' target='_blank' href='https://ac.tujidu.com' >联系作者,提建议,寻求帮助,自定义样式,脚本定制点我</a></li>" +
                                 "            </ul>" +
 
                                 "            <ul class='setting-second' style='display:none'>" +
