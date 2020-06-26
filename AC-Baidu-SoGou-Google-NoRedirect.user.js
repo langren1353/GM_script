@@ -16,6 +16,7 @@
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
+// @include         *://www1.baidu.com/*
 // @include         *://m.baidu.com/*
 // @include         *://xueshu.baidu.com/s*
 // @include         *://www.sogou.com/web*
@@ -37,7 +38,7 @@
 // @copyright       2015-2020, AC
 // @lastmodified    2020-06-01
 // @feedback-url    https://ac.tujidu.com
-// @note            2020.06-01-V23.33 儿童节更新一个版本；修复bing的顶部切换错位的问题；
+// @note            2020.06-01-V23.33 儿童节更新一个版本；修复bing的顶部切换错位的问题；增加ww1.baidu.com域；
 // @note            2020.04-24-V23.32 版本倒退：安全起见：默认关闭搜狗的自定义域名拦截功能和重定向功能-以后考虑更换方式；默认不开启重定向功能、默认不开启广告拦截功能；更新部分说明内容；同时也对部分支持不到位的，兼容不好的效果向大家说一声抱歉，之后我会更加努力让搜索结果更加方便查看和使用
 // @note            2020.03-27-V23.31 修复google由于页面结构更新导致的block功能失效的问题，同时修复谷歌护眼模式也失效的问题。新增翻页的按钮事件，新增使用在线config，避免由于页面结构改动又需要重新提交脚本更新
 // @note            2020.03-26-V23.30 小改代码with GoogleLOGO && 修复在inject极速模式下的小问题 && 修复各种样式问题 && 自定义样式开启动态模式 && 新增自动翻页功能-妈妈再也不用担心我翻页问题了-[推荐更新]
@@ -385,7 +386,7 @@ body[baidu] #s_lg_img_new{
             baidu: {
                 SiteTypeID: 1,
                 MainType: "#content_left .c-container",
-                Stype_Normal: "h3.t>a, #results .c-container>.c-blocka",
+                Stype_Normal: "h3.t>a, .c-container article a",
                 FaviconType: ".result-op, .c-showurl", // baidu 似乎要改版了？
                 FaviconAddTo: "h3",
                 CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
@@ -1794,6 +1795,8 @@ body[baidu] #s_lg_img_new{
                 }
 
                 function resetURLNormal(list) {
+                    // 注意有重复的地址，尽量对重复地址进行去重
+                    var hasDealHrefSet = new Set();
                     for (var i = 0; i < list.length; i++) {
                         // 此方法是异步，故在结束的时候使用i会出问题-严重!
                         // 采用闭包的方法来进行数据的传递
@@ -1801,6 +1804,10 @@ body[baidu] #s_lg_img_new{
                         let curhref = curNode.href;
                         if (list[i] != null && list[i].getAttribute("ac_redirectStatus") == null) {
                             list[i].setAttribute("ac_redirectStatus", "0");
+                            let len1 = hasDealHrefSet.size;
+                            hasDealHrefSet.add(curhref);
+                            let len2 = hasDealHrefSet.size;
+                            if(len1 == len2) continue; // 说明数据已经处理过，存在相同的记录
                             if (curhref.indexOf("www.baidu.com/link") > -1 ||
                                 curhref.indexOf("m.baidu.com/from") > -1 ||
                                 curhref.indexOf("www.sogou.com/link") > -1 ||
@@ -1825,6 +1832,7 @@ body[baidu] #s_lg_img_new{
                                             if (response.responseHeaders.indexOf("tm-finalurl") >= 0) {
                                                 let relURL = Reg_Get(response.responseHeaders, "tm-finalurl\\w+: ([^\\s]+)");
                                                 if (relURL == null || relURL == "" || relURL.indexOf("www.baidu.com/search/error") > 0) return;
+                                                // TODO 这里出现了数据无法修改原始地址的问题
                                                 DealRedirect(gmRequestNode, c_curhref, relURL);
                                             }
                                         }
@@ -1833,6 +1841,7 @@ body[baidu] #s_lg_img_new{
                             }
                         }
                     }
+                    if(hasDealHrefSet.size > 0) console.log("丢弃掉", list.length - hasDealHrefSet.size, "个重复链接");
                 }
 
                 var DealRedirect = function (request, curNodeHref, respText, RegText) {
