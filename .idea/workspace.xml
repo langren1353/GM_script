@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/SiteConfigRules.conf" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/SiteConfigRules.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,14 +224,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588440458507" />
-    <state x="661" y="121" width="598" height="798" key="find.popup" timestamp="1591001370041">
+    <state x="661" y="121" width="626" height="798" key="find.popup" timestamp="1593743910093">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="661" y="121" width="598" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1591001370041" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1591192261468">
+    <state x="661" y="121" width="626" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1593743910093" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1593744322244">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1591192261468" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1593744322244" />
   </component>
   <component name="masterDetails">
     <states>
