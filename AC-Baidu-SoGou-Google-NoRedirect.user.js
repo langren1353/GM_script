@@ -392,7 +392,7 @@ body[baidu] #s_lg_img_new{
                 CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
                 BlockType: "h3 a",
                 pager:{
-                    nextLink: '//div[@id="page"]/a[contains(text(),"下一页")][@href]',
+                    nextLink: '//div[@id="page"]//a[contains(text(),"下一页")][@href]',
                     pageElement: "css;div#content_left > *",
                     HT_insert: [ "css;div#content_left", 2 ],
                     replaceE: "css;#page",
@@ -408,7 +408,7 @@ body[baidu] #s_lg_img_new{
                 CounterType: ".results>div",
                 BlockType: "h3 a",
                 pager:{
-                    nextLink: "//div[@id=\"pagebar_container\"]/a[@id=\"sogou_next\"]",
+                    nextLink: "//div[@id=\"pagebar_container\"]//a[@id=\"sogou_next\"]",
                     pageElement: "//div[@class=\"results\"]",
                     HT_insert: ["//div[@class=\"results\"]", 2],
                     replaceE: "id(\"pagebar_container\")"
@@ -423,7 +423,7 @@ body[baidu] #s_lg_img_new{
                 CounterType: ".results>div",
                 BlockType: "h3 a",
                 pager:{
-                    nextLink: "//div[@id=\"page\"]/a[text()=\"下一页>\"] | id(\"snext\")",
+                    nextLink: "//div[@id=\"page\"]//a[text()=\"下一页>\"] | id(\"snext\")",
                     pageElement: "//div[@id=\"container\"]/div",
                     HT_insert: ["//div[@id=\"container\"]", 1],
                     replaceE: "id(\"page\")"
@@ -1177,7 +1177,7 @@ body[baidu] #s_lg_img_new{
                         , "AC-special-BAIDU"
                     );
                     /*"自定义"按钮效果*/
-                    AC_addStyle(".newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline}#myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#2866bd;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1)}#myuser .myuserconfig:hover{background:#2970d4 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}",
+                    AC_addStyle(".newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px 0 0 24px;}#myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}",
                         "AC-MENU_Btn");
                     /*自定义页面内容效果*/
                     AC_addStyle('body[baidu]  #sp-ac-container .container-label:not([class*="baidu"])>label,\n' +
