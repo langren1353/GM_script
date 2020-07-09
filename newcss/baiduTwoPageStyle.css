@@ -80,12 +80,16 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
     justify-content: center;
     display: flex;
 }
+
 #wrapper .head_nums_cont_outer .search_tool_conter,
 #wrapper .head_nums_cont_outer .nums {
     width: 80%;
 }
 @media screen and (max-width:1388px){
     form.fm .s_ipt_wr.bg{
-        min-width: 300px;
+        min-width: 400px;
+    }
+    .wrapper_new #result_logo{
+        margin-left: -100px;
     }
 }

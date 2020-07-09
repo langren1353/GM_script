@@ -63,6 +63,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -81,7 +82,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.toDoOptions" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
@@ -106,18 +107,6 @@
         <item itemvalue="JavaScript Debug.test.html" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -175,11 +164,13 @@
       <workItem from="1588466511117" duration="51000" />
       <workItem from="1590845797205" duration="11000" />
       <workItem from="1590999241944" duration="2429000" />
+      <workItem from="1594266292660" duration="5456000" />
+      <workItem from="1594285416674" duration="5221000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
@@ -189,9 +180,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -210,27 +199,35 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1588440458507">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588440458507" />
-    <state x="131" y="127" key="SettingsEditor" timestamp="1591192568567">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="93" y="16" key="SettingsEditor" timestamp="1594266372266">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="93" y="16" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1594266372266" />
     <state x="131" y="127" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1591192568567" />
+    <state width="498" height="398" key="SwitcherDM" timestamp="1594285420680">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="498" height="398" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1594285420680" />
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1588440458507">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588440458507" />
-    <state x="661" y="121" width="626" height="798" key="find.popup" timestamp="1593743910093">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="470" y="85" width="566" height="559" key="find.popup" timestamp="1594292482282">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="470" y="85" width="566" height="559" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1594292482282" />
     <state x="661" y="121" width="626" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1593743910093" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1593744322244">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="443" y="158" width="672" height="475" key="search.everywhere.popup" timestamp="1594290324322">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="443" y="158" width="672" height="475" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1594290324322" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1593744322244" />
   </component>
   <component name="masterDetails">

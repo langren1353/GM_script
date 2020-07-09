@@ -364,6 +364,9 @@ form.fm .s_btn:hover {
 body #container.sam_newgrid #content_left{
     width: 80%;
 }
+body .wrapper_new #head.fix-head .s_form{
+    height: 70px;
+}
 @media screen and (max-width:1280px){
     #u .toindex, #u #imsg{
         display: none;

@@ -30,9 +30,12 @@
 #main .mw{
     max-width: unset;
 }
-#main #cnt{
+#main #cnt, #cnt #center_col, #cnt #foot{
     width: 80vw;
     margin: 0 auto;
+}
+body #appbar,body .rhscol, body #top_nav, body #fbar{
+    min-width: unset;
 }
 #rso .COEoid{
     margin: unset;
