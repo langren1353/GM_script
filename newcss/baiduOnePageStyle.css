@@ -11,11 +11,9 @@ body[baidu] .pagefoot.gj{
 }
 #result_logo{
     position: relative;
-    margin:10px 0 0;
 }
 #s_tab b,#s_tab a{
     position:relative;
-    /*left:calc(50% - 445px);*/
 }
 #wrapper  .head_nums_cont_outer{
     position:absolute;

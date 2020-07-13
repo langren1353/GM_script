@@ -3,7 +3,8 @@
 // @description 视频速度加速器，遇到html5的视频进度广告的时候，按下 alt+0 步进广告，最好预留几秒。必须配合“计时器掌控者”一起食用
 // @namespace   K
 // @include     *
-// @version     1.5
+// @version     1.6
+// @note        2020-07-12-V1.6 新增，youtube视频的自动加速
 // @note        2020-01-04-V1.5 修复：谷歌的视频小广告没有自动点击掉
 // @note        2020-01-04-V1.4 修复上次加上的代码导致的加速后没有自动恢复的问题 && 修复加速速度不正常的问题 && 修复youtube的广告没有正常跳过的问题
 // @note        2019-12-31-V1.3 尝试自动点击跳过youtube的广告
@@ -66,6 +67,15 @@ function autoClickYoutubeAd(){
 		setInterval(function(){
 			var adPassBtn = (document.querySelector(".ytp-ad-skip-button ") || document.querySelector(".videoAdUiSkipButton ")) || document.querySelector(".ytp-ad-overlay-close-container");
 			adPassBtn && adPassBtn.click();
+			if(document.querySelector(".ytp-ad-preview-container") != null && typeof(changeTime) != "undefined"){
+				console.log("准备加速");
+				changeTime(0, 100);
+				// 100倍速度，那么需要：10秒 = 0.1秒 = 100 ms
+				WaifRAFEndFunc(function () {
+					console.log("结束");
+					changeTime(0,0,false,true);
+				}, 300);
+			}
 		}, 1200)
 	}
 }
@@ -86,12 +96,12 @@ Promise.all([GM.getValue("Config")]).then(function(data){
 		// 如果按下的是 alt+'+' 那么直接前进10秒
 		if(env.key == '0' && env.altKey == true){
 			console.log("开始");
-			if(typeof(changTime) == "undefined") return; // 如果没有初始化函数，跳过
-			changTime(0, 100);
+			if(typeof(changeTime) == "undefined") return; // 如果没有初始化函数，跳过
+			changeTime(0, 100);
 			// 100倍速度，那么需要：10秒 = 0.1秒 = 100 ms
 			WaifRAFEndFunc(function () {
 				console.log("结束");
-				changTime(0,0,false,true);
+				changeTime(0,0,false,true);
 			}, 1500); // 目标 = 10秒
 		}
 	});

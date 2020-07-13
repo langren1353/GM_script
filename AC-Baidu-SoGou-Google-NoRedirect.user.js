@@ -1929,6 +1929,10 @@ body[baidu] #s_lg_img_new{
                         safeRemove(function () {
                             $("#content_right td>div:not([id]),#content_right>br").remove();
                         });
+                        // 移除顶部可能出现的 "为您推荐"
+                        safeRemove(function () {
+                            getAllElements("//div[@id='content_left']//div[contains(@class,'_rs')]").forEach(one=>one.remove())
+                        });
                     } else if(curSite.SiteTypeID == SiteType.MBAIDU){
                         /****移除手机模式上的部分广告****/
                         safeRemove(function(){
@@ -2003,6 +2007,7 @@ body[baidu] #s_lg_img_new{
 
                 function addFavicon(citeList) {
                     for (let index = 0; index < citeList.length; index++) {
+                        console.log("sdf");
                         if (null == citeList[index].getAttribute("ac_faviconStatus")) {
                             let curNode = citeList[index];
                             let targetNode = curNode;

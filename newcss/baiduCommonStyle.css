@@ -251,11 +251,13 @@ form.fm .s_btn:hover {
     -moz-transition: width 350ms, left 350ms;
     transition: width 350ms, left 350ms;
 }
-#wrapper #rs,
 #wrapper #rs{
     margin-top: 0px;
     padding: 0px 20px 15px;
     border-radius: 5px;
+}
+.wrapper_new #form .bdsug-new{
+    padding-right: 11px;
 }
 #wrapper #rs .tt {
     margin: 0px -20px 5px -20px;
@@ -308,6 +310,12 @@ form.fm .s_btn:hover {
 }
 #wrapper #kw{
     width: 94%;
+}
+#container.sam_newgrid .c-container .t .AC-faviconT~a, #container.sam_newgrid .c-container .t .c-icon~a{
+    display:inline
+}
+#content_left .c-group-middle,#content_left  .c-group-top{
+    margin-bottom: 30px !important;
 }
 @-webkit-keyframes ani_bottomTotop {
     0% {
