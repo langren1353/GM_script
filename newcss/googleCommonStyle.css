@@ -415,7 +415,7 @@ div .kno-ftr a{
 .logo{
     top:unset;
 }
-body[google] .baidu{
+body[google] .logo.baidu{
     transform: unset !important;
     margin-top: -10px;
     margin-left: -2rem;
