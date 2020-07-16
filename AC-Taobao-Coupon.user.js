@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         AC-独家-淘宝天猫优惠券查询领取,大额优惠券,【100元购物神券】,省钱购物,领券购买更优惠,平均优惠20%
-// @version      7.4
+// @version      7.5
 // @description  独家查询淘宝商品查询是否具有优惠券,各种大额优惠券,【3元|10元|20元|40元】优惠券领取,购物必备,特大优惠
 // @author       AC
 // @include      https://item.taobao.com/item.htm*
@@ -8,6 +8,7 @@
 // @include      https://s.taobao.com/search*
 // @include      https://cart.taobao.com/*
 // @include      *://uland.taobao.com/coupon/*
+// @note         2020.07.16-V7.5 修复二维码无效的问题，修复部分情况下查询无效的问题；可以直接用手机淘宝扫描二维码
 // @note         2020.03.11-V7.4 修复部分情况下二维码无法显示的问题 && 修复按钮样式的调整
 // @note         2020.03.02-V7.3 新增手机直接扫码功能，手机可以在优惠券的按钮上直接扫码购买
 // @note         2020.03.02-V7.2 修复图片加载失效的问题，以及部分样式问题
@@ -57,11 +58,12 @@
 // @note         2017.11.1-V2.1 切换为include规则，而非match规则，避免GreaseMonkey上无法使用的问题
 // @note         2017.10.30-V2.0 修复在某些页面上，标题获取不正确的问题
 // @note         2017.10.28-V1.0 第一版本，edit from https://greasyfork.org/zh-TW/scripts/34604
-// @icon         https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
+// @icon         https://gitee.com/remixAC/GM_script/raw/master/images/head.jpg
 // @home-url     https://greasyfork.org/zh-TW/scripts/34606
 // @run-at       document-start
 // @namespace    1353464539@qq.com
 // @connect      open.lesiclub.cn
+// @connect      gm.ntaow.com
 // @grant        GM_xmlhttpRequest
 // @license         GPL-3.0-only
 // ==/UserScript==
@@ -155,8 +157,8 @@ setTimeout(function () {
                         var node = document.querySelector(".acBuyScriptCoupon");
                         if (node != null) {
                             clearInterval(tt);
-                            if (result.code == 200 && result.data && result.data.coupon.is_valid == true) {
-                                node.innerHTML = "!"+result.data.coupon.coupon_money+"元优惠券!";
+                            if (result.retcode == 0 && result.data && result.data.couponAmount != 0) {
+                                node.innerHTML = "!"+result.data.couponAmount + "元优惠券!";
                                 node.dataset.url = "https://cent.ntaow.com/coupon.html?mQuery=" + encodeURI(goodTitle);
                             } else {
                                 node.innerHTML = "无优惠或已领优惠";
@@ -174,19 +176,19 @@ setTimeout(function () {
                             document.querySelector(".acMobileQRPanel").addEventListener("mouseleave", function(){
                                 document.querySelector(".acMobileQRPanel").classList.add("ac-hide");
                             });
-                            // TODO  更换图片的实际内容
-                            var q = window.btoa(goodID).replace(/=/g,"-");
-                            var qurl = "https://ntaow.com/details.html?auctionId=" + q;
-                            var imgUrl = "https://www.kuaizhan.com/common/encode-png?large=true&data=" + encodeURIComponent(qurl);
-                            // console.log(imgUrl);
+                            // var q = window.btoa(goodID).replace(/=/g,"-");
+                            // qurl = "https://ntaow.com/details.html?auctionId=" + q;
+
+                            // var imgUrl = "http://api.k780.com:88/?app=qr.get&level=H&size=8&data=" + encodeURIComponent(qurl);
+                            var imgUrl = "http://qr.liantu.com/api.php?text=" + encodeURIComponent(result.data.couponUrl);
                             document.querySelector("img.acMobileQRCode").src = imgUrl;
                         }
-                    }, 50);
+                    }, 120);
                 }
                 function queryData(goodID) {
                     var cgoodTitle = document.title+"";
                     var ret = GM_xmlhttpRequest({
-                        method: "GET", url: "https://open.lesiclub.cn/coupon/get/10005/10001/" + goodID,
+                        method: "GET", url: "http://gm.ntaow.com/?op=66&iid=" + goodID,
                         onload: function (res) {
                             res = JSON.parse(res.responseText);
                             acBuyScript(res);
@@ -209,7 +211,7 @@ setTimeout(function () {
                     // htmlText += "<span><img class='acMobileQRCode' src='data:image/jpg;base64,/9j/4QMZR'></span>";
                     htmlText += `<span class='acMobileQRPanel ac-hide' style='position: absolute;left: 0;top: 3rem;z-index: 100002;background-color: white;border:1px solid deeppink;'>
                                     <img class='acMobileQRCode' style='padding:5px 10px;max-width:138px;margin-left:unset;' src='data:image/png;base64,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'>
-                                    <span style='font-size: 16px;text-align: center;padding-bottom: 8px;'>手机浏览器扫码</span>
+                                    <span style='font-size: 16px;text-align: center;padding-bottom: 8px;'>手机淘宝直接扫码</span>
                                  </span>`;
 
                     htmlText += "&nbsp;&nbsp;<span class='ac-btn' data-url=" + queryInSite  + " onclick='openUrl(this);' style='color: #f95f52;cursor:pointer;'>[站内搜]</span>";
