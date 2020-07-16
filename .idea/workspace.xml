@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/images/head.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VideoJumper.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/VideoJumper.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Taobao-Coupon.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Taobao-Coupon.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gwd-AC.js" beforeDir="false" afterPath="$PROJECT_DIR$/gwd-AC.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +88,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jsx.switch.disabled" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/images" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.jscs" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -88,16 +105,16 @@
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHome\GM_script\images" />
       <recent name="D:\GitPath\GM_script\shell" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script\YoudaoGW" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script\newcss" />
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\temp" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
     </key>
   </component>
   <component name="RunManager">
@@ -172,7 +189,9 @@
       <workItem from="1594454742421" duration="8582000" />
       <workItem from="1594529097205" duration="761000" />
       <workItem from="1594534201270" duration="1022000" />
-      <workItem from="1594632015507" duration="2793000" />
+      <workItem from="1594632015507" duration="4878000" />
+      <workItem from="1594802819216" duration="6035000" />
+      <workItem from="1594876913269" duration="2972000" />
     </task>
     <servers />
   </component>
@@ -209,34 +228,34 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1594467041019">
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1594803291064">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1594467041019" />
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1594803291064" />
     <state x="93" y="16" key="SettingsEditor" timestamp="1594266372266">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="93" y="16" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1594266372266" />
     <state x="131" y="127" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1591192568567" />
-    <state width="700" height="569" key="SwitcherDM" timestamp="1594634819297">
+    <state width="700" height="569" key="SwitcherDM" timestamp="1594881658184">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="498" height="398" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1594285420680" />
-    <state width="700" height="569" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1594634819297" />
+    <state width="700" height="569" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1594881658184" />
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1588440458507">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588440458507" />
-    <state x="661" y="121" width="626" height="798" key="find.popup" timestamp="1594634676997">
+    <state x="661" y="121" width="626" height="798" key="find.popup" timestamp="1594813403538">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="470" y="85" width="566" height="559" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1594292482282" />
-    <state x="661" y="121" width="626" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1594634676997" />
-    <state x="443" y="158" width="672" height="475" key="search.everywhere.popup" timestamp="1594290324322">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="661" y="121" width="626" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1594813403538" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1594879158186">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="443" y="158" width="672" height="475" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1594290324322" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1593744322244" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1594879158186" />
   </component>
   <component name="masterDetails">
     <states>

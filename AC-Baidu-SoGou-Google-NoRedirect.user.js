@@ -2007,7 +2007,6 @@ body[baidu] #s_lg_img_new{
 
                 function addFavicon(citeList) {
                     for (let index = 0; index < citeList.length; index++) {
-                        console.log("sdf");
                         if (null == citeList[index].getAttribute("ac_faviconStatus")) {
                             let curNode = citeList[index];
                             let targetNode = curNode;
