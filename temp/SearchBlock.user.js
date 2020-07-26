@@ -5,7 +5,7 @@
 // @namespace youdao
 // @author  AC
 // @include *
-// @icon    https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
+// @icon    https://gitee.com/remixAC/GM_script/raw/master/images/head.jpg
 // @run-at  document-end
 // @connect xbaidu.ntaow.com
 // @grant GM_xmlhttpRequest

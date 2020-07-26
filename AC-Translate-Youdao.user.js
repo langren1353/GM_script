@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name  AC-必应取词+翻译
 // @description 一个可以在浏览器中自由使用的屏幕取词脚本-alt+鼠标翻译，或者选中按Q翻译；必应智能翻译，翻译精准
-// @version 2.5
+// @version 2.6
 // @namespace youdao
 // @license GPL-3.0-only
 // @author  AC -modified from ：Liu Yuyang(sa@linuxer.me)
 // @include *
-// @icon    https://raw.githubusercontent.com/langren1353/zbImg/master/img0/icon.jpg
+// @icon    https://gitee.com/remixAC/GM_script/raw/master/images/head.jpg
 // @require https://greasyfork.org/scripts/10783-md5/code/md5.js?version=60242
 // @run-at  document-end
+// @note    V2.6 2020-07-19 修复翻译API失效的问题
 // @note    V2.5 2019-12-05 修复由于之前没注意的点导致的部分网站运行异常的问题
 // @note    V2.3 2019-09-06 搜狗翻译彻底失效，由于搜狗采用的方案越来越狗血，无法较好的获取到实际的sign，因此放弃使用搜狗，转为使用必应来进行翻译
 // @note    V2.2 2019-08-28 更新搜狗翻译失效的问题，修改为搜狗的api翻译
@@ -37,6 +38,7 @@
 // @connect fanyi.sogou.com
 // @connect xbaidu.ntaow.com
 // @connect cn.bing.com
+// @connect www.bing.com
 // @grant   GM_addStyle
 // @grant   GM_getValue
 // @grant   GM.getValue
@@ -339,11 +341,10 @@
 			var ToLANGUAGE = "en";
 			if(!/[\u4E00-\u9FA5]/g.test(word)) // 如果没有中文，那么说明是外文--> to=中文
 				ToLANGUAGE = "zh-Hans";
-			// word = encodeURIComponent(word); // 搜狗的这个API，不需要中文的encode处理
 			var data = `fromLang=auto-detect&to=${ToLANGUAGE}&text=${encodeURIComponent(word)}`;
 			console.log(data);
 			var ret = GM_xmlhttpRequest({
-				url: "https://cn.bing.com/ttranslatev3",
+				url: "https://www.bing.com/ttranslatev3",
 				method: "POST",
 				data: data,
 				binary: true,

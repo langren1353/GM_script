@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name AC-baidu： 优化百度、搜狗、谷歌搜索结果之关键词自动高亮
 // @description     1.自动提取搜索页面的搜索关键词 2.对关键词自动进行高亮处理 W键可以取消高亮 3.动态获取动态的搜索关键词，重新高亮显示
-// @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
+// @icon            https://gitee.com/remixAC/GM_script/raw/master/images/head.jpg
 // @author          AC
 // @create          2018-05-25
 // @version         2.2

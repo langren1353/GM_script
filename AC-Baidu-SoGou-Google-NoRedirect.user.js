@@ -12,7 +12,7 @@
 // @license         GPL-3.0-only
 // @create          2015-11-25
 // @run-at          document-start
-// @version         23.33
+// @version         24.0
 // @connect         www.baidu.com
 // @include         *://ipv6.baidu.com/*
 // @include         *://www.baidu.com/*
@@ -29,6 +29,7 @@
 // @include         *://*.google*/search*
 // @include         *://*.google*/webhp*
 // @include         *://*.zhihu.com/*
+// @include         *://*duckduckgo.com/*
 // @exclude         *://*.google*/sorry*
 // @namespace       1353464539@qq.com
 // @supportURL      https://ac.tujidu.com
@@ -36,8 +37,9 @@
 // @home-url2       https://github.com/langren1353/GM_script
 // @homepageURL     https://greasyfork.org/zh-TW/scripts/14178
 // @copyright       2015-2020, AC
-// @lastmodified    2020-07-09
+// @lastmodified    2020-07-26
 // @feedback-url    https://ac.tujidu.com
+// @note            2020.07-26-V24.01 部分内容更换为Vue初始化，减少一定的资源占用 && 新增DuckGoGo的样式效果 - 考虑到DuckGoGo的特性，不对其进行广告过滤
 // @note            2020.07-09-V23.33 修复bing的顶部切换错位的问题；增加ww1.baidu.com域；修复各种样式(百度、谷歌、好搜、必应)错位的问题
 // @note            2020.04-24-V23.32 版本倒退：安全起见：默认关闭搜狗的自定义域名拦截功能和重定向功能-以后考虑更换方式；默认不开启重定向功能、默认不开启广告拦截功能；更新部分说明内容；同时也对部分支持不到位的，兼容不好的效果向大家说一声抱歉，之后我会更加努力让搜索结果更加方便查看和使用
 // @note            2020.03-27-V23.31 修复google由于页面结构更新导致的block功能失效的问题，同时修复谷歌护眼模式也失效的问题。新增翻页的按钮事件，新增使用在线config，避免由于页面结构改动又需要重新提交脚本更新
@@ -208,21 +210,23 @@
 // @note            2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note            2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note            2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource        baiduCommonStyle     http://ibaidu.htt5.com/newcss/baiduCommonStyle.css?t=23.33
-// @resource        baiduOnePageStyle    http://ibaidu.htt5.com/newcss/baiduOnePageStyle.css?t=23.33
-// @resource        baiduTwoPageStyle    http://ibaidu.htt5.com/newcss/baiduTwoPageStyle.css?t=23.33
-// @resource        baiduLiteStyle       http://ibaidu.htt5.com/newcss/baiduLiteStyle.css?t=23.33
-// @resource        googleCommonStyle    http://ibaidu.htt5.com/newcss/googleCommonStyle.css?t=23.33
-// @resource        googleOnePageStyle   http://ibaidu.htt5.com/newcss/googleOnePageStyle.css?t=23.33
-// @resource        googleTwoPageStyle   http://ibaidu.htt5.com/newcss/googleTwoPageStyle.css?t=23.33
-// @resource        bingCommonStyle      http://ibaidu.htt5.com/newcss/bingCommonStyle.css?t=23.33
-// @resource        bingOnePageStyle     http://ibaidu.htt5.com/newcss/bingOnePageStyle.css?t=23.33
-// @resource        bingTwoPageStyle     http://ibaidu.htt5.com/newcss/bingTwoPageStyle.css?t=23.33
-// @resource        sogouCommonStyle     http://ibaidu.htt5.com/newcss/sogouCommonStyle.css?t=23.33
-// @resource        sogouOnePageStyle    http://ibaidu.htt5.com/newcss/sogouOnePageStyle.css?t=23.33
-// @resource        sogouTwoPageStyle    http://ibaidu.htt5.com/newcss/sogouTwoPageStyle.css?t=23.33
-// @resource        MainHuYanStyle       http://ibaidu.htt5.com/newcss/HuYanStyle.css?t=23.33
-// @resource        SiteConfigRules      http://ibaidu.htt5.com/newcss/SiteConfigRules.conf?t=23.33
+// @resource        baiduCommonStyle     http://ibaidu.htt5.com/newcss/baiduCommonStyle.css?t=24.0
+// @resource        baiduOnePageStyle    http://ibaidu.htt5.com/newcss/baiduOnePageStyle.css?t=24.0
+// @resource        baiduTwoPageStyle    http://ibaidu.htt5.com/newcss/baiduTwoPageStyle.css?t=24.0
+// @resource        baiduLiteStyle       http://ibaidu.htt5.com/newcss/baiduLiteStyle.css?t=24.0
+// @resource        googleCommonStyle    http://ibaidu.htt5.com/newcss/googleCommonStyle.css?t=24.0
+// @resource        googleOnePageStyle   http://ibaidu.htt5.com/newcss/googleOnePageStyle.css?t=24.0
+// @resource        googleTwoPageStyle   http://ibaidu.htt5.com/newcss/googleTwoPageStyle.css?t=24.0
+// @resource        bingCommonStyle      http://ibaidu.htt5.com/newcss/bingCommonStyle.css?t=24.0
+// @resource        bingOnePageStyle     http://ibaidu.htt5.com/newcss/bingOnePageStyle.css?t=24.0
+// @resource        bingTwoPageStyle     http://ibaidu.htt5.com/newcss/bingTwoPageStyle.css?t=24.0
+// @resource        sogouCommonStyle     http://ibaidu.htt5.com/newcss/sogouCommonStyle.css?t=24.0
+// @resource        sogouOnePageStyle    http://ibaidu.htt5.com/newcss/sogouOnePageStyle.css?t=24.0
+// @resource        sogouTwoPageStyle    http://ibaidu.htt5.com/newcss/sogouTwoPageStyle.css?t=24.0
+// @resource        MainHuYanStyle       http://ibaidu.htt5.com/newcss/HuYanStyle.css?t=24.0
+// @resource        SiteConfigRules      http://ibaidu.htt5.com/newcss/SiteConfigRules.conf?t=24.0
+// @require https://greasyfork.org/scripts/38348-vue-js/code/vuejs.js?version=250278
+// @note https://lib.baomitu.com/vue/2.6.11/vue.min.js
 // @grant           GM_getValue
 // @grant           GM.getValue
 // @grant           GM_setValue
@@ -231,6 +235,7 @@
 // @grant           GM_xmlhttpRequest
 // @grant           GM_getResourceText
 // @grant           GM_registerMenuCommand
+// @grant           unsafeWindow
 // ==/UserScript==
 
 !function () {
@@ -296,6 +301,7 @@
             };
         }
         let ACConfig = {};
+        let DBConfig = {}; // 仅作为普通ACConfig的原始备份，在其他非关键位置时进行保存使用
         /*存在对未初始化变量的初始化赋值-无需担心迭代兼容问题*/
         let DefaultConfig = {
             isRedirectEnable: false,  // 是否开启重定向功能
@@ -308,12 +314,14 @@
             AdsStyleMode_Baidu: 2, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
             AdsStyleMode_Google: 2, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
             AdsStyleMode_Bing: 3, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+            AdsStyleMode_Duck: 3, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
             AdsStyleMode_SoGou: 3, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
 
             HuYan_Baidu: false, // 护眼模式-百度
             HuYan_Google: false, // 护眼模式-谷歌
             HuYan_Bing: false, // 护眼模式-必应
-            HuYan_SoGou: false, // 护眼模式-必应
+            HuYan_Duck: false, // 护眼模式-DuckGOGO
+            HuYan_SoGou: false, // 护眼模式-搜狗
             Style_BaiduLite: false, // Baidu_Lite样式表
 
             defaultHuYanColor: "#DEF1EF",
@@ -325,6 +333,7 @@
             isCounterEnable: false, // 是否显示计数器
             isALineEnable: false, // 是否禁止下划线
             isUserStyleEnable: false, // 是否开启自定义样式
+            normalizeDuck: true, // 是否按照常用习惯去配置DuckDuckGo
             isEnLang: false,
             isGooleInBaiduModeEnable: false, // 是否开启谷歌搜索结果页的百度图标显示
             UserBlockList: [],
@@ -371,7 +380,6 @@ body[baidu] #s_lg_img_new{
             AdsStyleMode: ACConfig.AdsStyleMode_Baidu,
             keySite: "baidu",
             StyleManger: function () {},
-            curHosts: [],
         };
         let curSite = {
             SiteTypeID: 1,    // 当前站点的ID
@@ -387,7 +395,7 @@ body[baidu] #s_lg_img_new{
                 SiteTypeID: 1,
                 MainType: "#content_left .c-container",
                 Stype_Normal: "h3.t>a, .c-container article a",
-                FaviconType: ".result-op, .c-showurl", // baidu 似乎要改版了？
+                FaviconType: ".c-showurl",
                 FaviconAddTo: "h3",
                 CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
                 BlockType: "h3 a",
@@ -431,7 +439,7 @@ body[baidu] #s_lg_img_new{
             },
             google: {
                 SiteTypeID: 4,
-                MainType: "#rso .g *[class~=rc]",
+                MainType: "#rso .g",
                 FaviconType: ".iUh30",
                 FaviconAddTo: "h3",
                 CounterType: "#rso .g *[class~=r] h3,._yE>div[class~=_kk] h3",
@@ -449,6 +457,20 @@ body[baidu] #s_lg_img_new{
                 FaviconType: ".b_attribution>cite",
                 FaviconAddTo: "h2",
                 CounterType: "#b_results>li[class~=b_ans]>h2,#b_results>li[class~=b_algo]>h2,#b_results>li[class~=b_algo]>h2",
+                BlockType: "h2 a",
+                pager:{
+                    nextLink: "//a[contains(@class,\"sb_pagN\")]",
+                    pageElement: "id(\"b_results\")/li[not(contains(@class,\"b_pag\") or contains(@class,\"b_ans b_top\"))]",
+                    HT_insert: ["id(\"b_results\")/li[@class=\"b_pag\"]", 1],
+                    replaceE: "id(\"b_results\")//nav[@role=\"navigation\"]",
+                }
+            },
+            duck: {
+                SiteTypeID: 10,
+                MainType: "#links_wrapper #links .results_links_deep",
+                FaviconType: ".results_links_deep .result__url__domain",
+                FaviconAddTo: "h2",
+                CounterType: "#links_wrapper #links .results_links_deep h2",
                 BlockType: "h2 a",
                 pager:{
                     nextLink: "//a[contains(@class,\"sb_pagN\")]",
@@ -488,10 +510,239 @@ body[baidu] #s_lg_img_new{
             SO: DBSite.haosou.SiteTypeID,
             GOOGLE: DBSite.google.SiteTypeID,
             BING: DBSite.bing.SiteTypeID,
+            DUCK: DBSite.duck.SiteTypeID,
             ZHIHU: DBSite.zhihu.SiteTypeID,
             BAIDU_XUESHU: DBSite.baidu_xueshu.SiteTypeID,
             OTHERS: 8
         };
+        let otherData = {
+            other:{
+                showSecondPanel: false, // 展示第二panel
+                showBlockListArea: false, // blockList展示位textarea
+                addBlockItem: "",       // 用户手动输入的拦截规则
+                curHosts: [],
+            }
+        };  // 到时候挂载到other上
+        let AllData = {
+            ACConfig: {},
+            other: otherData.other,
+            lan:{
+                use:{},
+                zh_cn:{
+                    menu_text : "自定义",
+                    curLang: "zh_cn",
+                    fieldset_panel :{
+                        panel_title : "AC-重定向设置 " + GM_info.script.version,
+                        setting_panel : {
+                            redirect_text: "主功能-重定向功能",
+                            redirect_title: "重定向功能的开启与否",
+                            useEn_text: "En-Language",
+                            useEn_title: "Using English language to display",
+                            ads_text: "附加1-去广告功能",
+                            ads_title: "去除部分页面的广告信息，还你一个干净整洁的页面",
+                            autopage_text: "自动翻页",
+                            autopage_title: "自动翻页",
+                            blockenable_text: "附加2-自主拦截域名",
+                            blockenable_title: "点击页面block按钮添加你想要隐藏的地址，脚本将自动隐藏部分结果为小横幅，DIY按钮中点击表格内容可以取消隐藏",
+                            blockDiyBtn_text: "DIY",
+                            blockDiyBtn_title: "自定义BLOCK",
+                            blockAutoRemove_text: "自动移除",
+                            blockAutoRemove_title: "自动移除已经屏蔽的域名",
+                            blockBtnShow_text: "隐藏按钮",
+                            blockBtnShow_title: "隐藏掉block按钮的显示",
+
+                            userStyle_text: "附加3-自定义样式",
+                            userStyle_baidu_lable: "展开百度设置>>",
+                            userStyle_baidu_origin: "百度-原始模式",
+                            userStyle_baidu_huyan: "百度-护眼模式",
+                            userStyle_baidu_baiduLite: "百度Lite样式",
+                            userStyle_baidu_1line: "单列",
+                            userStyle_baidu_1line_enter: "单列居中",
+                            userStyle_baidu_2line: "双列",
+                            userStyle_baidu_3line: "三列",
+                            userStyle_baidu_4line: "四列",
+
+                            userStyle_google_lable: "展开谷歌设置>>",
+                            userStyle_google_origin: "谷歌-原始模式",
+                            userStyle_google_huyan: "谷歌-护眼模式",
+                            userStyle_google_googleLite: "谷歌-伪装百度",
+                            userStyle_google_1line: "单列",
+                            userStyle_google_1line_enter: "单列居中",
+                            userStyle_google_2line: "双列",
+                            userStyle_google_3line: "三列",
+                            userStyle_google_4line: "四列",
+
+                            userStyle_bing_lable: "展开必应设置>>",
+                            userStyle_bing_origin: "必应-原始模式",
+                            userStyle_bing_huyan: "必应-护眼模式",
+                            userStyle_bing_1line: "单列",
+                            userStyle_bing_1line_enter: "单列居中",
+                            userStyle_bing_2line: "双列",
+                            userStyle_bing_3line: "三列",
+                            userStyle_bing_4line: "四列",
+
+                            userStyle_sogou_lable: "展开搜狗设置>>",
+                            userStyle_sogou_origin: "搜狗-原始模式",
+                            userStyle_sogou_huyan: "搜狗-护眼模式",
+                            userStyle_sogou_1line: "单列",
+                            userStyle_sogou_1line_enter: "单列居中",
+                            userStyle_sogou_2line: "双列",
+                            userStyle_sogou_3line: "三列",
+                            userStyle_sogou_4line: "四列",
+
+                            userStyle_duck_lable: "展开鸭鸭搜设置>>",
+                            userStyle_duck_origin: "鸭鸭-原始模式",
+                            userStyle_duck_huyan: "鸭鸭-护眼模式",
+                            userStyle_duck_normal: "鸭鸭-常见配置",
+                            userStyle_duck_1line: "单列",
+                            userStyle_duck_1line_enter: "单列居中",
+                            userStyle_duck_2line: "双列",
+                            userStyle_duck_3line: "三列",
+                            userStyle_duck_4line: "四列",
+
+                            huyanMode_text: "附加4-护眼颜色配置-自定义3中需对应开启",
+                            huyanMode_title: "！需要在自定义样式中启用护眼模式",
+                            huyanColor_text: "默认护眼颜色：",
+                            huyanColor_title: "自定义的护眼颜色：",
+                            huyanColorMore_text: "更多颜色选择",
+
+                            favicon_text: "附加5-Favicon功能",
+                            favicon_title: "AC-添加Favicon",
+                            favicon_defaultIcon_text: "Favicon默认图标：",
+
+                            searchOrigin_text : "附加6-移除百度搜索预测(文字自动搜索)",
+                            searchOrigin_title : "AC-移除搜索预测",
+
+                            showRight_text : "附加7-显示右侧栏",
+                            showCounter_text : "附加8-编号功能",
+                            showALine_text : "附加9-文字下划线",
+                            showUserStyle_text : "附加10-自定义样式",
+
+                            contactMe_text: "联系作者,提建议,寻求帮助,自定义样式,脚本定制点我",
+                            contactMe_url: "https://ac.tujidu.com",
+
+                            setting_panel_second: {
+                                backBtn_text: "<-返回",
+                                blockLabel_text: " 拦截列表  想要生效的话需要手动保存",
+                                blockEditBtn_text: "编辑列表",
+                                blockEditBtnEnd_text: "结束编辑",
+                                addBlockLabel_text : "全匹配拦截：",
+                                addBtnLabel_text : "添加",
+                            },
+                            cancelBtn_text: "取消",
+                            okBtn_text: "保存",
+                        }
+                    }
+                },
+                en:{
+                    menu_text : "CUSTOM",
+                    curLang: "en",
+                    fieldset_panel : {
+                        panel_title : "AC Redirect Settings " + GM_info.script.version,
+                        setting_panel : {
+                            redirect_text: "Main-RedirectFunc",
+                            redirect_title: "Turn on or off redirect",
+                            useEn_text: "En-Language",
+                            useEn_title: "使用英文显示页面",
+                            ads_text: "Add1-Remove Ads",
+                            ads_title: "Remove the ads on the page, and return you a clean page",
+                            autopage_text: "Auto Pager",
+                            autopage_title: "Auto Pager",
+                            blockenable_text: "Add2-Block host",
+                            blockenable_title: "Click the Block button to add the address which you want to hide. The script will hide it with small banner automatically. DIY button for editting the hiding list",
+                            blockDiyBtn_text: "DIY",
+                            blockDiyBtn_title: "Edit BLOCK",
+                            blockAutoRemove_text: "Auto remove",
+                            blockAutoRemove_title: "remove the block results automatically",
+                            blockBtnShow_text: "Hide 'Block' button",
+                            blockBtnShow_title: "Hide 'Block' button",
+
+                            userStyle_text: "Add3-CustomStyle",
+                            userStyle_baidu_lable: "Expand Baidu Settings>>",
+                            userStyle_baidu_origin: "Baidu-Origin",
+                            userStyle_baidu_huyan: "Baidu-EyeSave",
+                            userStyle_baidu_baiduLite: "BaiduLiteStyle",
+                            userStyle_baidu_1line: "SingleRow",
+                            userStyle_baidu_1line_enter: "SingleCenter",
+                            userStyle_baidu_2line: "Two",
+                            userStyle_baidu_3line: "Three",
+                            userStyle_baidu_4line: "Four",
+
+                            userStyle_google_lable: "Expand Google Settings>>",
+                            userStyle_google_origin: "Google-Origin",
+                            userStyle_google_huyan: "Google-EyeSave",
+                            userStyle_google_googleLite: "Fake Baidu",
+                            userStyle_google_1line: "SingleRow",
+                            userStyle_google_1line_enter: "SingleCenter",
+                            userStyle_google_2line: "Two",
+                            userStyle_google_3line: "Three",
+                            userStyle_google_4line: "Four",
+
+                            userStyle_bing_lable: "Expand Bing Settings>>",
+                            userStyle_bing_origin: "Bing-Origin",
+                            userStyle_bing_huyan: "Bing-EyeSave",
+                            userStyle_bing_1line: "SingleRow",
+                            userStyle_bing_1line_enter: "SingleCenter",
+                            userStyle_bing_2line: "Two",
+                            userStyle_bing_3line: "Three",
+                            userStyle_bing_4line: "Four",
+
+                            userStyle_sogou_lable: "Expand SoGou Settings>>",
+                            userStyle_sogou_origin: "SoGou-Origin",
+                            userStyle_sogou_huyan: "SoGou-EyeSave",
+                            userStyle_sogou_1line: "SingleRow",
+                            userStyle_sogou_1line_enter: "SingleCenter",
+                            userStyle_sogou_2line: "Two",
+                            userStyle_sogou_3line: "Three",
+                            userStyle_sogou_4line: "Four",
+
+                            userStyle_duck_lable: "Expand DuckDuckGo Settings>>",
+                            userStyle_duck_origin: "DuckDuck-Origin",
+                            userStyle_duck_huyan: "DuckDuck-EyeSave",
+                            userStyle_duck_normal: "DuckDuck-Normal",
+                            userStyle_duck_1line: "SingleRow",
+                            userStyle_duck_1line_enter: "SingleCenter",
+                            userStyle_duck_2line: "Two",
+                            userStyle_duck_3line: "Three",
+                            userStyle_duck_4line: "Four",
+
+                            huyanMode_text: "Add4-EyeSave Color Setting-Need opened in Add3",
+                            huyanMode_title: "！Open EyeSave Mode in CustomStyle is Must",
+                            huyanColor_text: "Default EyeSave Color：",
+                            huyanColor_title: "The color of EyeSave：",
+                            huyanColorMore_text: "More Color",
+
+                            favicon_text: "Add5-Favicon.Func",
+                            favicon_title: "AC-AddFavicon",
+                            favicon_defaultIcon_text: "FaviconFailedImg：：",
+
+                            searchOrigin_text: "AC-Remove Baidu AutoPredict in text search",
+                            searchOrigin_title: "Add6-Remove Baidu AutoPredict in text search",
+
+                            showRight_text: "Add7-Right Side Column",
+                            showCounter_text: "Add8-NumFunc",
+                            showALine_text: "Add9-TextUnderLine",
+                            showUserStyle_text: "Add10-Your own Style",
+
+                            contactMe_text: "For contact the writter, suggests, ask for help then click me",
+                            contactMe_url: "https://github.com/langren1353/GM_script/",
+
+                            setting_panel_second: {
+                                backBtn_text: "<-Back",
+                                blockLabel_text: "&nbsp;Block List&nbsp;&nbsp;Click Save Button if you want wo save the list",
+                                blockEditBtn_text: "Edit List",
+                                blockEditBtnEnd_text: "End Edit",
+                                addBlockLabel_text: "Add Block item：",
+                                addBtnLabel_text: "Add",
+                            },
+                            cancelBtn_text: "Cancel",
+                            okBtn_text: "Save",
+                        }
+                    }
+                }
+            }
+        };
+        let vueVM = null;
         /**初始化所有的设置**/
         Promise.all([GM.getValue("Config")]).then(function (data) {
             if (data[0] != null) {
@@ -514,7 +765,9 @@ body[baidu] #s_lg_img_new{
                 ACConfig.lastSaveTime = new Date().getTime();
                 ACConfig.UserStyleText = DefaultConfig.UserStyleText;
             }
-            useCNLan = !ACConfig.isEnLang;
+            AllData.ACConfig = ACConfig;
+            DBConfig = JSON.parse(JSON.stringify(ACConfig)); // 暂时作为一个原始保存
+            AllData.lan.use = ACConfig.isEnLang ? AllData.lan.en : AllData.lan.zh_cn;
             // 初始化完成之后才能调用正常函数
             callback();
         }).catch(function (except) {
@@ -572,7 +825,6 @@ body[baidu] #s_lg_img_new{
             }
 
             !function () {
-                let BaiduVersion = " V" + GM_info.script.version;
                 let insertLocked = false;
                 if(GM_getResourceText){
                     // 仅在支持GM_getResourceText的容器上进行动态数据更新
@@ -599,7 +851,9 @@ body[baidu] #s_lg_img_new{
                     curSite = DBSite.google;
                 } else if (location.host.indexOf("bing") > -1) {
                     curSite = DBSite.bing;
-                }else {
+                } else if (location.host.indexOf("duckduckgo") > -1) {
+                    curSite = DBSite.duck;
+                } else {
                     curSite = DBSite.other;
                 }
                 curSite.pageNum = 1; // 当前页数
@@ -623,11 +877,15 @@ body[baidu] #s_lg_img_new{
                         CONST.AdsStyleMode = ACConfig.AdsStyleMode_Bing;
                         CONST.HuYanMode = ACConfig.HuYan_Bing;
                         CONST.keySite = "bing";
+                    } else if (curSite.SiteTypeID == SiteType.DUCK){
+                        CONST.AdsStyleMode = ACConfig.AdsStyleMode_Duck;
+                        CONST.HuYanMode = ACConfig.HuYan_Duck;
+                        CONST.keySite = "duck";
                     } else if (curSite.SiteTypeID == SiteType.SOGOU){
                         CONST.AdsStyleMode = ACConfig.AdsStyleMode_SoGou;
                         CONST.HuYanMode = ACConfig.HuYan_SoGou;
                         CONST.keySite = "sogou";
-                    } else if(curSite.SiteTypeID == SiteType.BAIDU_XUESHU){
+                    } else if (curSite.SiteTypeID == SiteType.BAIDU_XUESHU){
                         CONST.AdsStyleMode = 2; // 单列居中即可
                     }
                     CONST.StyleManger = FSBaidu(); // 添加设置项-单双列显示
@@ -649,7 +907,7 @@ body[baidu] #s_lg_img_new{
                      * 初始化Block样式
                      */
                     initStyle: function(){
-                        AC_addStyle("button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;font-size:.85em;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}h3>button.ghhider{font-size:.75em}button.ghhider:hover{color:#006aff;background:#fff}",
+                        AC_addStyle("button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}button.ghhider{font-size:12px}button.ghhider:hover{color:#006aff;background:#fff}",
                             "AC-BlockStyle");
                     },
                     /**
@@ -694,14 +952,13 @@ body[baidu] #s_lg_img_new{
                             // 已经屏蔽之后，再次点击block应该是取消状态
                             node.removeAttribute("ac-user-alter");
                             ACConfig.UserBlockList.acremove(host);
-                            GM.setValue("Config", JSON.stringify(ACConfig)); // 点击一次，保存一次
                         }else{
                             // 正常屏蔽操作
                             node.removeAttribute("ac-user-alter");
                             ACConfig.UserBlockList.acpush(host);
-                            GM.setValue("Config", JSON.stringify(ACConfig)); // 点击一次，保存一次
                         }
-                        reloadBlockList();
+                        DBConfig.UserBlockList = ACConfig.UserBlockList;
+                        GM.setValue("Config", JSON.stringify(DBConfig)); // 点击一次，保存一次
                         SiteBlock.renderDisplay();
                         env.stopPropagation();
                     },
@@ -719,26 +976,31 @@ body[baidu] #s_lg_img_new{
                                     BlockBtn.dataset.host = BlockBtn.dataset.meta = curHost;
                                 }
                                 if(curNode.querySelector("button[ac-user-alter]") != null) continue; // 用户手动点过显示的，那么跳过check
-                                // console.log(ACConfig.UserBlockList);
-                                if(ACConfig.UserBlockList.findIndex(
-                                    m => {
-                                        try {
-                                            return new RegExp(m.replace("*", ".*")).test(curHost);
-                                        }catch(e){
-                                            return m == curHost;
-                                        }
+                                let regList = vueVM.cal_UserBlockListRegex; // 使用Vue的computed属性计算的数据值，一般根本不更新
+                                if(regList.findIndex(one => {
+                                    try {
+                                        return one.test(curHost); // 耗时操作
+                                    }catch(e){
+                                        return m == curHost;
                                     }
-                                ) >= 0){
+                                }) >= 0){
                                     // 只检查在屏蔽表中的数据
                                     if(! curNode.hasAttribute(flag)){
-                                        if(ACConfig.isBlockDisplay){
+                                        if(ACConfig.isBlockDisplay){ // 对于不显示的数据可以进行移除操作
                                             curNode.remove();
                                             continue;
                                         }
                                         let curTitle = curNode.querySelector(curSite.BlockType);
                                         curTitle = curTitle.innerText || curTitle.textContent;
-                                        curNode.insertAdjacentHTML("afterBegin", `<span class="blockShow" title="如果需要一直显示，请在自定义中DIY目录移除本地址">${curTitle}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -block by ${curHost}</span>`);
+
+                                        if(curNode.hasAttribute(flag)){
+                                            console.log("冲突了！！！");
+                                            continue;
+                                        }
+
                                         curNode.setAttribute(flag, "1");
+                                        curNode.insertAdjacentHTML("afterBegin", `<span class="blockShow" title="如果需要一直显示，请在自定义中DIY目录移除本地址">${curTitle}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -block by ${curHost}</span>`);
+
                                         (function(xcur){
                                             // 已经屏蔽之后的内容，点击一下显示原始内容
                                             xcur.querySelector(".blockShow").addEventListener("click", function (env) {
@@ -787,13 +1049,11 @@ body[baidu] #s_lg_img_new{
                         node.removeAttribute("srcset");
                         node.src = "https://www.baidu.com/img/bd_logo1.png?where=super";
                         node.setAttribute("height", "59");
-                        node.style = "margin-top: -15px;";
                     }, 300);
                     safeWaitFunc("form[role='search'] .logo img", function(node){
                         node.removeAttribute("srcset");
                         node.src = "https://www.baidu.com/img/bd_logo1.png?where=super";
                         node.setAttribute("height", "59");
-                        node.style = "margin-top: -15px;";
                     }, 300);
                     document.title = document.title.replace(/^Google/, "百度一下，你就知道")
                         .replace(/ - Google 搜索/, "_百度搜索")
@@ -806,6 +1066,20 @@ body[baidu] #s_lg_img_new{
                         document.head.appendChild(linkTarget);
                     })
                 }
+                if(ACConfig.normalizeDuck && curSite.SiteTypeID == SiteType.DUCK){
+                    setTimeout(function(){
+                        try{
+                            DDG.settings.set("kn", 1, {  // 新窗口打开页面
+                                saveToCloud: true,
+                                forceTheme: true
+                            });
+                            DDG.settings.set("kav", 1, { // 连续显示搜索结果
+                                saveToCloud: true,
+                                forceTheme: true
+                            });
+                        }catch (e) {}
+                    }, 5000);
+                }
                 try {
                     if (curSite.SiteTypeID != SiteType.OTHERS) {
                         document.addEventListener('DOMNodeInserted', MainCallback, false);
@@ -814,20 +1088,123 @@ body[baidu] #s_lg_img_new{
                             rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
                         }, 800);
                     }
+
                 } catch (e) {
                     console.log(e);
                 }
-
+                safeWaitFunc("#sp-ac-content", function(checkNode){
+                    var options = {
+                        el: checkNode,
+                        data: function(){
+                            return AllData;
+                        },
+                        methods: {
+                            labelShowHideEnv(e){
+                                let cur = e.srcElement || e.target;
+                                let className = cur.parentNode.className.replace("container-label ", "");
+                                AC_addStyle(".XX>label,.XX>br{display:unset !important;}.XX>.label_hide{display:none !important;}".replace(/XX/gm, className),
+                                    "AC-ShowHideItem-" + className, "body");
+                                e.stopPropagation();
+                            },
+                            syncToBlockList(env){
+                                this.ACConfig.UserBlockList = env.target.value.split("\n").filter(item => item != '');
+                            },
+                            removeABlockListItem(e){
+                                // 点击移除某个host数据时
+                                let target = e.srcElement || e.target;
+                                if(target.tagName.toLowerCase() == "label"){
+                                    let host = target.dataset.host;
+                                    ACConfig.UserBlockList.acremove(host);
+                                }
+                            },
+                            ckAddRule(){
+                                // 手动增加移除规则
+                                ACConfig.UserBlockList.acpush(this.other.addBlockItem);
+                                this.other.addBlockItem = "";
+                            },
+                            loadCustomStyle(){
+                                AC_addStyle(ACConfig.UserStyleText, "AC-userStyle", "head", true); // 用户自定义的样式表
+                            },
+                            saveConfig(){
+                                this.ACConfig.lastSaveTime = new Date().getTime();
+                                GM.setValue("Config", JSON.stringify(this.ACConfig));
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 400);
+                            },
+                            useThisHuyanColor(env){
+                                this.ACConfig.defaultHuYanColor = env.target.value || env.target.dataset.value;
+                                console.log(this.ACConfig.defaultHuYanColor);
+                                CONST.StyleManger.loadHuYanStyle(this.ACConfig.defaultHuYanColor);
+                            },
+                            getUserBlockListRegex(){
+                                var list = new Array();
+                                this.ACConfig.UserBlockList.forEach(one => {
+                                    list.push(new RegExp(one.replace("*", ".*")));
+                                })
+                                if(typeof(this.other.addBlockItem) != "undefined" && this.other.addBlockItem != ""){
+                                    list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
+                                }
+                                return list;
+                            }
+                        },
+                        computed: {
+                            getBlockList(){ // 会自动的render到html上去，不用手动去渲染一遍
+                                let insHTML = "";
+                                let UserBlockRegList = this.cal_UserBlockListRegex;
+                                for(let i = 0; i < this.ACConfig.UserBlockList.length; i++){
+                                    let insClass = this.other.curHosts.findIndex(m => {
+                                        try {
+                                            return UserBlockRegList[i].test(m);
+                                        }catch(e){
+                                            return m == ACConfig.UserBlockList[i];
+                                        }
+                                    }) >= 0 ? " ac-block-high":""; // 如果当前页面存在，则高亮
+                                    insHTML += `<li><label class="ac-block-item${insClass}" data-host="${this.ACConfig.UserBlockList[i]}">${this.ACConfig.UserBlockList[i]}</label><label class="ac-block-item ac-block-itemdel" data-host="${this.ACConfig.UserBlockList[i]}">x</label></li>\n`;
+                                }
+                                return insHTML;
+                            },
+                            cal_diyBlockListBtn(){
+                                if(this.other.showBlockListArea){
+                                    return this.lan.use.fieldset_panel.setting_panel.setting_panel_second.blockEditBtnEnd_text;
+                                }else{
+                                    return this.lan.use.fieldset_panel.setting_panel.setting_panel_second.blockEditBtn_text;
+                                }
+                            },
+                            cal_UserBlockListRegex(){
+                                var list = new Array();
+                                this.ACConfig.UserBlockList.forEach(one => {
+                                    list.push(new RegExp(one.replace("*", ".*")));
+                                })
+                                if(typeof(this.other.addBlockItem) != "undefined" && this.other.addBlockItem != ""){
+                                    list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
+                                }
+                                return list;
+                            }
+                        }
+                    };
+                    if(typeof(Vue) != "undefined"){
+                        if(Vue.version.charAt(0) == 2){
+                            vueVM =  new Vue(options);
+                        }else{
+                            vueVM = Vue.createApp(options).mount(checkNode);
+                        }
+                    }else{
+                        console.error("Vue 未完成初始化--程序无法有效执行");
+                    }
+                    // setTimeout(function(){
+                    //     console.log(Vue);
+                    // }, 5000);
+                });
                 function MainCallback(e) {
                     if (e.target != null && typeof(e.target.className) == "string" && e.target.className.toUpperCase().indexOf("AC-") == 0) {
                         return;
                     } //屏蔽掉因为增加css导致的触发insert动作
                     rapidDeal();
+                    InsertSettingMenu();
+                    setTimeout(function(){ShowSetting();}, 1000) // 滞后窗口的加载，减少前期CPU争用
                 }
 
-                function ShowSearchBox(){
-                    // TODO 待完成
-                }
                 /*以下代码大部分来源于SuprePreloader 感谢 swdyh && ywzhaiqi && NLF 以及 mach6 大佬*/
                 function ac_spfunc(e){
                     e.stopPropagation();
@@ -1025,7 +1402,14 @@ body[baidu] #s_lg_img_new{
                             if(curSite.SiteTypeID == SiteType.GOOGLE) scrollDelta = 1024; // 毕竟谷歌加载缓慢的问题
                             if(document.documentElement.scrollHeight <= document.documentElement.clientHeight + scrollTop + scrollDelta && curSite.pageLoading == false) {
                                 curSite.pageLoading = true;
-                                ShowPager.loadMorePage();
+                                if(curSite.SiteTypeID == SiteType.DUCK){ // 可以用已有的方法来实现了
+                                    if(!ACConfig.normalizeDuck || ACConfig.AdsStyleMode_Duck >= 3){    // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
+                                        document.querySelector("#links .result--more a").click();
+                                        setTimeout(function(){curSite.pageLoading = false;}, 5000);
+                                    }
+                                }else{
+                                    ShowPager.loadMorePage();
+                                }
                             }
                         }
                     }
@@ -1177,24 +1561,27 @@ body[baidu] #s_lg_img_new{
                         , "AC-special-BAIDU"
                     );
                     /*"自定义"按钮效果*/
-                    AC_addStyle(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}#myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}",
+                    AC_addStyle(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser{margin-right:15px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}",
                         "AC-MENU_Btn");
                     /*自定义页面内容效果*/
-                    AC_addStyle('body[baidu]  #sp-ac-container .container-label:not([class*="baidu"])>label,\n' +
-                        '   body[google] #sp-ac-container .container-label:not([class*="google"])>label,\n' +
-                        '   body[bing]   #sp-ac-container .container-label:not([class*="bing"])>label,\n' +
-                        '   body[sogou]   #sp-ac-container .container-label:not([class*="sogou"])>label,\n' +
+                    AC_addStyle('body[baidu]  #sp-ac-container .container-label:not([class*="baidu"])>label:not([class="label_hide"]),\n' +
+                        '   body[google] #sp-ac-container .container-label:not([class*="google"])>label:not([class="label_hide"]),\n' +
+                        '   body[bing]   #sp-ac-container .container-label:not([class*="bing"])>label:not([class="label_hide"]),\n' +
+                        '   body[sogou]  #sp-ac-container .container-label:not([class*="sogou"])>label:not([class="label_hide"]),\n' +
+                        '   body[duck]   #sp-ac-container .container-label:not([class*="duck"])>label:not([class="label_hide"]),\n' +
                         '   body[baidu]  #sp-ac-container .container-label:not([class*="baidu"])>br,\n' +
                         '   body[google] #sp-ac-container .container-label:not([class*="google"])>br,\n' +
                         '   body[bing]   #sp-ac-container .container-label:not([class*="bing"])>br,\n' +
-                        '   body[sogou]   #sp-ac-container .container-label:not([class*="sogou"])>br,\n' +
-                        '   body[baidu]  #sp-ac-container .container-label[class*="baidu"]>labelhide,\n' +
-                        '   body[google] #sp-ac-container .container-label[class*="google"]>labelhide,\n' +
-                        '   body[bing] #sp-ac-container .container-label[class*="bing"]>labelhide,\n' +
-                        '   body[sogou]   #sp-ac-container .container-label[class*="sogou"]>labelhide\n' +
+                        '   body[duck]   #sp-ac-container .container-label:not([class*="duck"])>br,\n' +
+                        '   body[sogou]  #sp-ac-container .container-label:not([class*="sogou"])>br,\n' +
+                        '   body[baidu]  #sp-ac-container .container-label[class*="baidu"]>.label_hide,\n' +
+                        '   body[google] #sp-ac-container .container-label[class*="google"]>.label_hide,\n' +
+                        '   body[bing]   #sp-ac-container .container-label[class*="bing"]>.label_hide,\n' +
+                        '   body[sogou]  #sp-ac-container .container-label[class*="sogou"]>.label_hide,\n' +
+                        '   body[duck]   #sp-ac-container .container-label[class*="duck"]>.label_hide\n' +
                         '{' +
                         'display:none;\n' +
-                        '}#sp-ac-container labelHide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container labelHide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
+                        '}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
                         "AC-MENU_Page");
                 }
                 AutoRefresh();
@@ -1222,8 +1609,6 @@ body[baidu] #s_lg_img_new{
                     try {
                         if (insertLocked == false && curSite.SiteTypeID != SiteType.OTHERS) {
                             insertLocked = true;
-                            InsertSettingMenu();
-                            ShowSetting();
                             ACHandle(); // 处理主重定向
                             // AutoRefresh();
                             if (ACConfig.isAdsEnable) { // 放进来，减少卡顿
@@ -1251,7 +1636,7 @@ body[baidu] #s_lg_img_new{
                             if (ACConfig.isCounterEnable) { // 显示计数器
                                 addCounter(document.querySelectorAll(curSite.CounterType));
                             }
-                            if(ACConfig.isBlockEnable && curSite.SiteTypeID != SiteType.SOGOU){ // 启用屏蔽功能
+                            if(ACConfig.isBlockEnable && curSite.SiteTypeID != SiteType.SOGOU){ // 启用屏蔽功能- 对每一个新增的地址都要处理
                                 SiteBlock.initStyle();
                                 SiteBlock.init();
                             }
@@ -1270,11 +1655,6 @@ body[baidu] #s_lg_img_new{
                         let expires = "expires=" + d.toUTCString();
                         document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
                     }
-                }
-
-                function AutoLoadCustomCSS(){ // 按键触发reload
-                    var cssValue = document.querySelector("#sp-ac-userstyleTEXT").value;
-                    AC_addStyle(cssValue, "AC-userStyle", "head", true); // 用户自定义的样式表
                 }
 
                 function getBaiduHost(sitetpNode){
@@ -1338,115 +1718,13 @@ body[baidu] #s_lg_img_new{
                         if (document.querySelector("#sp-ac-content").style.display == 'block') {
                             document.querySelector("#sp-ac-content").style.display = 'none';
                         } else {
-                            ACConfig.oldVersion = GM_info.script.version;
-                            GM.setValue("Config", JSON.stringify(ACConfig));
+                            DBConfig.oldVersion = ACConfig.oldVersion = GM_info.script.version; // 只需要写出一部分的关键数据即可
+                            GM.setValue("Config", JSON.stringify(DBConfig));
                             document.querySelector(".ac-newversionDisplay").style.display = 'none';
                             document.querySelector("#sp-ac-content").style.display = 'block';
                         }
                     }, 100);
                     return false;
-                }
-
-                function getBlockList(){ // 同时处理高亮
-                    let insHTML = "";
-                    for(let i = 0; i < ACConfig.UserBlockList.length; i++){
-                        let insClass = CONST.curHosts.findIndex(m => {
-                            try {
-                                return new RegExp(ACConfig.UserBlockList[i].replace("*", ".*")).test(m);
-                            }catch(e){
-                                return m == ACConfig.UserBlockList[i];
-                            }
-                        }) >= 0 ? " ac-block-high":""; // 如果当前页面存在，则高亮
-                        insHTML += `<li><label class="ac-block-item${insClass}" data-host="${ACConfig.UserBlockList[i]}">${ACConfig.UserBlockList[i]}</label><label class="ac-block-item ac-block-itemdel" data-host="${ACConfig.UserBlockList[i]}">x</label></li>\n`;
-                    }
-                    return insHTML;
-                }
-
-                function reloadBlockList(){
-                    // 初始化表格内容并绑定按钮事件
-                    document.querySelector(".ac-blockList ul").innerHTML = getBlockList();
-                }
-
-                function initBlockPage(){
-                    try{
-                        if(useCNLan){
-                            document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='返回'><-返回</span></label>&nbsp;拦截列表&nbsp;&nbsp;想要生效的话需要手动保存</li><li style='margin-bottom: 8px !important;'><span id='sp-ac-blockdiybutton-diylist' class='sp-ac-spanbutton'>编辑列表</span></li><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li class='ac-blockBoxCon' style='max-height: 60vh;text-align: center;margin-left: 26px;'></li><li>全匹配拦截：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='新增' style='position: relative !important;line-height: 17px;'>新增</span></li>`;
-                        }else{
-                            document.querySelector(".setting-second").innerHTML = `<li style='margin-bottom: 8px !important;'><label><span id='sp-ac-blockdiybutton-back' class='sp-ac-spanbutton' title='Back'><-Back</span></label>&nbsp;Block List&nbsp;&nbsp;Click Save Button if you want wo save the list</li><li style='margin-bottom: 8px !important;'><span id='sp-ac-blockdiybutton-diylist' class='sp-ac-spanbutton'>Edit List</span><li class='ac-blockList' style='max-height:60vh;overflow-y: scroll;'><ul>${getBlockList()}</ul></li><li class='ac-blockBoxCon' style='max-height: 60vh;text-align: center;margin-left: 26px;'></li><li>Same host Insert ：<input class="sp-ac-addRuleOne" style='width:55%;'><span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' title='Insert' style='position: relative !important;line-height: 17px;'>Insert</span></li>`;
-                        }
-                        document.querySelector("#sp-ac-blockdiybutton-back").addEventListener("click", function () {
-                            document.querySelector(".setting-main").style = "";
-                            document.querySelector(".setting-second").style = "display:none;";
-                        });
-                        var diyListBtn = document.querySelector("#sp-ac-blockdiybutton-diylist");
-                        diyListBtn.addEventListener("click", function(){
-                            // TODO 完成点击之后变成列表
-                            // TODO 隐藏原始的数据，并将数据转换到列表中去
-                            // TODO 如果列表的数据编辑完成，那么数据需要转换为新的数据并生成原始的数据
-                            // 数据在：ACConfig.UserBlockList 中
-                            var listBoxContainer = document.querySelector(".ac-blockBoxCon");
-                            var listBoxList = document.querySelector(".ac-blockList");
-                            if(typeof(diyListBtn.dataset.isList) == "undefined" || diyListBtn.dataset.isList == "0" ){
-                                // 即false
-                                diyListBtn.dataset.isList = "1";
-                                var textarea = document.createElement("textarea");
-                                textarea.rows = 20;
-                                textarea.innerHTML = ACConfig.UserBlockList.join("\n");
-                                listBoxContainer.insertAdjacentElement("beforeend", textarea);
-                                // 隐藏掉原始的列表
-                                listBoxList.querySelector("ul").classList.add("achide");
-                                diyListBtn.innerHTML = "结束编辑";
-
-                                textarea.addEventListener("keyup", function(){
-                                    BlockTextAreaToBlockList(textarea, listBoxList);
-                                });
-                            }else{
-                                diyListBtn.dataset.isList = "0";
-                                var textarea = listBoxContainer.querySelector("textarea");
-                                BlockTextAreaToBlockList(textarea, listBoxList);
-                                textarea.remove();
-                                listBoxList.querySelector("ul").classList.remove("achide");
-                                diyListBtn.innerHTML = "编辑列表";
-                            }
-                        });
-
-                        function BlockTextAreaToBlockList(textarea, listBoxList){
-                            var text = textarea.value;
-                            // 尝试更新原始列表 text to list
-                            ACConfig.UserBlockList = text.split("\n").filter(item => item != '');
-                            // 显示现在的列表
-                            reloadBlockList();
-                        }
-
-                        document.querySelector(".ac-blockList").addEventListener("click", function (e) {
-                            // 点击移除某个host数据时
-                            let target = e.srcElement || e.target;
-                            if(target.tagName.toLowerCase() == "label"){
-                                let host = target.dataset.host;
-
-                                ACConfig.UserBlockList.acremove(host, function(){
-                                    document.querySelectorAll("button[ac-user-alter]").forEach(function (perNode) {
-                                        // 移除用户diy之后的属性
-                                        perNode.removeAttribute("ac-user-alter");
-                                    });
-                                    SiteBlock.renderDisplay();
-                                    reloadBlockList();
-                                });
-                            }
-                        });
-                        function ckAddRule(){
-                            // 手动增加移除规则
-                            let inputN = document.querySelector(".sp-ac-addRuleOne");
-                            ACConfig.UserBlockList.acpush(inputN.value, reloadBlockList);
-                            inputN.value = "";
-                        }
-                        document.querySelector("#sp-ac-addRulebutton").addEventListener("click", ckAddRule);
-                        document.querySelector(".sp-ac-addRuleOne").addEventListener("keypress", function(evt){
-                            let e = evt || window.event;
-                            if(e.keyCode == 13) ckAddRule();
-                        });
-                    }catch (e) {
-                    }
                 }
 
                 function ShowSetting() {
@@ -1455,289 +1733,310 @@ body[baidu] #s_lg_img_new{
                     if (document.body != null && document.querySelector("#sp-ac-container") == null) {
                         let Container = document.createElement('div');
                         Container.id = "sp-ac-container";
-                        if(useCNLan){
-                            Container.innerHTML =
-                                "    <div id='sp-ac-content' style='display: none;'>\n" +
-                                "        <div id='sp-ac-main'>\n" +
-                                "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
+                        Container.innerHTML =
+                            `<div id="sp-ac-content" style="display: none;">
+                                <div id="sp-ac-main">
+                                <fieldset id="sp-ac-autopager-field" style="display:block;">
+                                    <legend class="iframe-father">
+                                        <a class="linkhref" href="https://www.ntaow.com/aboutscript.html" target="_blank" v-text="lan.use.fieldset_panel.panel_title"></a>
+                                    </legend>
+                                    <ul class="setting-main" v-show="!other.showSecondPanel">
+                                        <li>
+                                            <label :title="lan.use.fieldset_panel.setting_panel.redirect_title">
+                                                <input id="sp-ac-redirect" name="sp-ac-a_separator" type="checkbox"  v-model="ACConfig.isRedirectEnable">
+                                                {{ lan.use.fieldset_panel.setting_panel.redirect_text }}
+                                            </label>
+                                            <label>
+                                                <input id="sp-ac-isEnLang" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isEnLang">
+                                                {{ lan.use.fieldset_panel.setting_panel.useEn_text }}
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label :title="lan.use.fieldset_panel.setting_panel.ads_title">
+                                                <input id="sp-ac-ads" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isAdsEnable">
+                                                {{ lan.use.fieldset_panel.setting_panel.ads_text }}
+                                            </label>
+                                            <label :title="lan.use.fieldset_panel.setting_panel.autopage_title" class="">
+                                                <input id="sp-ac-isAutopage" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isAutopage">
+                                                {{ lan.use.fieldset_panel.setting_panel.autopage_text }}
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label title="lan.use.fieldset_panel.setting_panel.blockenable_title">
+                                                <input id="sp-ac-block" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isBlockEnable">
+                                                {{ lan.use.fieldset_panel.setting_panel.blockenable_text }}
+                                            </label>
+                                            <span id="sp-ac-blockdiybutton" class="sp-ac-spanbutton" @click="other.showSecondPanel = true" :title="lan.use.fieldset_panel.setting_panel.blockDiyBtn_title" style="margin-left: 5px;color: #888888;" v-text="lan.use.fieldset_panel.setting_panel.blockDiyBtn_text"></span>
+                                            <label :title="lan.use.fieldset_panel.setting_panel.blockenable_text">
+                                                <input :title="lan.use.fieldset_panel.setting_panel.blockAutoRemove_title" v-model="ACConfig.isBlockDisplay" id="sp-ac-removeBlock" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.blockAutoRemove_text }}
+                                            </label>
+                                            <label :title="lan.use.fieldset_panel.setting_panel.blockBtnShow_title">
+                                                <input :title="lan.use.fieldset_panel.setting_panel.blockBtnShow_title"  v-model="ACConfig.isBlockBtnDisplay" id="sp-ac-blockBtnDisplay" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.blockBtnShow_text }}
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_text">
+                                                <input id="sp-ac-style" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.AdsStyleEnable">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_text }}
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <!------------百度样式-------------->
+                                            <label class="container-label baidu">
+                                                <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_baidu_lable" @click="labelShowHideEnv"></label>
+                                                <label style="margin-left:20px"><input name="sp-ac-a_force_style_baidu" value="0" v-model="ACConfig.AdsStyleMode_Baidu" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_origin }}
+                                                </label>
+                                                <label>
+                                                <input  name='sp-ac-huyan_style_baidu' type='checkbox' v-model="ACConfig.HuYan_Baidu">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_huyan }}
+                                                </label>
+                                                <label class=""><input name="sp-ac-a_force_style_baidulite" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_baiduLite }}
+                                                </label>
+                                                <br>
+                                                <label style="margin-left:20px"><input name="sp-ac-a_force_style_baidu" value="1" v-model="ACConfig.AdsStyleMode_Baidu" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_1line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_baidu" value="2" type="radio" v-model="ACConfig.AdsStyleMode_Baidu">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_1line_enter }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_baidu" value="3" type="radio" v-model="ACConfig.AdsStyleMode_Baidu">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_2line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_baidu" value="4" type="radio" v-model="ACConfig.AdsStyleMode_Baidu">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_3line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_baidu" value="5" type="radio" v-model="ACConfig.AdsStyleMode_Baidu">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_4line }}
+                                                </label>
+                                                <br>
+                                            </label>
+                                            <!------------百度样式-------------->
+                                            <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
+                                            <!------------谷歌样式-------------->
+                                            <label class="container-label google">
+                                                <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_google_lable" @click="labelShowHideEnv"></label>
+                                                <label style="margin-left:20px">
+                                                <input name="sp-ac-a_force_style_google" value="0" type="radio" v-model="ACConfig.AdsStyleMode_Google">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_google_origin }}
+                                                </label>
+                                                <label :title="lan.use.fieldset_panel.setting_panel.userStyle_google_huyan"><input name="sp-ac-huyan_style_google" v-model="ACConfig.HuYan_Google" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_google_huyan }}
+                                                </label>
+                                                <label :title="lan.use.fieldset_panel.setting_panel.userStyle_google_googleLite" style=""><input name="sp-ac-google_in_baidumode" v-model="ACConfig.isGooleInBaiduModeEnable" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_google_googleLite }}
+                                                </label>
+                                                <br>
+                                                <label style="margin-left:20px"><input name="sp-ac-a_force_style_google" value="1" v-model="ACConfig.AdsStyleMode_Google" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_google_1line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_google" value="2" v-model="ACConfig.AdsStyleMode_Google" type="radio" checked="">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_google_1line_enter }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_google" value="3" v-model="ACConfig.AdsStyleMode_Google" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_google_2line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_google" value="4" v-model="ACConfig.AdsStyleMode_Google" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_google_3line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_google" value="5" v-model="ACConfig.AdsStyleMode_Google" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_google_4line }}
+                                                </label>
+                                                <br>
+                                            </label>
+                                            <!------------谷歌样式-------------->
+                                            <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
+                                            <!------------必应样式-------------->
+                                            <label class="container-label bing">
+                                                <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_bing_lable" @click="labelShowHideEnv"></label>
+                                                <label style="margin-left:20px"><input name="sp-ac-a_force_style_bing" v-model="ACConfig.AdsStyleMode_Bing" value="0" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_origin }}
+                                                </label>
+                                                <label :title="lan.use.fieldset_panel.setting_panel.userStyle_bing_huyan"><input name="sp-ac-huyan_style_bing" v-model="ACConfig.HuYan_Bing" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_huyan }}
+                                                </label>
+                                                <br>
+                                                <label style="margin-left:20px"><input name="sp-ac-a_force_style_bing" v-model="ACConfig.AdsStyleMode_Bing" value="1" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_1line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_bing" value="2" v-model="ACConfig.AdsStyleMode_Bing" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_1line_enter }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_bing" value="3" v-model="ACConfig.AdsStyleMode_Bing" type="radio" checked="">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_2line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_bing" value="4" v-model="ACConfig.AdsStyleMode_Bing" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_3line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_bing" value="5" v-model="ACConfig.AdsStyleMode_Bing" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_4line }}
+                                                </label>
+                                            </label>
+                                            <!------------必应样式-------------->
+                                            <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
+                                            <!------------搜狗样式-------------->
+                                            <label class="container-label sogou">
+                                                <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_sogou_lable" @click="labelShowHideEnv"></label>
+                                                <label style="margin-left:20px"><input name="sp-ac-a_force_style_sogou" v-model="ACConfig.AdsStyleMode_SoGou" value="0" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_origin }}
+                                                </label>
+                                                <label :title="lan.use.fieldset_panel.setting_panel.userStyle_sogou_huyan"><input name="sp-ac-huyan_style_sogou" v-model="ACConfig.HuYan_SoGou" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_huyan }}
+                                                </label>
+                                                <br>
+                                                <label style="margin-left:20px">
+                                                <input name="sp-ac-a_force_style_sogou" value="1" v-model="ACConfig.AdsStyleMode_SoGou" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_1line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_sogou" value="2" v-model="ACConfig.AdsStyleMode_SoGou" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_1line_enter }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_sogou" value="3" v-model="ACConfig.AdsStyleMode_SoGou" type="radio" checked="">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_2line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_sogou" value="4" v-model="ACConfig.AdsStyleMode_SoGou" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_3line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_sogou" value="5" v-model="ACConfig.AdsStyleMode_SoGou" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_4line }}
+                                                </label>
+                                            </label>
+                                            <!------------搜狗样式-------------->
+                                            <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
+                                            <!------------鸭鸭搜样式-------------->
+                                            <label class="container-label duck">
+                                                <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_duck_lable" @click="labelShowHideEnv"></label>
+                                                <label style="margin-left:20px"><input name="sp-ac-a_force_style_duck" v-model="ACConfig.AdsStyleMode_Duck" value="0" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_origin }}
+                                                </label>
+                                                <label :title="lan.use.fieldset_panel.setting_panel.userStyle_duck_huyan"><input name="sp-ac-huyan_style_duck" v-model="ACConfig.HuYan_Duck" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_huyan }}
+                                                </label>
+                                                 <label :title="lan.use.fieldset_panel.setting_panel.userStyle_duck_normal" style=""><input v-model="ACConfig.normalizeDuck" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_normal }}
+                                                </label>
+                                                <br>
+                                                <label style="margin-left:20px">
+                                                <input name="sp-ac-a_force_style_duck" value="1" v-model="ACConfig.AdsStyleMode_Duck" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_1line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_duck" value="2" v-model="ACConfig.AdsStyleMode_Duck" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_1line_enter }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_duck" value="3" v-model="ACConfig.AdsStyleMode_Duck" type="radio" checked="">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_2line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_duck" value="4" v-model="ACConfig.AdsStyleMode_Duck" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_3line }}
+                                                </label>
+                                                <label><input name="sp-ac-a_force_style_duck" value="5" v-model="ACConfig.AdsStyleMode_Duck" type="radio">
+                                                {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_4line }}
+                                                </label>
+                                            </label>
+                                            <!------------鸭鸭搜样式-------------->
+                                        </li>
+                                        <!------------护眼模式设置-------------->
+                                        <li>
+                                            <label :title="lan.use.fieldset_panel.setting_panel.huyanMode_title">
+                                                <input id="sp-ac-usercolor" v-model="ACConfig.isUserColorEnable" name="sp-ac-a_force" type="checkbox" checked="">
+                                                {{ lan.use.fieldset_panel.setting_panel.huyanMode_text }}
+                                            </label>
+                                        </li>
 
-                                "            <legend class='iframe-father' title='AC重定向功能相关设置'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-重定向设置" + BaiduVersion + "</a></legend>\n" +
-                                "            <ul class='setting-main'>\n" +
-                                "                <li><label title='重定向功能的开启与否'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">主功能-重定向功能</label>\n" +
-                                "                   <label title='Using English language to display'><input id='sp-ac-isEnLang' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isEnLang ? 'checked' : '') + ">En-Language</label></li>\n" +
-                                "                <li><label title='去除部分页面的广告信息，还你一个干净整洁的页面' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">附加1-去广告功能</label>\n" +
-                                "                   <label title='自动翻页' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"'><input id='sp-ac-isAutopage' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAutopage ? 'checked' : '') + ">自动翻页</label></li>\n" +
-                                "                <li><label title='点击页面block按钮添加你想要隐藏的地址，脚本将自动隐藏部分结果为小横幅，DIY按钮中点击表格内容可以取消隐藏' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">附加2-自主拦截域名</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='自定义BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
-                                "                    <label><input title='自动移除已经屏蔽的域名' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">自动移除</label>" +
-                                "                    <label><input title='隐藏掉block按钮的显示' id='sp-ac-blockBtnDisplay' type='checkbox' " + (ACConfig.isBlockBtnDisplay ? '' : 'checked') + ">隐藏按钮</label>" +
-                                "                </li>\n" +
-                                "                <li><label title='AC-自定义样式'><input id='sp-ac-style' name='sp-ac-a_force' type='checkbox' " + (ACConfig.AdsStyleEnable ? 'checked' : '') + ">附加3-自定义样式</label>\n" +
-                                "                <label></label></li>\n" +
-                                "                <li>" +
-                                /****-百度样式-*****/
-                                "                   <labelMain class='container-label baidu'>" +
-                                "                       <labelHide>展开百度设置&gt;&gt;</labelHide>" +
-                                "                       <label title='百度-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_baidu' value='0' type='radio' " + (ACConfig.AdsStyleMode_Baidu == 0 ? 'checked' : '') + ">百度-原始模式</label>" +
-                                "                       <label title='百度-护眼模式'><input  name='sp-ac-huyan_style_baidu' type='checkbox' " + (ACConfig.HuYan_Baidu == true ? 'checked' : '') + ">百度-护眼模式</label>" +
-                                "                       <label title='百度Lite样式' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"'><input  name='sp-ac-a_force_style_baidulite' type='checkbox' " + (ACConfig.Style_BaiduLite == true ? 'checked' : '') + ">百度Lite样式</label>" +
-                                "                       <BR/><label title='百度-单列普通模式' style='margin-left:20px'><input title='百度-单列普通模式' name='sp-ac-a_force_style_baidu' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 1 ? 'checked' : '') + ">单列</label>" +
-                                "                       <label title='百度-单列居中'><input  name='sp-ac-a_force_style_baidu' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 2 ? 'checked' : '') + ">单列居中</label>" +
-                                "                       <label title='双列'><input name='sp-ac-a_force_style_baidu' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 3 ? 'checked' : '') + ">双列</label>" +
-                                "                       <label title='三列'><input name='sp-ac-a_force_style_baidu' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 4 ? 'checked' : '') + ">三列</label>" +
-                                "                       <label title='四列'><input name='sp-ac-a_force_style_baidu' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 5 ? 'checked' : '') + ">四列</label>" +
-                                "                   <BR/></labelMain>" +
-                                /****-百度样式-*****/
-                                "                    <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
-                                /****-谷歌样式-*****/
-                                "                   <labelMain class='container-label google'>" +
-                                "                       <labelHide>展开谷歌设置&gt;&gt;</labelHide>" +
-                                "                       <label title='谷歌-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_google' value='0' type='radio' " + (ACConfig.AdsStyleMode_Google == 0 ? 'checked' : '') + ">谷歌-原始模式</label>" +
-                                "                       <label title='谷歌-护眼模式'><input  name='sp-ac-huyan_style_google' type='checkbox' " + (ACConfig.HuYan_Google == true ? 'checked' : '') + ">谷歌-护眼模式</label>" +
-                                "                       <label title='谷歌-伪装百度' style='"+(CONST.hasNewFuncNeedDisplay ? "color:red;font-weight: 100;background-color: yellow;font-weight: 600;" : "")+"'><input  name='sp-ac-google_in_baidumode' type='checkbox' " + (ACConfig.isGooleInBaiduModeEnable == true ? 'checked' : '') + ">谷歌-伪装百度</label>" +
-                                "                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='谷歌-单列普通模式' name='sp-ac-a_force_style_google' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Google == 1 ? 'checked' : '') + ">单列</label>" +
-                                "                       <label title='谷歌-单列居中'><input  name='sp-ac-a_force_style_google' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Google == 2 ? 'checked' : '') + ">单列居中</label>" +
-                                "                       <label title='双列'><input  name='sp-ac-a_force_style_google' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Google == 3 ? 'checked' : '') + ">双列</label>" +
-                                "                       <label title='三列'><input  name='sp-ac-a_force_style_google' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Google == 4 ? 'checked' : '') + ">三列</label>" +
-                                "                       <label title='四列'><input  name='sp-ac-a_force_style_google' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Google == 5 ? 'checked' : '') + ">四列</label>" +
-                                "                   <BR/></labelMain>" +
-                                /****-谷歌样式-*****/
-                                "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
-                                /****-必应样式-*****/
-                                "                   <labelMain class='container-label bing'>" +
-                                "                       <labelHide>展开必应设置&gt;&gt;</labelHide>" +
-                                "                       <label title='必应-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_bing' value='0' type='radio' " + (ACConfig.AdsStyleMode_Bing == 0 ? 'checked' : '') + ">必应-原始模式</label>" +
-                                "                       <label title='必应-护眼模式'><input name='sp-ac-huyan_style_bing' type='checkbox' " + (ACConfig.HuYan_Bing == true ? 'checked' : '') + ">必应-护眼模式</label>" +
-                                "                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='必应-单列普通模式' name='sp-ac-a_force_style_bing' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 1 ? 'checked' : '') + ">单列</label>" +
-                                "                       <label title='必应-单列居中'><input  name='sp-ac-a_force_style_bing' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 2 ? 'checked' : '') + ">单列居中</label>" +
-                                "                       <label title='双列'><input name='sp-ac-a_force_style_bing' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 3 ? 'checked' : '') + ">双列</label>" +
-                                "                       <label title='三列'><input name='sp-ac-a_force_style_bing' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 4 ? 'checked' : '') + ">三列</label>" +
-                                "                       <label title='四列'><input name='sp-ac-a_force_style_bing' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 5 ? 'checked' : '') + ">四列</label>" +
-                                "                   </labelMain>" +
-                                /****-必应样式-*****/
-                                "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
-                                /****-搜狗样式-*****/
-                                "                   <labelMain class='container-label sogou'>" +
-                                "                       <labelHide>展开搜狗设置&gt;&gt;</labelHide>" +
-                                "                       <label title='搜狗-原始模式' style='margin-left:20px'><input name='sp-ac-a_force_style_sogou' value='0' type='radio' " + (ACConfig.AdsStyleMode_SoGou == 0 ? 'checked' : '') + ">搜狗-原始模式</label>" +
-                                "                       <label title='搜狗-护眼模式'><input name='sp-ac-huyan_style_sogou' type='checkbox' " + (ACConfig.HuYan_SoGou == true ? 'checked' : '') + ">搜狗-护眼模式</label>" +
-                                "                       <BR/><label title='单列普通模式' style='margin-left:20px'><input title='搜狗-单列普通模式' name='sp-ac-a_force_style_sogou' value='1'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 1 ? 'checked' : '') + ">单列</label>" +
-                                "                       <label title='搜狗-单列居中'><input  name='sp-ac-a_force_style_sogou' value='2'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 2 ? 'checked' : '') + ">单列居中</label>" +
-                                "                       <label title='双列'><input name='sp-ac-a_force_style_sogou' value='3'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 3 ? 'checked' : '') + ">双列</label>" +
-                                "                       <label title='三列'><input name='sp-ac-a_force_style_sogou' value='4'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 4 ? 'checked' : '') + ">三列</label>" +
-                                "                       <label title='四列'><input name='sp-ac-a_force_style_sogou' value='5'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 5 ? 'checked' : '') + ">四列</label>" +
-                                "                   </labelMain>" +
-                                /****-搜狗样式-*****/
-
-                                "                </li>\n" +
-                                "                <li><label title='！需要在自定义样式中启用护眼模式'><input title='AC-自定义护眼' id='sp-ac-usercolor' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserColorEnable ? 'checked' : '') + ">附加4-护眼颜色配置-自定义3中需对应开启</label></li>\n" +
-                                "                <li><label class='menu-box-container' title='！需要在自定义样式中启用护眼模式'><label style='margin-left:20px;'>默认护眼颜色：</label>" +
-                                "                       <input class='sp-ac-menuhuyanColor' type='color' title='自定义的护眼颜色' style='cursor: pointer;margin-top:-0.05rem;height:23px;' value='" + ACConfig.defaultHuYanColor + "'>" +
-                                "                       <label class='menu-box-small' data-color='#DEF1EF' style='background-color:#DEF1EF;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-                                "                       <label class='menu-box-small' data-color='#F3F2EE' style='background-color:#F3F2EE;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-                                "                       <label class='menu-box-small' data-color='#E5E5E5' style='background-color:#E5E5E5;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-                                "                       <label class='linkhref' data-href='https://www.ntaow.com/colorpicker.html'  style='cursor:pointer;margin-right: 10px;' onclick='window.open(this.dataset.href)'>更多颜色选择</label>" +
-                                "                </label></li>\n" +
-                                "                <li><label><input title='AC-添加Favicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isFaviconEnable ? 'checked' : '') + ">附加5-Favicon功能</label></li>\n" +
-                                "                <li><label><label style='margin-left:20px;'>Favicon默认图标：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='" + ACConfig.defaultFaviconUrl + "' style='width:55%;margin-top:-0.3em;' type='input' " + (ACConfig.isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
-                                "                <li><label><input title='AC-移除搜索预测' id='sp-ac-sug_origin' name='sp-ac-a_force' type='checkbox' " + (ACConfig.doDisableSug ? 'checked' : '') + ">附加6-移除百度搜索预测(文字自动搜索)</label></li>\n" +
-                                // 有更新-高亮 <label style=''> ||  style='"+(CONST.hasNewFuncNeedDisplay?"color:red;font-weight: 100;background-color: yellow;font-weight: 600;":"")+"'
-                                "                <li><label><input title='AC-显示右侧栏' id='sp-ac-right' type='checkbox' " + (ACConfig.isRightDisplayEnable ? 'checked' : '') + ">附加7-显示右侧栏</label><label><input title='AC-添加编号' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isCounterEnable ? 'checked' : '') + ">附加8-编号功能</label><label><input title='AC-文字下划线' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isALineEnable ? 'checked' : '') + ">附加9-文字下划线</label></li>\n" +
-                                "                <li><label><input title='AC-自定义样式' id='sp-ac-userstyle' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserStyleEnable ? 'checked' : '') + ">附加10-自定义样式</label></li>\n" +
-                                "                <li><textarea  id='sp-ac-userstyleTEXT' name='sp-ac-a_force' value='这个是用户自定义样式' style='width:85%;height: 66px;margin-left:30px;' type='input'>" + ACConfig.UserStyleText + "</textarea></label></li>\n" +
-                                "                <li><a class='linkhref' target='_blank' href='https://ac.tujidu.com' >联系作者,提建议,寻求帮助,自定义样式,脚本定制点我</a></li>" +
-                                "            </ul>" +
-
-                                "            <ul class='setting-second' style='display:none'>" +
-                                "            </ul>"+
-
-                                "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton endbutton' title='取消' style='position: relative;float: left;'>取消</span>\n" +
-                                "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton endbutton' title='保存设置' style='position: relative;float: right;'>保存</span>\n" +
-
-                                "        </fieldset>\n" +
-                                "        </div>\n" +
-                                "    </div>";
-                        }else{
-                            Container.innerHTML =
-                                "    <div id='sp-ac-content' style='display: none;'>\n" +
-                                "        <div id='sp-ac-main'>\n" +
-                                "        <fieldset id='sp-ac-autopager-field' style='display:block;'>\n" +
-
-                                "            <legend class='iframe-father' title='AC Redirect Settings'><a class='linkhref' href='https://www.ntaow.com/aboutscript.html' target='_blank'>AC-Redirect Settings" + BaiduVersion + "</a></legend>\n" +
-                                "            <ul class='setting-main'>\n" +
-                                "                <li><label title='Turn on or off redirect'><input id='sp-ac-redirect' name='sp-ac-a_separator' type='checkbox' " + (ACConfig.isRedirectEnable ? 'checked' : '') + ">Main-Redirect Func</label>\n" +
-                                "                   <label title='使用英文显示页面'><input id='sp-ac-isEnLang' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isEnLang ? 'checked' : '') + ">使用英文</label></li>\n" +
-                                "                <li><label title='Remove the ads on the page, and return you a clean page' ><input id='sp-ac-ads' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAdsEnable ? 'checked' : '') + ">Add1-Remove Ads</label>\n" +
-                                "                   <label title='Auto load next page'><input id='sp-ac-isAutopage' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isAutopage ? 'checked' : '') + ">Auto Page</label></li>\n" +
-                                "                <li><label title='Click the \'Block\' button to add the address which you want to hide. The script will hide it with small banner automatically. \'DIY\' button for editting the hiding list' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"' ><input id='sp-ac-block' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isBlockEnable ? 'checked' : '') + ">Add2-Block host</label> <span id='sp-ac-blockdiybutton' class='sp-ac-spanbutton' title='Edit BLOCK' style='margin-left: 5px;color: #888888;'>DIY</span>" +
-                                "                    <label><input title='remove the block results automatically' id='sp-ac-removeBlock' type='checkbox' " + (ACConfig.isBlockDisplay ? 'checked' : '') + ">Auto remove</label>" +
-                                "                    <label><input title='hide the \'Block\' button' id='sp-ac-blockBtnDisplay' type='checkbox' " + (ACConfig.isBlockBtnDisplay ? '' : 'checked') + ">Hide \'Block\' button</label>" +
-                                "                </li>\n" +
-                                "                <li><label title='AC-CustomStyle'><input id='sp-ac-style' name='sp-ac-a_force' type='checkbox' " + (ACConfig.AdsStyleEnable ? 'checked' : '') + ">Add3-CustomStyle</label>\n" +
-                                "                <label></label></li>\n" +
-                                "                <li>" +
-                                /****-百度样式-*****/
-                                "                   <labelMain class='container-label baidu'>" +
-                                "                       <labelHide>Expand Baidu Settings&gt;&gt;</labelHide>" +
-                                "                       <label title='Baidu-Origin' style='margin-left:20px'><input name='sp-ac-a_force_style_baidu' value='0' type='radio' " + (ACConfig.AdsStyleMode_Baidu == 0 ? 'checked' : '') + ">Baidu-Origin</label>" +
-                                "                       <label title='Baidu-EyeSave'><input  name='sp-ac-huyan_style_baidu' type='checkbox' " + (ACConfig.HuYan_Baidu == true ? 'checked' : '') + ">Baidu-EyeSave</label>" +
-                                "                       <label title='BaiduLiteStyle' class='"+(CONST.hasNewFuncNeedDisplay ? "newFuncHighLight" : "")+"'><input  name='sp-ac-a_force_style_baidulite' type='checkbox' " + (ACConfig.Style_BaiduLite == true ? 'checked' : '') + ">BaiduLiteStyle</label>" +
-                                "                       <BR/><label title='Baidu-SingleRow' style='margin-left:20px'><input title='Baidu-SingleRowMode' name='sp-ac-a_force_style_baidu' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 1 ? 'checked' : '') + ">SingleRow</label>" +
-                                "                       <label title='Baidu-SingleCenter'><input  name='sp-ac-a_force_style_baidu' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 2 ? 'checked' : '') + ">SingleCenter</label>" +
-                                "                       <label title='Baidu-TwoRowsCenter'><input name='sp-ac-a_force_style_baidu' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 3 ? 'checked' : '') + ">Two</label>" +
-                                "                       <label title='Baidu-ThreeRowsCenter'><input name='sp-ac-a_force_style_baidu' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 4 ? 'checked' : '') + ">Three</label>" +
-                                "                       <label title='Baidu-FourRowsCenter'><input name='sp-ac-a_force_style_baidu' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Baidu == 5 ? 'checked' : '') + ">Four</label>" +
-                                "                   <BR/></labelMain>" +
-                                /****-百度样式-*****/
-                                "                    <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
-                                /****-谷歌样式-*****/
-                                "                   <labelMain class='container-label google'>" +
-                                "                       <labelHide>Expand Google Settings&gt;&gt;</labelHide>" +
-                                "                       <label title='Google-Origin' style='margin-left:20px'><input name='sp-ac-a_force_style_google' value='0' type='radio' " + (ACConfig.AdsStyleMode_Google == 0 ? 'checked' : '') + ">Google-Origin</label>" +
-                                "                       <label title='Google-EyeSave'><input  name='sp-ac-huyan_style_google' type='checkbox' " + (ACConfig.HuYan_Google == true ? 'checked' : '') + ">Google-EyeSave</label>" +
-                                "                       <label title='Google-as Baidu' style='"+(CONST.hasNewFuncNeedDisplay ? "color:red;font-weight: 100;background-color: yellow;font-weight: 600;" : "")+"'><input  name='sp-ac-google_in_baidumode' type='checkbox' " + (ACConfig.isGooleInBaiduModeEnable == true ? 'checked' : '') + ">Fake Baidu</label>" +
-                                "                       <BR/><label title='Google-SingleRow' style='margin-left:20px'><input title='Google-SingleRowMode' name='sp-ac-a_force_style_google' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Google == 1 ? 'checked' : '') + ">SingleRow</label>" +
-                                "                       <label title='Google-SingleCenter'><input  name='sp-ac-a_force_style_google' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Google == 2 ? 'checked' : '') + ">SingleCenter</label>" +
-                                "                       <label title='Google-TwoRowsCenter'><input  name='sp-ac-a_force_style_google' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Google == 3 ? 'checked' : '') + ">Two</label>" +
-                                "                       <label title='Google-ThreeRowsCenter'><input  name='sp-ac-a_force_style_google' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Google == 4 ? 'checked' : '') + ">Three</label>" +
-                                "                       <label title='Google-FourRowsCenter'><input  name='sp-ac-a_force_style_google' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Google == 5 ? 'checked' : '') + ">Four</label>" +
-                                "                   <BR/></labelMain>" +
-                                /****-谷歌样式-*****/
-                                "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
-                                /****-必应样式-*****/
-                                "                   <labelMain class='container-label bing'>" +
-                                "                       <labelHide>Expand Bing Settings&gt;&gt;</labelHide>" +
-                                "                       <label title='Bing-Origin' style='margin-left:20px'><input name='sp-ac-a_force_style_bing' value='0' type='radio' " + (ACConfig.AdsStyleMode_Bing == 0 ? 'checked' : '') + ">Bing-Origin</label>" +
-                                "                       <label title='Bing-EyeSave'><input name='sp-ac-huyan_style_bing' type='checkbox' " + (ACConfig.HuYan_Bing == true ? 'checked' : '') + ">Bing-EyeSave</label>" +
-                                "                       <BR/><label title='Bing-SingleRow' style='margin-left:20px'><input title='Bing-SingleRowMode' name='sp-ac-a_force_style_bing' value='1'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 1 ? 'checked' : '') + ">SingleRow</label>" +
-                                "                       <label title='Bing-SingleCenter'><input  name='sp-ac-a_force_style_bing' value='2'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 2 ? 'checked' : '') + ">SingleCenter</label>" +
-                                "                       <label title='Bing-TwoRowsCenter'><input name='sp-ac-a_force_style_bing' value='3'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 3 ? 'checked' : '') + ">Two</label>" +
-                                "                       <label title='Bing-ThreeRowsCenter'><input name='sp-ac-a_force_style_bing' value='4'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 4 ? 'checked' : '') + ">Three</label>" +
-                                "                       <label title='Bing-FourRowsCenter'><input name='sp-ac-a_force_style_bing' value='5'  type='radio' " + (ACConfig.AdsStyleMode_Bing == 5 ? 'checked' : '') + ">Four</label>" +
-                                "                   </labelMain>" +
-                                /****-必应样式-*****/
-                                "                   <div style='height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;'></div>" +
-                                /****-搜狗样式-*****/
-                                "                   <labelMain class='container-label sogou'>" +
-                                "                       <labelHide>Expand Sogou Settings&gt;&gt;</labelHide>" +
-                                "                       <label title='Sogou-Origin' style='margin-left:20px'><input name='sp-ac-a_force_style_sogou' value='0' type='radio' " + (ACConfig.AdsStyleMode_SoGou == 0 ? 'checked' : '') + ">Sogou-Origin</label>" +
-                                "                       <label title='Sogou-EyeSave'><input name='sp-ac-huyan_style_sogou' type='checkbox' " + (ACConfig.HuYan_SoGou == true ? 'checked' : '') + ">Sogou-EyeSave</label>" +
-                                "                       <BR/><label title='Sogou-SingleRow' style='margin-left:20px'><input title='Sogou-SingleRowMode' name='sp-ac-a_force_style_sogou' value='1'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 1 ? 'checked' : '') + ">SingleRow</label>" +
-                                "                       <label title='Sogou-SingleCenter'><input  name='sp-ac-a_force_style_sogou' value='2'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 2 ? 'checked' : '') + ">SingleCenter</label>" +
-                                "                       <label title='Sogou-TwoRowsCenter'><input name='sp-ac-a_force_style_sogou' value='3'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 3 ? 'checked' : '') + ">Two</label>" +
-                                "                       <label title='Sogou-ThreeRowsCenter'><input name='sp-ac-a_force_style_sogou' value='4'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 4 ? 'checked' : '') + ">Three</label>" +
-                                "                       <label title='Sogou-FourRowsCenter'><input name='sp-ac-a_force_style_sogou' value='5'  type='radio' " + (ACConfig.AdsStyleMode_SoGou == 5 ? 'checked' : '') + ">Four</label>" +
-                                "                   </labelMain>" +
-                                /****-搜狗样式-*****/
-
-                                "                </li>\n" +
-                                "                <li><label title='！Open EyeSave Mode in CustomStyle is Must'><input title='AC-CustomEyeSave' id='sp-ac-usercolor' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserColorEnable ? 'checked' : '') + ">Add4-EyeSave Color Setting-Need opened in Add3</label></li>\n" +
-                                "                <li><label class='menu-box-container' title='！Need Opend in Add3'><label style='margin-left:20px;'>Default EyeSave Color：</label>" +
-                                "                       <input class='sp-ac-menuhuyanColor' type='color' title='The color of EyeSave' style='cursor: pointer;margin-top:-0.05rem;height:23px;' value='" + ACConfig.defaultHuYanColor + "'>" +
-                                "                       <label class='menu-box-small' data-color='#DEF1EF' style='background-color:#DEF1EF;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-                                "                       <label class='menu-box-small' data-color='#F3F2EE' style='background-color:#F3F2EE;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-                                "                       <label class='menu-box-small' data-color='#E5E5E5' style='background-color:#E5E5E5;'>&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
-                                "                       <label class='linkhref' data-href='https://www.ntaow.com/colorpicker.html'  style='cursor:pointer;margin-right: 10px;' onclick='window.open(this.dataset.href)'>More Color</label>" +
-                                "                </label></li>\n" +
-                                "                <li><label><input title='AC-AddFavicon' id='sp-ac-favicon' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isFaviconEnable ? 'checked' : '') + ">Add5-Favicon.Func</label></li>\n" +
-                                "                <li><label><label style='margin-left:20px;'>FaviconFailedImg：</label><input id='sp-ac-faviconUrl' name='sp-ac-a_force' value='" + ACConfig.defaultFaviconUrl + "' style='width:55%;margin-top:-0.3rem;' type='input' " + (ACConfig.isFaviconEnable ? '' : 'disabled=true') + "></label></li>\n" +
-                                "                <li><label><input title='AC-Remove Baidu AutoPredict in text search' id='sp-ac-sug_origin' name='sp-ac-a_force' type='checkbox' " + (ACConfig.doDisableSug ? 'checked' : '') + ">Add6-Remove Baidu AutoPredict in text search</label></li>\n" +
-                                // 有更新-高亮 <label style=''> ||  style='"+(CONST.hasNewFuncNeedDisplay?"color:red;font-weight: 100;background-color: yellow;font-weight: 600;":"")+"'
-                                "                <li><label><input title='AC-Display the Right Side Column' id='sp-ac-right' type='checkbox' " + (ACConfig.isRightDisplayEnable ? 'checked' : '') + ">Add7-Right Side Column</label><label><input title='AC-AddNumber' id='sp-ac-counter' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isCounterEnable ? 'checked' : '') + ">Add8-NumFunc</label><label><input title='AC-TextUnderLine' id='sp-ac-aline' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isALineEnable ? 'checked' : '') + ">Add9-TextUnderLine</label></li>\n" +
-                                "                <li><label><input title='AC-Edit your own style' id='sp-ac-userstyle' name='sp-ac-a_force' type='checkbox' " + (ACConfig.isUserStyleEnable ? 'checked' : '') + ">Add10-Your own Style</label></li>\n" +
-                                "                <li><textarea  id='sp-ac-userstyleTEXT' name='sp-ac-a_force' value='this is user own style' style='width:85%;height: 66px;margin-left:30px;' type='input'>" + ACConfig.UserStyleText + "</textarea></label></li>\n" +
-                                "                <li><a class='linkhref' target='_blank' href='https://github.com/langren1353/GM_script/' >For contact the writter, suggests, ask for help then click me</a></li>" +
-                                "            </ul>" +
-
-                                "            <ul class='setting-second' style='display:none'>" +
-                                "            </ul>"+
-
-                                "            <span id='sp-ac-cancelbutton' class='sp-ac-spanbutton endbutton' title='close' style='position: relative;float: left;'>close</span>\n" +
-                                "            <span id='sp-ac-savebutton' class='sp-ac-spanbutton endbutton' title='save' style='position: relative;float: right;'>save</span>\n" +
-
-                                "        </fieldset>\n" +
-                                "        </div>\n" +
-                                "    </div>";
-                        }
+                                        <li>
+                                            <label class="menu-box-container" :title="lan.use.fieldset_panel.setting_panel.huyanMode_title">
+                                                <label style="margin-left:20px;" v-text="lan.use.fieldset_panel.setting_panel.huyanColor_text"></label>
+                                                <input class="sp-ac-menuhuyanColor" @input.stop="useThisHuyanColor" v-model="ACConfig.defaultHuYanColor" type="color" :title="lan.use.fieldset_panel.setting_panel.huyanColor_title" style="cursor: pointer;margin-top:-0.05rem;height:23px;">
+                                                <label class="menu-box-small" data-value="#DEF1EF" @click.stop="useThisHuyanColor" style="background-color:#DEF1EF;">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="menu-box-small" data-value="#F3F2EE" @click.stop="useThisHuyanColor" style="background-color:#F3F2EE;">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="menu-box-small" data-value="#E5E5E5" @click.stop="useThisHuyanColor" style="background-color:#E5E5E5;">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label class="linkhref" data-href="https://www.ntaow.com/colorpicker.html" style="cursor:pointer;margin-right: 10px;" onclick="window.open(this.dataset.href)" v-text="lan.use.fieldset_panel.setting_panel.huyanColorMore_text"></label>
+                                            </label>
+                                        </li>
+                                        <!------------Favicon图标设置-------------->
+                                        <li>
+                                            <label>
+                                                <input :title="lan.use.fieldset_panel.setting_panel.favicon_title" v-model="ACConfig.isFaviconEnable" id="sp-ac-favicon" name="sp-ac-a_force" type="checkbox" checked="">
+                                                {{ lan.use.fieldset_panel.setting_panel.favicon_text }}
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <label style="margin-left:20px;" v-text="lan.use.fieldset_panel.setting_panel.favicon_defaultIcon_text"></label>
+                                                <input id="sp-ac-faviconUrl" name="sp-ac-a_force" v-model="ACConfig.defaultFaviconUrl" value="https://ae01.alicdn.com/kf/HTB1dRY0X8OD3KVjSZFFq6An9pXay.jpg" style="width:55%;margin-top:-0.3em;" type="input">
+                                            </label>
+                                        </li>
+                                        <!------------移除百度搜索预测-------------->
+                                        <li>
+                                            <label>
+                                                <input :title="lan.use.fieldset_panel.setting_panel.searchOrigin_title" v-model="ACConfig.doDisableSug" id="sp-ac-sug_origin" name="sp-ac-a_force" type="checkbox" checked="">
+                                                {{ lan.use.fieldset_panel.setting_panel.searchOrigin_text }}
+                                            </label>
+                                        </li>
+                                        <!------------附加7、8、9-------------->
+                                        <li>
+                                            <label>
+                                                <input id="sp-ac-right" v-model="ACConfig.isRightDisplayEnable" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.showRight_text }}
+                                            </label>
+                                            <label>
+                                                <input id="sp-ac-counter" v-model="ACConfig.isCounterEnable" name="sp-ac-a_force" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.showCounter_text }}
+                                            </label>
+                                            <label>
+                                                <input id="sp-ac-aline" v-model="ACConfig.isALineEnable" name="sp-ac-a_force" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.showALine_text }}
+                                            </label>
+                                        </li>
+                                        <!------------自定义样式内容-------------->
+                                        <li>
+                                            <label>
+                                                <input id="sp-ac-userstyle" v-model="ACConfig.isUserStyleEnable" name="sp-ac-a_force" type="checkbox">
+                                                {{ lan.use.fieldset_panel.setting_panel.showUserStyle_text }}
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <textarea id="sp-ac-userstyleTEXT" v-model="ACConfig.UserStyleText" @keyup="loadCustomStyle" @change="loadCustomStyle" @paste="loadCustomStyle" name="sp-ac-a_force" style="width:85%;height: 66px;margin-left:30px;" type="input" ></textarea>
+                                        </li>
+                                        <li>
+                                            <a class="linkhref" target="_blank" :href="lan.use.fieldset_panel.setting_panel.contactMe_url" v-text="lan.use.fieldset_panel.setting_panel.contactMe_text"></a>
+                                        </li>
+                                    </ul>
+                                    <!------------拦截域名设置panel-------------->
+                                    <ul class="setting-second" v-show="other.showSecondPanel">
+                                        <li style='margin-bottom: 8px !important;'>
+                                            <label>
+                                                <span id='sp-ac-blockdiybutton-back' @click="other.showSecondPanel = other.showBlockListArea = false" class='sp-ac-spanbutton'>{{ lan.use.fieldset_panel.setting_panel.setting_panel_second.backBtn_text }}</span>
+                                            </label>
+                                            {{ lan.use.fieldset_panel.setting_panel.setting_panel_second.blockLabel_text }}}
+                                        </li>
+                                        <li style='margin-bottom: 8px !important;'>
+                                            <span id='sp-ac-blockdiybutton-diylist' class='sp-ac-spanbutton' @click="other.showBlockListArea = !other.showBlockListArea" v-text="cal_diyBlockListBtn"></span>
+                                        </li>
+                                        <li class='ac-blockList' @click="removeABlockListItem" style='max-height:60vh;overflow-y: scroll;'>
+                                            <ul v-show="!other.showBlockListArea" v-html="getBlockList"></ul>
+                                        </li>
+                                        <li class='ac-blockBoxCon' style='max-height: 60vh;text-align: center;margin-left: 26px;'>
+                                            <textarea v-show="other.showBlockListArea"  @keyup="syncToBlockList" @change="syncToBlockList" @paste="syncToBlockList" rows="20" v-text="ACConfig.UserBlockList.join('\\n')"></textarea>
+                                        </li>
+                                        <li>
+                                            {{ lan.use.fieldset_panel.setting_panel.setting_panel_second.addBlockLabel_text }}<input class="sp-ac-addRuleOne" @keyup.enter="ckAddRule" v-model="other.addBlockItem" style='width:55%;'>
+                                            <span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' @click="ckAddRule" style='position: relative !important;line-height: 17px;' v-text="lan.use.fieldset_panel.setting_panel.setting_panel_second.addBtnLabel_text">新增</span>
+                                        </li>
+                                    </ul>
+                                    <!------------保存、取消按钮-------------->
+                                    <span id="sp-ac-cancelbutton" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.cancelBtn_text" style="position: relative;float: left;" v-text="lan.use.fieldset_panel.setting_panel.cancelBtn_text"></span>
+                                    <span id="sp-ac-savebutton" @click="saveConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;" v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
+                                </fieldset>
+                                </div>
+                            </div>`;
                         try {
                             document.body.appendChild(Container);
                         } catch (e) {
                             console.log(e);
-                        }
-                        try {
-                            document.querySelector("#sp-ac-savebutton").addEventListener("click", function () {
-                                // 点击之后的保存功能
-                                ACConfig.isRedirectEnable = document.querySelector("#sp-ac-redirect").checked;
-                                ACConfig.isEnLang = document.querySelector("#sp-ac-isEnLang").checked; // 是否选择为对立语言
-                                ACConfig.isAdsEnable = document.querySelector("#sp-ac-ads").checked;
-                                ACConfig.isAutopage = document.querySelector("#sp-ac-isAutopage").checked;
-                                ACConfig.isBlockEnable = document.querySelector("#sp-ac-block").checked;
-                                ACConfig.isBlockDisplay = document.querySelector("#sp-ac-removeBlock").checked;
-                                ACConfig.isBlockBtnDisplay = !document.querySelector("#sp-ac-blockBtnDisplay").checked;
-                                ACConfig.AdsStyleEnable = document.querySelector("#sp-ac-style").checked;
-                                ACConfig.AdsStyleMode_Baidu = document.querySelector('input[name="sp-ac-a_force_style_baidu"]:checked').value;
-                                ACConfig.AdsStyleMode_Google = document.querySelector('input[name="sp-ac-a_force_style_google"]:checked').value;
-                                ACConfig.AdsStyleMode_Bing = document.querySelector('input[name="sp-ac-a_force_style_bing"]:checked').value;
-                                ACConfig.AdsStyleMode_SoGou = document.querySelector('input[name="sp-ac-a_force_style_sogou"]:checked').value;
-                                ACConfig.HuYan_Baidu = document.querySelector('input[name="sp-ac-huyan_style_baidu"]').checked;
-                                ACConfig.Style_BaiduLite = document.querySelector('input[name="sp-ac-a_force_style_baidulite"]').checked;
-                                ACConfig.HuYan_Google = document.querySelector('input[name="sp-ac-huyan_style_google"]').checked;
-                                ACConfig.isGooleInBaiduModeEnable = document.querySelector('input[name="sp-ac-google_in_baidumode"]').checked;
-                                ACConfig.HuYan_Bing = document.querySelector('input[name="sp-ac-huyan_style_bing"]').checked;
-                                ACConfig.HuYan_SoGou = document.querySelector('input[name="sp-ac-huyan_style_sogou"]').checked;
-                                let imgurl = document.querySelector("#sp-ac-faviconUrl").value.trim();
-                                imgurl = (imgurl == "https://ws1.sinaimg.cn/large/6a155794ly1foijtdzhxhj200w00wjr5.jpg") ? "" : imgurl; // 如果是旧的新浪地址，那么重置
-                                imgurl = (imgurl == "" || imgurl == null) ? "https://ae01.alicdn.com/kf/HTB1dRY0X8OD3KVjSZFFq6An9pXay.jpg" : imgurl;
-                                ACConfig.isUserColorEnable = document.querySelector("#sp-ac-usercolor").checked;
-                                ACConfig.defaultHuYanColor = document.querySelector(".sp-ac-menuhuyanColor").value;
-                                ACConfig.isFaviconEnable = document.querySelector("#sp-ac-favicon").checked;
-                                ACConfig.defaultFaviconUrl = imgurl;
-                                ACConfig.doDisableSug = document.querySelector("#sp-ac-sug_origin").checked;
-                                ACConfig.isRightDisplayEnable = document.querySelector("#sp-ac-right").checked;
-                                ACConfig.isCounterEnable = document.querySelector("#sp-ac-counter").checked;
-                                ACConfig.isALineEnable = document.querySelector("#sp-ac-aline").checked;
-                                ACConfig.isUserStyleEnable = document.querySelector("#sp-ac-userstyle").checked;
-                                if(ACConfig.isUserStyleEnable){
-                                    ACConfig.UserStyleText = document.querySelector("#sp-ac-userstyleTEXT").value.trim();
-                                }
-                                ACConfig.lastSaveTime = new Date().getTime();
-                                GM.setValue("Config", JSON.stringify(ACConfig));
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 400);
-                            }, false);
-                            initBlockPage();
-                            document.querySelector("#sp-ac-blockdiybutton").addEventListener("click", function () {
-                                document.querySelector(".setting-main").style = "display:none;";
-                                document.querySelector(".setting-second").style = "";
-                            });
-
-                            document.querySelector(".menu-box-container").addEventListener("click", function (e) {
-                                let cur = e.srcElement || e.target;
-                                if (typeof(cur.dataset.color) != "undefined") {
-                                    document.querySelector(".sp-ac-menuhuyanColor").value = cur.dataset.color;
-                                    CONST.StyleManger.loadHuYanStyle(cur.dataset.color);
-                                }
-                                e.stopPropagation();
-                            });
-                            document.querySelector(".sp-ac-menuhuyanColor").addEventListener("input", function (e) {
-                                CONST.StyleManger.loadHuYanStyle(document.querySelector(".sp-ac-menuhuyanColor").value);
-                                e.stopPropagation();
-                            });
-                            document.querySelectorAll("labelHide").forEach(function (per) {
-                                per.addEventListener("click", function (e) {
-                                    let cur = e.srcElement || e.target;
-                                    let className = cur.parentNode.className.replace("container-label ", "");
-                                    AC_addStyle(".XX>label,.XX>br{display:unset !important;}.XX>labelhide{display:none !important;}".replace(/XX/gm, className),
-                                        "AC-ShowHideItem-" + className, "body");
-                                    e.stopPropagation();
-                                });
-                            });
-                            if(ACConfig.isUserStyleEnable){
-                                document.querySelector("#sp-ac-userstyleTEXT").addEventListener("paste", AutoLoadCustomCSS);
-                                document.querySelector("#sp-ac-userstyleTEXT").addEventListener("keyup", AutoLoadCustomCSS);
-                                document.querySelector("#sp-ac-userstyleTEXT").addEventListener("change", AutoLoadCustomCSS);
-                            }
-                        } catch (e) {
                         }
                     }
                     let allNodes = document.querySelectorAll(".AC-faviconT, .AC-CounterT");
@@ -1762,14 +2061,9 @@ body[baidu] #s_lg_img_new{
                                 document.querySelector("#sp-ac-content").style.display = 'none';
                             });
                         }, false);
-                        document.querySelector("#sp-ac-cancelbutton").addEventListener('click', function (e) {
-                            safeRemove(function(){
-                                document.querySelector("#sp-ac-content").style.display = 'none';
-                                e.stopPropagation();
-                            });
-                        }, false);
                     } catch (e) {
                     }
+
                 }
 
                 function removeMobileBaiduDirectLink(){
@@ -1877,7 +2171,7 @@ body[baidu] #s_lg_img_new{
                             }
                         }
                     }
-                    if(hasDealHrefSet.size > 0) console.log("丢弃掉", list.length - hasDealHrefSet.size, "个重复链接");
+                    if(hasDealHrefSet.size > 0 && list.length - hasDealHrefSet.size > 0) console.log("丢弃掉", list.length - hasDealHrefSet.size, "个重复链接");
                 }
 
                 var DealRedirect = function (request, curNodeHref, respText, RegText) {
@@ -1903,7 +2197,7 @@ body[baidu] #s_lg_img_new{
                                     per.dataset.host = host;
                                 }
                             });
-                            CONST.curHosts.acpush(host, reloadBlockList);
+                            otherData.other.curHosts.acpush(host);
                             request.abort();
                         } catch (e) {
                             // console.log(e);
@@ -1961,17 +2255,6 @@ body[baidu] #s_lg_img_new{
                     }
                 }
 
-                function IsNumber(val) {
-                    if (val === "" || val == null) {
-                        return false;
-                    }
-                    if (!isNaN(val)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-
                 function addCounter(citeList) {
                     let cssText = "position:relative;z-index:1;margin-right:4px;display:inline-block;color:white;font-family:'微软雅黑';font-size:16px;text-align:center;width:22px;line-height:22px;border-radius:50%;";
                     let div = document.createElement('div');
@@ -1991,15 +2274,20 @@ body[baidu] #s_lg_img_new{
                     }
                 }
 
+                var HostReg = new RegExp(/(https?:\/\/)?([^/\s]+)/i);
                 function getHost(sbefore) {
-                    sbefore = (sbefore && sbefore.trim()) || "";
+                    sbefore = (sbefore && sbefore.trim()).replace(/\s-\s\d{4}-\d{1,2}-\d{1,2}/,"") || "";
                     let send;
                     let result = sbefore.split('-');
                     // --搜狗百度专用；如果第一个是中文的话，地址就是第二个
                     if((result.length > 1 && new RegExp("[\\u4E00-\\u9FFF]+","g").test(sbefore)) && (curSite.SiteTypeID == SiteType.BAIDU || curSite.SiteTypeID == SiteType.SOGOU)){
                         sbefore = result[1];
                     }
-                    send = sbefore.replace(/(\/[^/]*|\s*)/, "").replace(/<[^>]*>/g, "").replace(/https?:\/\//g, "").replace(/<\/?strong>/g, "").replace(/<\/?b>/g, "").replace(/<?>?/g, "").replace(/( |\/).*/g, "").replace(/\.\..*/, "");
+                    // 此时sbefore几乎是等于网址了，但是有时候会有多的空格，多的内容，多的前缀http，多余的路径
+                    let res = HostReg.exec(sbefore);
+                    send = (res && res[2].trim()) || "";
+                    // send = sbefore.replace(/(\/[^/]*|\s*)/, "").replace(/<[^>]*>/g, "").replace(/https?:\/\//g, "").replace(/<\/?strong>/g, "").replace(/<\/?b>/g, "").replace(/<?>?/g, "").replace(/( |\/).*/g, "").replace(/\.\..*/, "");
+                    if(send == "") return null;
                     if(send.indexOf(".") < 0) return null;
                     if(send.indexOf("↵")>=0)  return null;
                     return send.trim();
@@ -2014,7 +2302,7 @@ body[baidu] #s_lg_img_new{
                             if(url == null){ // 跳过baidu.click
                                 continue;
                             }else{
-                                CONST.curHosts.acpush(url);
+                                otherData.other.curHosts.acpush(url);
                             }
                             let faviconUrl = url;
                             let II = 0;
@@ -2086,14 +2374,14 @@ body[baidu] #s_lg_img_new{
                 function InsertSettingMenu() {
                     if ((curSite.SiteTypeID != SiteType.OTHERS) &&  document.querySelector("#myuser") == null) {
                         try {
-                            let parent = document.querySelector("#u, #gb>div>div>div, #b_header>#id_h, .top-bar .sogou-set-box"); //baidu; google; bing; 搜狗
+                            let parent = document.querySelector("#u, #gb>div>div>div, #b_header>#id_h, .top-bar .sogou-set-box, #header_wrapper .js-hl-button"); //baidu; google; bing; 搜狗
                             parent.style = "width: auto;";
                             let userAdiv = document.createElement("div");
                             userAdiv.id = "myuser";
-                            if(useCNLan){
-                                userAdiv.innerHTML = "<input type='submit' class='myuserconfig' value='自定义'/><span class='ac-newversionDisplay' style='background-color: red;float: left;height: 8px;width: 8px;border-radius: 4px;display:" + (CONST.hasNewFuncNeedDisplay ? "unset" : "none") + "'>&nbsp;</span>";
-                            }else{
+                            if(ACConfig.isEnLang){
                                 userAdiv.innerHTML = "<input type='submit' class='myuserconfig' value='CUSTOM'/><span class='ac-newversionDisplay' style='background-color: red;float: left;height: 8px;width: 8px;border-radius: 4px;display:" + (CONST.hasNewFuncNeedDisplay ? "unset" : "none") + "'>&nbsp;</span>";
+                            }else{
+                                userAdiv.innerHTML = "<input type='submit' class='myuserconfig' value='自定义'/><span class='ac-newversionDisplay' style='background-color: red;float: left;height: 8px;width: 8px;border-radius: 4px;display:" + (CONST.hasNewFuncNeedDisplay ? "unset" : "none") + "'>&nbsp;</span>";
                             }
                             parent.insertBefore(userAdiv, parent.childNodes[0]);
                             document.querySelector("#myuser .myuserconfig").addEventListener("click", function (e) {
@@ -2203,7 +2491,7 @@ body[baidu] #s_lg_img_new{
                 )
             }
             function FSBaidu() { // thanks for code from 浮生@未歇 @page https://greasyfork.org/zh-TW/scripts/31642
-                debug("初始化FSBAIDU");
+                // debug("初始化FSBAIDU");
                 /**
                  * 检查document的子节点是否含有元素
                  * @param nodeClass 待检查元素
@@ -2290,7 +2578,7 @@ body[baidu] #s_lg_img_new{
                             .replace(/#aaa(a*)/igm, color)
                             .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
                             .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
-                        AC_addStyle(style, "AC-" + CONST.keySite + "HuYanStyle" + (isNewGM ? "" : "-File"), "head"); // 需要修改的，所以为true
+                        AC_addStyle(style, "AC-" + CONST.keySite + "HuYanStyle" + (isNewGM ? "" : "-File"), "head", true); // 需要修改的，所以为true
                     },
                     clip255: function (value) {
                         if (value > 255) return 255;
@@ -2330,7 +2618,8 @@ body[baidu] #s_lg_img_new{
                         if (curSite.SiteTypeID == SiteType.GOOGLE) cssHead = ".srg, #rso";
                         if (curSite.SiteTypeID == SiteType.BING) cssHead = "#b_content #b_results";
                         if (curSite.SiteTypeID == SiteType.SOGOU) cssHead = "#main .results";
-                        AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(33%,1fr));} #container #content_left>*:not([class*='result']):last-child, #rso>div:not(.g), #rso .srg{grid-column-end: 4;}",
+                        if (curSite.SiteTypeID == SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
+                        AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(33%,1fr));} #container #content_left>*:not([class*='result']):last-child, #rso>div:not(.g), #rso .srg, #links .result--more{grid-column-end: 4;}",
                             "AC-ThreePageStyle", "head");
                     },
                     // 加载四列样式
@@ -2340,7 +2629,8 @@ body[baidu] #s_lg_img_new{
                         if (curSite.SiteTypeID == SiteType.GOOGLE) cssHead = ".srg, #rso";
                         if (curSite.SiteTypeID == SiteType.BING) cssHead = "#b_content #b_results";
                         if (curSite.SiteTypeID == SiteType.SOGOU) cssHead = "#main .results";
-                        AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(25%,1fr));} #container #content_left>*:not([class*='result']), #rso>div:not(.g), #rso .srg{grid-column-end: 5;}",
+                        if (curSite.SiteTypeID == SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
+                        AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit,minmax(25%,1fr));} #container #content_left>*:not([class*='result']), #rso>div:not(.g), #rso .srg, #links .result--more{grid-column-end: 5;}",
                             "AC-FourPageStyle", "head");
                     },
                     loadPlainToCSS: function(){
@@ -2403,7 +2693,7 @@ body[baidu] #s_lg_img_new{
                         if(curSite.SiteTypeID == SiteType.BAIDU && ACConfig.Style_BaiduLite == true){
                             CONST.StyleManger.loadBaiduLiteStyle();
                         }
-                        if (curSite.SiteTypeID != SiteType.BAIDU && curSite.SiteTypeID != SiteType.BAIDU_XUESHU && curSite.SiteTypeID != SiteType.GOOGLE && curSite.SiteTypeID != SiteType.BING && curSite.SiteTypeID != SiteType.SOGOU) return;
+                        if (curSite.SiteTypeID != SiteType.BAIDU && curSite.SiteTypeID != SiteType.BAIDU_XUESHU && curSite.SiteTypeID != SiteType.GOOGLE && curSite.SiteTypeID != SiteType.BING && curSite.SiteTypeID != SiteType.SOGOU && curSite.SiteTypeID != SiteType.DUCK) return;
                         // 如果是百度 &&  ((地址替换->包含wd关键词[替换之后不等-是百度结果页面]) || 有右边栏-肯定是百度搜索结果页 || value中存在搜索内容) return;
                         if (!checkISBaiduMain()) {
                             CONST.StyleManger.loadCSSToPlain();
@@ -2424,7 +2714,7 @@ body[baidu] #s_lg_img_new{
                         this.centerDisplay();
                     }
                 };
-                debug("调用加载自定义css");
+                // debug("调用加载自定义css");
                 ControlManager.init();
                 return CONST.StyleManger;
             }

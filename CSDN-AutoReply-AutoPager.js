@@ -20,7 +20,7 @@
 // @note        2015-05-20 V2.1    修改弹出位置，修改脚本生效位置，提供简易跳转
 // @note        2015-05-20 V2.1    在Chrome中可用
 // @note        2013-01-25 V1.0    CSDN自动评论
-// @icon        https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
+// @icon        https://gitee.com/remixAC/GM_script/raw/master/images/head.jpg
 // @run-at      document-body
 // ==/UserScript==
 /*

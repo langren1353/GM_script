@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name AC-baidu： 优化百度、搜狗、谷歌搜索结果之重定向 lite
-// @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
+// @icon            https://gitee.com/remixAC/GM_script/raw/master/images/head.jpg
 // @grant		    GM_xmlhttpRequest
 // @author          AC
 // @create          2015-11-25

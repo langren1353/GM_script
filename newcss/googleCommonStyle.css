@@ -411,12 +411,25 @@ div .kno-ftr a{
 #rso>.g .r>a>div{
     width: 35rem;
 }
+div.rc[ac-needhide]{
+    margin-top: 5px;
+    margin-bottom: -15px;
+}
 /*reset logo position at drop */
 .logo{
     top:unset;
 }
-body[google] .baidu{
+body[google] .big .baidu{
     transform: unset !important;
     margin-top: -10px;
     margin-left: -2rem;
 }
+body[google] .big .baidu #logo img{
+    margin-top: -15px;
+}
+body[google] .big.minidiv .baidu #logo img{
+    height: 59px;
+    width: unset;
+    margin-top: -18px;
+}
+
