@@ -29,6 +29,8 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 640px;
+    color: #2866bd;
+    font-size: smaller;
 }
 
 #links_wrapper #links .results_links_deep .result__body{
