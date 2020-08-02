@@ -88,6 +88,9 @@ body #form .s_btn_wr:hover{opacity:.5;background:rgba(0,0,0,0);border:none;box-s
 #s_tab{padding-bottom:8px;padding-top:89px}
 .c-icon-tieba{background-repeat:no-repeat;background-position:center}
 .toindex{display:none}
+.wrapper_new .s_tab_inner{padding-top: 10px;}
+.wrapper_new .s_ipt_wr{background: #ffffff;}
+.wrapper_new #form .bdsug-new{width: calc(100% - 111px);}
 #u .pf{background-repeat:no-repeat;background-position:center;font-size:0;padding:14px;opacity:.8;-moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease;padding-top:18px;padding-bottom:10px;}
 #u .pf:hover{opacity:1; -moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease}
 .wrapper_new #u>a.pf{color:rgba(0,0,0,0); margin: 4px 0 0 24px;}
