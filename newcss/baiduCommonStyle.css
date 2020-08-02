@@ -32,6 +32,10 @@ body a em {
 #wrapper #s_tab {
     border-bottom: #e0e0e0 1px solid;
     background-color: #f8f8f8;
+    padding-left: 0;
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
 }
 body #head{
     background-color: rgba(248, 248, 248, 0.4);
@@ -374,6 +378,9 @@ body #container.sam_newgrid #content_left{
 }
 body .wrapper_new #head.fix-head .s_form{
     height: 70px;
+}
+.AC.sp-separator{
+    margin-top: -20px;
 }
 @media screen and (max-width:1280px){
     #u .toindex, #u #imsg{
