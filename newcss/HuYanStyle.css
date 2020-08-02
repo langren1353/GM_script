@@ -71,3 +71,37 @@ body[google]{
 #rso .g h3{
     background-color: #BBBBBB ;
 }
+/***Sogou-HuYanStyle****/
+body[sogou], #pagebar_container a{
+    background-color: #fDfDfD;
+}
+#main .results>div{
+    background-color: #AAAAAA ;
+    border: 1px solid #9cd2cfAA;
+    border-radius: 0px;
+}
+#main .results>div:hover {
+    background-color: #CCCCCC !important;
+    border: 1px double #9cd2cf;
+    box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
+}
+#main .results>div h3{
+    background-color: #BBBBBB ;
+}
+/***Duck_Doge-HuYanStyle****/
+body[duck],body[doge]{
+    background-color: #fDfDfD;
+}
+#links_wrapper #links .results_links_deep{
+    background-color: #AAAAAA ;
+    border: 1px solid #9cd2cfAA;
+    border-radius: 0px;
+}
+#links_wrapper #links .results_links_deep:hover {
+    background-color: #CCCCCC !important;
+    border: 1px double #9cd2cf;
+    box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
+}
+#links_wrapper #links .results_links_deep h2{
+    background-color: #BBBBBB ;
+}

@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2018-08-16
 // @run-at          document-start
-// @version         3.66
+// @version         3.79
 // @include         *//www.iqiyi.com/v_*
 // @include         *//www.iqiyi.com/w_*
 // @include         *//v.youku.com/v_show/*
@@ -32,13 +32,14 @@
 // @include         *//s.taobao.com/search*
 // @include         *//cart.taobao.com/*
 // @include         *//uland.taobao.com/coupon/*
-// @connect         open.lesiclub.cn
+// @connect         gm.ntaow.com
 // @license         GPL-3.0-only
 // @grant           GM_xmlhttpRequest
 // @supportURL      https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
 // @copyright       2018, AC
-// @lastmodified    2019.11.14
+// @lastmodified    2020.08.08
+// @note            2020.08.08 更新支持部分网站内容
 // @note            2019.11.14 更新-修复无法全屏的bug，加快网站打开速度
 // @note            2019.11.09 再次切换镜像，这次应该能打开了
 // @note            2019.11.03 更新切换镜像地址
@@ -54,26 +55,27 @@
 	var Config = {
 		iqiyi:{
 			// 爱奇艺视频 https://www.iqiyi.com/v_19rrfq5ajk.html
+			// 爱奇艺视频 https://www.iqiyi.com/v_1s5qhu5666c.html
 			// insertTo = 插入在xx节点
 			// adStyle 自定义完整样式-用于移除广告
 			// sStyle 按钮样式定义
 			// title 标题文字内容获取
-			insertTo:".mod-play-tit, .title-score, .side-content>.qy-play-list .main-title, .public-vip .public-vip-text,.qy-player-detail .qy-player-title",
+			insertTo:".mod-play-tit, .title-score, .side-content>.qy-play-list .main-title, .public-vip .public-vip-text,.qy-player-detail .qy-player-title, .qy-play-feed-top .feed-title-box h1",
 			adStyle:".pw-video>div[data-cupid]>div[style*='position']{display:none !important}",
-			sStyle:"width: 4rem;",
+			sStyle:"width: 5rem;",
 			title:".detail-left #widget-videotitle",
 		},
 		youku:{
 			// 优酷视频 https://v.youku.com/v_show/id_XMzc2ODA1OTQwNA==.html?spm=a2hww.11359951.m_26665_c_32069.5~5!3~5!2~5~5~A
 			// 可用     https://v.youku.com/v_show/id_XMzc4MjEzMjg0NA==.html
-			insertTo:".title-wrap>h1, .tvinfo>h2, .vip_info .vip_limit_title",
+			insertTo:".title-wrap>h1, .tvinfo>h2, .vip_info .vip_limit_title, .module-playbox .thesis-wrap a",
 			adStyle:"",
 			sStyle:"",
 			title:".player-title .title-wrap>h1>span:nth-child(1)",
 		},
 		le:{
-			// 乐视TV http://www.le.com/ptv/vplay/28636951.html
-			insertTo:".briefIntro_tit, .column_body>.vip_tit, #le_playbox .playbox_vip_tip>h3",
+			// 乐视TV http://www.le.com/ptv/vplay/67395357.html
+			insertTo:".briefIntro_tit, .column_body>.vip_tit, #le_playbox .playbox_vip_tip>h3, .layout_play .juji_bar",
 			adStyle:".layout_play iframe{display:none;}",
 			sStyle:"vertical-align: bottom;",
 			title:".briefIntro_box .briefIntro_tit>a",
@@ -96,7 +98,7 @@
 		},
 		mgtv:{
 			// 芒果TV https://www.mgtv.com/b/318945/4470636.html
-			insertTo:".v-panel-title, .c-player-aside-filmdl .txt .tilname",
+			insertTo:".m-movie-aside .info .name, .m-player-open .control-left .title",
 			adStyle:"",
 			sStyle:"width: unset;font-size:unset;height:unset;line-height:unset;",
 			title:".v-panel-info .route-til",
@@ -118,7 +120,7 @@
 			title:"#bangumi_detail .info-title h2",
 		},
 		pptv:{
-			// PPTV http://v.pptv.com/show/d2A9uiaKIibDaZF38.html?spm=vip_index_web.vip_d58855eb506e6c89f7eeb434e0955c41.0.0.0
+			// PPTV https://v.pptv.com/show/iadaicPaULe7kcmgI.html?rcc_src=www_index&spm=www_index_web.sb_2717768.0.0.0.0.1
 			insertTo:".player-sidebar .tithide li:nth-child(1)>a, #mainContent .cf ul.fl",
 			adStyle:"",
 			sStyle:"margin-top: 0.5rem;",

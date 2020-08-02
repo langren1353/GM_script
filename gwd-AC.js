@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         购物党比价工具【精简优化版】
 // @namespace    none
-// @version      1.4
+// @version      1.5
 // @description  【精简版】购物党，优化了页面的部分元素，减少页面弹窗和显示，保留菜单栏。购物党提供淘宝/京东/亚马逊/当当/苏宁/等百家商城的比价系统，能让你以较优惠的方式购买到你称心如意的商品，提供商品的历史价格情况，多种相似商品推荐，同款购买，降价提醒。PS：带有推广，介意勿装
 // @author       淘宝老司机
 // @include      http*://item.taobao.com/*
@@ -17,7 +17,7 @@
 // @note		 V1.2 修复部分多余的隐藏无效的问题 修复之前忘了【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】
 // @grant        GM_xmlhttpRequest
 // @connect      chenzelin.herokuapp.com
-// @connect      open.lesiclub.cn
+// @connect      gm.ntaow.com
 // @connect      gwdang.com
 // @connect      alicdn.com
 // @run-at       document-start
@@ -264,7 +264,6 @@ pChart.setOption(option);
 			// 	OpenWindow.document.close();
 			// 	OpenWindow.focus();
 			// }
-			console.log("这里");
 			var insWind = document.createElement("iframe");
 			// insWind.src = "javascript:(function(){document.write("+insWind+")})()";
 			insWind.innerHTML = phml;

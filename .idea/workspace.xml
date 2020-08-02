@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -20,22 +23,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/jslib/MVVM.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/newcss/duckCommonStyle.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/newcss/duckOnePageStyle.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/newcss/duckTwoPageStyle.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/newcss/test2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/luozhangbiao.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vagrant.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/dogeCommonStyle.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/dogeOnePageStyle.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/dogeTwoPageStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AC-DBHighLight" beforeDir="false" afterPath="$PROJECT_DIR$/AC-DBHighLight" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AutoHighLight.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AutoHighLight.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CSDN-AutoReply-AutoPager.js" beforeDir="false" afterPath="$PROJECT_DIR$/CSDN-AutoReply-AutoPager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lite-AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/Lite-AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/HuYanStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/HuYanStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/SiteConfigRules.conf" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/SiteConfigRules.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckTwoPageStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/SearchBlock.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/temp/SearchBlock.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test2.js" beforeDir="false" afterPath="$PROJECT_DIR$/test2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/sogouTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,6 +99,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
@@ -99,33 +108,36 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jsx.switch.disabled" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/newcss" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.jscs" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.stylelint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.jscs" value="project" />
     <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.path.for.package.stylelint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.jscs" value="" />
     <property name="node.js.selected.package.standard" value="" />
+    <property name="node.js.selected.package.stylelint" value="" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor.code.editing" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\GitHome\GM_script\newcss" />
       <recent name="D:\GitHome\GM_script\images" />
       <recent name="D:\GitPath\GM_script\shell" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script\YoudaoGW" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
     </key>
   </component>
   <component name="RunManager">
@@ -138,8 +150,9 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>C:\Users\luozhangbiao\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -224,14 +237,49 @@
       <workItem from="1595757017706" duration="167000" />
       <workItem from="1595757201284" duration="13000" />
       <workItem from="1595767011347" duration="981000" />
+      <workItem from="1595814400279" duration="649000" />
+      <workItem from="1595816767554" duration="12352000" />
+      <workItem from="1595832928111" duration="8511000" />
+      <workItem from="1595906058791" duration="2554000" />
+      <workItem from="1595909922825" duration="1183000" />
+      <workItem from="1595993337170" duration="1956000" />
+      <workItem from="1596006168971" duration="5000" />
+      <workItem from="1596010392014" duration="2359000" />
+      <workItem from="1596076965837" duration="7444000" />
+      <workItem from="1596092387985" duration="9000" />
+      <workItem from="1596094135690" duration="7771000" />
+      <workItem from="1596160343001" duration="2832000" />
+      <workItem from="1596163202623" duration="38000" />
+      <workItem from="1596163250795" duration="226000" />
+      <workItem from="1596164117419" duration="158000" />
+      <workItem from="1596164892526" duration="29000" />
+      <workItem from="1596165215470" duration="11458000" />
+      <workItem from="1596259530189" duration="753000" />
+      <workItem from="1596261109237" duration="1647000" />
+      <workItem from="1596263916393" duration="795000" />
+      <workItem from="1596264724206" duration="54000" />
+      <workItem from="1596264786981" duration="781000" />
+      <workItem from="1596265578546" duration="16000" />
+      <workItem from="1596266172881" duration="3345000" />
+      <workItem from="1596347251491" duration="4662000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -259,7 +307,16 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="20" />
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="WindowStateProjectService">
+    <state x="683" y="227" key="#JavaScript" timestamp="1596163295832">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="683" y="227" key="#JavaScript/0.0.1920.1040@0.0.1920.1040" timestamp="1596163295832" />
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595730091724">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -268,65 +325,67 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="709" y="388" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595220472513" />
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1595213764426">
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1596350430590">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595213764426" />
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596350430590" />
     <state x="735" y="260" key="FileChooserDialogImpl" timestamp="1595220469492">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="735" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1595220469492" />
-    <state x="131" y="127" key="SettingsEditor" timestamp="1595244341823">
+    <state x="494" y="265" width="1201" height="775" key="SettingsEditor" timestamp="1596267200157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="93" y="16" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1594266372266" />
-    <state x="131" y="127" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1595244341823" />
-    <state width="700" height="569" key="SwitcherDM" timestamp="1595757021440">
+    <state x="494" y="265" width="1201" height="775" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1596267200157" />
+    <state width="700" height="569" key="SwitcherDM" timestamp="1596183898581">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="498" height="398" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1594285420680" />
-    <state width="700" height="569" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1595757021440" />
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1588440458507">
+    <state width="700" height="569" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1596183898581" />
+    <state x="92" y="92" width="1736" height="856" key="VCS.FileHistoryDialog" timestamp="1596348548309">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588440458507" />
-    <state x="661" y="121" width="626" height="798" key="find.popup" timestamp="1595670406225">
+    <state x="92" y="92" width="1736" height="856" key="VCS.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596348548309" />
+    <state x="823" y="363" key="cloudConfig.SelfSettingsDialog" timestamp="1596264087994">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="823" y="363" key="cloudConfig.SelfSettingsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596264087994" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1595910421182">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595910421182" />
+    <state x="754" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1595909475444">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="754" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1595909475444" />
+    <state x="661" y="121" width="626" height="798" key="find.popup" timestamp="1596356720175">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="470" y="85" width="566" height="559" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1594292482282" />
-    <state x="661" y="121" width="626" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1595670406225" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1595556359019">
+    <state x="661" y="121" width="626" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596356720175" />
+    <state width="600" height="428" key="javadoc.popup" timestamp="1596266730430">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="600" height="428" key="javadoc.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596266730430" />
+    <state x="798" y="177" width="628" height="538" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1596261282030">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="798" y="177" width="628" height="538" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596261282030" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1596096652158">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="443" y="158" width="672" height="475" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1594290324322" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1595303316005" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596096652158" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/1920.52.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1595556359019" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js</url>
-          <line>819</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand>
+      <path>
+        <item name="GM_script" type="b2602c69:ProjectViewProjectNode" />
+        <item name="GM_script" type="462c0819:PsiDirectoryNode" />
+      </path>
+    </expand>
+    <select />
   </component>
 </project>

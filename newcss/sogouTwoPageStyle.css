@@ -4,20 +4,17 @@
 }
 .wrap .wrapper{
     padding-left: unset;
+    width: 75vw;
 }
 .wrap>.wrapper #main, .wrap>.hintBox, .wrap>.p{
-    width: 75vw;
     max-width: unset;
-    position: relative;
-    margin: 0 auto;
-    float: unset;
-    padding-right: unset;
-    padding-left: unset;
+    width: 100%;
 }
 #main .results{
     width: 100%;
     display: inline-grid;
     grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
+    grid-template-areas: "xmain xmain";
 }
 #main .results>div{
     margin-left: 5px;
