@@ -6,6 +6,7 @@
 #b_content #b_results{
     width: 73vw;
     grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
+    grid-template-areas: "xmain xmain";
     display: inline-grid;
 }
 #b_content #b_results>li{
@@ -15,7 +16,7 @@
     width: 50%;
 }
 #b_msg, #b_pag{
-    grid-column-end: 3;
+    grid-column-end: xmain-end;
     grid-column-start: 1;
     background-color: #FFFFFF;
 }

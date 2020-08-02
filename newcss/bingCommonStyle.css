@@ -133,6 +133,9 @@ body{
     animation-duration: 0.3s;
     animation-timing-function: ease-out;
 }
+.AC.sp-separator{
+    margin-top: -15px;
+}
 @keyframes ani_leftToright {
     0% {
         transform: translateX(-32px);
