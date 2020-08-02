@@ -42,9 +42,10 @@
 }
 #links_wrapper .results--main #links{
     width: 80vw;
-    /*这里会导致翻页功能失效，比较奇怪*/
+    /* This may cause Page failed */
     display: inline-grid;
     grid-template-columns: 50% 50%;
+    grid-template-areas: "xmain xmain";
 }
 #links_wrapper .results--main #links .results_links_deep{
     width: unset;
@@ -52,8 +53,8 @@
 }
 #links .result--more, #links .result--sep{
     grid-column-start: 1;
-    grid-column-end: 3;
-    width: unset;
+    grid-column-end: xmain-end;
+    width: unset !important;
     padding: 0;
     padding-right: 15px;
 }

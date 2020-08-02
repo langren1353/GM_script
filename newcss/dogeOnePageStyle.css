@@ -9,7 +9,12 @@
     justify-content: center;
     display: flex;
     max-width: unset;
-    margin-left: -150px;
+}
+
+@media screen and (min-width: 1000px) {
+    #links_wrapper #links .results_links_deep {
+        width: 100%;
+    }
 }
 
 #header_wrapper #header,
@@ -22,16 +27,17 @@
     max-width: unset;
 }
 
-
 #header_wrapper #header .header__search-wrap {
     width: 500px;
 }
 #links_wrapper{
     display: inline-flex;
     justify-content: center;
+    padding-left: 0;
 }
 #links_wrapper .results--main{
     float: unset;
+    max-width: 860px;
 }
 #links_wrapper .results--sidebar{
     min-width: unset;
