@@ -385,8 +385,11 @@ div.res_top_banner #foot,#pag
 #rso .g div.r {
     border-radius: 10px 10px 0px 0px;
 }
+#rso .g .card-section, #center_col .kp-blk{
+    width: 100% !important;
+}
 /**Rewrite main page -> web summary*/
- .c2xzTb .g, .ruTcId .g, .fm06If .g, .cUnQKe .g, .HanQmf .g {
+.c2xzTb .g, .ruTcId .g, .fm06If .g, .cUnQKe .g, .HanQmf .g {
     width: 758px;
     padding-left:  20px !important;
     padding-right: 20px !important;
@@ -432,4 +435,10 @@ body[google] .big.minidiv .baidu #logo img{
     width: unset;
     margin-top: -18px;
 }
-
+.AC.sp-separator{
+    margin-top: -20px;
+}
+/*Translate Btn position change*/
+.eFM0qc {
+    margin-top: 11px;
+}

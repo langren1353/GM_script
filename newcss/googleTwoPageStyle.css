@@ -50,14 +50,11 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
 .srg, #rso{
 	display: grid;
 	grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
+    grid-template-areas: "xmain xmain";
 }
-#rso .srg{
+#rso>div:not(.g), #rso .srg{
     grid-column-start: 1;
-    grid-column-end: 3; /**bigger will cause items more than you think**/
-}
-#rso>div:not(.g){
-    grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column-end: xmain-end;
 }
 /**search box align center**/
 .srp form{
