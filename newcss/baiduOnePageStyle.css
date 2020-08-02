@@ -30,10 +30,10 @@ body[baidu] .pagefoot.gj{
     margin-left: unset;
     margin: 0 auto;
 }
-#wrapper  #page{
+#wrapper #page{
     background: unset;
 }
-#wrapper  #rs .tt{
+#wrapper #rs .tt{
     margin:0px -20px 1px 0px;
 }
 #wrapper  #content_left .c-container{
@@ -56,8 +56,13 @@ body[baidu] .pagefoot.gj{
     position: absolute;
   }
 }
-#wrapper  #page a, #wrapper  #page strong{
+#wrapper #page a, #wrapper #page strong{
     margin-right: 22px !important;
+}
+#wrapper #page .page-inner{
+    padding-left: 22px;
+    display: flex;
+    justify-content: center;
 }
 .s_tab_inner{
     display:block !important;
@@ -78,7 +83,6 @@ body[baidu] .pagefoot.gj{
 #wrapper #s_tab{
     display: flex;
     justify-content: center;
-    margin-left: -121px;
 }
 #wrapper .head_nums_cont_outer .search_tool_conter,
 #wrapper .head_nums_cont_outer .nums {
@@ -86,7 +90,7 @@ body[baidu] .pagefoot.gj{
 }
 @media screen and (max-width:1450px){
     form.fm .s_ipt_wr.bg{
-        min-width: 370px;
+        min-width: 330px;
     }
 }
 
