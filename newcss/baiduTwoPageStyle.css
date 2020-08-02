@@ -6,10 +6,6 @@ form.fm{
     position: relative;
     background-color: unset;
 }
-#wrapper .s_tab_inner,
-#s_tab .tab-wrapper{
-    margin-left: 12%;
-}
 #s_tab b, #s_tab a {
     position: relative;
 }
@@ -30,6 +26,7 @@ form.fm{
 #wrapper #content_left{
     display: inline-grid;
     grid-template-columns: 50% 50%;
+    grid-template-areas: "xmain xmain";
     margin: 0 auto;
     position: relative;
     padding-left: 5%;
@@ -41,6 +38,7 @@ form.fm{
 body[news] #wrapper #content_left>div:not([class]):not([id]){
     display: inline-grid;
     grid-template-columns: 50% 50%;
+    grid-template-areas: "xmain xmain";
 }
 #wrapper #content_right{
     display:none !important;
@@ -58,6 +56,9 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
     text-align: center;
     position: relative;
 }
+#wrapper #page .page-inner{
+    padding-left: 0;
+}
 #wrapper  #content_left .result,
 #wrapper  #content_left .c-container {
     width: unset !important;
@@ -67,7 +68,7 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 }
 #wrapper  #content_left>*:not([class*='result']){
 	grid-column-start: 1;
-	grid-column-end: 3;
+    grid-column-end: xmain-end;
 }
 .c-container h3 a{
     z-index:1;
