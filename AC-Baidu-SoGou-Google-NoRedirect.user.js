@@ -12,7 +12,7 @@
 // @license    GPL-3.0-only
 // @create    2015-11-25
 // @run-at    document-start
-// @version    24.4
+// @version    24.6
 // @connect    www.baidu.com
 // @include    *://ipv6.baidu.com/*
 // @include    *://www.baidu.com/*
@@ -34,8 +34,10 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2020-08-02
+// @lastmodified  2020-08-04
 // @feedback-url  https://ac.tujidu.com
+// @note    2020.08-05-V24.06 修复自定义偶尔打不开的问题；修复定时器可能会造成的失效的问题；修复当存在多个脚本可能造成的冲突问题
+// @note    2020.08-03-V24.05 更新修复护眼模式的问题；修复扩展上偶尔失效的问题；旧Edge似乎经常有保存不生效的问题，测试不是我的原因
 // @note    2020.08-02-V24.04 动态样式切换，多列效果一键切换，无需刷新 修复各种样式问题 修复必应翻页问题 测试兼容GM和VM.彻底不支持搜狗搜索--别问为什么，我还想多活几年
 // @note    2020.07-27-V24.2&3 更换Vue为75团的地址 修复百度的lite模式切换无效的问题
 // @note    2020.07-27-V24.01 更新支持Linux下的Firefox emm修复上次提交过于着急导致的样式未提交 更新支持DogeDoge多吉搜索-但不处理重定向
@@ -242,6 +244,7 @@
 // @grant    unsafeWindow
 // ==/UserScript==
 
+
 !function () {
   let isdebug = false;
   let isLocalDebug = isdebug || false;
@@ -260,10 +263,11 @@
   // false  true =仅GM代码 执行
   // false  false=异常 但是还是要执行代码
   debug("程序开始");
-  if (inExtMode === true && inGMMode === true) {
+  if (inExtMode === true && inGMMode === true || typeof(window.AC666Init) !== 'undefined') {
     console.log("扩展模式-脚本不启用");
     return;
   }
+  window.AC666Init = true
   if (typeof (GM) === "undefined") {
     // 这个是ViolentMonkey的支持选项
     GM = {};
@@ -289,7 +293,7 @@
        */
       Array.prototype.acpush = function (data, callback) {
         // 如果是垃圾数据，那么可以丢弃的
-        if (data == null) return;
+        if (data == null || data == "") return;
         // 如果数据中有回车，那数据也是无效的正文而已
         if (data.replace(/({|}|,|\+|：|。|\n)/) !== data) return;
         if (this.findIndex(m => m === data) < 0) {
@@ -315,37 +319,37 @@
       isAutopage: true,  // 是否开启自动翻页功能
       isBlockEnable: false, // 是否开启去拦截模式
       isBlockDisplay: false, // 是否删除已拦截的条目
-      isBlockBtnDisplay: true, // 是否显示block按钮
+      isBlockBtnNotDisplay: false, // 是否显示block按钮
       AdsStyleEnable: true, // 是否开启自定义样式模式
 
       baidu: {
         name: 'baidu',  // CSS load 的前缀标志
-        AdsStyleMode: 2, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+        AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-百度
       },
       google: {
         name: 'google',
-        AdsStyleMode: 2, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+        AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-谷歌
       },
       bing: {
         name: 'bing',
-        AdsStyleMode: 3, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+        AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-必应
       },
       duck: {
         name: 'duck',
-        AdsStyleMode: 3, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+        AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-DuckGOGO
       },
       doge: {
         name: 'doge',
-        AdsStyleMode: 3, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+        AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-DuckGOGO
       },
       sogou: {
         name: 'sogou',
-        AdsStyleMode: 3, // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+        AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-搜狗
       },
 
@@ -365,7 +369,7 @@
       isGooleInBaiduModeEnable: false, // 是否开启谷歌搜索结果页的百度图标显示
       UserBlockList: [],
       UserStyleText:
-          `/**计数器的颜色样式*/
+        `/**计数器的颜色样式*/
 div .AC-CounterT{
   background: #FD9999;
 }
@@ -575,7 +579,7 @@ body[baidu] #s_lg_img_new{
           menu_text: "自定义",
           curLang: "zh_cn",
           fieldset_panel: {
-            panel_title: "AC-重定向设置 " + GM_info.script.version,
+            panel_title: "AC-重定向设置 " + GM_info.script.version + (inExtMode? 'Ext':''),
             setting_panel: {
               redirect_text: "主功能-重定向功能",
               redirect_title: "重定向功能的开启与否",
@@ -691,7 +695,7 @@ body[baidu] #s_lg_img_new{
           menu_text: "CUSTOM",
           curLang: "en",
           fieldset_panel: {
-            panel_title: "AC Redirect Settings " + GM_info.script.version,
+            panel_title: "AC Redirect Settings " + GM_info.script.version + (inExtMode? 'Ext':''),
             setting_panel: {
               redirect_text: "Main-RedirectFunc",
               redirect_title: "Turn on or off redirect",
@@ -990,7 +994,7 @@ body[baidu] #s_lg_img_new{
            */
           initStyle: function () {
             AC_addStyle("button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}button.ghhider{font-size:12px}button.ghhider:hover{color:#006aff;background:#fff}",
-                "AC-BlockStyle");
+              "AC-BlockStyle");
           },
           /**
            * 初始化屏蔽按钮加载
@@ -1006,7 +1010,7 @@ body[baidu] #s_lg_img_new{
                 // if(host == null) continue;
                 let faNode = curNode.querySelector(curSite.BlockType);
                 let nodeStyle = "display:unset;";
-                if (!ACConfig.isBlockBtnDisplay) {
+                if (ACConfig.isBlockBtnNotDisplay) {
                   nodeStyle = "display:none;";
                 }
                 faNode.insertAdjacentHTML("afterend", `<button style='${nodeStyle}' class='ghhider ghhb' href="${faviconNode.href || faviconNode.innerText}" meta="${host}" data-host="${host}" title='点击即可屏蔽 ${host} 放开，需要在自定义中手动配置放开'>block</button>`);
@@ -1040,7 +1044,7 @@ body[baidu] #s_lg_img_new{
               ACConfig.UserBlockList.acpush(host);
             }
             DBConfig.UserBlockList = ACConfig.UserBlockList;
-            GM.setValue("Config", JSON.stringify(DBConfig)); // 点击一次，保存一次
+            GM_setValue("Config", JSON.stringify(DBConfig)); // 点击一次，保存一次
             SiteBlock.renderDisplay();
             env.stopPropagation();
           },
@@ -1109,8 +1113,8 @@ body[baidu] #s_lg_img_new{
 
         function addStyle(css) { //添加CSS的代码--copy的
           let pi = document.createProcessingInstruction(
-              'xml-stylesheet',
-              'type="text/css" must="false" href="data:text/css;utf-8,' + encodeURIComponent(css) + '"'
+            'xml-stylesheet',
+            'type="text/css" must="false" href="data:text/css;utf-8,' + encodeURIComponent(css) + '"'
           );
           return document.insertBefore(pi, document.documentElement);
         }
@@ -1139,8 +1143,8 @@ body[baidu] #s_lg_img_new{
             node.setAttribute("height", "59");
           }, 300);
           document.title = document.title.replace(/^Google/, "百度一下，你就知道")
-              .replace(/ - Google 搜索/, "_百度搜索")
-              .replace(/ - Google Search/, "_百度搜索");
+            .replace(/ - Google 搜索/, "_百度搜索")
+            .replace(/ - Google Search/, "_百度搜索");
           safeWaitFunc("head", function () {
             let linkTarget = document.querySelector("link[type='image/x-icon']") || document.createElement('link');
             linkTarget.type = 'image/x-icon';
@@ -1187,7 +1191,7 @@ body[baidu] #s_lg_img_new{
                 let cur = e.srcElement || e.target;
                 let className = cur.parentNode.className.replace("container-label ", "");
                 AC_addStyle(".XX>label,.XX>br{display:unset !important;}.XX>.label_hide{display:none !important;}".replace(/XX/gm, className),
-                    "AC-ShowHideItem-" + className, "body");
+                  "AC-ShowHideItem-" + className, "body");
                 e.stopPropagation();
               },
               syncToBlockList(env) {
@@ -1211,7 +1215,7 @@ body[baidu] #s_lg_img_new{
               },
               saveConfig() {
                 this.ACConfig.lastSaveTime = new Date().getTime();
-                GM.setValue("Config", JSON.stringify(this.ACConfig));
+                GM_setValue("Config", JSON.stringify(this.ACConfig));
                 if(!this.ACConfig.doDisableSug){
                   acSetCookie("ORIGIN", 1, "www.baidu.com", new Date().getTime() - 86400000);
                   acSetCookie("ISSW", 1, null, new Date().getTime() - 86400000);
@@ -1229,7 +1233,7 @@ body[baidu] #s_lg_img_new{
               getUserBlockListRegex() {
                 var list = [];
                 this.ACConfig.UserBlockList.forEach(one => {
-                  list.push(new RegExp(one.replace("*", ".*")));
+                  one !== null && list.push(new RegExp(one.replace("*", ".*")));
                 })
                 if (typeof (this.other.addBlockItem) !== "undefined" && this.other.addBlockItem !== "") {
                   list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
@@ -1263,7 +1267,7 @@ body[baidu] #s_lg_img_new{
               cal_UserBlockListRegex() {
                 var list = [];
                 this.ACConfig.UserBlockList.forEach(one => {
-                  list.push(new RegExp(one.replace("*", ".*")));
+                  one !== null && list.push(new RegExp(one.replace("*", ".*")));
                 })
                 if (typeof (this.other.addBlockItem) !== "undefined" && this.other.addBlockItem !== "") {
                   list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
@@ -1297,7 +1301,7 @@ body[baidu] #s_lg_img_new{
           } else {
             console.error("Vue 未完成初始化--程序无法有效执行");
           }
-        }, 550);
+        }, 250);
 
         function MainCallback(e) {
           if (e.target != null && typeof (e.target.className) == "string" && e.target.className.toUpperCase().indexOf("AC-") == 0) {
@@ -1398,17 +1402,17 @@ body[baidu] #s_lg_img_new{
                 Elastic: {
                   easeIn: function easeIn(e, t, r, n, a, o) {
                     return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
-                        i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), -a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) + t);
+                      i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), -a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) + t);
                     var i;
                   },
                   easeOut: function easeOut(e, t, r, n, a, o) {
                     return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
-                        i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), a * Math.pow(2, -10 * e) * Math.sin((e * n - i) * (2 * Math.PI) / o) + r + t);
+                      i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), a * Math.pow(2, -10 * e) * Math.sin((e * n - i) * (2 * Math.PI) / o) + r + t);
                     var i;
                   },
                   easeInOut: function easeInOut(e, t, r, n, a, o) {
                     return 0 == e ? t : 2 == (e /= n / 2) ? t + r : (o || (o = n * (.3 * 1.5)), !a || a < Math.abs(r) ? (a = r,
-                        i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), e < 1 ? a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * -.5 + t : a * Math.pow(2, -10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * .5 + r + t);
+                      i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), e < 1 ? a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * -.5 + t : a * Math.pow(2, -10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * .5 + r + t);
                     var i;
                   }
                 },
@@ -1519,7 +1523,7 @@ body[baidu] #s_lg_img_new{
               if (document.documentElement.scrollHeight <= document.documentElement.clientHeight + scrollTop + scrollDelta && curSite.pageLoading === false) {
                 curSite.pageLoading = true;
                 if (curSite.SiteTypeID === SiteType.DUCK) { // 可以用已有的方法来实现了
-                  if (!ACConfig.normalizeDuck || ACConfig.duck.AdsStyleMode >= 3) {  // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
+                  if (!ACConfig.normalizeDuck || parseInt(ACConfig.duck.AdsStyleMode) >= 3) {  // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
                     document.querySelector("#links .result--more a").click();
                     setTimeout(function () {
                       curSite.pageLoading = false;
@@ -1550,7 +1554,7 @@ body[baidu] #s_lg_img_new{
               if (t) return t;
               if (document.implementation.createHTMLDocument) t = document.implementation.createHTMLDocument("ADocument"); else try {
                 (t = document.cloneNode(!1)).appendChild(t.importNode(document.documentElement, !1)),
-                    t.documentElement.appendChild(t.createElement("head")), t.documentElement.appendChild(t.createElement("body"));
+                  t.documentElement.appendChild(t.createElement("head")), t.documentElement.appendChild(t.createElement("body"));
               } catch (e) {
               }
               if (t) {
@@ -1583,13 +1587,13 @@ body[baidu] #s_lg_img_new{
                 pre_gray: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAslJREFUeNrclTtMWmEUxz/uvTzlIUhpNMR0aGNjrNHSmHTqRJyadujQDbSGRwJUaYCmDizqUEw6ODVNGgbpYCfSpFINCQzFR9oyMXRsXFCsAXkIKNL/R7gGWxOsSdPEk5zc3O+e87vn+59zv0vIpbSJiQmyubn5LBKJpNbX11+4XC5Buxy2XYDNZiMOh2OW4ziPTCbTi8XikeHh4SsSieQTXnIxsN1uJ1ardVYgEDgPDw+V9Xqd1Go1Mcuyg7AuuVy+sra29ndgVEnGx8dnhEKhs1qtKgE/eXZ8fCzC+q3+/n6tSqVaSSQS5wM7nU5iMplmsF1XpVI5BeXt6OhIBFkGAe9SKpV/wNmzKjWbzRT6tFwuK86CUqPrkIVWPjQwMKBWKBSn4Ozv0LGxsRmRSDSFSjua0Do8TRWAS+B5+B68g/IhixCNvQPN1WjuieZsS/f1aNQ0wzBuaCqlUCQRtVr9Es1K4kVDWJNhrQjAIiqMlkqle804FnkjBoOhEzv4vrGxkW2ALRaLFrq+QoAV2nE8tLe3dzEYDE5vb2939vX1PcBkiKVSaQ1jForFYq+NRqMum83ebsYzmJq7sGu4xhkKxsDfB/AxnO860ev1oeXlZU8gEMgmk0kFqmw8o9dUKiWfn58vhMPh54h7S+OpQXNSLBYfejyeR1yzw9dbRon09PS8W11dnfL5fJl8Pk+0Wi3hk5vyCNBY4vV6f0Im9+joKJNOp818o8G70ah4aWnpIzSKYCa/dXd3B+PxuHNycjKzs7NzAms1+qFQy+VydDRz0WjUpdPp3tB8TFM0FAqFGxXPzc19plJrNJqraMoXt9tNt3Suc+Tg4ICeJfmFhQVLoVAwoKG7fr//B8cHAL6Fy9ZFDinaG/r5w77ya8y/OhEvKRhjtIup2YMTeBb3mXY53HnAmNkP+/v7NzHTTwAO4f79f/ud/RJgAOLcRNZqLojMAAAAAElFTkSuQmCC",
               };
               AC_addStyle(".sp-separator{line-height:1.8 !important;opacity:1 !important;position:relative !important;float:none !important;top:0 !important;left:0 !important;min-width:366px;width:auto;text-align:center !important;font-size:14px !important;display:block !important;padding:3px 0 !important;margin:5px 10px 8px;clear:both !important;border-style:solid !important;border-color:#cccccc !important;border-width:1px !important;-moz-border-radius:30px !important;border-radius:30px !important;background-color:#ffffff !important;}.sp-separator:hover{box-shadow:0 0 11px rgba(33,33,33,0.2);}#sp-separator-hover{display:none;}.sp-separator:hover #sp-separator-hover{display:block;}.sp-separator .sp-someinfo{position:absolute !important;right:10px !important;font-size:12px !important;font-style:italic !important;background:none !important;}.sp-separator span{vertical-align: middle;cursor: pointer;padding: 0;margin: 0 5px;display: inline-block; width:22px;height:22px;}.sp-separator a{margin:0 20px 0 -6px !important;display:inline !important;text-shadow:#fff 0 1px 0 !important;background:none !important;color:#595959 !important;}.sp-separator input{padding:0 !important;line-height:23px !important;}.sp-separator .sp-md-span{font-weight:bold !important;margin:0 20px !important;}#sp-sp-md-number{width:6ch !important;vertical-align:middle !important;display:inline-block !important;text-align:left !important;}" +
-                  `.ac_sp_top{background-image:url('${sepImgs.top}')}` +
-                  `.ac_sp_pre{background-image:url('${sepImgs.pre}')}` +
-                  `.ac_sp_next{background-image:url('${sepImgs.next}')}` +
-                  `.ac_sp_bottom{background-image:url('${sepImgs.bottom}')}` +
-                  `.ac_sp_next_gray{background-image:url('${sepImgs.next_gray}')}` +
-                  `.ac_sp_pre_gray{background-image:url('${sepImgs.pre_gray}')}`,
-                  "AC-Preload")
+                `.ac_sp_top{background-image:url('${sepImgs.top}')}` +
+                `.ac_sp_pre{background-image:url('${sepImgs.pre}')}` +
+                `.ac_sp_next{background-image:url('${sepImgs.next}')}` +
+                `.ac_sp_bottom{background-image:url('${sepImgs.bottom}')}` +
+                `.ac_sp_next_gray{background-image:url('${sepImgs.next_gray}')}` +
+                `.ac_sp_pre_gray{background-image:url('${sepImgs.pre_gray}')}`,
+                "AC-Preload")
               if (curSite.pageUrl === url) {
                 console.error("[AC-Script]", "翻页到达底部了 - 或者异常 - 出现异常请直接反馈作者修改");
                 return;
@@ -1624,7 +1628,7 @@ body[baidu] #s_lg_img_new{
                           <span id="sp-sp-gopre" class='${curSite.pageNum <= 2 ? "ac_sp_pre_gray" : "ac_sp_pre"}' title='上滚一页' ></span>
                           <span id="sp-sp-gonext" class='ac_sp_next_gray' title='下滚一页'></span>
                           <span id="sp-sp-gobottom" class='ac_sp_bottom' title='去到底部' ></span></div>`
-                          .replace(/ACX/gm, curSite.pageNum));
+                        .replace(/ACX/gm, curSite.pageNum));
                       // 插入新页面元素
                       pageElems.forEach(function (one) {
                         toElement.insertAdjacentElement(addTo, one);
@@ -1663,12 +1667,12 @@ body[baidu] #s_lg_img_new{
           if (!ACConfig.isRightDisplayEnable) {
             // 移除右边栏 -注意在#wrapper>#con-at>#result-op xpath-log有时候很重要，不能隐藏
             AC_addStyle("#content_right{display:none !important;}#content_right td>div:not([id]){display:none;}#content_right .result-op:not([id]){display:none!important;}#rhs{display:none;}",
-                "AC-RightRemove");
+              "AC-RightRemove");
           } else {
             if (CONST.useItem.AdsStyleMode == 2) {
               // 非双列模式下尽可能的显示右侧栏
               AC_addStyle("@media screen and (min-width: 1250px) {#container{width: 80% !important;}.container_l #content_right{margin-right: calc(18% - 210px);position: absolute;right: -200px;display:block !important;overflow:hidden;width: 22vw !important;}",
-                  "AC-RightRemove");
+                "AC-RightRemove");
             }
           }
           if (!ACConfig.isALineEnable) {
@@ -1680,37 +1684,37 @@ body[baidu] #s_lg_img_new{
             safeRemove("style[class='AC-userStyle']")
           }
           AC_addStyle(
-              ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
-              ".res_top_banner{display:none!important;}" + // 移除可能的百度HTTPS劫持显示问题
-              ".headBlock, body>div.result-op{display:none;}" // 移除百度的搜索结果顶部一条的建议文字 & 移除可能出现的白屏现象
-              , "AC-special-BAIDU"
+            ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
+            ".res_top_banner{display:none!important;}" + // 移除可能的百度HTTPS劫持显示问题
+            ".headBlock, body>div.result-op{display:none;}" // 移除百度的搜索结果顶部一条的建议文字 & 移除可能出现的白屏现象
+            , "AC-special-BAIDU"
           );
           /*"自定义"按钮效果*/
           AC_addStyle(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}",
-              "AC-MENU_Btn");
+            "AC-MENU_Btn");
           /*自定义页面内容效果*/
           AC_addStyle('body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>label:not([class="label_hide"]),\n' +
-              '  body[google] #sp-ac-container .container-label:not([class*="google"])>label:not([class="label_hide"]),\n' +
-              '  body[bing] #sp-ac-container .container-label:not([class*="bing"])>label:not([class="label_hide"]),\n' +
-              '  body[sogou] #sp-ac-container .container-label:not([class*="sogou"])>label:not([class="label_hide"]),\n' +
-              '  body[duck] #sp-ac-container .container-label:not([class*="duck"])>label:not([class="label_hide"]),\n' +
-              '  body[doge] #sp-ac-container .container-label:not([class*="doge"])>label:not([class="label_hide"]),\n' +
-              '  body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>br,\n' +
-              '  body[google] #sp-ac-container .container-label:not([class*="google"])>br,\n' +
-              '  body[bing] #sp-ac-container .container-label:not([class*="bing"])>br,\n' +
-              '  body[duck] #sp-ac-container .container-label:not([class*="duck"])>br,\n' +
-              '  body[doge] #sp-ac-container .container-label:not([class*="doge"])>br,\n' +
-              '  body[sogou] #sp-ac-container .container-label:not([class*="sogou"])>br,\n' +
-              '  body[baidu] #sp-ac-container .container-label[class*="baidu"]>.label_hide,\n' +
-              '  body[google] #sp-ac-container .container-label[class*="google"]>.label_hide,\n' +
-              '  body[bing] #sp-ac-container .container-label[class*="bing"]>.label_hide,\n' +
-              '  body[sogou] #sp-ac-container .container-label[class*="sogou"]>.label_hide,\n' +
-              '  body[duck] #sp-ac-container .container-label[class*="duck"]>.label_hide,\n' +
-              '  body[doge] #sp-ac-container .container-label[class*="doge"]>.label_hide\n' + // 注意尾部逗号
-              '{' +
-              'display:none;\n' +
-              '}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
-              "AC-MENU_Page");
+            '  body[google] #sp-ac-container .container-label:not([class*="google"])>label:not([class="label_hide"]),\n' +
+            '  body[bing] #sp-ac-container .container-label:not([class*="bing"])>label:not([class="label_hide"]),\n' +
+            '  body[sogou] #sp-ac-container .container-label:not([class*="sogou"])>label:not([class="label_hide"]),\n' +
+            '  body[duck] #sp-ac-container .container-label:not([class*="duck"])>label:not([class="label_hide"]),\n' +
+            '  body[doge] #sp-ac-container .container-label:not([class*="doge"])>label:not([class="label_hide"]),\n' +
+            '  body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>br,\n' +
+            '  body[google] #sp-ac-container .container-label:not([class*="google"])>br,\n' +
+            '  body[bing] #sp-ac-container .container-label:not([class*="bing"])>br,\n' +
+            '  body[duck] #sp-ac-container .container-label:not([class*="duck"])>br,\n' +
+            '  body[doge] #sp-ac-container .container-label:not([class*="doge"])>br,\n' +
+            '  body[sogou] #sp-ac-container .container-label:not([class*="sogou"])>br,\n' +
+            '  body[baidu] #sp-ac-container .container-label[class*="baidu"]>.label_hide,\n' +
+            '  body[google] #sp-ac-container .container-label[class*="google"]>.label_hide,\n' +
+            '  body[bing] #sp-ac-container .container-label[class*="bing"]>.label_hide,\n' +
+            '  body[sogou] #sp-ac-container .container-label[class*="sogou"]>.label_hide,\n' +
+            '  body[duck] #sp-ac-container .container-label[class*="duck"]>.label_hide,\n' +
+            '  body[doge] #sp-ac-container .container-label[class*="doge"]>.label_hide\n' + // 注意尾部逗号
+            '{' +
+            'display:none;\n' +
+            '}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
+            "AC-MENU_Page");
         }
 
         AutoRefresh();
@@ -1862,7 +1866,7 @@ body[baidu] #s_lg_img_new{
               document.querySelector("#sp-ac-content").style.display = 'none';
             } else {
               DBConfig.oldVersion = ACConfig.oldVersion = GM_info.script.version; // 只需要写出一部分的关键数据即可
-              GM.setValue("Config", JSON.stringify(DBConfig));
+              GM_setValue("Config", JSON.stringify(DBConfig));
               document.querySelector(".ac-newversionDisplay").style.display = 'none';
               document.querySelector("#sp-ac-content").style.display = 'block';
             }
@@ -1877,7 +1881,7 @@ body[baidu] #s_lg_img_new{
             let Container = document.createElement('div');
             Container.id = "sp-ac-container";
             Container.innerHTML =
-                `<div id="sp-ac-content" style="display: none;">
+              `<div id="sp-ac-content" style="display: none;">
                 <div id="sp-ac-main">
                   <fieldset id="sp-ac-autopager-field" style="display:block;">
                     <legend class="iframe-father">
@@ -1915,7 +1919,7 @@ body[baidu] #s_lg_img_new{
                           {{ lan.use.fieldset_panel.setting_panel.blockAutoRemove_text }}
                         </label>
                         <label :title="lan.use.fieldset_panel.setting_panel.blockBtnShow_title">
-                          <input :title="lan.use.fieldset_panel.setting_panel.blockBtnShow_title"  v-model="ACConfig.isBlockBtnDisplay" id="sp-ac-blockBtnDisplay" type="checkbox">
+                          <input :title="lan.use.fieldset_panel.setting_panel.blockBtnShow_title"  v-model="ACConfig.isBlockBtnNotDisplay" id="sp-ac-blockBtnDisplay" type="checkbox">
                           {{ lan.use.fieldset_panel.setting_panel.blockBtnShow_text }}
                         </label>
                       </li>
@@ -1933,7 +1937,7 @@ body[baidu] #s_lg_img_new{
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_origin }}
                           </label>
                           <label>
-                          <input  name='sp-ac-huyan_style_baidu' type='checkbox' v-model="ACConfig.baidu.HuYan">
+                          <input  name='sp-ac-huyan_style_baidu' type='checkbox' v-model="ACConfig.baidu.HuYanMode">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_huyan }}
                           </label>
                           <label class=""><input name="sp-ac-a_force_style_baidulite" type="checkbox" v-model="ACConfig.Style_BaiduLite">
@@ -1966,7 +1970,7 @@ body[baidu] #s_lg_img_new{
                           <input name="sp-ac-a_force_style_google" value="0" type="radio" v-model="ACConfig.google.AdsStyleMode">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_google_origin }}
                           </label>
-                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_google_huyan"><input name="sp-ac-huyan_style_google" v-model="ACConfig.google.HuYan" type="checkbox">
+                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_google_huyan"><input name="sp-ac-huyan_style_google" v-model="ACConfig.google.HuYanMode" type="checkbox">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_google_huyan }}
                           </label>
                           <label :title="lan.use.fieldset_panel.setting_panel.userStyle_google_googleLite" style=""><input name="sp-ac-google_in_baidumode" v-model="ACConfig.isGooleInBaiduModeEnable" type="checkbox">
@@ -1998,7 +2002,7 @@ body[baidu] #s_lg_img_new{
                           <label style="margin-left:20px"><input name="sp-ac-a_force_style_bing" v-model="ACConfig.bing.AdsStyleMode" value="0" type="radio">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_origin }}
                           </label>
-                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_bing_huyan"><input name="sp-ac-huyan_style_bing" v-model="ACConfig.bing.HuYan" type="checkbox">
+                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_bing_huyan"><input name="sp-ac-huyan_style_bing" v-model="ACConfig.bing.HuYanMode" type="checkbox">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_huyan }}
                           </label>
                           <br>
@@ -2019,14 +2023,14 @@ body[baidu] #s_lg_img_new{
                           </label>
                         </label>
                         <!------------必应样式-------------->
-                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
+<!--                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>-->
 <!--                        &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;搜狗样式&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
 <!--                        <label class="container-label sogou">-->
 <!--                          <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_sogou_lable" @click="labelShowHideEnv"></label>-->
 <!--                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_sogou" v-model="ACConfig.sogou.AdsStyleMode" value="0" type="radio">-->
 <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_origin }}-->
 <!--                          </label>-->
-<!--                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_sogou_huyan"><input name="sp-ac-huyan_style_sogou" v-model="ACConfig.sogou.HuYan" type="checkbox">-->
+<!--                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_sogou_huyan"><input name="sp-ac-huyan_style_sogou" v-model="ACConfig.sogou.HuYanMode" type="checkbox">-->
 <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_huyan }}-->
 <!--                          </label>-->
 <!--                          <br>-->
@@ -2055,7 +2059,7 @@ body[baidu] #s_lg_img_new{
                           <label style="margin-left:20px"><input name="sp-ac-a_force_style_duck" v-model="ACConfig.duck.AdsStyleMode" value="0" type="radio">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_origin }}
                           </label>
-                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_duck_huyan"><input name="sp-ac-huyan_style_duck" v-model="ACConfig.duck.HuYan" type="checkbox">
+                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_duck_huyan"><input name="sp-ac-huyan_style_duck" v-model="ACConfig.duck.HuYanMode" type="checkbox">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_huyan }}
                           </label>
                            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_duck_normal" style=""><input v-model="ACConfig.normalizeDuck" type="checkbox">
@@ -2087,7 +2091,7 @@ body[baidu] #s_lg_img_new{
                           <label style="margin-left:20px"><input name="sp-ac-a_force_style_doge" v-model="ACConfig.doge.AdsStyleMode" value="0" type="radio">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_origin }}
                           </label>
-                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_doge_huyan"><input name="sp-ac-huyan_style_doge" v-model="ACConfig.doge.HuYan" type="checkbox">
+                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_doge_huyan"><input name="sp-ac-huyan_style_doge" v-model="ACConfig.doge.HuYanMode" type="checkbox">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_huyan }}
                           </label>
                            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_doge_normal" style=""><input v-model="ACConfig.normalizeDoge" type="checkbox">
@@ -2313,9 +2317,9 @@ body[baidu] #s_lg_img_new{
               let len2 = hasDealHrefSet.size;
               if (len1 === len2) continue; // 说明数据已经处理过，存在相同的记录
               if (curhref.indexOf("www.baidu.com/link") > -1 ||
-                  curhref.indexOf("m.baidu.com/from") > -1 ||
-                  curhref.indexOf("www.sogou.com/link") > -1 ||
-                  curhref.indexOf("so.com/link") > -1) {
+                curhref.indexOf("m.baidu.com/from") > -1 ||
+                curhref.indexOf("www.sogou.com/link") > -1 ||
+                curhref.indexOf("so.com/link") > -1) {
                 (function (c_curnode, c_curhref) {
                   let url = c_curhref.replace(/^http:/, "https:");
                   if (curSite.SiteTypeID === SiteType.BAIDU && url.indexOf("eqid") < 0) {
@@ -2505,12 +2509,12 @@ body[baidu] #s_lg_img_new{
                   // 先用父节点判断一下是否存在img
                   let tmpHTML = targetNode.innerHTML;
                   let pos = tmpHTML.indexOf("fav-url")
-                      & tmpHTML.indexOf("favurl")
-                      & tmpHTML.indexOf("tit-ico")
-                      & tmpHTML.indexOf("img_fav rms_img")
-                      & tmpHTML.indexOf("c-tool-")
-                      & tmpHTML.indexOf("span class=\"c-icon c-icon-")
-                      & tmpHTML.indexOf("img class=\"xA33Gc");
+                    & tmpHTML.indexOf("favurl")
+                    & tmpHTML.indexOf("tit-ico")
+                    & tmpHTML.indexOf("img_fav rms_img")
+                    & tmpHTML.indexOf("c-tool-")
+                    & tmpHTML.indexOf("span class=\"c-icon c-icon-")
+                    & tmpHTML.indexOf("img class=\"xA33Gc");
                   //他自己已经做了favicon了
                   if (pos > -1) {
                     // console.log("已有图片：");
@@ -2596,26 +2600,40 @@ body[baidu] #s_lg_img_new{
       /**
        * @param callback 回调函数，需要返回是否结束True、False、否则相当于定时器
        * callback return:
-       *  true = 定时器
+       *  true = 倒计时
        *  false = 计时器
        *  none = 计时器
        * @param period 周期，如:200ms
+       * @param runNow 立即执行
        */
-      function RAFFunction(callback, period) {
+      function RAFInterval(callback, period, runNow) {
         // 一秒60次，对应1秒1000ms
-        let needCount = period / 1000 * 60;
-        let times = 0;
-        let hasFinish = false;
+        const needCount = period / 1000 * 60;
+        let times = 0; // 已经计数的数量
 
-        function step() {
-          if (!hasFinish) requestAnimationFrame(step);
-          if (times === 0) {
-            times = needCount;
-            hasFinish = callback(); // 只有返回true才会终止，不返回也会继续
-          }
-          times--;
+        if(runNow === true){ // 对于立即执行函数的立即判定，否则进行
+          const shouldFinish = callback();
+          if(shouldFinish) return;
         }
 
+        function step() {
+          if(times < needCount){
+            // 计数未结束-继续计数
+            times++;
+            requestAnimationFrame(step)
+          }else{
+            // 计数结束-停止计数，判定结果
+            const shouldFinish = callback() || false;
+            if(!shouldFinish){
+              // 返回值为false，重启计数器
+              times = 0;
+              requestAnimationFrame(step)
+            }else{
+              // 返回值为true，结束计数器
+              return
+            }
+          }
+        }
         requestAnimationFrame(step);
       }
 
@@ -2627,7 +2645,7 @@ body[baidu] #s_lg_img_new{
         time = time || 50;
         notClear = notClear || false;
         let doClear = !notClear;
-        RAFFunction(function () {
+        RAFInterval(function () {
           if ((typeof (selector) == "string" && document.querySelector(selector) != null)) {
             callbackFunc(document.querySelector(selector));
             if (doClear) return true;
@@ -2635,11 +2653,11 @@ body[baidu] #s_lg_img_new{
             callbackFunc(selector()[0]);
             if (doClear) return true;
           }
-        }, time);
+        }, time, true);
       }
 
       function AC_addStyle(css, className, addToTarget, isReload, initType) { // 添加CSS代码，不考虑文本载入时间，只执行一次-无论成功与否，带有className
-        RAFFunction(function () {
+        RAFInterval(function () {
           /**
            * addToTarget这里不要使用head标签,head标签的css会在html载入时加载，
            * html加载后似乎不会再次加载，body会自动加载
@@ -2671,7 +2689,7 @@ body[baidu] #s_lg_img_new{
             }
             return true;
           }
-        }, 20);
+        }, 20, true);
       }
 
       function safeRemove(cssSelector_OR_NEWfunction) {
@@ -2692,10 +2710,10 @@ body[baidu] #s_lg_img_new{
         }
       }
 
-      function checkISBaiduMain() {
+      function checkISBaiduMain() { // 首页=true;非首页=false
         // 如果是百度 &&  没有(百度搜索结果的标志-[存在]百度的内容) return;
         return !(curSite.SiteTypeID === SiteType.BAIDU && !(location.href.replace(/(&|\?)(wd|word)=/, "") !== location.href || document.querySelector("#content_left") ||
-                ((document.querySelector("#kw") && document.querySelector("#kw").getAttribute("value")) || "") !== "")
+            ((document.querySelector("#kw") && document.querySelector("#kw").getAttribute("value")) || "") !== "")
         )
       }
 
@@ -2737,8 +2755,8 @@ body[baidu] #s_lg_img_new{
               var {res,} = checkDocmentHasNode(toClassName);
               if (!res) {
                 let pi = document.createProcessingInstruction(
-                    "xml-stylesheet",
-                    `type="text/css" must="${mustLoad}" class="${toClassName}" href="${data}"`
+                  "xml-stylesheet",
+                  `type="text/css" must="${mustLoad}" class="${toClassName}" href="${data}"`
                 ); // 注意必须要双引号
                 document.insertBefore(pi, document.documentElement);
               }
@@ -2787,9 +2805,9 @@ body[baidu] #s_lg_img_new{
               style = GM_getResourceText("MainHuYanStyle");
             }
             style = style
-                .replace(/#aaa(a*)/igm, color)
-                .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
-                .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
+              .replace(/#aaa(a*)/igm, color)
+              .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
+              .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
             AC_addStyle(style, "AC-" + CONST.useItem.name + "HuYanStyle" + (isNewGM ? "" : "-File"), "head", true); // 需要修改的，所以为true
           },
           clip255: function (value) {
@@ -2830,7 +2848,7 @@ body[baidu] #s_lg_img_new{
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             AC_addStyle(cssHead + "{grid-template-columns: repeat(2,minmax(50%,1fr));grid-template-areas:'xmain xmain';}.AC.sp-separator{grid-column-start: 1;grid-column-end: xmain-end;}",
-                "AC-TwoPageExStyle", "head");
+              "AC-TwoPageExStyle", "head");
           },
           // 加载三列样式
           loadThreePageStyle: function () {
@@ -2842,7 +2860,7 @@ body[baidu] #s_lg_img_new{
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             AC_addStyle(cssHead + "{grid-template-columns: repeat(3,minmax(33%,1fr));grid-template-areas:'xmain xmain xmain';}",
-                "AC-ThreePageExStyle", "head");
+              "AC-ThreePageExStyle", "head");
           },
           // 加载四列样式
           loadFourPageStyle: function () {
@@ -2854,7 +2872,7 @@ body[baidu] #s_lg_img_new{
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             AC_addStyle(cssHead + "{grid-template-columns: repeat(4,minmax(25%,1fr));grid-template-areas:'xmain xmain xmain xmain';}",
-                "AC-FourPageExStyle", "head");
+              "AC-FourPageExStyle", "head");
           },
           loadPlainToCSS: function () {
             for (let i = 0; i < document.childNodes.length; i++) {
@@ -2932,7 +2950,7 @@ body[baidu] #s_lg_img_new{
               return;
             }
             /**护眼Style最后载入**/
-            if (CONST.HuYanMode === true || document.querySelector("style[class*='darkreader']") != null) CONST.StyleManger.loadHuYanStyle();
+            if (CONST.useItem.HuYanMode === true || document.querySelector("style[class*='darkreader']") != null) CONST.StyleManger.loadHuYanStyle();
 
             CONST.StyleManger.loadPlainToCSS();
           },
