@@ -12,7 +12,7 @@
 // @license    GPL-3.0-only
 // @create    2015-11-25
 // @run-at    document-start
-// @version    24.6
+// @version    24.7
 // @connect    www.baidu.com
 // @include    *://ipv6.baidu.com/*
 // @include    *://www.baidu.com/*
@@ -34,8 +34,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2020-08-04
+// @lastmodified  2020-08-06
 // @feedback-url  https://ac.tujidu.com
+// @note    2020.08-06-V24.07 修复保存无效的问题；修复百度在单列居中的时候错位的问题
 // @note    2020.08-05-V24.06 修复自定义偶尔打不开的问题；修复定时器可能会造成的失效的问题；修复当存在多个脚本可能造成的冲突问题
 // @note    2020.08-03-V24.05 更新修复护眼模式的问题；修复扩展上偶尔失效的问题；旧Edge似乎经常有保存不生效的问题，测试不是我的原因
 // @note    2020.08-02-V24.04 动态样式切换，多列效果一键切换，无需刷新 修复各种样式问题 修复必应翻页问题 测试兼容GM和VM.彻底不支持搜狗搜索--别问为什么，我还想多活几年
@@ -213,7 +214,7 @@
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
 // @resource  baiduCommonStyle   http://ibaidu.htt5.com/newcss/baiduCommonStyle.css?t=24.04
-// @resource  baiduOnePageStyle  http://ibaidu.htt5.com/newcss/baiduOnePageStyle.css?t=24.04
+// @resource  baiduOnePageStyle  http://ibaidu.htt5.com/newcss/baiduOnePageStyle.css?t=24.06
 // @resource  baiduTwoPageStyle  http://ibaidu.htt5.com/newcss/baiduTwoPageStyle.css?t=24.04
 // @resource  baiduLiteStyle     http://ibaidu.htt5.com/newcss/baiduLiteStyle.css?t=24.04
 // @resource  googleCommonStyle  http://ibaidu.htt5.com/newcss/googleCommonStyle.css?t=24.04
@@ -971,6 +972,10 @@ body[baidu] #s_lg_img_new{
           CONST.useItem = ACConfig.baidu;
         }
 
+        if(curSite.SiteTypeID == SiteType.BAIDU_XUESHU){
+          CONST.useItem.AdsStyleMode = 2; // 单列居中即可
+        }
+
         if (ACConfig.AdsStyleEnable) {
           CONST.StyleManger = FSBaidu(); // 添加设置项-单双列显示
         }
@@ -1172,7 +1177,7 @@ body[baidu] #s_lg_img_new{
           if (curSite.SiteTypeID !== SiteType.OTHERS) {
             document.addEventListener('DOMNodeInserted', MainCallback, false);
             document.addEventListener('keyup', MainCallback, false);
-            RAFFunction(function () {
+            RAFInterval(function () {
               rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
             }, 800);
           }

@@ -367,6 +367,7 @@ a em {
 }
 cite{
     font-weight:normal;
+    white-space: nowrap;
 }
 /**Mooncan -START**/
 /**Aja LineHeight*/

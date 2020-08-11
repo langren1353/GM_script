@@ -107,9 +107,9 @@ form.fm .s_btn:hover {
     -moz-box-shadow: 0 0 2px gray;
     transition: all 0.2s cubic-bezier(.23,1,.32,1) 0s;
 }
-#wrapper #content_left .result-op:hover,
+#wrapper #content_left .c-container:hover,
 #wrapper #content_left .result:hover,
-#wrapper #content_left .result-op:hover article{
+#wrapper #content_left .c-container:hover article{
     box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
     border: 1px solid rgba(0,0,0,0.2);
     background:#f3f3f3;
@@ -221,7 +221,7 @@ form.fm .s_btn:hover {
     transition: width 350ms, left 350ms;
 }
 #wrapper #content_left .result h3,
-#wrapper #content_left .result-op h3{
+#wrapper #content_left .c-container h3{
     font-weight: bold;
     font-size: medium;
 }
@@ -286,7 +286,8 @@ form.fm .s_btn:hover {
     height: 40px;
     line-height: 40px;
     padding-top: 5px;
-    margin: 0px 0px 50px 80px;
+    margin-bottom: 50px;
+    margin-left: 0px;
 }
 .op-img-address-desktop-cont{
     overflow: hidden;
@@ -298,6 +299,9 @@ form.fm .s_btn:hover {
     box-shadow: 0 0 2px gray;
     -webkit-box-shadow: 0 0 2px gray;
     -moz-box-shadow: 0 0 2px gray;
+}
+#wrapper #page .n{
+    height: 34px;
 }
 #wrapper #page .n:hover,
 #wrapper #page a:hover .pc {
@@ -367,11 +371,13 @@ form.fm .s_btn:hover {
     }
 }
 
-.result-op.c-container .c-result-content{
+.c-container .c-result-content{
     padding-top: 20px;
 }
-#wrapper #content_left  .result-op article{
+#wrapper #content_left  .c-container article{
     padding-top: 15px;
+    border: unset !important;
+    box-shadow: unset !important;
 }
 body #container.sam_newgrid #content_left{
     width: 80%;

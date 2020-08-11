@@ -1,6 +1,7 @@
 /**Store BaiduOnePageStyle**/
 #wrapper_wrapper #container {
     width: 100%;
+    margin-left: unset;
 }
 form.fm{
     position:relative;
@@ -20,7 +21,7 @@ body[baidu] .pagefoot.gj{
     left: 20%;
     width: 60%;
 }
-#wrapper  #content_left,#wrapper  #rs, #wrapper  #page{
+#wrapper  #content_left,#wrapper #container.sam_newgrid #rs, #wrapper #page{
     top: 35px;
     position:relative;
     padding-left: 0;
@@ -33,8 +34,12 @@ body[baidu] .pagefoot.gj{
 #wrapper #page{
     background: unset;
 }
-#wrapper #rs .tt{
-    margin:0px -20px 1px 0px;
+#wrapper #rs th{
+    text-align: center;
+}
+#wrapper #rs{
+    position: relative;
+    margin: 30px auto -20px auto;
 }
 #wrapper  #content_left .c-container{
     width: 100% !important;
