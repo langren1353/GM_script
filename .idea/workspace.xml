@@ -19,17 +19,19 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="">
+    <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VideoJumper.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/VideoJumper.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test2.js" beforeDir="false" afterPath="$PROJECT_DIR$/test2.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +65,7 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="REBASE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="JsBowerSettings">
@@ -75,6 +78,12 @@
     <exe-path />
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="684" />
+    <option name="y" value="10" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
   </component>
   <component name="ProjectId" id="1P00jjeKHs16oFl0ZYO9GSw4U4W" />
   <component name="ProjectLevelVcsManager">
@@ -94,7 +103,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jsx.switch.disabled" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/newcss" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.jscs" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -110,14 +119,13 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.CommitDialog" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\GitHome\GM_script\newcss" />
       <recent name="D:\GitHome\GM_script\images" />
@@ -125,18 +133,22 @@
       <recent name="C:\Users\AC\Desktop\GIT\GM_script\YoudaoGW" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
+      <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="test.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/test.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JavaScript Debug.test.html" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SshConsoleOptionsProvider">
+    <option name="myEncoding" value="GBK" />
+    <option name="myConnectionType" value="SSH_CONFIG" />
+    <option name="myConnectionId" value="langren1353@localhost:22 key" />
+  </component>
   <component name="SvnConfiguration">
     <configuration>C:\Users\luozhangbiao\AppData\Roaming\Subversion</configuration>
   </component>
@@ -262,7 +274,18 @@
       <workItem from="1596774691745" duration="2762000" />
       <workItem from="1597027009534" duration="1279000" />
       <workItem from="1597028906299" duration="3803000" />
+      <workItem from="1597142640539" duration="394000" />
+      <workItem from="1597147770163" duration="1350000" />
+      <workItem from="1597719474901" duration="3145000" />
     </task>
+    <task id="LOCAL-00001" summary="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题">
+      <created>1597142744545</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1597142744545</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,6 +334,8 @@
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="20" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题" />
   </component>
   <component name="WindowStateProjectService">
     <state x="683" y="227" key="#JavaScript" timestamp="1596163295832">
@@ -329,15 +354,15 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596455741019" />
-    <state x="735" y="260" key="FileChooserDialogImpl" timestamp="1595220469492">
+    <state x="507" y="401" key="FileChooserDialogImpl" timestamp="1597142814275">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="735" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1595220469492" />
-    <state x="494" y="265" width="1201" height="775" key="SettingsEditor" timestamp="1596456131615">
+    <state x="507" y="401" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1597142814275" />
+    <state x="397" y="168" width="1201" height="775" key="SettingsEditor" timestamp="1597142993931">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="93" y="16" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1594266372266" />
-    <state x="494" y="265" width="1201" height="775" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1596456131615" />
+    <state x="397" y="168" width="1201" height="775" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1597142993930" />
     <state width="700" height="569" key="SwitcherDM" timestamp="1596776087589">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -347,6 +372,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="VCS.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596348548309" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1597142870236">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1597142870236" />
     <state x="823" y="363" key="cloudConfig.SelfSettingsDialog" timestamp="1596264087994">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -387,5 +416,79 @@
       </path>
     </expand>
     <select />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>GM_script</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

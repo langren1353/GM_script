@@ -1,2574 +1,2609 @@
-(function() {
-	var p = 8,
-		t = "",
-		r = 0,
-		q = function(y, x) {
-			this.highOrder = y;
-			this.lowOrder = x
-		},
-		s = function(z) {
-			var x = [],
-				y = (1 << p) - 1,
-				B = z.length * p,
-				A;
-			for (A = 0; A < B; A += p) {
-				x[A >> 5] |= (z.charCodeAt(A / p) & y) << (32 - p - (A % 32))
-			}
-			return x
-		},
-		d = function(y) {
-			var x = [],
-				B = y.length,
-				A,
-				z;
-			for (A = 0; A < B; A += 2) {
-				z = parseInt(y.substr(A, 2), 16);
-				if (!isNaN(z)) {
-					x[A >> 3] |= z << (24 - (4 * (A % 8)))
-				} else {
-					return "INVALID HEX STRING"
-				}
-			}
-			return x
-		},
-		g = function(y) {
-			var x = (r) ? "0123456789ABCDEF": "0123456789abcdef",
-				C = "",
-				B = y.length * 4,
-				A,
-				z;
-			for (A = 0; A < B; A += 1) {
-				z = y[A >> 2] >> ((3 - (A % 4)) * 8);
-				C += x.charAt((z >> 4) & 15) + x.charAt(z & 15)
-			}
-			return C
-		},
-		k = function(y) {
-			var x = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
-				D = "",
-				B = y.length * 4,
-				A, z, C;
-			for (A = 0; A < B; A += 3) {
-				C = (((y[A >> 2] >> 8 * (3 - A % 4)) & 255) << 16) | (((y[A + 1 >> 2] >> 8 * (3 - (A + 1) % 4)) & 255) << 8) | ((y[A + 2 >> 2] >> 8 * (3 - (A + 2) % 4)) & 255);
-				for (z = 0; z < 4; z += 1) {
-					if (A * 8 + z * 6 <= y.length * 32) {
-						D += x.charAt((C >> 6 * (3 - z)) & 63)
-					} else {
-						D += t
-					}
-				}
-			}
-			return D
-		},
-		h = function(y, z) {
-			if (z <= 32) {
-				return new q((y.highOrder >>> z) | (y.lowOrder << (32 - z)), (y.lowOrder >>> z) | (y.highOrder << (32 - z)))
-			} else {
-				return new q((y.lowOrder >>> z) | (y.highOrder << (32 - z)), (y.highOrder >>> z) | (y.lowOrder << (32 - z)))
-			}
-		},
-		o = function(y, z) {
-			if (z <= 32) {
-				return new q(y.highOrder >>> z, y.lowOrder >>> z | (y.highOrder << (32 - z)))
-			} else {
-				return new q(0, y.highOrder << (32 - z))
-			}
-		},
-		i = function(A, C, B) {
-			return new q((A.highOrder & C.highOrder) ^ (~A.highOrder & B.highOrder), (A.lowOrder & C.lowOrder) ^ (~A.lowOrder & B.lowOrder))
-		},
-		c = function(A, C, B) {
-			return new q((A.highOrder & C.highOrder) ^ (A.highOrder & B.highOrder) ^ (C.highOrder & B.highOrder), (A.lowOrder & C.lowOrder) ^ (A.lowOrder & B.lowOrder) ^ (C.lowOrder & B.lowOrder))
-		},
-		m = function(y) {
-			var z = h(y, 28),
-				B = h(y, 34),
-				A = h(y, 39);
-			return new q(z.highOrder ^ B.highOrder ^ A.highOrder, z.lowOrder ^ B.lowOrder ^ A.lowOrder)
-		},
-		j = function(z) {
-			var A = h(z, 14),
-				y = h(z, 18),
-				B = h(z, 41);
-			return new q(A.highOrder ^ y.highOrder ^ B.highOrder, A.lowOrder ^ y.lowOrder ^ B.lowOrder)
-		},
-		v = function(y) {
-			var z = h(y, 1),
-				A = h(y, 8),
-				B = o(y, 7);
-			return new q(z.highOrder ^ A.highOrder ^ B.highOrder, z.lowOrder ^ A.lowOrder ^ B.lowOrder)
-		},
-		u = function(y) {
-			var z = h(y, 19),
-				B = h(y, 61),
-				A = o(y, 6);
-			return new q(z.highOrder ^ B.highOrder ^ A.highOrder, z.lowOrder ^ B.lowOrder ^ A.lowOrder)
-		},
-		e = function(z, E) {
-			var A, B, D, C;
-			A = (z.lowOrder & 65535) + (E.lowOrder & 65535);
-			B = (z.lowOrder >>> 16) + (E.lowOrder >>> 16) + (A >>> 16);
-			D = ((B & 65535) << 16) | (A & 65535);
-			A = (z.highOrder & 65535) + (E.highOrder & 65535) + (B >>> 16);
-			B = (z.highOrder >>> 16) + (E.highOrder >>> 16) + (A >>> 16);
-			C = ((B & 65535) << 16) | (A & 65535);
-			return new q(C, D)
-		},
-		b = function(y, x, E, D) {
-			var B, z, C, A;
-			B = (y.lowOrder & 65535) + (x.lowOrder & 65535) + (E.lowOrder & 65535) + (D.lowOrder & 65535);
-			z = (y.lowOrder >>> 16) + (x.lowOrder >>> 16) + (E.lowOrder >>> 16) + (D.lowOrder >>> 16) + (B >>> 16);
-			C = ((z & 65535) << 16) | (B & 65535);
-			B = (y.highOrder & 65535) + (x.highOrder & 65535) + (E.highOrder & 65535) + (D.highOrder & 65535) + (z >>> 16);
-			z = (y.highOrder >>> 16) + (x.highOrder >>> 16) + (E.highOrder >>> 16) + (D.highOrder >>> 16) + (B >>> 16);
-			A = ((z & 65535) << 16) | (B & 65535);
-			return new q(A, C)
-		},
-		a = function(E, D, C, B, A) {
-			var z, y, x, F;
-			z = (E.lowOrder & 65535) + (D.lowOrder & 65535) + (C.lowOrder & 65535) + (B.lowOrder & 65535) + (A.lowOrder & 65535);
-			y = (E.lowOrder >>> 16) + (D.lowOrder >>> 16) + (C.lowOrder >>> 16) + (B.lowOrder >>> 16) + (A.lowOrder >>> 16) + (z >>> 16);
-			x = ((y & 65535) << 16) | (z & 65535);
-			z = (E.highOrder & 65535) + (D.highOrder & 65535) + (C.highOrder & 65535) + (B.highOrder & 65535) + (A.highOrder & 65535) + (y >>> 16);
-			y = (E.highOrder >>> 16) + (D.highOrder >>> 16) + (C.highOrder >>> 16) + (B.highOrder >>> 16) + (A.highOrder >>> 16) + (z >>> 16);
-			F = ((y & 65535) << 16) | (z & 65535);
-			return new q(F, x)
-		},
-		f = function(G, F, E) {
-			var S, R, Q, P, O, N, M, J, D, B, z, L, I, A, y, x = [],
-				C;
-			if (E === "SHA-384" || E === "SHA-512") {
-				L = (((F + 128) >> 10) << 5) + 31;
-				y = [new q(1116352408, 3609767458), new q(1899447441, 602891725), new q(3049323471, 3964484399), new q(3921009573, 2173295548), new q(961987163, 4081628472), new q(1508970993, 3053834265), new q(2453635748, 2937671579), new q(2870763221, 3664609560), new q(3624381080, 2734883394), new q(310598401, 1164996542), new q(607225278, 1323610764), new q(1426881987, 3590304994), new q(1925078388, 4068182383), new q(2162078206, 991336113), new q(2614888103, 633803317), new q(3248222580, 3479774868), new q(3835390401, 2666613458), new q(4022224774, 944711139), new q(264347078, 2341262773), new q(604807628, 2007800933), new q(770255983, 1495990901), new q(1249150122, 1856431235), new q(1555081692, 3175218132), new q(1996064986, 2198950837), new q(2554220882, 3999719339), new q(2821834349, 766784016), new q(2952996808, 2566594879), new q(3210313671, 3203337956), new q(3336571891, 1034457026), new q(3584528711, 2466948901), new q(113926993, 3758326383), new q(338241895, 168717936), new q(666307205, 1188179964), new q(773529912, 1546045734), new q(1294757372, 1522805485), new q(1396182291, 2643833823), new q(1695183700, 2343527390), new q(1986661051, 1014477480), new q(2177026350, 1206759142), new q(2456956037, 344077627), new q(2730485921, 1290863460), new q(2820302411, 3158454273), new q(3259730800, 3505952657), new q(3345764771, 106217008), new q(3516065817, 3606008344), new q(3600352804, 1432725776), new q(4094571909, 1467031594), new q(275423344, 851169720), new q(430227734, 3100823752), new q(506948616, 1363258195), new q(659060556, 3750685593), new q(883997877, 3785050280), new q(958139571, 3318307427), new q(1322822218, 3812723403), new q(1537002063, 2003034995), new q(1747873779, 3602036899), new q(1955562222, 1575990012), new q(2024104815, 1125592928), new q(2227730452, 2716904306), new q(2361852424, 442776044), new q(2428436474, 593698344), new q(2756734187, 3733110249), new q(3204031479, 2999351573), new q(3329325298, 3815920427), new q(3391569614, 3928383900), new q(3515267271, 566280711), new q(3940187606, 3454069534), new q(4118630271, 4000239992), new q(116418474, 1914138554), new q(174292421, 2731055270), new q(289380356, 3203993006), new q(460393269, 320620315), new q(685471733, 587496836), new q(852142971, 1086792851), new q(1017036298, 365543100), new q(1126000580, 2618297676), new q(1288033470, 3409855158), new q(1501505948, 4234509866), new q(1607167915, 987167468), new q(1816402316, 1246189591)];
-				if (E === "SHA-384") {
-					z = [new q(3418070365, 3238371032), new q(1654270250, 914150663), new q(2438529370, 812702999), new q(355462360, 4144912697), new q(1731405415, 4290775857), new q(41048885895, 1750603025), new q(3675008525, 1694076839), new q(1203062813, 3204075428)]
-				} else {
-					z = [new q(1779033703, 4089235720), new q(3144134277, 2227873595), new q(1013904242, 4271175723), new q(2773480762, 1595750129), new q(1359893119, 2917565137), new q(2600822924, 725511199), new q(528734635, 4215389547), new q(1541459225, 327033209)]
-				}
-			}
-			G[F >> 5] |= 128 << (24 - F % 32);
-			G[L] = F;
-			C = G.length;
-			for (I = 0; I < C; I += 32) {
-				S = z[0];
-				R = z[1];
-				Q = z[2];
-				P = z[3];
-				O = z[4];
-				N = z[5];
-				M = z[6];
-				J = z[7];
-				for (A = 0; A < 80; A += 1) {
-					if (A < 16) {
-						x[A] = new q(G[A * 2 + I], G[A * 2 + I + 1])
-					} else {
-						x[A] = b(u(x[A - 2]), x[A - 7], v(x[A - 15]), x[A - 16])
-					}
-					D = a(J, j(O), i(O, N, M), y[A], x[A]);
-					B = e(m(S), c(S, R, Q));
-					J = M;
-					M = N;
-					N = O;
-					O = e(P, D);
-					P = Q;
-					Q = R;
-					R = S;
-					S = e(D, B)
-				}
-				z[0] = e(S, z[0]);
-				z[1] = e(R, z[1]);
-				z[2] = e(Q, z[2]);
-				z[3] = e(P, z[3]);
-				z[4] = e(O, z[4]);
-				z[5] = e(N, z[5]);
-				z[6] = e(M, z[6]);
-				z[7] = e(J, z[7])
-			}
-			switch (E) {
-				case "SHA-384":
-					return [z[0].highOrder, z[0].lowOrder, z[1].highOrder, z[1].lowOrder, z[2].highOrder, z[2].lowOrder, z[3].highOrder, z[3].lowOrder, z[4].highOrder, z[4].lowOrder, z[5].highOrder, z[5].lowOrder];
-				case "SHA-512":
-					return [z[0].highOrder, z[0].lowOrder, z[1].highOrder, z[1].lowOrder, z[2].highOrder, z[2].lowOrder, z[3].highOrder, z[3].lowOrder, z[4].highOrder, z[4].lowOrder, z[5].highOrder, z[5].lowOrder, z[6].highOrder, z[6].lowOrder, z[7].highOrder, z[7].lowOrder];
-				default:
-					return []
-			}
-		},
-		n = function(y, x) {
-			this.sha384 = null;
-			this.sha512 = null;
-			this.strBinLen = null;
-			this.strToHash = null;
-			if ("HEX" === x) {
-				if (0 !== (y.length % 2)) {
-					return "TEXT MUST BE IN BYTE INCREMENTS"
-				}
-				this.strBinLen = y.length * 4;
-				this.strToHash = d(y)
-			} else {
-				if (("ASCII" === x) || ("undefined" === typeof(x))) {
-					this.strBinLen = y.length * p;
-					this.strToHash = s(y)
-				} else {
-					return "UNKNOWN TEXT INPUT TYPE"
-				}
-			}
-		};
-	n.prototype = {
-		getHash: function(y, x) {
-			var A = null,
-				z = this.strToHash.slice();
-			switch (x) {
-				case "HEX":
-					A = g;
-					break;
-				case "B64":
-					A = k;
-					break;
-				default:
-					return "FORMAT NOT RECOGNIZED"
-			}
-			switch (y) {
-				case "SHA-384":
-					if (null === this.sha384) {
-						this.sha384 = f(z, this.strBinLen, y)
-					}
-					return A(this.sha384);
-				case "SHA-512":
-					if (null === this.sha512) {
-						this.sha512 = f(z, this.strBinLen, y)
-					}
-					return A(this.sha512);
-				default:
-					return "HASH NOT RECOGNIZED"
-			}
-		},
-		getHMAC: function(G, F, E, C) {
-			var B, A, z, x, D, I, H = [],
-				y = [];
-			switch (C) {
-				case "HEX":
-					B = g;
-					break;
-				case "B64":
-					B = k;
-					break;
-				default:
-					return "FORMAT NOT RECOGNIZED"
-			}
-			switch (E) {
-				case "SHA-384":
-					I = 384;
-					break;
-				case "SHA-512":
-					I = 512;
-					break;
-				default:
-					return "HASH NOT RECOGNIZED"
-			}
-			if ("HEX" === F) {
-				if (0 !== (G.length % 2)) {
-					return "KEY MUST BE IN BYTE INCREMENTS"
-				}
-				A = d(G);
-				D = G.length * 4
-			} else {
-				if ("ASCII" === F) {
-					A = s(G);
-					D = G.length * p
-				} else {
-					return "UNKNOWN KEY INPUT TYPE"
-				}
-			}
-			if (128 < (D / 8)) {
-				A = f(A, D, E);
-				A[31] &= 4294967040
-			} else {
-				if (128 > (D / 8)) {
-					A[31] &= 4294967040
-				}
-			}
-			for (z = 0; z <= 31; z += 1) {
-				H[z] = A[z] ^ 909522486;
-				y[z] = A[z] ^ 1549556828
-			}
-			x = f(H.concat(this.strToHash), 1024 + this.strBinLen, E);
-			x = f(y.concat(x), 1024 + I, E);
-			return (B(x))
-		}
-	};
-	window.jsSHA = n
-} ()); !
-	function(b) {
-		function a() {
-			var h = document,
-				c, f, i = ",maximum-scale=",
-				g = /,*maximum\-scale\=\d*\.*\d*/;
-			if (!this.addEventListener || !h.querySelector) {
-				return
-			}
-			c = h.querySelector('meta[name="viewport"]');
-			f = c.content;
-			function e(d) {
-				c.content = f + (d.type == "blur" ? (f.match(g, "") ? "": i + 10) : i + 1)
-			}
-			this.addEventListener("focus", e, true);
-			this.addEventListener("blur", e, false)
-		}
-		b.fn.cancelZoom = function() {
-			return this.each(a)
-		}
-	} (jQuery); !
-	function(f) {
-		var a = f.Views.Base,
-			k, h = f.Data.Settings.tabs;
-		k = function(o) {
-			this.settings = o.settings;
-			a.call(this, o);
-			this.settings.on("change", c.bind(this));
-			this.settings.on("change:cloudsave", this._updateCloudSaveBookmarklet.bind(this));
-			this._renderTab(window.location.hash.replace("#", ""));
-			w.addEventListener("hashchange",
-				function() {
-					this._renderTab(window.location.hash.replace("#", ""))
-				}.bind(this))
-		};
-		f.Views.Settings.Main = k;
-		k.prototype = $.extend({},
-			a.prototype, {
-				template: "settings_main",
-				_render: function() {
-					a.prototype._render.call(this, {
-						tabs: h
-					});
-					this.$detail = this.$(".js-set-detail");
-					this.views.cloudsave = new f.Views.Settings.CloudSave({
-						settings: this.settings,
-						before: this.$(".js-set-bookmarklet")
-					});
-					this._cacheElems(".js-set", ["head-tab", "exit", "bookmarklet-expand", "bookmarklet-close", "bookmarklet-detail", "bookmarklet-json", "bookmarklet-url", "bookmarklet-cookie", "bookmarklet-cs-label", "bookmarklet-cs-url", "reset-msg", "reset-expand", "reset-confirm", "reset-cancel", "reset-detail"]);
-					this.$headtab.click(e.bind(this));
-					this.$bookmarkletexpand.click(d.bind(this));
-					this.$bookmarkletclose.click(g.bind(this));
-					this.$resetexpand.click(i.bind(this));
-					this.$resetconfirm.click(j.bind(this));
-					this.$resetcancel.click(b.bind(this));
-					this.$exit.click(n.bind(this));
-					this._updateBookmarkletData();
-					this._updateCloudSaveBookmarklet()
-				},
-				_renderTab: function(o) {
-					if (!o || !h.some(function(p) {
-						return p.id === o
-					})) {
-						o = "general"
-					}
-					if (this.views.tab) {
-						this.$(".js-set-head-tab.is-active").removeClass("is-active");
-						this.views.tab.destroy();
-						this.$detail.empty();
-						delete this.views.tab
-					}
-					this.$(".js-set-" + o).addClass("is-active");
-					this.views.tab = new f.Views.Settings.Tab({
-						tabId: o,
-						settings: this.settings,
-						appendTo: this.$detail
-					})
-				},
-				_updateBookmarkletData: function() {
-					this.$bookmarkletjson.text(JSON.stringify(this.settings.toJSON()));
-					this.$bookmarkleturl.val(this.settings.toBookmarkletURL());
-					this.$bookmarkletcookie.text(document.cookie)
-				},
-				_updateCloudSaveBookmarklet: function() {
-					var o = (this.settings.getCloudSaveKey()) ? "removeClass": "addClass";
-					this.$bookmarkletcslabel[o]("is-hidden");
-					this.$bookmarkletcsurl[o]("is-hidden");
-					this.$bookmarkletcsurl.val(this.settings.toCloudSaveBookmarkletURL())
-				}
-			});
-		var m = function() {
-				this.$resetexpand.removeClass("is-hidden");
-				this.$resetdetail.addClass("is-hidden")
-			},
-			e = function(p) {
-				p.preventDefault();
-				var o = $(p.target).attr("data-tabid");
-				w.history.replaceState(w.history.state, "", "settings#" + o);
-				this._renderTab(o)
-			},
-			i = function() {
-				this.$resetmsg.text(this.settings.getCloudSaveKey() ? lp("settings", "This will reset your saved settings to default values. Continue?") : lp("settings", "This will erase all settings. Continue?"));
-				this.$resetexpand.addClass("is-hidden");
-				this.$resetdetail.removeClass("is-hidden")
-			},
-			j = function() {
-				var o = !this.settings.isDefault(this.settings.LANGUAGE_KEY);
-				this.settings.clearAll();
-				this.settings.saveToCloud(function() {
-					o && window.location.reload()
-				});
-				m.call(this)
-			},
-			b = function() {
-				m.call(this)
-			},
-			d = function() {
-				this.$bookmarkletexpand.addClass("is-hidden");
-				this.$bookmarkletdetail.removeClass("is-hidden")
-			},
-			g = function(o) {
-				o.preventDefault();
-				this.$bookmarkletexpand.removeClass("is-hidden");
-				this.$bookmarkletdetail.addClass("is-hidden")
-			},
-			c = function(o) {
-				this._updateBookmarkletData();
-				if (o === "kp") {
-					f.pixel.fire("sss", "s", {
-						v: this.settings.get("kp")
-					})
-				}
-			},
-			n = function(o) {
-				o.preventDefault();
-				w.history.back()
-			}
-	} (DDG); !
-	function(c) {
-		var b = c.Views.Base,
-			a;
-		c.Views.Settings.Tab = a = function(d) {
-			this.tabId = d.tabId;
-			this.settings = d.settings;
-			this.tab = c.findInArray(c.Data.Settings.tabs, "id", this.tabId);
-			b.call(this, d)
-		};
-		a.prototype = $.extend({},
-			b.prototype, {
-				template: "settings_tab",
-				_render: function() {
-					b.prototype._render.call(this, {
-						id: this.tabId
-					});
-					this.fields = [];
-					for (var e = 0; e < this.tab.settings.length; e++) {
-						var d = this.tab.settings[e];
-						if ((d === "kat" || d === "kar") && c.settings.isDefault("kat") && c.settings.isDefault("kar")) {
-							continue
-						}
-						if (d === "break") {
-							this.$el.append('<div class="frm__hr"></div>');
-							continue
-						} else {
-							if (d.charAt(0) !== "k") {
-								this.$el.append('<div class="frm__section-label">' + lp("settings", d) + "</div>");
-								continue
-							} else {
-								if (d === "kp" && c.page.isSafeDDG) {
-									continue
-								}
-							}
-						}
-						var g = this.settings.getData(d),
-							f = this.settings.getFieldClass(g.type);
-						this.fields.push(new c.Views.Settings[f]({
-							id: d,
-							settings: this.settings,
-							data: g,
-							appendTo: this.$el,
-							source: "t"
-						}))
-					}
-				}
-			})
-	} (DDG); !
-	function(d) {
-		var c = d.Views.Base,
-			e, b = "setting_",
-			a = ".js-set-input";
-		d.Views.Settings.FormField = e = function(f) {
-			this.settings = f.settings;
-			this.id = f.id;
-			this.data = f.data;
-			this.data.fieldId = b + this.id;
-			this.data.breakOnSmallScreens = this.data.type.match(/^dropdown|dropdowncustom$/);
-			this.data[this.data.type] = true;
-			this.source = f.source;
-			c.call(this, f);
-			if (this.settings) {
-				this._updateState()
-			}
-		};
-		e.prototype = $.extend({},
-			c.prototype, {
-				template: "settings_field",
-				destroy: function() {
-					this.settings && this.settings.off("change:" + this.id, this._onSettingChangeFn);
-					c.prototype.destroy.call(this)
-				},
-				getFromDOM: function() {
-					return this.$fld.val()
-				},
-				setToDOM: function(f) {
-					this.$fld.val(f)
-				},
-				_render: function() {
-					c.prototype._render.call(this, this.data);
-					this.$fld = this.$(a);
-					this.$fld.change(this._onFormFieldChange.bind(this));
-					if (is_mobile_device) {
-						this.$fld.cancelZoom()
-					}
-					if (this.settings) {
-						this._onSettingChangeFn = this._updateState.bind(this);
-						this.settings.on("change:" + this.id, this._onSettingChangeFn)
-					}
-				},
-				_updateState: function() {
-					this.setToDOM(this.settings.get(this.id))
-				},
-				_updateSetting: function(g, f) {
-					this.settings && this.settings.set(this.id, g, {
-							saveToCloud: true,
-							forceTheme: true
-						},
-						f);
-					if (this.source) {
-						d.pixel.fire("set", this.source, this.id)
-					}
-					this.emit("change", g)
-				},
-				_onFormFieldChange: function() {
-					var f = this;
-					this._updateSetting(this.getFromDOM(),
-						function() {
-							if (f.id === f.settings.LANGUAGE_KEY) {
-								window.location.reload()
-							} else {
-								if (f.id === d.addToBrowser.BADGE_DISMISS_KEY && f.getFromDOM() == "-1") {
-									f.settings.set(d.addToBrowser.BADGE_RECURRING_KEY, "-1")
-								} else {
-									if (f.id === d.addToBrowser.NEWSLETTER_DISMISS_KEY && f.getFromDOM() == "-1") {
-										f.settings.set(d.addToBrowser.NEWSLETTER_RECURRING_KEY, "-1")
-									}
-								}
-							}
-						})
-				}
-			})
-	} (DDG); !
-	function(c) {
-		var b = c.Views.Settings.FormField,
-			a;
-		c.Views.Settings.BooleanFormField = a = function(d) {
-			b.call(this, d)
-		};
-		a.prototype = $.extend({},
-			b.prototype, {
-				getFromDOM: function() {
-					var d = this.$fld.prop("checked") ? "1": "-1";
-					if (this.data.values) {
-						d = this.data.values[d]
-					}
-					return d
-				},
-				setToDOM: function(g) {
-					if (this.data.values) {
-						for (var e in this.data.values) {
-							var d = this.data.values[e];
-							if (g === d) {
-								g = e;
-								break
-							}
-						}
-					}
-					if (isNaN(parseInt(g, 10))) {
-						g = 1
-					}
-					this.$fld.prop("checked", g == "1");
-					var f = g == "1" ? "addClass": "removeClass";
-					this.$el[f]("is-checked")
-				}
-			})
-	} (DDG); !
-	function(g) {
-		var b = g.Views.Settings.FormField,
-			c, h = ".js-set-color-swatch";
-		g.Views.Settings.ColorFormField = c = function(j) {
-			this._onResizeFn = a.bind(this);
-			b.call(this, j)
-		};
-		c.prototype = $.extend({},
-			b.prototype, {
-				destroy: function() {
-					this._hideColorPicker();
-					b.prototype.destroy.call(this)
-				},
-				setToDOM: function(m) {
-					var j = tinycolor(m),
-						k = (j.isValid() && j.toHexString()) || "#fff";
-					if (!this.$swatch) {
-						this.$swatch = this.$(h)
-					}
-					this.$swatch.css({
-						backgroundColor: k
-					});
-					this.cp && this.cp.setColor(k);
-					this.$fld.val(k)
-				},
-				_render: function() {
-					b.prototype._render.call(this);
-					this.$el.on("click", e.bind(this))
-				},
-				_showColorPicker: function() {
-					this.cp = new g.Views.Settings.ColorPicker({
-						appendTo: $("body")
-					});
-					this.cp.on("change", f.bind(this));
-					this.cp.on("hide", i.bind(this));
-					this.cp.show($.extend({
-							color: this.settings.get(this.id)
-						},
-						d.call(this)));
-					g.device.on("resize", this._onResizeFn)
-				},
-				_hideColorPicker: function() {
-					this.settings.saveToCloud();
-					this.cp && this.cp.destroy();
-					delete this.cp;
-					g.device.off("resize", this._onResizeFn)
-				}
-			});
-		var d = function() {
-				var j = this.$fld.offset();
-				return {
-					top: j.top + (this.$fld.outerHeight() / 2) - (this.cp.height / 2),
-					left: j.left - this.cp.width - 15
-				}
-			},
-			e = function() {
-				if (this.cp) {
-					this._hideColorPicker()
-				} else {
-					this._showColorPicker()
-				}
-			},
-			f = function(j) {
-				this.$fld.val(j);
-				this._onFormFieldChange()
-			},
-			i = function() {
-				this._hideColorPicker()
-			},
-			a = function() {
-				if (this.cp) {
-					this.cp.position(d.call(this))
-				}
-			}
-	} (DDG); !
-	function(c) {
-		var b = c.Views.Settings.FormField,
-			a;
-		c.Views.Settings.ThumbnailFormField = a = function(d) {
-			b.call(this, d)
-		};
-		a.prototype = $.extend({},
-			b.prototype, {
-				getFromDOM: function() {
-					return this.$("input:checked").val()
-				},
-				setToDOM: function(e) {
-					this.$("input:checked").prop("checked");
-					this.$(".is-checked").removeClass("is-checked");
-					var d = this.$("#" + this.data.fieldId + "_" + e);
-					d.prop("checked", true);
-					d.parent().addClass("is-checked")
-				},
-				_render: function() {
-					b.prototype._render.call(this);
-					var d = this;
-					this.$("label").click(function(f) {
-						f.preventDefault();
-						var g = $(this).attr("data-theme-id");
-						d._updateSetting(g)
-					})
-				}
-			})
-	} (DDG); !
-	function(b) {
-		var a = b.Views.Settings.FormField,
-			c;
-		b.Views.Settings.CompositeFormField = c = function(d) {
-			a.call(this, d)
-		};
-		c.prototype = $.extend({},
-			a.prototype, {
-				template: "settings_composite_field",
-				destroy: function() {
-					for (var d = 0; d < this.fields.length; d++) {
-						this.fields[d].destroy()
-					}
-					a.prototype.destroy.call(this)
-				},
-				getFromDOM: function() {
-					var e = [];
-					for (var d = 0; d < this.fields.length; d++) {
-						e.push(this.fields[d].getFromDOM())
-					}
-					return this.data.compositeKey[e.join(":")]
-				},
-				setToDOM: function(h) {
-					var d;
-					for (var g in this.data.compositeKey) {
-						var e = this.data.compositeKey[g];
-						if (h === e) {
-							d = g.split(":");
-							break
-						}
-					}
-					if (!d || !d.length) {
-						return
-					}
-					for (var f = 0; f < this.fields.length; f++) {
-						this.fields[f].setToDOM(d[f])
-					}
-				},
-				_render: function() {
-					this.fields = [];
-					for (var e = 0; e < this.data.subsettings.length; e++) {
-						var d = this.data.subsettings[e],
-							f = d.type === "boolean" ? "BooleanFormField": "FormField",
-							g = new b.Views.Settings[f]({
-								id: d.id,
-								data: d,
-								appendTo: this.$parent
-							});
-						this.fields.push(g);
-						g.on("change", this._onFormFieldChange.bind(this))
-					}
-					this._onSettingChangeFn = this._updateState.bind(this);
-					this.settings.on("change:" + this.id, this._onSettingChangeFn);
-					this._updateState()
-				}
-			})
-	} (DDG); !
-	function(g) {
-		var b = g.Views.Settings.FormField,
-			e, a = "is-hidden",
-			d = ".js-set-dropdown",
-			i = ".js-set-custom",
-			j = ".js-set-custom-input",
-			c = ".js-set-custom-close",
-			f = "custom";
-		g.Views.Settings.DropDownCustomFormField = e = function(k) {
-			b.call(this, k)
-		};
-		e.prototype = $.extend({},
-			b.prototype, {
-				getFromDOM: function() {
-					return this._showingCustom ? this.$customInput.val() : this.$fld.val()
-				},
-				setToDOM: function(k) {
-					if (!k || h(k, this.data.values)) {
-						this.$customInput.val(k);
-						this._showCustom()
-					} else {
-						this.$fld.val(k);
-						this._hideCustom()
-					}
-				},
-				_render: function() {
-					this.data.customVal = f;
-					b.prototype._render.call(this);
-					this.$dropdown = this.$(d);
-					this.$custom = this.$(i);
-					this.$customInput = this.$(j);
-					this.$customClose = this.$(c);
-					this.$customInput.change(this._onFormFieldChange.bind(this));
-					this.$customClose.on("click", this._hideCustom.bind(this))
-				},
-				_showCustom: function() {
-					if (this._showingCustom) {
-						return
-					}
-					this.$custom.removeClass(a);
-					this.$dropdown.addClass(a);
-					this._showingCustom = true;
-					var k = this.getFromDOM();
-					if (k) {
-						this._updateSetting(k)
-					}
-				},
-				_hideCustom: function() {
-					if (!this._showingCustom) {
-						return
-					}
-					this.$custom.addClass(a);
-					this.$dropdown.removeClass(a);
-					this._showingCustom = false;
-					this._updateSetting(this.settings.getDefault(this.id))
-				},
-				_onFormFieldChange: function() {
-					var k = this.getFromDOM();
-					if (k === "custom" && !this._showingCustom) {
-						return this._showCustom()
-					}
-					b.prototype._onFormFieldChange.call(this)
-				}
-			});
-		var h = function(m, k) {
-			return ! k[m]
-		}
-	} (DDG); !
-	function(c) {
-		var a = c.Views.Settings.FormField,
-			b;
-		c.Views.Settings.ClearFormField = b = function(d) {
-			a.call(this, d)
-		};
-		b.prototype = $.extend({},
-			a.prototype, {
-				_render: function() {
-					a.prototype._render.call(this);
-					this.$wrap = this.$(".js-set-input-wrap")
-				},
-				getFromDOM: function() {
-					return ""
-				},
-				setToDOM: function(d) {
-					if (d) {
-						this.$wrap.removeClass("is-hidden");
-						this.$el.addClass("is-checked");
-						this.$fld.prop("checked", true)
-					} else {
-						this.$wrap.addClass("is-hidden");
-						this.$el.removeClass("is-checked");
-						this.$fld.prop("checked", false)
-					}
-				}
-			})
-	} (DDG); !
-	function(j) {
-		var c = j.Views.Base,
-			n, i = "settings_cloudsave",
-			a = ".js-cloudsave";
-		n = function(p) {
-			this.settings = p.settings;
-			c.call(this, p);
-			this.settings.on("loaded-initial", d.bind(this));
-			this.settings.on("loaded", o.bind(this))
-		};
-		j.Views.Settings.CloudSave = n;
-		n.prototype = $.extend({},
-			c.prototype, {
-				template: "settings_cloudsave",
-				_render: function(p) {
-					c.prototype._render.call(this, p);
-					this._renderState()
-				},
-				_renderState: function(p) {
-					this.$el.empty();
-					this.$el.removeClass("has-error");
-					this.$el.removeClass("is-showing-passphrase");
-					if (!p && this.settings.getCloudSaveKey()) {
-						p = "enabled"
-					}
-					switch (p) {
-						case "faq":
-							this.$el.append(j.exec_template(i + "_faq"));
-							this.$(a + "-close").click(k.bind(this));
-							break;
-						case "load":
-							this.$el.append(j.exec_template(i + "_load"));
-							this.$("form").submit(h.bind(this));
-							this.$(a + "-phrase").keyup(e.bind(this));
-							this.$(a + "-show-hide-passphrase").click(m.bind(this));
-							this.$(a + "-close").click(k.bind(this));
-							break;
-						case "save":
-							this.$el.append(j.exec_template(i + "_save"));
-							this.$("form").submit(b.bind(this));
-							this.$(a + "-close").click(k.bind(this));
-							this.$(a + "-new-suggestion").click(this._suggestPassPhrase.bind(this));
-							break;
-						case "enabled":
-							this.$el.append(j.exec_template(i + "_enabled"));
-							this.$(a + "-delete").click(g.bind(this));
-							this.$(a + "-disable").click(f.bind(this));
-							break;
-						default:
-							this.$el.append(j.exec_template(i + "_default"));
-							this.$(a + "-save-btn").click(this._renderState.bind(this, "save"));
-							this.$(a + "-load-btn").click(this._renderState.bind(this, "load"));
-							this.$(a + "-faq").click(this._renderState.bind(this, "faq"));
-							break
-					}
-				},
-				_renderError: function(p) {
-					this.$el.addClass("has-error");
-					this.$(a + "-error").text(p)
-				},
-				_suggestPassPhrase: function() {
-					var q = this.$(a + "-phrase"),
-						p = this.$(a + "-new-suggestion");
-					p.addClass("is-disabled");
-					p.text(l("Loading..."));
-					this.settings.cloudsave.suggestPassPhrase(function(s, r) {
-						if (!s && r) {
-							q.val(r)
-						}
-						p.text(lp("settings", "Suggest different phrase"));
-						p.removeClass("is-disabled")
-					})
-				}
-			});
-		var m = function() {
-				var p = this.$el.hasClass("show-passphrase") ? "removeClass": "addClass";
-				this.$el[p]("show-passphrase")
-			},
-			h = function(r) {
-				r.preventDefault();
-				var p = this.$(a + "-phrase").val(),
-					q = this.$(a + "-load-btn");
-				q.addClass("is-disabled");
-				this.settings.setCloudSavePassPhrase(p);
-				this.settings.loadFromCloud({
-					clearAll: true
-				})
-			},
-			b = function(s) {
-				s.preventDefault();
-				var r = this,
-					p = this.$(a + "-phrase").val(),
-					q = this.$(a + "-save-btn");
-				q.addClass("is-disabled");
-				this.settings.cloudsave.validatePassPhrase(p,
-					function(t) {
-						if (t) {
-							q.removeClass("is-disabled");
-							return r._renderError(t)
-						}
-						r.settings.setCloudSavePassPhrase(p);
-						r.settings.saveToCloud(function(u) {
-							q.removeClass("is-disabled");
-							if (u) {
-								r.settings.clearCloudSave();
-								return r._renderError(lp("cloudsave", "Something went wrong saving to the server, please try again."))
-							}
-							r._renderState()
-						})
-					})
-			},
-			g = function() {
-				var p = this;
-				this.settings.clearCloudSave({
-						deleteFromServer: true
-					},
-					function(q) {
-						if (q) {
-							p._renderError(lp("cloudsave", "Something went wrong saving to the server, please try again."))
-						} else {
-							p._renderState()
-						}
-					})
-			},
-			f = function() {
-				this.settings.clearCloudSave();
-				this._renderState()
-			},
-			k = function(p) {
-				this._renderState()
-			},
-			e = function(q) {
-				var r = $(q.target).val(),
-					p = !r ? "hide": "show";
-				this.$(a + "-show-hide-passphrase")[p]();
-				this.$(a + "-phrase").val(r)
-			},
-			d = function(p) {
-				if (p) {
-					this._renderState("load");
-					this._renderError(p)
-				} else {
-					this._renderState()
-				}
-			},
-			o = function(p) {
-				this.$(a + "-load-btn").removeClass("is-disabled");
-				if (p) {
-					this.settings.clearCloudSave();
-					this._renderError(lp("cloudsave", "Pass phrase not found"))
-				} else {
-					if (!this.settings.isDefault(this.settings.LANGUAGE_KEY)) {
-						return window.location.reload()
-					}
-					this._renderState()
-				}
-			}
-	} (DDG); !
-	function(t) {
-		var m = t.Views.Base,
-			b, s = t.eventToCoordinates,
-			e = 15,
-			j = 120,
-			d = "touchstart.cp mousedown.cp",
-			f = "touchmove.cp mousemove.cp",
-			g = "touchend.cp mouseup.cp";
-		b = t.Views.Settings.ColorPicker = function(z) {
-			m.call(this, z);
-			this.hsv = {};
-			this._cacheElems(".js-cp", ["1d", "1d-marker", "2d", "2d-marker"])
-		};
-		b.prototype = $.extend({},
-			m.prototype, {
-				template: "settings_colorpicker",
-				width: 175,
-				height: 150,
-				destroy: function() {
-					this.hide();
-					m.prototype.destroy.call(this)
-				},
-				show: function(z) {
-					if (this._isShowing) {
-						this.hide()
-					}
-					if (z.color) {
-						this.setColor(z.color)
-					}
-					this.position(z);
-					this.$el.show();
-					this.$1d.bind(d, h.bind(this));
-					this.$2d.bind(d, n.bind(this));
-					$(document).on("keydown.cp", y.bind(this));
-					$(document).on(d, k.bind(this));
-					this._isShowing = true
-				},
-				position: function(z) {
-					this.top = z.top;
-					this.left = z.left;
-					this.$el.css({
-						top: this.top,
-						left: this.left
-					})
-				},
-				setColor: function(z) {
-					z = tinycolor(z);
-					if (z.isValid()) {
-						var A = z.toHsv();
-						this._update1dMarker({
-							hsv: A,
-							silent: true
-						});
-						this._update2dMarker({
-							hsv: A,
-							silent: true
-						})
-					}
-				},
-				hide: function() {
-					if (!this._isShowing) {
-						return
-					}
-					this.$el.hide();
-					$(document).off("keydown.cp");
-					$(document).off(d);
-					x();
-					this._isShowing = false;
-					this.emit("hide")
-				},
-				_update1dMarker: function(z) {
-					var A = 0;
-					if (z.y) {
-						A = u.call(this, z.y)
-					} else {
-						if (z.hsv) {
-							A = z.hsv.h / 360
-						} else {
-							return
-						}
-					}
-					this.hsv.h = A * 360;
-					this.$1dmarker.css({
-						top: (A * 100) + "%"
-					});
-					this.$2d.css({
-						backgroundColor: tinycolor({
-							h: this.hsv.h,
-							s: 1,
-							v: 1
-						}).toHexString()
-					});
-					if (!z.silent) {
-						this._emitColor()
-					}
-				},
-				_update2dMarker: function(z) {
-					var B = 0,
-						A = 0;
-					if (z.x || z.y) {
-						B = u.call(this, z.y);
-						A = i.call(this, z.x)
-					} else {
-						if (z.hsv) {
-							A = z.hsv.s;
-							B = 1 - z.hsv.v
-						} else {
-							return
-						}
-					}
-					this.hsv.s = A;
-					this.hsv.v = 1 - B;
-					this.$2dmarker.css({
-						top: (B * 100) + "%",
-						left: (A * 100) + "%"
-					});
-					if (!z.silent) {
-						this._emitColor()
-					}
-				},
-				_emitColor: function() {
-					var A = tinycolor({
-							h: this.hsv.h,
-							s: this.hsv.s,
-							v: this.hsv.v
-						}),
-						z = A.toHexString();
-					if (this._lastColorHex && this._lastColorHex === z) {
-						return
-					}
-					if (A.isValid()) {
-						this._lastColorHex = z;
-						this.emit("change", z)
-					}
-				}
-			});
-		var q = function(B, A, z) {
-				B = Math.max(B, A);
-				B = Math.min(B, z);
-				return B
-			},
-			o = function(z) {
-				return z / j
-			},
-			u = function(C) {
-				var z = DDG.device.scrollTop() + C,
-					A = z - this.top - e,
-					B = q(A, 0, j);
-				return o(B)
-			},
-			i = function(B) {
-				var z = B - this.left - e,
-					A = q(z, 0, j);
-				return o(A)
-			},
-			r = function(A, z) {
-				$(document).bind(f, A);
-				$(document).bind(g, z)
-			},
-			x = function() {
-				$(document).unbind(f);
-				$(document).unbind(g)
-			},
-			n = function(z) {
-				z.stopPropagation();
-				this._update2dMarker(s(z));
-				r(c.bind(this), p.bind(this))
-			},
-			c = function(z) {
-				z.preventDefault();
-				this._update2dMarker(s(z))
-			},
-			p = function() {
-				x()
-			},
-			h = function(z) {
-				z.stopPropagation();
-				this._update1dMarker(s(z));
-				r(v.bind(this), a.bind(this))
-			},
-			v = function(z) {
-				z.preventDefault();
-				this._update1dMarker(s(z))
-			},
-			a = function() {
-				x()
-			},
-			y = function(z) {
-				if (z.keyCode == 13 || z.keyCode == 27) {
-					this.hide()
-				}
-			},
-			k = function(z) {
-				if (this._isShowing) {
-					this.hide()
-				}
-			}
-	} (DDG); !
-	function(c) {
-		var b = c.Views.Settings.FormField,
-			a;
-		c.Views.Settings.ThemeFormField = a = function(d) {
-			b.call(this, d)
-		};
-		a.prototype = $.extend({},
-			b.prototype, {
-				template: "settings_theme",
-				getFromDOM: function() {
-					return this.$("input:checked").val()
-				},
-				setToDOM: function(e) {
-					this.$("input:checked").prop("checked");
-					this.$(".is-checked").removeClass("is-checked");
-					var d = this.$("#" + this.data.fieldId + "_" + e);
-					d.prop("checked", true);
-					d.parent().addClass("is-checked")
-				},
-				_render: function() {
-					this._filterOptions();
-					this._configureColors();
-					b.prototype._render.call(this);
-					var d = this;
-					this._cacheElems(".js-set-theme", ["appearance"]);
-					this.$("label").click(function(f) {
-						f.preventDefault();
-						var g = $(this).attr("data-theme-id");
-						d._updateSetting(g)
-					});
-					this.bindEvents([[this.$appearance, "click",
-						function() {
-							c.pixel.fire("sda")
-						}]])
-				},
-				_filterOptions: function() {
-					if (this.source !== "d" || !this.data.dropdownSettings.options) {
-						return
-					}
-					var e = this.data.dropdownSettings.options;
-					for (var d in this.data.values) {
-						if (e.indexOf(d) === -1) {
-							delete this.data.values[d]
-						}
-					}
-				},
-				_configureColors: function() {
-					for (var e in this.data.values) {
-						var d = this.data.values[e];
-						d.colors = {
-							title: d.settings.k9 || null,
-							url: d.settings.kx || null,
-							snippet: d.settings.k8 || null,
-							background: d.settings.k7 || null
-						};
-						if (d.id === "-1") {
-							d.colors = {
-								title: DDG.settings.getDefault("k9"),
-								url: DDG.settings.getDefault("kx"),
-								snippet: DDG.settings.getDefault("k8"),
-								background: DDG.settings.getDefault("k7")
-							}
-						}
-					}
-				}
-			})
-	} (DDG);
-this["DDG"] = this["DDG"] || {};
-this["DDG"]["templates"] = this["DDG"]["templates"] || {};
-this["DDG"]["templates"]["settings_cloudsave"] = Handlebars.template(function(d, e, b, a, c) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	b = this.merge(b, d.helpers);
-	c = c || {};
-	return '<div class="cloudsave"></div>'
-});
-this["DDG"]["templates"]["settings_cloudsave_default"] = Handlebars.template(function(c, i, b, g, f) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	b = this.merge(b, c.helpers);
-	f = f || {};
-	var e = "",
-		a, d, j, h = b.helperMissing;
-	e += '<span class="cloudsave__icn  ddgsi">c</span><h4 class="cloudsave__title">';
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "Cloud Save", j) : h.call(i, "l", "Cloud Save", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</h4><p>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "settings", "Save your settings anonymously to the cloud", j) : h.call(i, "lp", "settings", "Save your settings anonymously to the cloud", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</p><a class="cloudsave__whats-this  js-cloudsave-faq" href="#">';
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "What is this?", j) : h.call(i, "l", "What is this?", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</a><div class="cloudsave__actions"><span class="btn  js-cloudsave-save-btn">';
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "Save Settings", j) : h.call(i, "l", "Save Settings", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</span><span class="btn  js-cloudsave-load-btn">';
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "Load Settings", j) : h.call(i, "l", "Load Settings", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</span></div>";
-	return e
-});
-this["DDG"]["templates"]["settings_cloudsave_enabled"] = Handlebars.template(function(c, i, b, g, f) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	b = this.merge(b, c.helpers);
-	f = f || {};
-	var e = "",
-		a, d, j, h = b.helperMissing;
-	e += '<span class="ddgsi  cloudsave__icn">c</span><h4 class="cloudsave__title">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Cloud Save Enabled", j) : h.call(i, "lp", "cloudsave", "Cloud Save Enabled", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</h4><div class="cloudsave__actions"><span class="btn  js-cloudsave-disable">';
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "Disable", j) : h.call(i, "l", "Disable", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</span><span class="btn  js-cloudsave-delete">';
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "Delete my data", j) : h.call(i, "l", "Delete my data", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</span></div>";
-	return e
-});
-this["DDG"]["templates"]["settings_cloudsave_faq"] = Handlebars.template(function(c, i, b, g, f) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	b = this.merge(b, c.helpers);
-	f = f || {};
-	var e = "",
-		a, d, j, h = b.helperMissing;
-	e += '<div class="cloudsave__close  ddgsi  js-cloudsave-close" href="#">X</div><span class="ddgsi  cloudsave__icn">c</span><h4 class="cloudsave__title">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Cloud Save FAQ", j) : h.call(i, "lp", "cloudsave", "Cloud Save FAQ", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</h4><div class="cloudsave__faq"><p>';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Cloud Save lets you save your settings more permanently by entering a passphrase. It is entirely optional.", j) : h.call(i, "lp", "cloudsave", "Cloud Save lets you save your settings more permanently by entering a passphrase. It is entirely optional.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</p><p>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "This has a few benefits:", j) : h.call(i, "lp", "cloudsave", "This has a few benefits:", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</p><ul><li>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "You can share your settings among computers and browsers.", j) : h.call(i, "lp", "cloudsave", "You can share your settings among computers and browsers.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</li><li>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "You can restore your settings after deleting cookies", j) : h.call(i, "lp", "cloudsave", "You can restore your settings after deleting cookies", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</li><li>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "You can store several sets of settings for different purposes.", j) : h.call(i, "lp", "cloudsave", "You can store several sets of settings for different purposes.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</li></ul><h5>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "What information gets saved?", j) : h.call(i, "lp", "cloudsave", "What information gets saved?", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</h5><p>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Only the settings that you have changed. They are detailed on the %sURL Parameters%s page.", '<a href="/params">', "</a>", j) : h.call(i, "lp", "cloudsave", "Only the settings that you have changed. They are detailed on the %sURL Parameters%s page.", '<a href="/params">', "</a>", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</p><h5>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "How does it work?", j) : h.call(i, "lp", "cloudsave", "How does it work?", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</h5><p>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "In the interest of transparency, this data is not encrypted: you can see exactly what information we store.", j) : h.call(i, "lp", "cloudsave", "In the interest of transparency, this data is not encrypted: you can see exactly what information we store.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "<ul><li>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Passphrases cannot feasibly be reverse engineered from a key", j) : h.call(i, "lp", "cloudsave", "Passphrases cannot feasibly be reverse engineered from a key", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</li><li>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Even if you could do that, there is no point since all the information is there in the open, unencrypted, provided you know the key.", j) : h.call(i, "lp", "cloudsave", "Even if you could do that, there is no point since all the information is there in the open, unencrypted, provided you know the key.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</li><li>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "DuckDuckGo does not ever know your passphrase.", j) : h.call(i, "lp", "cloudsave", "DuckDuckGo does not ever know your passphrase.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</li></ul><h5>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "What is the cloud save bookmarklet and how does it differ from the URL parameter bookmarklet?", j) : h.call(i, "lp", "cloudsave", "What is the cloud save bookmarklet and how does it differ from the URL parameter bookmarklet?", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</h5><p>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "The benefit of this over using the URL parameters bookmarklet is that when you change settings, they will automatically be saved in the cloud.", j) : h.call(i, "lp", "cloudsave", "The benefit of this over using the URL parameters bookmarklet is that when you change settings, they will automatically be saved in the cloud.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</p><h5>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "How is it anonymous?", j) : h.call(i, "lp", "cloudsave", "How is it anonymous?", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</h5><p>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "We do not have usernames and we don't store any personally identifiable information.", j) : h.call(i, "lp", "cloudsave", "We do not have usernames and we don't store any personally identifiable information.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</p><h5>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "How does passphrase generation work?", j) : h.call(i, "lp", "cloudsave", "How does passphrase generation work?", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</h5><p>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "It is easier to remember four or five words than 10 random letters and numbers, and far more secure.", j) : h.call(i, "lp", "cloudsave", "It is easier to remember four or five words than 10 random letters and numbers, and far more secure.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</p><h5>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "How do I change my passphrase?", j) : h.call(i, "lp", "cloudsave", "How do I change my passphrase?", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</h5><p>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "You can do this by saving your settings under a different passphrase, optionally deleting the first set.", j) : h.call(i, "lp", "cloudsave", "You can do this by saving your settings under a different passphrase, optionally deleting the first set.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</p><ol><li>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Enable cloud save by entering your existing passphrase.", j) : h.call(i, "lp", "cloudsave", "Enable cloud save by entering your existing passphrase.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</li><li>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Push 'Delete My Data'. This removes the data from the cloud, but it remains in your browser until you click on 'Reset all settings'", j) : h.call(i, "lp", "cloudsave", "Push 'Delete My Data'. This removes the data from the cloud, but it remains in your browser until you click on 'Reset all settings'", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</li><li>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Enter a new passphrase and click 'Save Settings' This will save your data under your new passphrase.", j) : h.call(i, "lp", "cloudsave", "Enter a new passphrase and click 'Save Settings' This will save your data under your new passphrase.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</li></ol><h5>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "I forgot my passphrase. Can you recover it?", j) : h.call(i, "lp", "cloudsave", "I forgot my passphrase. Can you recover it?", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</h5><p>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "We don't associate your IP address or browser fingerprint or any other information with the file.", j) : h.call(i, "lp", "cloudsave", "We don't associate your IP address or browser fingerprint or any other information with the file.", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</p><h5>";
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Is deleted data really deleted?", j) : h.call(i, "lp", "cloudsave", "Is deleted data really deleted?", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</h5><p>";
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "Yes", j) : h.call(i, "l", "Yes", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</p> <h6>";
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "See Also", j) : h.call(i, "l", "See Also", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</h6><ul><li><a href="https://duck.co/topic/a-preview-of-the-new-settings-system">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Cloud Save discussion on duck.co", j) : h.call(i, "lp", "cloudsave", "Cloud Save discussion on duck.co", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</a></li><li><a href="https://help.duckduckgo.com/settings/save/">';
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "DuckDuckGo Support Center", j) : h.call(i, "l", "DuckDuckGo Support Center", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += "</a></li></ul></div>";
-	return e
-});
-this["DDG"]["templates"]["settings_cloudsave_load"] = Handlebars.template(function(c, i, b, g, f) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	b = this.merge(b, c.helpers);
-	f = f || {};
-	var e = "",
-		a, d, j, h = b.helperMissing;
-	e += '<div class="cloudsave__close  ddgsi  js-cloudsave-close" href="#">X</div><span class="ddgsi  cloudsave__icn">c</span><h4 class="cloudsave__title">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Load Cloud Settings", j) : h.call(i, "lp", "cloudsave", "Load Cloud Settings", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</h4><form class="frm"><label class="frm__label">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Enter your pass phrase to load your settings:", j) : h.call(i, "lp", "cloudsave", "Enter your pass phrase to load your settings:", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</label><input class="frm__input  cloudsave__load-password  js-cloudsave-phrase" val="" type="password" /><input class="frm__input  cloudsave__load-text  js-cloudsave-phrase" val="" type="text" /><input type="submit" class="btn  btn--primary  js-cloudsave-load-btn"  value=\'';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "settings", "Load", j) : h.call(i, "lp", "settings", "Load", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '\' /><div class="cloudsave__show-hide-passphrase  js-cloudsave-show-hide-passphrase"><span class="cloudsave__show-password">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "settings", "Show pass phrase", j) : h.call(i, "lp", "settings", "Show pass phrase", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</span><span class="cloudsave__hide-password">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "settings", "Hide pass phrase", j) : h.call(i, "lp", "settings", "Hide pass phrase", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</span></div><p class="cloudsave__error  js-cloudsave-error"></p></form>';
-	return e
-});
-this["DDG"]["templates"]["settings_cloudsave_save"] = Handlebars.template(function(c, i, b, g, f) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	b = this.merge(b, c.helpers);
-	f = f || {};
-	var e = "",
-		a, d, j, h = b.helperMissing;
-	e += '<div class="cloudsave__close  ddgsi  js-cloudsave-close" href="#">X</div><span class="ddgsi  cloudsave__icn">c</span><h4 class="cloudsave__title">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "settings", "Save Cloud Settings", j) : h.call(i, "lp", "settings", "Save Cloud Settings", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</h4><form class="frm"><label class="frm__label">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "cloudsave", "Choose a unique pass phrase for your settings:", j) : h.call(i, "lp", "cloudsave", "Choose a unique pass phrase for your settings:", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</label><input class="frm__input  js-cloudsave-phrase"  placeholder="';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "settings", "Enter a pass phrase", j) : h.call(i, "lp", "settings", "Enter a pass phrase", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '"  val="" /><input class="btn  btn--primary  js-cloudsave-save-btn"  type="submit"  value=\'';
-	a = (d = b.l || (i && i.l), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "Save", j) : h.call(i, "l", "Save", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '\' /><span class="cloudsave__new-suggestion  js-cloudsave-new-suggestion">';
-	a = (d = b.lp || (i && i.lp), j = {
-		hash: {},
-		data: f
-	},
-		d ? d.call(i, "settings", "Suggest a pass phrase", j) : h.call(i, "lp", "settings", "Suggest a pass phrase", j));
-	if (a || a === 0) {
-		e += a
-	}
-	e += '</span><p class="cloudsave__error  js-cloudsave-error"></p></form>';
-	return e
-});
-this["DDG"]["templates"]["settings_colorpicker"] = Handlebars.template(function(d, e, b, a, c) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	b = this.merge(b, d.helpers);
-	c = c || {};
-	return '<div class="colorpicker"><div class="colorpicker__nub"></div><div class="colorpicker__2d  js-cp-2d"><div class="colorpicker__2d-white"></div><div class="colorpicker__2d-black"></div><div class="colorpicker__2d-marker  js-cp-2d-marker"></div></div><div class="colorpicker__1d  js-cp-1d"><div class="colorpicker__1d-marker  js-cp-1d-marker"></div></div></div>'
-});
-this["DDG"]["templates"]["settings_field"] = Handlebars.template(function(e, t, r, k, A) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	r = this.merge(r, e.helpers);
-	A = A || {};
-	var s = "",
-		g, b = "function",
-		a = this.escapeExpression,
-		q = r.helperMissing,
-		p = this;
-	function o(G, F) {
-		var B = "",
-			D, E, C;
-		B += '<div class="frm__select  frm__ctrl--break-xs"><select id="';
-		if (E = r.fieldId) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.fieldId);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + '" class="frm__select__input js-set-input">';
-		D = (E = r.keys || (G && G.keys), C = {
-			hash: {},
-			inverse: p.noop,
-			fn: p.program(2, n, F),
-			data: F
-		},
-			E ? E.call(G, (G && G.values), C) : q.call(G, "keys", (G && G.values), C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += "</select></div>";
-		return B
-	}
-	function n(D, C) {
-		var B;
-		B = r["if"].call(D, ((B = (D && D.value)), B == null || B === false ? B: B.name), {
-			hash: {},
-			inverse: p.program(5, j, C),
-			fn: p.program(3, m, C),
-			data: C
-		});
-		if (B || B === 0) {
-			return B
-		} else {
-			return ""
-		}
-	}
-	function m(G, F) {
-		var B = "",
-			D, E, C;
-		B += '<option value="';
-		if (E = r.key) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.key);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + '">';
-		D = (E = r.lp || (G && G.lp), C = {
-			hash: {},
-			data: F
-		},
-			E ? E.call(G, "settingsvalue", ((D = (G && G.value)), D == null || D === false ? D: D.name), C) : q.call(G, "lp", "settingsvalue", ((D = (G && G.value)), D == null || D === false ? D: D.name), C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += "</option>";
-		return B
-	}
-	function j(G, F) {
-		var B = "",
-			D, E, C;
-		B += '<option value="';
-		if (E = r.key) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.key);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + '">';
-		D = (E = r.lp || (G && G.lp), C = {
-			hash: {},
-			data: F
-		},
-			E ? E.call(G, "settingsvalue", (G && G.value), C) : q.call(G, "lp", "settingsvalue", (G && G.value), C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += "</option>";
-		return B
-	}
-	function i(G, F) {
-		var B = "",
-			D, E, C;
-		B += '<div class="frm__select  frm__ctrl--break-xs js-set-dropdown"><select id="';
-		if (E = r.fieldId) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.fieldId);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + '" class="frm__select__input js-set-input">';
-		D = (E = r.keys || (G && G.keys), C = {
-			hash: {},
-			inverse: p.noop,
-			fn: p.program(5, j, F),
-			data: F
-		},
-			E ? E.call(G, (G && G.values), C) : q.call(G, "keys", (G && G.values), C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += '<option value="';
-		if (E = r.customVal) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.customVal);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + '">';
-		D = (E = r.lp || (G && G.lp), C = {
-			hash: {},
-			data: F
-		},
-			E ? E.call(G, "settingsvalue", "Custom", C) : q.call(G, "lp", "settingsvalue", "Custom", C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += '</option></select></div><div class="frm__input--clearable  frm__ctrl--break-xs  js-set-custom  is-hidden"><input id="';
-		if (E = r.fieldId) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.fieldId);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + '_custom" class="frm__input  js-set-custom-input" placeholder=\'';
-		D = (E = r.lp || (G && G.lp), C = {
-			hash: {},
-			data: F
-		},
-			E ? E.call(G, "settingsvalue", "Custom %s", (G && G.name), C) : q.call(G, "lp", "settingsvalue", "Custom %s", (G && G.name), C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += '\' type="text" /><span class="frm__input__clear  ddgsi  js-set-custom-close">X</span></div>';
-		return B
-	}
-	function d(F, E) {
-		var C, D, B;
-		C = (D = r.include || (F && F.include), B = {
-			hash: {
-				id: ((F && F.fieldId)),
-				className: ("js-set-input")
-			},
-			data: E
-		},
-			D ? D.call(F, "onoffswitch", B) : q.call(F, "include", "onoffswitch", B));
-		if (C || C === 0) {
-			return C
-		} else {
-			return ""
-		}
-	}
-	function z(G, F) {
-		var B = "",
-			D, E, C;
-		B += '<div class="frm__switch frm-input js-set-input-wrap"><input id="';
-		if (E = r.fieldId) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.fieldId);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + '" class="frm__switch__inp  js-set-input" type="checkbox" /><label class="frm__switch__label  btn" for="';
-		if (E = r.fieldId) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.fieldId);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + '"><span class="frm__switch-on">';
-		D = (E = r.l || (G && G.l), C = {
-			hash: {},
-			data: F
-		},
-			E ? E.call(G, "Clear", C) : q.call(G, "l", "Clear", C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += "</span></label></div>";
-		return B
-	}
-	function y(F, E) {
-		var B = "",
-			C, D;
-		B += '<div class="frm__color"  data-setting="';
-		if (D = r.id) {
-			C = D.call(F, {
-				hash: {},
-				data: E
-			})
-		} else {
-			D = (F && F.id);
-			C = typeof D === b ? D.call(F, {
-				hash: {},
-				data: E
-			}) : D
-		}
-		B += a(C) + '"><span class="frm__color__swatch  js-set-color-swatch"></span><input id="';
-		if (D = r.fieldId) {
-			C = D.call(F, {
-				hash: {},
-				data: E
-			})
-		} else {
-			D = (F && F.fieldId);
-			C = typeof D === b ? D.call(F, {
-				hash: {},
-				data: E
-			}) : D
-		}
-		B += a(C) + '" class="frm__input  js-set-input" /></div>';
-		return B
-	}
-	function x(G, F) {
-		var B = "",
-			D, E, C;
-		B += '<p class="frm__label">';
-		D = (E = r.lp || (G && G.lp), C = {
-			hash: {},
-			data: F
-		},
-			E ? E.call(G, "settings", (G && G.name), C) : q.call(G, "lp", "settings", (G && G.name), C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += "</p>";
-		return B
-	}
-	function v(G, F) {
-		var B = "",
-			D, E, C;
-		B += '<p class="frm__desc  ';
-		D = r["if"].call(G, (G && G.breakOnSmallScreens), {
-			hash: {},
-			inverse: p.noop,
-			fn: p.program(18, u, F),
-			data: F
-		});
-		if (D || D === 0) {
-			B += D
-		}
-		B += '">';
-		D = (E = r.lp || (G && G.lp), C = {
-			hash: {},
-			data: F
-		},
-			E ? E.call(G, "settings", (G && G.desc), (G && G.desc2), (G && G.desc3), C) : q.call(G, "lp", "settings", (G && G.desc), (G && G.desc2), (G && G.desc3), C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += "</p>";
-		return B
-	}
-	function u(C, B) {
-		return "frm__desc--break-xs"
-	}
-	function h(G, F) {
-		var B = "",
-			D, E, C;
-		B += '<div class="set-thumbnails">';
-		D = (E = r.keys || (G && G.keys), C = {
-			hash: {},
-			inverse: p.noop,
-			fn: p.program(21, f, F),
-			data: F
-		},
-			E ? E.call(G, (G && G.values), C) : q.call(G, "keys", (G && G.values), C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += "</div>";
-		return B
-	}
-	function f(D, C) {
-		var B;
-		B = r.unless.call(D, ((B = (D && D.value)), B == null || B === false ? B: B.suppress), {
-			hash: {},
-			inverse: p.noop,
-			fn: p.program(22, c, C),
-			data: C
-		});
-		if (B || B === 0) {
-			return B
-		} else {
-			return ""
-		}
-	}
-	function c(G, F) {
-		var B = "",
-			D, E, C;
-		B += '<label class="set-thumbnail" for="';
-		if (E = r.fieldId) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.fieldId);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + "_" + a(((D = ((D = (G && G.value)), D == null || D === false ? D: D.id)), typeof D === b ? D.apply(G) : D)) + '" data-theme-id="' + a(((D = ((D = (G && G.value)), D == null || D === false ? D: D.id)), typeof D === b ? D.apply(G) : D)) + '"><input id="';
-		if (E = r.fieldId) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.fieldId);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + "_" + a(((D = ((D = (G && G.value)), D == null || D === false ? D: D.id)), typeof D === b ? D.apply(G) : D)) + '" class="set-thumbnail__inp  js-set-input" type="radio" name="';
-		if (E = r.fieldId) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.fieldId);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + '" value="' + a(((D = ((D = (G && G.value)), D == null || D === false ? D: D.id)), typeof D === b ? D.apply(G) : D)) + '" /><img class="set-thumbnail__img" src="/assets/settings/';
-		if (E = r.fieldId) {
-			D = E.call(G, {
-				hash: {},
-				data: F
-			})
-		} else {
-			E = (G && G.fieldId);
-			D = typeof E === b ? E.call(G, {
-				hash: {},
-				data: F
-			}) : E
-		}
-		B += a(D) + "_" + a(((D = ((D = (G && G.value)), D == null || D === false ? D: D.id)), typeof D === b ? D.apply(G) : D)) + '.100.jpg" /><span class="set-thumbnail__check  ddgsi  ddgsi-check"></span><span class="set-thumbnail__label">';
-		D = (E = r.lp || (G && G.lp), C = {
-			hash: {},
-			data: F
-		},
-			E ? E.call(G, "theme", ((D = (G && G.value)), D == null || D === false ? D: D.name), C) : q.call(G, "lp", "theme", ((D = (G && G.value)), D == null || D === false ? D: D.name), C));
-		if (D || D === 0) {
-			B += D
-		}
-		B += "</span></label>";
-		return B
-	}
-	s += '<div class="frm__field  fix">';
-	g = r["if"].call(t, (t && t.dropdown), {
-		hash: {},
-		inverse: p.noop,
-		fn: p.program(1, o, A),
-		data: A
-	});
-	if (g || g === 0) {
-		s += g
-	}
-	g = r["if"].call(t, (t && t.dropdowncustom), {
-		hash: {},
-		inverse: p.noop,
-		fn: p.program(7, i, A),
-		data: A
-	});
-	if (g || g === 0) {
-		s += g
-	}
-	g = r["if"].call(t, (t && t["boolean"]), {
-		hash: {},
-		inverse: p.noop,
-		fn: p.program(9, d, A),
-		data: A
-	});
-	if (g || g === 0) {
-		s += g
-	}
-	g = r["if"].call(t, (t && t.clear), {
-		hash: {},
-		inverse: p.noop,
-		fn: p.program(11, z, A),
-		data: A
-	});
-	if (g || g === 0) {
-		s += g
-	}
-	g = r["if"].call(t, (t && t.color), {
-		hash: {},
-		inverse: p.noop,
-		fn: p.program(13, y, A),
-		data: A
-	});
-	if (g || g === 0) {
-		s += g
-	}
-	g = r.unless.call(t, (t && t.hideTitle), {
-		hash: {},
-		inverse: p.noop,
-		fn: p.program(15, x, A),
-		data: A
-	});
-	if (g || g === 0) {
-		s += g
-	}
-	g = r["if"].call(t, (t && t.desc), {
-		hash: {},
-		inverse: p.noop,
-		fn: p.program(17, v, A),
-		data: A
-	});
-	if (g || g === 0) {
-		s += g
-	}
-	g = r["if"].call(t, (t && t.thumbnail), {
-		hash: {},
-		inverse: p.noop,
-		fn: p.program(20, h, A),
-		data: A
-	});
-	if (g || g === 0) {
-		s += g
-	}
-	s += "</div>";
-	return s
-});
-this["DDG"]["templates"]["settings_main"] = Handlebars.template(function(d, m, c, j, i) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	c = this.merge(c, d.helpers);
-	i = i || {};
-	var g = "",
-		a, e, o, f = "function",
-		h = this.escapeExpression,
-		k = c.helperMissing,
-		n = this;
-	function b(u, t) {
-		var p = "",
-			r, s, q;
-		p += '<a class="btn  js-set-head-tab  js-set-';
-		if (s = c.id) {
-			r = s.call(u, {
-				hash: {},
-				data: t
-			})
-		} else {
-			s = (u && u.id);
-			r = typeof s === f ? s.call(u, {
-				hash: {},
-				data: t
-			}) : s
-		}
-		p += h(r) + '" href="#';
-		if (s = c.id) {
-			r = s.call(u, {
-				hash: {},
-				data: t
-			})
-		} else {
-			s = (u && u.id);
-			r = typeof s === f ? s.call(u, {
-				hash: {},
-				data: t
-			}) : s
-		}
-		p += h(r) + '" data-tabid="';
-		if (s = c.id) {
-			r = s.call(u, {
-				hash: {},
-				data: t
-			})
-		} else {
-			s = (u && u.id);
-			r = typeof s === f ? s.call(u, {
-				hash: {},
-				data: t
-			}) : s
-		}
-		p += h(r) + '">';
-		r = (s = c.l || (u && u.l), q = {
-			hash: {},
-			data: t
-		},
-			s ? s.call(u, (u && u.name), q) : k.call(u, "l", (u && u.name), q));
-		if (r || r === 0) {
-			p += r
-		}
-		p += "</a>";
-		return p
-	}
-	g += '<div class="set-main"><div class="set-head"><h4 class="set-head__title">';
-	a = (e = c.lp || (m && m.lp), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "feedback form", "Settings", o) : k.call(m, "lp", "feedback form", "Settings", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</h4><div class="set-head__menu  btn-grp">';
-	a = c.each.call(m, (m && m.tabs), {
-		hash: {},
-		inverse: n.noop,
-		fn: n.program(1, b, i),
-		data: i
-	});
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</div><div class="clearfix"></div></div><div class="set-detail  js-set-detail"></div><div class="set-main-footer"><a class="btn  btn--primary  js-set-exit" href="/">';
-	a = (e = c.l || (m && m.l), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "Save and Exit", o) : k.call(m, "l", "Save and Exit", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</a></div></div><div class="set-side"><div class="set-bookmarklet  js-set-bookmarklet"><span class="set-bookmarklet__title  js-set-bookmarklet-expand">';
-	a = (e = c.lp || (m && m.lp), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "setting", "Show Bookmarklet and Settings Data", o) : k.call(m, "lp", "setting", "Show Bookmarklet and Settings Data", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</span><div class="set-bookmarklet__detail  is-hidden  js-set-bookmarklet-detail"><div class="set-bookmarklet__close  ddgsi  js-set-bookmarklet-close" href="#">X</div><p class="set-bookmarklet__label">';
-	a = (e = c.lp || (m && m.lp), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "settings", "Bookmarklet URL:", o) : k.call(m, "lp", "settings", "Bookmarklet URL:", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</p><input class="set-bookmarklet__input  js-set-bookmarklet-url" value="" /><p class="set-bookmarklet__label  is-hidden  js-set-bookmarklet-cs-label">';
-	a = (e = c.lp || (m && m.lp), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "settings", "Cloud Save Bookmarklet URL:", o) : k.call(m, "lp", "settings", "Cloud Save Bookmarklet URL:", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</p><input class="set-bookmarklet__input  is-hidden  js-set-bookmarklet-cs-url" value="" /><p class="set-bookmarklet__label">';
-	a = (e = c.lp || (m && m.lp), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "settings", "Settings in JSON:", o) : k.call(m, "lp", "settings", "Settings in JSON:", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</p><div class="set-bookmarklet__data  js-set-bookmarklet-json"></div><p class="set-bookmarklet__label">';
-	a = (e = c.lp || (m && m.lp), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "settings", "Cookie Data:", o) : k.call(m, "lp", "settings", "Cookie Data:", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</p><div class="set-bookmarklet__data  js-set-bookmarklet-cookie"></div><p class="set-bookmarklet__info">';
-	a = (e = c.lp || (m && m.lp), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "settings", "See the %sURL Parameter Reference Page%s for more details", '<a href="/params">', "</a>", o) : k.call(m, "lp", "settings", "See the %sURL Parameter Reference Page%s for more details", '<a href="/params">', "</a>", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</p><p class="set-bookmarklet__info">';
-	a = (e = c.lp || (m && m.lp), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "settings", "By default settings are stored in non-personal browser cookies (in your browser). You can use Anonymous Cloud Save to store your settings in a more permanent way (on a remote server in the cloud). No personally identifiable information will be stored in the cloud, and your pass phrase will never leave your browser.", o) : k.call(m, "lp", "settings", "By default settings are stored in non-personal browser cookies (in your browser). You can use Anonymous Cloud Save to store your settings in a more permanent way (on a remote server in the cloud). No personally identifiable information will be stored in the cloud, and your pass phrase will never leave your browser.", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</p></div></div><div class="set-reset"><span class="set-reset__title  js-set-reset-expand">';
-	a = (e = c.lp || (m && m.lp), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "cloudsave", "Reset All Settings", o) : k.call(m, "lp", "cloudsave", "Reset All Settings", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</span><div class="set-reset__detail  is-hidden  js-set-reset-detail"><p class="set-reset__msg  js-set-reset-msg"></p><span class="btn  js-set-reset-confirm">';
-	a = (e = c.l || (m && m.l), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "Yes", o) : k.call(m, "l", "Yes", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</span><span class="btn  js-set-reset-cancel">';
-	a = (e = c.l || (m && m.l), o = {
-		hash: {},
-		data: i
-	},
-		e ? e.call(m, "No", o) : k.call(m, "l", "No", o));
-	if (a || a === 0) {
-		g += a
-	}
-	g += '</span></div></div></div><div class="clearfix"></div>';
-	return g
-});
-this["DDG"]["templates"]["settings_tab"] = Handlebars.template(function(c, j, b, i, h) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	b = this.merge(b, c.helpers);
-	h = h || {};
-	var f = "",
-		a, d, e = "function",
-		g = this.escapeExpression;
-	f += '<form class="frm  frm--settings  frm--settings--';
-	if (d = b.id) {
-		a = d.call(j, {
-			hash: {},
-			data: h
-		})
-	} else {
-		d = (j && j.id);
-		a = typeof d === e ? d.call(j, {
-			hash: {},
-			data: h
-		}) : d
-	}
-	f += g(a) + '"></form>';
-	return f
-});
-this["DDG"]["templates"]["settings_theme"] = Handlebars.template(function(e, n, d, k, j) {
-	this.compilerInfo = [4, ">= 1.0.0"];
-	d = this.merge(d, e.helpers);
-	j = j || {};
-	var h = "",
-		a, f, p, g = "function",
-		i = this.escapeExpression,
-		m = d.helperMissing,
-		o = this;
-	function c(s, r) {
-		var q;
-		q = d.unless.call(s, ((q = (s && s.value)), q == null || q === false ? q: q.suppress), {
-			hash: {},
-			inverse: o.noop,
-			fn: o.program(2, b, r),
-			data: r
-		});
-		if (q || q === 0) {
-			return q
-		} else {
-			return ""
-		}
-	}
-	function b(v, u) {
-		var q = "",
-			s, t, r;
-		q += '<div class="set-themes__wrapper" data-theme-id="' + i(((s = ((s = (v && v.value)), s == null || s === false ? s: s.id)), typeof s === g ? s.apply(v) : s)) + '"><label class="set-theme" for="';
-		if (t = d.fieldId) {
-			s = t.call(v, {
-				hash: {},
-				data: u
-			})
-		} else {
-			t = (v && v.fieldId);
-			s = typeof t === g ? t.call(v, {
-				hash: {},
-				data: u
-			}) : t
-		}
-		q += i(s) + "_" + i(((s = ((s = (v && v.value)), s == null || s === false ? s: s.id)), typeof s === g ? s.apply(v) : s)) + '" data-theme-id="' + i(((s = ((s = (v && v.value)), s == null || s === false ? s: s.id)), typeof s === g ? s.apply(v) : s)) + '" style="background-color: #' + i(((s = ((s = ((s = (v && v.value)), s == null || s === false ? s: s.colors)), s == null || s === false ? s: s.background)), typeof s === g ? s.apply(v) : s)) + '"><input id="';
-		if (t = d.fieldId) {
-			s = t.call(v, {
-				hash: {},
-				data: u
-			})
-		} else {
-			t = (v && v.fieldId);
-			s = typeof t === g ? t.call(v, {
-				hash: {},
-				data: u
-			}) : t
-		}
-		q += i(s) + "_" + i(((s = ((s = (v && v.value)), s == null || s === false ? s: s.id)), typeof s === g ? s.apply(v) : s)) + '" class="set-theme__inp js-set-input" type="radio" name="';
-		if (t = d.fieldId) {
-			s = t.call(v, {
-				hash: {},
-				data: u
-			})
-		} else {
-			t = (v && v.fieldId);
-			s = typeof t === g ? t.call(v, {
-				hash: {},
-				data: u
-			}) : t
-		}
-		q += i(s) + '" value="' + i(((s = ((s = (v && v.value)), s == null || s === false ? s: s.id)), typeof s === g ? s.apply(v) : s)) + '" /><span class="set-theme__color-1" style="background-color: #' + i(((s = ((s = ((s = (v && v.value)), s == null || s === false ? s: s.colors)), s == null || s === false ? s: s.title)), typeof s === g ? s.apply(v) : s)) + '"></span><span class="set-theme__color-2" style="background-color: #' + i(((s = ((s = ((s = (v && v.value)), s == null || s === false ? s: s.colors)), s == null || s === false ? s: s.url)), typeof s === g ? s.apply(v) : s)) + '"></span><span class="set-theme__color-3" style="background-color: #' + i(((s = ((s = ((s = (v && v.value)), s == null || s === false ? s: s.colors)), s == null || s === false ? s: s.snippet)), typeof s === g ? s.apply(v) : s)) + '"></span><span class="set-theme__check  ddgsi  ddgsi-check"></span></label><label class="set-theme__label" data-theme-id="' + i(((s = ((s = (v && v.value)), s == null || s === false ? s: s.id)), typeof s === g ? s.apply(v) : s)) + '" for="';
-		if (t = d.fieldId) {
-			s = t.call(v, {
-				hash: {},
-				data: u
-			})
-		} else {
-			t = (v && v.fieldId);
-			s = typeof t === g ? t.call(v, {
-				hash: {},
-				data: u
-			}) : t
-		}
-		q += i(s) + "_" + i(((s = ((s = (v && v.value)), s == null || s === false ? s: s.id)), typeof s === g ? s.apply(v) : s)) + '">';
-		s = (t = d.lp || (v && v.lp), r = {
-			hash: {},
-			data: u
-		},
-			t ? t.call(v, "theme", ((s = (v && v.value)), s == null || s === false ? s: s.name), r) : m.call(v, "lp", "theme", ((s = (v && v.value)), s == null || s === false ? s: s.name), r));
-		if (s || s === 0) {
-			q += s
-		}
-		q += "</label></div>";
-		return q
-	}
-	h += '<div class="frm__field  fix"><div class="set-themes">';
-	a = (f = d.keys || (n && n.keys), p = {
-		hash: {},
-		inverse: o.noop,
-		fn: o.program(1, c, j),
-		data: j
-	},
-		f ? f.call(n, (n && n.values), p) : m.call(n, "keys", (n && n.values), p));
-	if (a || a === 0) {
-		h += a
-	}
-	h += "</div></div>";
-	return h
-});
+'use strict';
+
+function initHook() {
+  (function (global, factory) {
+
+
+    "use strict";
+
+    if (typeof module === "object" && typeof module.exports === "object") {
+
+      // For CommonJS and CommonJS-like environments where a proper `window`
+      // is present, execute the factory and get jQuery.
+      // For environments that do not have a `window` with a `document`
+      // (such as Node.js), expose a factory as module.exports.
+      // This accentuates the need for the creation of a real `window`.
+      // e.g. var jQuery = require("jquery")(window);
+      // See ticket #14549 for more info.
+      module.exports = global.document ?
+        factory(global, true) :
+        function (w) {
+          if (!w.document) {
+            throw new Error("eUtils requires a window with a document");
+          }
+          return factory(w);
+        };
+    } else {
+      factory(global);
+    }
+
+  }(typeof window !== "undefined" ? window : this, function (_global, noGlobal) {
+
+    // base
+    var BaseUtils = {
+      /**
+       * 对象是否为数组
+       * @param arr
+       */
+      isArray:       function (arr) {
+        return Array.isArray(arr) || Object.prototype.toString.call(arr) === "[object Array]";
+      },
+      /**
+       * 判断是否为方法
+       * @param func
+       * @return {boolean}
+       */
+      isFunction:    function (func) {
+        if (!func) {
+          return false;
+        }
+        return typeof func === 'function';
+      },
+      /**
+       * 判断是否是一个有效的对象
+       * @param obj
+       * @return {*|boolean}
+       */
+      isExistObject: function (obj) {
+        return obj && (typeof obj === 'object');
+      },
+      isString:      function (str) {
+        if (str === null) {
+          return false;
+        }
+        return typeof str === 'string';
+      },
+      uniqueNum:     1000,
+      /**
+       * 根据当前时间戳生产一个随机id
+       * @returns {string}
+       */
+      buildUniqueId: function () {
+        var prefix = new Date().getTime().toString();
+        var suffix = this.uniqueNum.toString();
+        this.uniqueNum++;
+        return prefix + suffix;
+      },
+      keys:          function (obj) {
+        var results = [];
+        for (var key in obj) {
+          results.push(key);
+        }
+        return results;
+      }
+    };
+
+    //
+    var serviceProvider = {
+      _parseDepends: function (depends) {
+        var dependsArr = [];
+        if (!BaseUtils.isArray(depends)) {
+          return;
+        }
+        depends.forEach(function (depend) {
+          if (BaseUtils.isString(depend)) {
+            dependsArr.push(serviceProvider[depend.toLowerCase()]);
+          }
+        });
+        return dependsArr;
+      }
+    };
+
+    //
+    var factory = function (name, depends, construction) {
+      if (!BaseUtils.isFunction(construction)) {
+        return;
+      }
+      serviceProvider[name.toLowerCase()] = construction.apply(this, serviceProvider._parseDepends(depends));
+    };
+
+    var depend = function (depends, construction) {
+      if (!BaseUtils.isFunction(construction)) {
+        return;
+      }
+      construction.apply(this, serviceProvider._parseDepends(depends));
+    };
+
+    factory('BaseUtils', [], function () {
+      return BaseUtils;
+    });
+
+    // logger
+    factory('logger', [], function () {
+      return console;
+    });
+
+    // DateTimeUtils
+    factory('DateTimeUtils', ['logger'], function (logger) {
+      return {
+        /**
+         * 打印当前时间
+         */
+        printNowTime:      function () {
+          var date = new Date();
+          console.log(this.pattern(date, 'hh:mm:ss:S'));
+        },
+        /**
+         * 格式化日期
+         * @param date
+         * @param fmt
+         * @returns {*}
+         */
+        pattern:           function (date, fmt) {
+          var o = {
+            "M+": date.getMonth() + 1, //月份
+            "d+": date.getDate(), //日
+            "h+": date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, //小时
+            "H+": date.getHours(), //小时
+            "m+": date.getMinutes(), //分
+            "s+": date.getSeconds(), //秒
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+            "S":  date.getMilliseconds() //毫秒
+          };
+          var week = {
+            "0": "/u65e5",
+            "1": "/u4e00",
+            "2": "/u4e8c",
+            "3": "/u4e09",
+            "4": "/u56db",
+            "5": "/u4e94",
+            "6": "/u516d"
+          };
+          if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+          }
+          if (/(E+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "/u661f/u671f" : "/u5468") : "") + week[date.getDay() + ""]);
+          }
+          for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+              fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+          }
+          return fmt;
+        },
+        /**
+         * 以当前时间获取id
+         * @returns {number}
+         */
+        getCurrentId:      function () {
+          var date = new Date();
+          return date.getTime();
+        },
+        /**
+         * 获取指定时间距离现在相差多久
+         * @param date {number|Date}
+         * @param isCeil{boolean=} 是否对结果向上取整，默认[false]
+         * @param type {string=} 单位可取值['day','month','year']默认'day'
+         * @returns {number}
+         */
+        getNowBetweenADay: function (date, isCeil, type) {
+          if (!type) {
+            type = 'day'
+          }
+          if (typeof date === 'number') {
+            date = new Date(date);
+          }
+          if (!(date instanceof Date)) {
+            throw new TypeError('该参数类型必须是Date')
+          }
+          var time = date.getTime();
+          var now = new Date();
+          var nowTime = now.getTime();
+          if (nowTime - time < 0) {
+            logger.warn('需要计算的时间必须在当前时间之前');
+          }
+          var result = 0;
+          switch (type) {
+            default:
+            case 'day':
+              result = (nowTime - time) / (1000 * 60 * 60 * 24);
+              break;
+            case 'month':
+              var yearDifference = now.getFullYear() - date.getFullYear();
+              if (yearDifference > 0) {
+                result += yearDifference * 12;
+              }
+              result += now.getMonth() - date.getMonth();
+              break;
+            case 'year':
+              result += now.getFullYear() - date.getFullYear();
+              break;
+          }
+          if (!isCeil) {
+            return Math.floor(result);
+          } else {
+            if (result === 0 && isCeil) {
+              result = 1;
+            }
+            return Math.ceil(result);
+          }
+        }
+      }
+    });
+
+    // ArrayUtils
+    factory('ArrayUtils', ['BaseUtils'], function (BaseUtils) {
+      return {
+        isArrayObject:        function (arr) {
+          return BaseUtils.isArray(arr);
+        },
+        /**
+         * 遍历数组
+         * @param context {Object}
+         * @param arr {Array}
+         * @param cb {Function} 回调函数
+         */
+        ergodicArrayObject:   function (context, arr, cb) {
+          if (!context) {
+            context = window;
+          }
+          if (!BaseUtils.isArray(arr) || !BaseUtils.isFunction(cb)) {
+            return;
+          }
+          for (var i = 0; i < arr.length; i++) {
+            var result = cb.call(context, arr[i], i);
+            if (result && result === -1) {
+              break;
+            }
+          }
+        },
+        /**
+         * 获取数组对象的一个属性发起动作
+         * @param context {Object}
+         * @param arr {Array}
+         * @param propertyName {String}
+         * @param cb {Function}
+         * @param checkProperty {boolean} 是否排除不拥有该属性的对象[default:true]
+         */
+        getPropertyDo:        function (context, arr, propertyName, cb, checkProperty) {
+          if (checkProperty === null) {
+            checkProperty = true;
+          }
+          this.ergodicArrayObject(context, arr, function (ele) {
+            if (!checkProperty || ele.hasOwnProperty(propertyName)) {
+              cb.call(context, ele[propertyName], ele);
+            }
+          })
+        },
+        /**
+         * [私有方法]将多个键值对对象转换为map
+         * @param arr {Array}
+         * @returns {{}}
+         */
+        parseKeyValue:        function (arr) {
+          var map = {};
+          if (!(BaseUtils.isArray(arr))) {
+            return map;
+          }
+          this.ergodicArrayObject(this, arr, function (ele) {
+            if (ele.key === null) {
+              return;
+            }
+            if (!map.hasOwnProperty(ele.key)) {
+              map[ele.key] = ele.value;
+            }
+          });
+          return map;
+        },
+        /**
+         * 获取数组的哈希码
+         * @param arr {Array}
+         * @returns {number}
+         */
+        getHashCode:          function (arr) {
+          var str = arr.toString();
+          var hash = 31;
+          if (str.length === 0) return hash;
+          for (var i = 0; i < str.length; i++) {
+            var char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32bit integer
+          }
+          return hash;
+        },
+        /**
+         * 通过数组中每个对象的指定属性生成一个新数组
+         * @param arr {Array}
+         * @param propertyName {String}
+         */
+        parseArrayByProperty: function (arr, propertyName) {
+          var result = [];
+          if (!this.isArrayObject(arr)) {
+            return result;
+          }
+          this.getPropertyDo(this, arr, propertyName, function (value) {
+            result.push(value);
+          }, true);
+          return result;
+        },
+        /**
+         * 数组对象是否包含一个对象
+         * @param arr {Array}
+         * @param obj
+         * @param cb {function=}
+         * @returns {boolean}
+         */
+        isContainsObject:     function (arr, obj, cb) {
+          var isContainsObject = false;
+          this.ergodicArrayObject(this, arr, function (value, i) {
+            if (obj === value) {
+              isContainsObject = true;
+              if (BaseUtils.isFunction(cb)) {
+                cb.call(window, i);
+              }
+              return -1;
+            }
+          });
+          return isContainsObject;
+        },
+        /**
+         * 获取数组中的最大值
+         * @param arr 若数组中的对象还是数组，则按里面数组的每个对象进行多级比较
+         * @param cb
+         * @returns {*}
+         */
+        getMaxInArray:        function (arr, cb) {
+          var maxObject = null;
+          var maxIndex = -1;
+          while (maxObject === null && maxIndex < arr.length) {
+            maxObject = arr[++maxIndex]
+          }
+          for (var i = maxIndex + 1; i < arr.length; i++) {
+            // 若是比较对象都是数组，则对每个数组的第一个元素进行比较，若相同，则比较第二个元素
+            if (maxObject !== null && this.isArrayObject(maxObject) && this.isArrayObject(arr[i])) {
+              var classLength = maxObject.length;
+              var classLevel = 0;
+              // console.log(maxObject[classLevel],arr[i][classLevel]);
+              while (maxObject[classLevel] === arr[i][classLevel] && classLevel < classLength) {
+                classLevel++
+              }
+              if (maxObject[classLevel] !== null && maxObject[classLevel] < arr[i][classLevel]) {
+                maxObject = arr[i];
+                maxIndex = i;
+              }
+              continue;
+            }
+            if (maxObject !== null && maxObject < arr[i]) {
+              maxObject = arr[i];
+              maxIndex = i;
+            }
+          }
+          if (BaseUtils.isFunction(cb)) {
+            cb.call(this, maxObject, maxIndex);
+          }
+          return maxObject;
+        },
+        /**
+         * 获取数组中的总值
+         * @param arr{Array<number>}
+         * @param cb {function=}
+         */
+        getSumInArray:        function (arr, cb) {
+          if (!this.isArrayObject(arr)) {
+            return;
+          }
+          var sum = 0;
+          var count = 0;
+          this.ergodicArrayObject(this, arr, function (value) {
+            if (typeof value === 'number' && !Number.isNaN(value)) {
+              sum += value;
+              count += 1;
+            }
+          });
+          if (BaseUtils.isFunction(cb)) {
+            cb.call(window, sum, count);
+          }
+          return sum;
+        },
+        /**
+         * 获取数组中的平均值
+         * @param arr{Array<number>}
+         */
+        getAverageInArray:    function (arr) {
+          var average = 0;
+          this.getSumInArray(arr, function (sum, i) {
+            i === 0 || (average = sum / i);
+          });
+          return average;
+        },
+        /**
+         * 为数组排序
+         * @param arr
+         * @param order
+         * @param sortSetting {object=}
+         */
+        sortingArrays:        function (arr, order, sortSetting) {
+          if (!this.isArrayObject(arr)) {
+            return;
+          }
+          var DESC = 0;
+          var ASC = 1;
+          var thisArr = arr.slice(0);
+          var _thisAction = null;
+          // 解析配置
+          var isSetting = sortSetting && sortSetting.getComparedProperty &&
+            BaseUtils.isFunction(sortSetting.getComparedProperty);
+          if (isSetting) {
+            thisArr = sortSetting.getComparedProperty(arr);
+          }
+          switch (order) {
+            default :
+            case DESC:
+              _thisAction = thisArr.push;
+              break;
+            case ASC:
+              _thisAction = thisArr.unshift;
+              break;
+          }
+          var resultArr = [];
+          for (var j = 0; j < thisArr.length; j++) {
+            this.getMaxInArray(thisArr, function (max, i) {
+              delete thisArr[i];
+              _thisAction.call(resultArr, arr[i]);
+            });
+          }
+          if (sortSetting && sortSetting.createNewData) {
+            return resultArr.slice(0);
+          }
+          return resultArr;
+        },
+        /**
+         * 将类数组转化为数组
+         * @param arrLike 类数组对象
+         */
+        toArray:              function (arrLike) {
+          if (!arrLike || arrLike.length === 0) {
+            return [];
+          }
+          // 非伪类对象，直接返回最好
+          if (!arrLike.length) {
+            return arrLike;
+          }
+          // 针对IE8以前 DOM的COM实现
+          try {
+            return [].slice.call(arrLike);
+          } catch (e) {
+            var i   = 0,
+                j   = arrLike.length,
+                res = [];
+            for (; i < j; i++) {
+              res.push(arrLike[i]);
+            }
+            return res;
+          }
+        },
+        /**
+         * 判断是否为类数组
+         * @param o
+         * @returns {boolean}
+         */
+        isArrayLick:          function (o) {
+          if (o &&                                // o is not null, undefined, etc.
+            typeof o === 'object' &&            // o is an object
+            isFinite(o.length) &&               // o.length is a finite number
+            o.length >= 0 &&                    // o.length is non-negative
+            o.length === Math.floor(o.length) &&  // o.length is an integer
+            o.length < 4294967296)              // o.length < 2^32
+            return true;                        // Then o is array-like
+          else
+            return false;                       // Otherwise it is not
+
+        },
+        /**
+         * 判断数组是否包含对象
+         * @param arr
+         * @param obj
+         */
+        contains:             function (arr, obj) {
+          var contains = false;
+          this.ergodicArrayObject(this, arr, function (a) {
+            if (a === obj) {
+              contains = true;
+              return -1;
+            }
+          });
+          return contains;
+        }
+      }
+    });
+
+    // ObjectUtils
+    factory('ObjectUtils', ['ArrayUtils', 'BaseUtils'], function (ArrayUtils, BaseUtils) {
+      return {
+        /**
+         * 获取对象属性[支持链式表达式,如获取学生所在班级所在的学校(student.class.school):'class.school']
+         * @param obj
+         * @param linkProperty {string|Array} 属性表达式，获取多个属性则用数组
+         * @param cb {function=}
+         * @return 对象属性
+         */
+        readLinkProperty:                         function (obj, linkProperty, cb) {
+          var callback = null;
+          if (BaseUtils.isFunction(cb)) {
+            callback = cb;
+          }
+          if (typeof linkProperty === 'string') {
+            // 除去所有的空格
+            linkProperty = linkProperty.replace(/ /g, '');
+            // 不判断为空的值
+            if (linkProperty === '') {
+              return null;
+            }
+            // 若是以','隔开的伪数组，则转化为数组再进行操作
+            if (linkProperty.indexOf(',') !== -1) {
+              var propertyNameArr = linkProperty.split(',');
+              return this.readLinkProperty(obj, propertyNameArr, callback);
+            }
+            if (linkProperty.indexOf('.') !== -1) {
+              var names = linkProperty.split('.');
+              var iterationObj = obj;
+              var result = null;
+              ArrayUtils.ergodicArrayObject(this, names, function (name, i) {
+                iterationObj = this.readLinkProperty(iterationObj, name);
+                if (names[names.length - 1] === name && names.length - 1 === i) {
+                  result = iterationObj;
+                  if (callback) {
+                    callback.call(window, result, linkProperty);
+                  }
+                }
+                // 终止对接下来的属性的遍历
+                if (typeof iterationObj === 'undefined') {
+                  return -1;
+                }
+              });
+              return result;
+            }
+            var normalResult = null;
+            if (linkProperty.slice(linkProperty.length - 2) === '()') {
+              var func = linkProperty.slice(0, linkProperty.length - 2);
+              normalResult = obj[func]();
+            } else {
+              normalResult = obj[linkProperty];
+            }
+            if (normalResult === null) {
+              console.warn(obj, '的属性[\'' + linkProperty + '\']值未找到');
+            }
+            if (callback) {
+              callback.call(window, normalResult, linkProperty);
+            }
+            return normalResult;
+          }
+          if (BaseUtils.isArray(linkProperty)) {
+            var results = [];
+            ArrayUtils.ergodicArrayObject(this, linkProperty, function (name) {
+              var value = this.readLinkProperty(obj, name);
+              results.push(value);
+              if (callback && name !== '') {
+                return callback.call(window, value, name);
+              }
+            });
+            results.isMultipleResults = true;
+            return results;
+          }
+        },
+        /**
+         * 为对象属性赋值
+         * （同一个对象中不能够既有数字开头的属性名和普通属性名）
+         * @param obj
+         * @param linkProperty {string|Array} 属性表达式，多个属性则用数组
+         * @param value
+         */
+        createLinkProperty:                       function (obj, linkProperty, value) {
+          if (obj === null) {
+            obj = {};
+          }
+          if (typeof linkProperty === 'string') {
+            // 除去所有的空格
+            linkProperty = linkProperty.replace(/ /g, '');
+            // 不判断为空的值
+            if (linkProperty === '') {
+              throw new TypeError('对象属性名不能为空')
+            }
+            if (linkProperty.indexOf(',') !== -1) {
+              var propertyNameArr = linkProperty.split(',');
+              this.createLinkProperty(obj, propertyNameArr, value);
+              return obj;
+            }
+            if (linkProperty.indexOf('.') !== -1) {
+              var names = linkProperty.split('.');
+              if (!obj.hasOwnProperty(names[0])) {
+                obj[names[0]] = {}
+              }
+              // 判断属性名是否以数字开头（若是代表是一个数组）
+              if (!Number.isNaN(parseInt(names[0]))) {
+                if (!ArrayUtils.isArrayObject(obj)) {
+                  obj = [];
+                }
+              }
+              var propertyObj = obj[names[0]];
+              var newProperties = names.slice(1, names.length);
+              var newLinkProperty = '';
+              ArrayUtils.ergodicArrayObject(this, newProperties, function (property, i) {
+                if (i < newProperties.length - 1) {
+                  newLinkProperty = newLinkProperty + property + '.'
+                } else {
+                  newLinkProperty = newLinkProperty + property;
+                }
+              });
+              obj[names[0]] = this.createLinkProperty(propertyObj, newLinkProperty, value);
+              return obj;
+            }
+            // 判断属性名是否以数字开头（若是代表是一个数组）
+            if (!Number.isNaN(parseInt(linkProperty))) {
+              if (!ArrayUtils.isArrayObject(obj)) {
+                obj = [];
+              }
+            }
+            obj[linkProperty] = value;
+            return obj;
+          } else if (BaseUtils.isArray(linkProperty)) {
+            ArrayUtils.ergodicArrayObject(this, linkProperty, function (link) {
+              obj = this.createLinkProperty(obj, link, value);
+            });
+            return obj;
+          }
+        },
+        /**
+         * 遍历对象属性
+         * @param context {object} 上下文
+         * @param obj {object} 遍历对象
+         * @param cb {function} 回调函数
+         * @param isReadInnerObject {boolean=} 是否遍历内部对象的属性
+         */
+        ergodicObject:                            function (context, obj, cb, isReadInnerObject) {
+          var keys = BaseUtils.keys(obj);
+          ArrayUtils.ergodicArrayObject(this, keys, function (propertyName) {
+            // 若内部对象需要遍历
+            var _propertyName = propertyName;
+            if (isReadInnerObject && obj[propertyName] !== null && typeof obj[propertyName] === 'object') {
+              this.ergodicObject(this, obj[propertyName], function (value, key) {
+                return cb.call(context, value, _propertyName + '.' + key);
+              }, true)
+            } else {
+              return cb.call(context, obj[propertyName], propertyName);
+            }
+          })
+        },
+        /**
+         * 当指定属性为空或不存在时执行回到函数；
+         * @param context {object} 上下文
+         * @param obj {object} 检测对象
+         * @param propertyNames{Array|string} 需要检测的属性名
+         *                                     可以检查多级属性如:'a.b.c.e'，
+         *                                     多个属性使用数组，支持纯字符串多个属性用','隔开
+         * @param cb {function} 回调函数[参数：为空或不存在的属性名,返回值为'-1'时，跳过之后的回调函数]
+         */
+        whileEmptyObjectProperty:                 function (context, obj, propertyNames, cb) {
+          // 解析单个属性名
+          if (typeof propertyNames === 'string') {
+            // 除去所有的空格
+            propertyNames = propertyNames.replace(/ /g, '');
+            // 不判断为空的值
+            if (propertyNames === '') {
+              return;
+            }
+            // 若是以','隔开的伪数组，则转化为数组再进行操作
+            if (propertyNames.indexOf(',') !== -1) {
+              var propertyNameArr = propertyNames.split(',');
+              return this.whileEmptyObjectProperty(context, obj, propertyNameArr, cb);
+            }
+            // 若指定级联属性
+            if (propertyNames.indexOf('.') !== -1) {
+              var names = propertyNames.split('.');
+              var iterationObj = obj;
+              var result = null;
+              ArrayUtils.ergodicArrayObject(this, names, function (name) {
+                if (iterationObj && iterationObj.hasOwnProperty(name)) {
+                  iterationObj = iterationObj[name];
+                } else {
+                  result = cb.call(window, propertyNames);
+                  // 终止对接下来的属性的遍历
+                  return -1;
+                }
+              });
+              return result;
+            }
+            // 正常流程
+            if (!obj.hasOwnProperty(propertyNames)) {
+              return cb.call(context, propertyNames);
+            }
+            if (obj[propertyNames] === null || obj[propertyNames] === '') {
+              return cb.call(context, propertyNames);
+            }
+          } else if (BaseUtils.isArray(propertyNames)) {
+            // 解析数组
+            ArrayUtils.ergodicArrayObject(this, propertyNames, function (propertyName) {
+              // 递归调用
+              return this.whileEmptyObjectProperty(context, obj, propertyName, cb);
+            })
+          }
+        },
+        whileEmptyObjectPropertyV2:               function (context, obj, propertyNames, cb) {
+          this.readLinkProperty(obj, propertyNames, function (value, propertyName) {
+            if (value === null || value === '' || parseInt(value) < 0) {
+              return cb.call(context, propertyName);
+            }
+          })
+        },
+        /**
+         * 克隆对象[只克隆属性，不克隆原型链]
+         * @param obj {*}
+         */
+        cloneObject:                              function (obj) {
+          var newObj = {};
+          // 判断是否为基本数据类型，若是则直接返回
+          if (typeof obj === 'string' ||
+            typeof obj === 'number' ||
+            typeof obj === 'undefined' ||
+            typeof obj === 'function' ||
+            typeof obj === 'boolean') {
+            return obj;
+          }
+          // 判断是否是数组
+          if (BaseUtils.isArray(obj)) {
+            newObj = [];
+            // 遍历数组并递归调用该方法获取数组内部对象的克隆对象并push到新数组
+            ArrayUtils.ergodicArrayObject(this, obj, function (arrObjValue) {
+              newObj.push(this.cloneObject(arrObjValue));
+            })
+          } else if (typeof obj === 'object') {
+            // 当目标为一般对象时即 typeof 为 object
+            if (obj === null) {
+              // 当克隆对象为空时，返回空
+              return null;
+            }
+            // 遍历对象的属性并调用递归方法获得该属性对应的对象的克隆对象并将其重新赋值到该属性
+            this.ergodicObject(this, obj, function (value, key) {
+              newObj[key] = this.cloneObject(value);
+            });
+          }
+          return newObj;
+        },
+        // cloneIndeed: function (obj) {
+        //     var hash = new Map();
+        //     var result = this._cloneIndeed(obj, hash);
+        //     for (var item of hash.values()) {
+        //         ArrayUtils.ergodicArrayObject(this, item.settingArr, function (func) {
+        //             func.call(this);
+        //         })
+        //     }
+        //     return result;
+        // },
+        // _cloneIndeed: function (obj, hash) {
+        //     hash = hash || new Map();
+        //     var result = {};
+        //     // 获取数据类型
+        //     var dataType = typeof obj;
+        //     switch (dataType.toLowerCase()) {
+        //         case 'string':
+        //         case 'number':
+        //         case 'boolean':
+        //         case 'undefined':
+        //             return obj;
+        //         case 'object':
+        //         default: {
+        //             for (var key in obj) {
+        //                 var nextObj = obj[key];
+        //                 var hashObj = hash.get(nextObj);
+        //                 if (hashObj != null && hashObj.clonedObj != null) {
+        //                     obj[key] = null;
+        //                 }
+        //                 hash.set(nextObj, {
+        //                         clonedObj: result,
+        //                         settingArr: [],
+        //                         active: false
+        //                     }
+        //                 );
+        //                 result[key] = this._cloneIndeed(nextObj, hash);
+        //             }
+        //             if (obj != null) {
+        //                 result['__proto__'] = obj['__proto__'];
+        //             }
+        //         }
+        //
+        //     }
+        //     return result;
+        // },
+        /**
+         * 获取对象的哈希码
+         * @param obj {Object}
+         * @returns {number}
+         */
+        getObjHashCode:                           function (obj) {
+          var str = JSON.stringify(obj);
+          var hash = 0, i, chr, len;
+          console.log(str)
+          console.log(hash)
+          if (str.length === 0) return hash;
+          for (i = 0, len = str.length; i < len; i++) {
+            chr = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+          }
+          console.log(str)
+          console.log(hash)
+          return hash;
+        },
+        /**
+         * 扩展对象属性
+         * @param obj 原对象
+         * @param extendedObj 被扩展的对象
+         * @param isCover {boolean=} 扩展的属性和原来属性冲突时是否覆盖 默认[false]
+         * @param isClone {boolean=} 是否返回一个新的对象，默认[false]返回扩展后的原对象
+         */
+        expandObject:                             function (obj, extendedObj, isCover, isClone) {
+          var resultObj = obj;
+          if (isClone) {
+            resultObj = this.cloneObject(obj);
+          }
+          this.ergodicObject(this, extendedObj, function (value, key) {
+            if (isCover && this.readLinkProperty(resultObj, key) !== null) {
+              return;
+            }
+            resultObj = this.createLinkProperty(resultObj, key, value);
+          }, true);
+          return resultObj;
+        },
+        /**
+         * 为数组排序，当数组中的元素为对象时，根据指定对象的属性名进行排序
+         * @param arr 数组
+         * @param propertyName 属性名（当有多个属性名时，为多级排序）
+         * @param order 升降序
+         * @returns {*}
+         */
+        sortingArrayByProperty:                   function (arr, propertyName, order) {
+          var _this = this;
+          var sortSetting = {
+            // 是否创建新数据
+            createNewData:       false,
+            // 通过该方法获取数组中每个对象中用来比较的属性
+            getComparedProperty: function (arr) {
+              var compareArr = [];
+              ArrayUtils.ergodicArrayObject(_this, arr, function (obj, i) {
+                if (typeof obj !== 'object') {
+                  compareArr.push(obj);
+                } else {
+                  var compareValue = this.readLinkProperty(obj, propertyName);
+                  if (compareValue !== null) {
+                    compareArr.push(compareValue);
+                  } else {
+                    compareArr.push(obj);
+                  }
+                }
+              });
+              return compareArr.slice(0);
+            }
+          };
+          return ArrayUtils.sortingArrays(arr, order, sortSetting);
+        },
+        /**
+         * 转话为目标的实例
+         * @param constructor {function} 构造函数
+         * @param obj {object|Array}判断的对象
+         * @param defaultProperty {object=}
+         */
+        toAimObject:                              function (obj, constructor, defaultProperty) {
+          if (BaseUtils.isArray(obj)) {
+            var originArr = [];
+            ArrayUtils.ergodicArrayObject(this, obj, function (value) {
+              originArr.push(this.toAimObject(value, constructor, defaultProperty));
+            });
+            return originArr;
+          } else if (typeof obj === 'object') {
+            if (defaultProperty) {
+              this.ergodicObject(this, defaultProperty, function (value, key) {
+                if (obj[key] === null) {
+                  obj[key] = value;
+                }
+              });
+            }
+            if (obj instanceof constructor) {
+              return obj;
+            }
+            var originObj = obj;
+            while (originObj.__proto__ !== null && originObj.__proto__ !== Object.prototype) {
+              originObj = originObj.__proto__;
+            }
+            originObj.__proto__ = constructor.prototype;
+            return originObj;
+          }
+        },
+        /**
+         * 将数组中结构类似对象指定属性融合为一个数组
+         * @param arr {Array}
+         * @param propertyNames
+         */
+        parseTheSameObjectPropertyInArray:        function (arr, propertyNames) {
+          var result = {};
+          var temp = {};
+          ArrayUtils.ergodicArrayObject(this, arr, function (obj) {
+            // 获取想要得到的所有属性，以属性名为键值存储到temp中
+            this.readLinkProperty(obj, propertyNames, function (value, property) {
+              if (!temp.hasOwnProperty(property) || !(BaseUtils.isArray(temp[property]))) {
+                temp[property] = [];
+              }
+              temp[property].push(value);
+            });
+          });
+          // 遍历temp获取每个键值中的值，并单独取出
+          this.ergodicObject(this, temp, function (value, key) {
+            result = this.createLinkProperty(result, key, value);
+          });
+          return this.cloneObject(result);
+        },
+        /**
+         * 将数组中结构类似对象指定属性融合为一个数组
+         * @param arr {Array}
+         */
+        parseTheSameObjectAllPropertyInArray:     function (arr) {
+          if (!ArrayUtils.isArrayObject(arr) || arr.length < 1) {
+            return;
+          }
+          // 获取一个对象的所有属性，包括内部对象的属性
+          var propertyNames = [];
+          this.ergodicObject(this, arr[0], function (v, k) {
+            propertyNames.push(k);
+          }, true);
+          return this.parseTheSameObjectPropertyInArray(arr, propertyNames);
+        },
+        /**
+         * 获取对象属性，若为数组则计算其中数字的平均值或其它
+         * @param obj
+         * @param propertyNames{Array<string>|string}
+         * @param type
+         */
+        getCalculationInArrayByLinkPropertyNames: function (obj, propertyNames, type) {
+          var resultObject = {};
+          var _this = this;
+          switch (type) {
+            default:
+            case 'sum':
+              this.readLinkProperty(obj, propertyNames, function (value, key) {
+                if (ArrayUtils.isArrayObject(value)) {
+                  resultObject = _this.createLinkProperty(resultObject, key, ArrayUtils.getSumInArray(value));
+                }
+              });
+              break;
+            case 'average':
+              this.readLinkProperty(obj, propertyNames, function (value, key) {
+                if (ArrayUtils.isArrayObject(value)) {
+                  resultObject = _this.createLinkProperty(resultObject, key, ArrayUtils.getAverageInArray(value));
+                }
+              });
+              break;
+          }
+          return resultObject;
+        }
+      }
+    });
+
+    // ColorUtils
+    factory('ColorUtils', [], function () {
+      return {
+        /**
+         * 转换颜色rgb为16进制
+         * @param r
+         * @param g
+         * @param b
+         * @return {string}
+         */
+        rgbToHex:                 function (r, g, b) {
+          var hex = ((r << 16) | (g << 8) | b).toString(16);
+          return "#" + new Array(Math.abs(hex.length - 7)).join("0") + hex;
+        },
+        /**
+         * 转换颜色16进制为rgb
+         * @param hex
+         * @return {Array}
+         */
+        hexToRgb:                 function (hex) {
+          hex = hex.replace(/ /g, '');
+          var length = hex.length;
+          var rgb = [];
+          switch (length) {
+            case 4:
+              rgb.push(parseInt(hex[1] + hex[1], 16));
+              rgb.push(parseInt(hex[2] + hex[2], 16));
+              rgb.push(parseInt(hex[3] + hex[3], 16));
+              return rgb;
+            case 7:
+              for (var i = 1; i < 7; i += 2) {
+                rgb.push(parseInt("0x" + hex.slice(i, i + 2)));
+              }
+              return rgb;
+            default:
+              break
+          }
+        },
+        /**
+         * 根据两个颜色以及之间的百分比获取渐进色
+         * @param start
+         * @param end
+         * @param percentage
+         * @return {*}
+         */
+        gradientColorsPercentage: function (start, end, percentage) {
+          var resultRgb = [];
+          var startRgb = this.hexToRgb(start);
+          if (end == null) {
+            return start;
+          }
+          var endRgb = this.hexToRgb(end);
+          var totalR = endRgb[0] - startRgb[0];
+          var totalG = endRgb[1] - startRgb[1];
+          var totalB = endRgb[2] - startRgb[2];
+          resultRgb.push(startRgb[0] + totalR * percentage);
+          resultRgb.push(startRgb[1] + totalG * percentage);
+          resultRgb.push(startRgb[2] + totalB * percentage);
+          return this.rgbToHex(resultRgb[0], resultRgb[1], resultRgb[2])
+        }
+      }
+    });
+
+    factory('FunctionUtils', [], function () {
+      return {
+        /**
+         * 获取方法的名字
+         * @param func
+         * @returns {*}
+         */
+        getFunctionName:   function (func) {
+          if (typeof func === 'function' || typeof func === 'object') {
+            var name = ('' + func).match(/function\s*([\w\$]*)\s*\(/);
+          }
+          return func.name || name[1];
+        },
+        /**
+         * 获取方法的参数名
+         * @param func
+         * @returns {*}
+         */
+        getFunctionParams: function (func) {
+          if (typeof func === 'function' || typeof func === 'object') {
+            var name = ('' + func).match(/function.*\(([^)]*)\)/);
+            return name[1].replace(/( )|(\n)/g, '').split(',');
+          }
+          return;
+        },
+        /**
+         * 通过方法的arguments获取调用该方法的函数
+         * @param func_arguments
+         * @returns {string}
+         */
+        getCallerName:     function (func_arguments) {
+          var caller = func_arguments.callee.caller;
+          var callerName = '';
+          if (caller) {
+            callerName = this.getFunctionName(caller);
+          }
+          return callerName;
+        },
+        FunctionBuilder:   function (func) {
+          var _this = this;
+          var fs = [];
+          fs.push(func);
+          var properties = ['push', 'unshift', 'slice', 'map', 'forEach', 'keys', 'find', 'concat', 'fill', 'shift', 'values'];
+          properties.map(function (property) {
+            if (typeof Array.prototype[property] === 'function') {
+              Object.defineProperty(_this, property, {
+                get: function () {
+                  return function () {
+                    fs[property].apply(fs, arguments);
+                    return this;
+                  }
+                }
+              });
+            }
+          });
+          this.result = function (context) {
+            var rfs = [];
+            fs.map(function (f, index) {
+              if (typeof f === 'function') {
+                rfs.push(f);
+              }
+            });
+            return function () {
+              var declareVar = {
+                arguments: arguments,
+                this:      this
+              };
+              rfs.map(function (f) {
+                var dv = f.apply(context || this, [declareVar]);
+                if (dv) {
+                  BaseUtils.keys(dv).map(function (key) {
+                    declareVar[key] = dv[key];
+                  });
+                }
+              });
+              return declareVar.returnValue;
+            }
+          }
+        },
+        invokeMethods:     function (context, methods, args) {
+          if (!this.isArray(methods)) {
+            return;
+          }
+          var results = [];
+          var _this = this;
+          this.ergodicArrayObject(context, methods, function (method) {
+            if (!_this.isFunction(method)) {
+              return;
+            }
+            results.push(
+              method.apply(context, args)
+            );
+          });
+          return results;
+        }
+      }
+    });
+
+    factory('UrlUtils', [], function () {
+      return {
+        getUrlInfo:         function (url) {
+          var a = document.createElement('a');
+          a.href = url;
+          return {
+            source:   url,
+            protocol: a.protocol.replace(':', ''),
+            host:     a.hostname,
+            port:     a.port,
+            query:    a.search,
+            file:     (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
+            hash:     a.hash.replace('#', ''),
+            path:     a.pathname.replace(/^([^\/])/, '/$1'),
+            relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
+            segments: a.pathname.replace(/^\//, '').split('/'),
+            params:   (function () {
+              var ret = {};
+              var seg = a.search.replace(/^\?/, '').split('&').filter(function (v, i) {
+                if (v !== '' && v.indexOf('=')) {
+                  return true;
+                }
+              });
+              seg.forEach(function (element, index) {
+                var idx = element.indexOf('=');
+                var key = element.substring(0, idx);
+                var val = element.substring(idx + 1);
+                ret[key] = val;
+              });
+              return ret;
+            })()
+          };
+        },
+        urlMatching:        function (url, matchUrl) {
+          var pattern = new RegExp(matchUrl);
+          return pattern.test(url);
+        },
+        getUrlWithoutParam: function (url) {
+          return url.split('?')[0];
+        },
+        getParamFromUrl:    function (url) {
+          var params = [];
+          var paramsObject = this.getUrlInfo(url).params;
+          BaseUtils.keys(paramsObject).forEach(function (key) {
+            params.push({
+              key:   key,
+              value: paramsObject[key]
+            })
+          });
+          // var parts = url.split('?');
+          // if (parts.length < 2) {
+          //     return params;
+          // }
+          // var paramsStr = parts[1].split('&');
+          // for (var i = 0; i < paramsStr.length; i++) {
+          //     var index = paramsStr[i].indexOf('=');
+          //     var ps = new Array(2);
+          //     if (index !== -1) {
+          //         ps = [
+          //             paramsStr[i].substring(0, index),
+          //             paramsStr[i].substring(index + 1),
+          //         ];
+          //     } else {
+          //         ps[0] = paramsStr[i];
+          //     }
+          //     params.push({
+          //         key: ps[0],
+          //         value: ps[1]
+          //     });
+          // }
+          return params;
+        },
+        margeUrlAndParams:  function (url, params) {
+          if (url.indexOf('?') !== -1 || !(params instanceof Array)) {
+            return url;
+          }
+          var paramsStr = [];
+          for (var i = 0; i < params.length; i++) {
+            if (params[i].key !== null && params[i].value !== null) {
+              if (!params[i].key) {
+                paramsStr.push(params[i].value);
+              } else {
+                paramsStr.push(params[i].key + '=' + params[i].value);
+              }
+            }
+          }
+          return url + '?' + paramsStr.join('&');
+        }
+      }
+    });
+
+    factory('PointUtils', [], function () {
+      var Point2D = function (x, y) {
+        this.x = x || 0;
+        this.y = y || 0;
+      };
+      Point2D.prototype = {
+        constructor:                     Point2D,
+        /**
+         * 获取指定距离和角度对应的平面点
+         * @param distance
+         * @param deg
+         */
+        getOtherPointFromDistanceAndDeg: function (distance, deg) {
+          var radian = Math.PI / 180 * deg;
+          var point = new this.constructor();
+          point.x = distance * Math.sin(radian) + this.x;
+          point.y = this.y - distance * Math.cos(radian);
+          return point;
+        },
+        /**
+         * 获取当前平面点与另一个平面点之间的距离
+         * @param p
+         * @returns {number}
+         */
+        getDistanceFromAnotherPoint:     function (p) {
+          return Math.sqrt((this.x - p.x) * (this.x - p.x) + (this.y - p.y) * (this.y - p.y));
+        },
+        /**
+         * 获取当前平面点与另一个平面点之间的角度
+         * @param p
+         * @returns {number}
+         */
+        getDegFromAnotherPoint:          function (p) {
+          var usedPoint = new Point2D(p.x * 1000000 - this.x * 1000000, p.y * 1000000 - this.y * 1000000);
+          var radian = Math.atan2(usedPoint.x * 1000000, usedPoint.y * 1000000);
+          var deg = radian * 180 / Math.PI;
+          return 180 - deg;
+        },
+        /**
+         * 判断该点是否位于一矩形内部
+         * @param x 矩形开始坐标x
+         * @param y 矩形开始坐标y
+         * @param width 矩形宽
+         * @param height 矩形长
+         * @returns {boolean}
+         */
+        isInRect:                        function (x, y, width, height) {
+          var px = this.x;
+          var py = this.y;
+          if (px < x || px > x + width) {
+            return false;
+          }
+          return !(py < y || py > y + height);
+        }
+      };
+      return {
+        Point2D: Point2D
+      }
+    });
+
+    _global.everyUtils = function () {
+      if (BaseUtils.isArray(arguments[0])) {
+        depend.call(arguments[2] || this, arguments[0], arguments[1]);
+      } else if (BaseUtils.isFunction(arguments[0])) {
+        var args = arguments;
+        depend.call(arguments[1] || this, ['FunctionUtils'], function (FunctionUtils) {
+          var depends = FunctionUtils.getFunctionParams(args[0]);
+          depend(depends, args[0]);
+        })
+      }
+    };
+
+    _global.eUtils = (function () {
+      var utils = {};
+      if (window.everyUtils) {
+        window.everyUtils(function (
+          ArrayUtils,
+          ObjectUtils,
+          BaseUtils,
+          FunctionUtils,
+          ColorUtils,
+          PointUtils,
+          UrlUtils) {
+          utils = {
+            ArrayUtils:    ArrayUtils,
+            ObjectUtils:   ObjectUtils,
+            BaseUtils:     BaseUtils,
+            ColorUtils:    ColorUtils,
+            UrlUtils:      UrlUtils,
+            urlUtils:      UrlUtils,
+            PointUtils:    PointUtils,
+            FunctionUtils: FunctionUtils
+          };
+        });
+      }
+      var proxy = {};
+      Object.keys(utils).forEach(function (utilName) {
+        if (!utilName) {
+          return;
+        }
+        Object.defineProperty(proxy, utilName, {
+          get: function () {
+            return utils[utilName];
+          }
+        });
+        Object.keys(utils[utilName]).forEach(function (key) {
+          if (!key) {
+            return;
+          }
+          if (proxy[key]) {
+            return;
+          }
+          Object.defineProperty(proxy, key, {
+            get: function () {
+              return utils[utilName][key];
+            }
+          })
+        })
+      });
+      return proxy;
+    })();
+
+    return _global.eUtils;
+  }));
+
+  ~function (utils) {
+    var _global = this;
+    var EHook = function () {
+      var _autoId = 1;
+      var _hookedMap = {};
+      var _hookedContextMap = {};
+      this._getHookedMap = function () {
+        return _hookedMap;
+      };
+      this._getHookedContextMap = function () {
+        return _hookedContextMap;
+      };
+      this._getAutoStrId = function () {
+        return '__auto__' + _autoId++;
+      };
+      this._getAutoId = function () {
+        return _autoId++;
+      };
+    };
+    EHook.prototype = {
+      /**
+       * 获取一个对象的劫持id，若没有则创建一个
+       * @param context
+       * @return {*}
+       * @private
+       */
+      _getHookedId:         function (context) {
+        var contextMap = this._getHookedContextMap();
+        var hookedId = null;
+        Object.keys(contextMap).forEach(key => {
+          if (context === contextMap[key]) {
+            hookedId = key;
+          }
+        });
+        if (hookedId == null) {
+          hookedId = this._getAutoStrId();
+          contextMap[hookedId] = context;
+        }
+        return hookedId;
+      },
+      /**
+       * 获取一个对象的劫持方法映射，若没有则创建一个
+       * @param context
+       * @return {*}
+       * @private
+       */
+      _getHookedMethodMap:  function (context) {
+        var hookedId = this._getHookedId(context);
+        var hookedMap = this._getHookedMap();
+        var thisTask = hookedMap[hookedId];
+        if (!utils.isExistObject(thisTask)) {
+          thisTask = hookedMap[hookedId] = {};
+        }
+        return thisTask;
+      },
+      /**
+       * 获取对应方法的hook原型任务对象，若没有则初始化一个。
+       * @param context
+       * @param methodName
+       * @private
+       */
+      _getHookedMethodTask: function (context, methodName) {
+        var thisMethodMap = this._getHookedMethodMap(context);
+        var thisMethod = thisMethodMap[methodName];
+        if (!utils.isExistObject(thisMethod)) {
+          thisMethod = thisMethodMap[methodName] = {
+            original: undefined,
+            replace:  undefined,
+            task:     {
+              before:  [],
+              current: undefined,
+              after:   []
+            }
+          };
+        }
+        return thisMethod;
+      },
+      /**
+       * 执行多个方法并注入一个方法和参数集合
+       * @param context
+       * @param methods
+       * @param args
+       * @return result 最后一次执行方法的有效返回值
+       * @private
+       */
+      _invokeMethods:       function (context, methods, args) {
+        if (!utils.isArray(methods)) {
+          return;
+        }
+        var result = null;
+        utils.ergodicArrayObject(context, methods, function (_method) {
+          if (!utils.isFunction(_method.method)) {
+            return;
+          }
+          var r = _method.method.apply(this, args);
+          if (r != null) {
+            result = r;
+          }
+        });
+        return result;
+      },
+      /**
+       * 生成和替换劫持方法
+       * @param parent
+       * @param context
+       * @param methodName {string}
+       * @private
+       */
+      _hook:                function (parent, methodName, context) {
+        if (context === undefined) {
+          context = parent;
+        }
+        var method = parent[methodName];
+        var methodTask = this._getHookedMethodTask(parent, methodName);
+        if (!methodTask.original) {
+          methodTask.original = method;
+        }
+        if (utils.isExistObject(methodTask.replace) && utils.isFunction(methodTask.replace.method)) {
+          parent[methodName] = methodTask.replace.method(methodTask.original);
+          return;
+        }
+        var invokeMethods = this._invokeMethods;
+        // 组装劫持函数
+        var builder = new utils.FunctionBuilder(function (v) {
+          return {
+            result: undefined
+          };
+        });
+        if (methodTask.task.before.length > 0) {
+          builder.push(function (v) {
+            invokeMethods(context || v.this, methodTask.task.before, [methodTask.original, v.arguments]);
+          });
+        }
+        if (utils.isExistObject(methodTask.task.current) && utils.isFunction(methodTask.task.current.method)) {
+          builder.push(function (v) {
+            return {
+              result: methodTask.task.current.method.call(context || v.this, parent, methodTask.original, v.arguments)
+            }
+          });
+        } else {
+          builder.push(function (v) {
+            return {
+              result: methodTask.original.apply(context || v.this, v.arguments)
+            }
+          });
+        }
+        if (methodTask.task.after.length > 0) {
+          builder.push(function (v) {
+            var args = [];
+            args.push(methodTask.original);
+            args.push(v.arguments);
+            args.push(v.result);
+            var r = invokeMethods(context || v.this, methodTask.task.after, args);
+            return {
+              result: (r != null ? r : v.result)
+            };
+          });
+        }
+        builder.push(function (v) {
+          return {
+            returnValue: v.result
+          };
+        });
+        // var methodStr = '(function(){\n';
+        // methodStr = methodStr + 'var result = undefined;\n';
+        // if (methodTask.task.before.length > 0) {
+        //     methodStr = methodStr + 'invokeMethods(context, methodTask.task.before,[methodTask.original, arguments]);\n';
+        // }
+        // if (utils.isExistObject(methodTask.task.current) && utils.isFunction(methodTask.task.current.method)) {
+        //     methodStr = methodStr + 'result = methodTask.task.current.method.call(context, parent, methodTask.original, arguments);\n';
+        // } else {
+        //     methodStr = methodStr + 'result = methodTask.original.apply(context, arguments);\n';
+        // }
+        // if (methodTask.task.after.length > 0) {
+        //     methodStr = methodStr + 'var args = [];args.push(methodTask.original);args.push(arguments);args.push(result);\n';
+        //     methodStr = methodStr + 'var r = invokeMethods(context, methodTask.task.after, args);result = (r!=null?r:result);\n';
+        // }
+        // methodStr = methodStr + 'return result;\n})';
+        // 绑定劫持函数
+        var resultFunc = builder.result();
+        for (var proxyName in methodTask.original) {
+          Object.defineProperty(resultFunc, proxyName, {
+            get: function () {
+              return methodTask.original[proxyName];
+            },
+            set: function (v) {
+              methodTask.original[proxyName] = v;
+            }
+          })
+        }
+        resultFunc.prototype = methodTask.original.prototype;
+        parent[methodName] = resultFunc;
+      },
+      /**
+       * 劫持一个方法
+       * @param parent
+       * @param methodName {string}
+       * @param config
+       */
+      hook:                 function (parent, methodName, config) {
+        var hookedFailure = -1;
+        // 调用方法的上下文
+        var context = config.context !== undefined ? config.context : parent;
+        if (parent[methodName] == null) {
+          parent[methodName] = function () {
+          }
+        }
+        if (!utils.isFunction(parent[methodName])) {
+          return hookedFailure;
+        }
+        var methodTask = this._getHookedMethodTask(parent, methodName);
+        var id = this._getAutoId();
+        if (utils.isFunction(config.replace)) {
+          methodTask.replace = {
+            id:     id,
+            method: config.replace
+          };
+          hookedFailure = 0;
+        }
+        if (utils.isFunction(config.before)) {
+          methodTask.task.before.push({
+            id:     id,
+            method: config.before
+          });
+          hookedFailure = 0;
+        }
+        if (utils.isFunction(config.current)) {
+          methodTask.task.current = {
+            id:     id,
+            method: config.current
+          };
+          hookedFailure = 0;
+        }
+        if (utils.isFunction(config.after)) {
+          methodTask.task.after.push({
+            id:     id,
+            method: config.after
+          });
+          hookedFailure = 0;
+        }
+        if (hookedFailure === 0) {
+          this._hook(parent, methodName, context);
+          return id;
+        } else {
+          return hookedFailure;
+        }
+
+      },
+      /**
+       * 劫持替换一个方法
+       * @param parent
+       * @param context
+       * @param methodName {string}
+       * @param replace {function}
+       * @return {number} 该次劫持的id
+       */
+      hookReplace:          function (parent, methodName, replace, context) {
+        return this.hook(parent, methodName, {
+          replace: replace,
+          context: context
+        });
+      },
+      hookBefore:           function (parent, methodName, before, context) {
+        return this.hook(parent, methodName, {
+          before:  before,
+          context: context
+        });
+      },
+      hookCurrent:          function (parent, methodName, current, context) {
+        return this.hook(parent, methodName, {
+          current: current,
+          context: context
+        });
+      },
+      hookAfter:            function (parent, methodName, after, context) {
+        return this.hook(parent, methodName, {
+          after:   after,
+          context: context
+        });
+      },
+      hookClass:            function (parent, className, replace, innerName, excludeProperties) {
+        var _this = this;
+        var originFunc = parent[className];
+        if (!excludeProperties) {
+          excludeProperties = [];
+        }
+        excludeProperties.push('prototype');
+        excludeProperties.push('caller');
+        excludeProperties.push('arguments');
+        innerName = innerName || '_innerHook';
+        var resFunc = function () {
+          this[innerName] = new originFunc();
+          replace.apply(this, arguments);
+        };
+        this.hookedToString(originFunc, resFunc);
+        this.hookedToProperties(originFunc, resFunc, true, excludeProperties);
+        var prototypeProperties = Object.getOwnPropertyNames(originFunc.prototype);
+        var prototype = resFunc.prototype = {
+          constructor: resFunc
+        };
+        prototypeProperties.forEach(function (name) {
+          if (name === 'constructor') {
+            return;
+          }
+          var method = function () {
+            if (originFunc.prototype[name] && utils.isFunction(originFunc.prototype[name])) {
+              return originFunc.prototype[name].apply(this[innerName], arguments);
+            }
+            return undefined;
+          };
+          _this.hookedToString(originFunc.prototype[name], method);
+          prototype[name] = method;
+        });
+        this.hookReplace(parent, className, function () {
+          return resFunc;
+        }, parent)
+      },
+      hookedToProperties:   function (originObject, resultObject, isDefined, excludeProperties) {
+        var objectProperties = Object.getOwnPropertyNames(originObject);
+        objectProperties.forEach(function (property) {
+          if (utils.contains(excludeProperties, property)) {
+            return;
+          }
+          if (!isDefined) {
+            resultObject[property] = originObject[property];
+          } else {
+            Object.defineProperty(resultObject, property, {
+              configurable: false,
+              enumerable:   false,
+              value:        originObject[property],
+              writable:     false
+            });
+          }
+        });
+      },
+      hookedToString:       function (originObject, resultObject) {
+        Object.defineProperties(resultObject, {
+          toString:       {
+            configurable: false,
+            enumerable:   false,
+            value:        originObject.toString.bind(originObject),
+            writable:     false
+          },
+          toLocaleString: {
+            configurable: false,
+            enumerable:   false,
+            value:        originObject.toLocaleString.bind(originObject),
+            writable:     false
+          }
+        })
+      },
+      /**
+       * 劫持全局ajax
+       * @param methods {object} 劫持的方法
+       * @return {*|number} 劫持的id
+       */
+      hookAjax:             function (methods) {
+        if (this.isHooked(_global, 'XMLHttpRequest')) {
+          return;
+        }
+        var _this = this;
+        var hookMethod = function (methodName) {
+          if (utils.isFunction(methods[methodName])) {
+            // 在执行方法之前hook原方法
+            _this.hookBefore(this.xhr, methodName, methods[methodName]);
+          }
+          // 返回方法调用内部的xhr
+          return this.xhr[methodName].bind(this.xhr);
+        };
+        var getProperty = function (attr) {
+          return function () {
+            return this.hasOwnProperty(attr + "_") ? this[attr + "_"] : this.xhr[attr];
+          };
+        };
+        var setProperty = function (attr) {
+          return function (f) {
+            var xhr = this.xhr;
+            var that = this;
+            if (attr.indexOf("on") !== 0) {
+              this[attr + "_"] = f;
+              return;
+            }
+            if (methods[attr]) {
+              xhr[attr] = function () {
+                f.apply(xhr, arguments);
+              };
+              // on方法在set时劫持
+              _this.hookBefore(xhr, attr, methods[attr]);
+              // console.log(1,attr);
+              // xhr[attr] = function () {
+              //     methods[attr](that) || f.apply(xhr, arguments);
+              // }
+            } else {
+              xhr[attr] = f;
+            }
+          };
+        };
+        return this.hookReplace(_global, 'XMLHttpRequest', function (XMLHttpRequest) {
+          var resFunc = function () {
+            this.xhr = new XMLHttpRequest();
+            for (var propertyName in this.xhr) {
+              var property = this.xhr[propertyName];
+              if (utils.isFunction(property)) {
+                // hook 原方法
+                this[propertyName] = hookMethod.bind(this)(propertyName);
+              } else {
+                Object.defineProperty(this, propertyName, {
+                  get: getProperty(propertyName),
+                  set: setProperty(propertyName)
+                });
+              }
+            }
+            // 定义外部xhr可以在内部访问
+            this.xhr.xhr = this;
+          };
+          _this.hookedToProperties(XMLHttpRequest, resFunc, true);
+          _this.hookedToString(XMLHttpRequest, resFunc);
+          return resFunc
+        });
+      },
+      /**
+       * 劫持全局ajax
+       * @param methods {object} 劫持的方法
+       * @return {*|number} 劫持的id
+       */
+      hookAjaxV2:           function (methods) {
+        this.hookClass(window, 'XMLHttpRequest', function () {
+
+        });
+        utils.ergodicObject(this, methods, function (method) {
+
+        });
+      },
+      /**
+       * 解除劫持
+       * @param context 上下文
+       * @param methodName 方法名
+       * @param isDeeply {boolean=} 是否深度解除[默认为false]
+       * @param eqId {number=}  解除指定id的劫持[可选]
+       */
+      unHook:               function (context, methodName, isDeeply, eqId) {
+        if (!context[methodName] || !utils.isFunction(context[methodName])) {
+          return;
+        }
+        var methodTask = this._getHookedMethodTask(context, methodName);
+        if (eqId) {
+          if (this.unHookById(eqId)) {
+            return;
+          }
+        }
+        if (!methodTask.original) {
+          delete this._getHookedMethodMap(context)[methodName];
+          return;
+        }
+        context[methodName] = methodTask.original;
+        if (isDeeply) {
+          delete this._getHookedMethodMap(context)[methodName];
+        }
+      },
+      /**
+       * 通过Id解除劫持
+       * @param eqId
+       * @returns {boolean}
+       */
+      unHookById:           function (eqId) {
+        var hasEq = false;
+        if (eqId) {
+          var hookedMap = this._getHookedMap();
+          utils.ergodicObject(this, hookedMap, function (contextMap) {
+            utils.ergodicObject(this, contextMap, function (methodTask) {
+              methodTask.task.before = methodTask.task.before.filter(function (before) {
+                hasEq = hasEq || before.id === eqId;
+                return before.id !== eqId;
+              });
+              methodTask.task.after = methodTask.task.after.filter(function (after) {
+                hasEq = hasEq || after.id === eqId;
+                return after.id !== eqId;
+              });
+              if (methodTask.task.current && methodTask.task.current.id === eqId) {
+                methodTask.task.current = undefined;
+                hasEq = true;
+              }
+              if (methodTask.replace && methodTask.replace.id === eqId) {
+                methodTask.replace = undefined;
+                hasEq = true;
+              }
+            })
+          });
+        }
+        return hasEq;
+      },
+      /**
+       *  移除所有劫持相关的方法
+       * @param context 上下文
+       * @param methodName 方法名
+       */
+      removeHookMethod:     function (context, methodName) {
+        if (!context[methodName] || !utils.isFunction(context[methodName])) {
+          return;
+        }
+        this._getHookedMethodMap(context)[methodName] = {
+          original: undefined,
+          replace:  undefined,
+          task:     {
+            before:  [],
+            current: undefined,
+            after:   []
+          }
+        };
+      },
+      /**
+       * 判断一个方法是否被劫持过
+       * @param context
+       * @param methodName
+       */
+      isHooked:             function (context, methodName) {
+        var hookMap = this._getHookedMethodMap(context);
+        return hookMap[methodName] !== undefined ? (hookMap[methodName].original !== undefined) : false;
+      },
+      /**
+       * 保护一个对象使之不会被篡改
+       * @param parent
+       * @param methodName
+       */
+      protect:              function (parent, methodName) {
+        Object.defineProperty(parent, methodName, {
+          configurable: false,
+          writable:     false
+        });
+      },
+      preventError:         function (parent, methodName, returnValue, context) {
+        this.hookCurrent(parent, methodName, function (m, args) {
+          var value = returnValue;
+          try {
+            value = m.apply(this, args);
+          } catch (e) {
+            console.log('Error Prevented from method ' + methodName, e);
+          }
+          return value;
+        }, context)
+      },
+      /**
+       * 装载插件
+       * @param option
+       */
+      plugins:              function (option) {
+        if (utils.isFunction(option.mount)) {
+          var result = option.mount.call(this, utils);
+          if (typeof option.name === 'string') {
+            _global[option.name] = result;
+          }
+        }
+      }
+    };
+    if (_global.eHook && (_global.eHook instanceof EHook)) {
+      return;
+    }
+    var eHook = new EHook();
+    var AHook = function () {
+      this.isHooked = false;
+      var autoId = 1;
+      this._urlDispatcherList = [];
+      this._getAutoId = function () {
+        return autoId++;
+      };
+    };
+    AHook.prototype = {
+      /**
+       * 执行配置列表中的指定方法组
+       * @param xhr
+       * @param methodName
+       * @param args
+       * @private
+       */
+      _invokeAimMethods: function (xhr, methodName, args) {
+        var configs = utils.parseArrayByProperty(xhr.patcherList, 'config');
+        var methods = [];
+        utils.ergodicArrayObject(xhr, configs, function (config) {
+          if (utils.isFunction(config[methodName])) {
+            methods.push(config[methodName]);
+          }
+        });
+        return utils.invokeMethods(xhr, methods, args);
+      },
+      /**
+       * 根据url获取配置列表
+       * @param url
+       * @return {Array}
+       * @private
+       */
+      _urlPatcher:       function (url) {
+        var patcherList = [];
+        utils.ergodicArrayObject(this, this._urlDispatcherList, function (patcherMap, i) {
+          if (utils.UrlUtils.urlMatching(url, patcherMap.patcher)) {
+            patcherList.push(patcherMap);
+          }
+        });
+        return patcherList;
+      },
+      /**
+       * 根据xhr对象分发回调请求
+       * @param xhr
+       * @param fullUrl
+       * @private
+       */
+      _xhrDispatcher:    function (xhr, fullUrl) {
+        var url = utils.UrlUtils.getUrlWithoutParam(fullUrl);
+        xhr.patcherList = this._urlPatcher(url);
+      },
+      /**
+       * 转换响应事件
+       * @param e
+       * @param xhr
+       * @private
+       */
+      _parseEvent:       function (e, xhr) {
+        try {
+          Object.defineProperties(e, {
+            target:     {
+              get: function () {
+                return xhr;
+              }
+            },
+            srcElement: {
+              get: function () {
+                return xhr;
+              }
+            }
+          });
+        } catch (error) {
+          console.warn('重定义返回事件失败，劫持响应可能失败');
+        }
+        return e;
+      },
+      /**
+       * 解析open方法的参数
+       * @param args
+       * @private
+       */
+      _parseOpenArgs:    function (args) {
+        return {
+          method:  args[0],
+          fullUrl: args[1],
+          url:     utils.UrlUtils.getUrlWithoutParam(args[1]),
+          params:  utils.UrlUtils.getParamFromUrl(args[1]),
+          async:   args[2]
+        };
+      },
+      /**
+       * 劫持ajax 请求参数
+       * @param argsObject
+       * @param argsArray
+       * @private
+       */
+      _rebuildOpenArgs:  function (argsObject, argsArray) {
+        argsArray[0] = argsObject.method;
+        argsArray[1] = utils.UrlUtils.margeUrlAndParams(argsObject.url, argsObject.params);
+        argsArray[2] = argsObject.async;
+      },
+      /**
+       * 获取劫持方法的参数 [原方法,原方法参数,原方法返回值]，剔除原方法参数
+       * @param args
+       * @return {*|Array.<T>}
+       * @private
+       */
+      _getHookedArgs:    function (args) {
+        // 将参数中'原方法'剔除
+        return Array.prototype.slice.call(args, 0).splice(1);
+      },
+      /**
+       * 响应被触发时调用的方法
+       * @param outerXhr
+       * @param funcArgs
+       * @private
+       */
+      _onResponse:       function (outerXhr, funcArgs) {
+        // 因为参数是被劫持的参数为[method(原方法),args(参数)],该方法直接获取参数并转换为数组
+        var args = this._getHookedArgs(funcArgs);
+        args[0][0] = this._parseEvent(args[0][0], outerXhr.xhr); // 强制事件指向外部xhr
+        // 执行所有的名为hookResponse的方法组
+        var results = this._invokeAimMethods(outerXhr, 'hookResponse', args);
+        // 遍历结果数组并获取最后返回的有效的值作为响应值
+        var resultIndex = -1;
+        utils.ergodicArrayObject(outerXhr, results, function (res, i) {
+          if (res != null) {
+            resultIndex = i;
+          }
+        });
+        if (resultIndex !== -1) {
+          outerXhr.xhr.responseText_ = outerXhr.xhr.response_ = results[resultIndex];
+        }
+      },
+      /**
+       * 手动开始劫持
+       */
+      startHook:         function () {
+        var _this = this;
+        var normalMethods = {
+          // 方法中的this指向内部xhr
+          // 拦截响应
+          onreadystatechange: function () {
+            if (this.readyState == 4 && this.status == 200 || this.status == 304) {
+              _this._onResponse(this, arguments);
+            }
+          },
+          onload:             function () {
+            _this._onResponse(this, arguments);
+          },
+          // 拦截请求
+          open:               function () {
+            var args = _this._getHookedArgs(arguments);
+            var fullUrl = args[0][1];
+            _this._xhrDispatcher(this, fullUrl);
+            var argsObject = _this._parseOpenArgs(args[0]);
+            this.openArgs = argsObject;
+            _this._invokeAimMethods(this, 'hookRequest', [argsObject]);
+            _this._rebuildOpenArgs(argsObject, args[0]);
+          },
+          send:               function () {
+            var args = _this._getHookedArgs(arguments);
+            this.sendArgs = args;
+            _this._invokeAimMethods(this, 'hookSend', args);
+          }
+        };
+        // 设置总的hookId
+        this.___hookedId = _global.eHook.hookAjax(normalMethods);
+        this.isHooked = true;
+      },
+      /**
+       * 注册ajaxUrl拦截
+       * @param urlPatcher
+       * @param configOrRequest
+       * @param response
+       * @return {number}
+       */
+      register:          function (urlPatcher, configOrRequest, response) {
+        if (!urlPatcher) {
+          return -1;
+        }
+        if (!utils.isExistObject(configOrRequest) && !utils.isFunction(response)) {
+          return -1;
+        }
+        var config = {};
+        if (utils.isFunction(configOrRequest)) {
+          config.hookRequest = configOrRequest;
+        }
+        if (utils.isFunction(response)) {
+          config.hookResponse = response;
+        }
+        if (utils.isExistObject(configOrRequest)) {
+          config = configOrRequest;
+        }
+        var id = this._getAutoId();
+        this._urlDispatcherList.push({
+          // 指定id便于后续取消
+          id:      id,
+          patcher: urlPatcher,
+          config:  config
+        });
+        // 当注册一个register时，自动开始运行劫持
+        if (!this.isHooked) {
+          this.startHook();
+        }
+        return id;
+      }
+      // todo 注销  cancellation: function (registerId){};
+    };
+
+    _global['eHook'] = eHook;
+    _global['aHook'] = new AHook();
+
+
+  }.bind(window)(
+    (function () {
+      var utils = {};
+      if (window.everyUtils) {
+        window.everyUtils(function (
+          ArrayUtils,
+          ObjectUtils,
+          BaseUtils,
+          FunctionUtils,
+          ColorUtils,
+          UrlUtils) {
+          utils = {
+            ArrayUtils:    ArrayUtils,
+            ObjectUtils:   ObjectUtils,
+            BaseUtils:     BaseUtils,
+            ColorUtils:    ColorUtils,
+            UrlUtils:      UrlUtils,
+            urlUtils:      UrlUtils,
+            FunctionUtils: FunctionUtils
+          };
+        });
+      }
+      var proxy = {};
+      Object.keys(utils).forEach(function (utilName) {
+        if (!utilName) {
+          return;
+        }
+        Object.defineProperty(proxy, utilName, {
+          get: function () {
+            return utils[utilName];
+          }
+        });
+        Object.keys(utils[utilName]).forEach(function (key) {
+          if (!key) {
+            return;
+          }
+          if (proxy[key]) {
+            return;
+          }
+          Object.defineProperty(proxy, key, {
+            get: function () {
+              return utils[utilName][key];
+            }
+          })
+        })
+      });
+      return proxy;
+    })()
+  );
+}
+
+function initTimeHook() {
+  window.isDOMLoaded = false;
+  window.isDOMRendered = false;
+
+  document.addEventListener('readystatechange', function () {
+    if (document.readyState === "interactive" || document.readyState === "complete") {
+      window.isDOMLoaded = true;
+    }
+  });
+
+  ~function (global) {
+
+    var workerURLs = [];
+    var extraElements = [];
+
+    var helper = function (eHookContext, timerContext, util) {
+      return {
+        applyUI:                  function () {
+        },
+        applyGlobalAction:        function (timer) {
+          // 界面半圆按钮点击的方法
+          timer.changeTime = function (anum, cnum, isa, isr) {
+            if (isr) {
+              global.timer.change(1);
+              return;
+            }
+            if (!global.timer) {
+              return;
+            }
+            var result;
+            if (!anum && !cnum) {
+              var t = prompt("输入欲改变计时器变化倍率（当前：" + 1 / timerContext._percentage + "）");
+              if (t == null) {
+                return;
+              }
+              if (isNaN(parseFloat(t))) {
+                alert("请输入正确的数字");
+                timer.changeTime();
+                return;
+              }
+              if (parseFloat(t) <= 0) {
+                alert("倍率不能小于等于0");
+                timer.changeTime();
+                return;
+              }
+              result = 1 / parseFloat(t);
+            } else {
+              if (isa && anum) {
+                if (1 / timerContext._percentage <= 1 && anum < 0) {
+                  return;
+                }
+                result = 1 / (1 / timerContext._percentage + anum);
+              } else {
+                if (cnum < 0) {
+                  cnum = 1 / -cnum
+                }
+                result = 1 / ((1 / timerContext._percentage) * cnum);
+              }
+            }
+            timer.change(result);
+          };
+          global.changeTime = timer.changeTime;
+        },
+        applyHooking:             function () {
+          // 劫持循环计时器
+          eHookContext.hookReplace(window, 'setInterval', function (setInterval) {
+            return function () {
+              // 储存原始时间间隔
+              arguments[2] = arguments[1];
+              // 获取变速时间间隔
+              arguments[1] *= timerContext._percentage;
+              var resultId = setInterval.apply(window, arguments);
+              // 保存每次使用计时器得到的id以及参数等
+              timerContext._intervalIds[resultId] = {
+                args:  arguments,
+                nowId: resultId
+              };
+              return resultId;
+            };
+          });
+          // 劫持循环计时器的清除方法
+          eHookContext.hookBefore(window, 'clearInterval', function (method, args) {
+            var id = args[0];
+            if (timerContext._intervalIds[id]) {
+              args[0] = timerContext._intervalIds[id].nowId;
+            }
+            // 清除该记录id
+            delete timerContext._intervalIds[id];
+          });
+          // 劫持循环计时器的清除方法
+          eHookContext.hookBefore(window, 'clearTimeout', function (method, args) {
+            var id = args[0];
+            if (timerContext._intervalIds[id]) {
+              args[0] = timerContext._intervalIds[id].nowId;
+            }
+            // 清除该记录id
+            delete timerContext._intervalIds[id];
+          });
+          // 劫持单次计时器setTimeout
+          eHookContext.hookBefore(window, 'setTimeout', function (method, args) {
+            args[1] *= timerContext._percentage;
+          });
+          var newFunc = this.getHookedDateConstructor();
+          eHookContext.hookClass(window, 'Date', newFunc, '_innerDate', ['now']);
+          Date.now = function () {
+            return new Date().getTime();
+          };
+          eHookContext.hookedToString(timerContext._Date.now, Date.now);
+          var objToString = Object.prototype.toString;
+
+          eHookContext.hookAfter(Object.prototype, 'toString', function (m, args, result) {
+            if (this instanceof timerContext._mDate) {
+              return '[object Date]';
+            } else {
+              return result;
+            }
+          }, false);
+
+          eHookContext.hookedToString(objToString, Object.prototype.toString);
+          eHookContext.hookedToString(timerContext._setInterval, setInterval);
+          eHookContext.hookedToString(timerContext._setTimeout, setTimeout);
+          eHookContext.hookedToString(timerContext._clearInterval, clearInterval);
+          timerContext._mDate = window.Date;
+          this.hookShadowRoot();
+        },
+        getHookedDateConstructor: function () {
+          return function () {
+            if (arguments.length === 1) {
+              Object.defineProperty(this, '_innerDate', {
+                configurable: false,
+                enumerable:   false,
+                value:        new timerContext._Date(arguments[0]),
+                writable:     false
+              });
+              return;
+            } else if (arguments.length > 1) {
+              var definedValue = new timerContext._Date(...arguments);;
+              Object.defineProperty(this, '_innerDate', {
+                configurable: false,
+                enumerable:   false,
+                value:        definedValue,
+                writable:     false
+              });
+              return;
+            }
+            var now = timerContext._Date.now();
+            var passTime = now - timerContext.__lastDatetime;
+            var hookPassTime = passTime * (1 / timerContext._percentage);
+            // console.log(__this.__lastDatetime + hookPassTime, now,__this.__lastDatetime + hookPassTime - now);
+            Object.defineProperty(this, '_innerDate', {
+              configurable: false,
+              enumerable:   false,
+              value:        new timerContext._Date(timerContext.__lastMDatetime + hookPassTime),
+              writable:     false
+            });
+          };
+        },
+
+        /**
+         * 当计时器速率被改变时调用的回调方法
+         * @param percentage
+         * @private
+         */
+        percentageChangeHandler:  function (percentage) {
+          // 改变所有的循环计时
+          util.ergodicObject(timerContext, timerContext._intervalIds, function (idObj, id) {
+            idObj.args[1] = Math.floor(idObj.args[2] * percentage);
+            // console.log(idObj.args[1]);
+            // 结束原来的计时器
+            this._clearInterval.call(window, idObj.nowId);
+            // 新开一个计时器
+            idObj.nowId = this._setInterval.apply(window, idObj.args);
+          });
+        },
+        hookShadowRoot:           function () {
+          var origin = Element.prototype.attachShadow;
+          eHookContext.hookAfter(Element.prototype, 'attachShadow',
+            function (m, args, result) {
+              extraElements.push(result);
+              return result;
+            }, false);
+          eHookContext.hookedToString(origin, Element.prototype.attachShadow);
+        }
+      }
+    };
+
+    var normalUtil = {
+      isInIframe:          function () {
+        let is = global.parent !== global;
+        try {
+          is = is && global.parent.document.body.tagName !== 'FRAMESET'
+        } catch (e) {
+          // ignore
+        }
+        return is;
+      },
+      listenParentEvent:   function (handler) {
+        global.addEventListener('message', function (e) {
+          var data = e.data;
+          var type = data.type || '';
+          if (type === 'changePercentage') {
+            handler(data.percentage || 0);
+          }
+        })
+      },
+      sentChangesToIframe: function (percentage) {
+        var iframes = document.querySelectorAll('iframe') || [];
+        var frames = document.querySelectorAll('frame');
+        if (iframes.length) {
+          for (var i = 0; i < iframes.length; i++) {
+            iframes[i].contentWindow.postMessage(
+              {type: 'changePercentage', percentage: percentage}, '*');
+          }
+        }
+        if (frames.length) {
+          for (var j = 0; j < frames.length; j++) {
+            frames[j].contentWindow.postMessage(
+              {type: 'changePercentage', percentage: percentage}, '*');
+          }
+        }
+      }
+    };
+
+    var querySelectorAll = function (ele, selector, includeExtra) {
+      var elements = ele.querySelectorAll(selector);
+      elements = Array.prototype.slice.call(elements || []);
+      if (includeExtra) {
+        extraElements.forEach(function (element) {
+          elements = elements.concat(querySelectorAll(element, selector, false));
+        })
+      }
+      return elements;
+    };
+
+    var generate = function () {
+      return function (util) {
+        // disable worker
+        workerURLs.forEach(function (url) {
+          if (util.urlMatching(location.href, 'http.*://.*' + url + '.*')) {
+            window['Worker'] = undefined;
+            console.log('Worker disabled');
+          }
+        });
+        var eHookContext = this;
+        var timerHooker = {
+          // 用于储存计时器的id和参数
+          _intervalIds:       {},
+          // 计时器速率
+          __percentage:       1.0,
+          // 劫持前的原始的方法
+          _setInterval:       window['setInterval'],
+          _clearInterval:     window['clearInterval'],
+          _clearTimeout:      window['clearTimeout'],
+          _setTimeout:        window['setTimeout'],
+          _Date:              window['Date'],
+          __lastDatetime:     new Date().getTime(),
+          __lastMDatetime:    new Date().getTime(),
+          videoSpeedInterval: 1000,
+          /**
+           * 初始化方法
+           */
+          init:               function () {
+            var timerContext = this;
+            var h = helper(eHookContext, timerContext, util);
+
+            h.applyHooking();
+
+            // 设定百分比属性被修改的回调
+            Object.defineProperty(timerContext, '_percentage', {
+              get: function () {
+                return timerContext.__percentage;
+              },
+              set: function (percentage) {
+                if (percentage === timerContext.__percentage) {
+                  return percentage;
+                }
+                h.percentageChangeHandler(percentage);
+                timerContext.__percentage = percentage;
+                return percentage;
+              }
+            });
+
+            if (!normalUtil.isInIframe()) {
+              console.log('[TimeHooker]', 'loading outer window...');
+              h.applyUI();
+              h.applyGlobalAction(timerContext);
+
+            } else {
+              console.log('[TimeHooker]', 'loading inner window...');
+              normalUtil.listenParentEvent((function (percentage) {
+                console.log('[TimeHooker]', 'Inner Changed', percentage)
+                this.change(percentage);
+              }).bind(this))
+            }
+          },
+          /**
+           * 调用该方法改变计时器速率
+           * @param percentage
+           */
+          change:             function (percentage) {
+            var _this = this;
+            this.__lastMDatetime = this._mDate.now();
+            // console.log(this._mDate.toString());
+            // console.log(new this._mDate());
+            this.__lastDatetime = this._Date.now();
+            // debugger;
+            //---------------------------------//
+            this._percentage = percentage;
+            var oldNode = document.getElementsByClassName('_th-click-hover');
+            var oldNode1 = document.getElementsByClassName('_th_times');
+            (oldNode[0] || {}).innerHTML = 'x' + 1 / this._percentage;
+            (oldNode1[0] || {}).innerHTML = 'x' + 1 / this._percentage;
+            var a = document.getElementsByClassName('_th_cover-all-show-times')[0] || {};
+            // console.log(a.className);
+            a.className = '_th_cover-all-show-times';
+            this._setTimeout.bind(window)(function () {
+              a.className = '_th_cover-all-show-times _th_hidden';
+            }, 100);
+            this.changeVideoSpeed();
+            this._clearInterval.bind(window)(this.videoSpeedIntervalId);
+            this.videoSpeedIntervalId = this._setInterval.bind(window)(function () {
+              _this.changeVideoSpeed();
+              var rate = 1 / _this._percentage;
+              if (rate === 1) {
+                _this._clearInterval.bind(window)(_this.videoSpeedIntervalId);
+              }
+            }, this.videoSpeedInterval);
+            normalUtil.sentChangesToIframe(percentage);
+          },
+          changeVideoSpeed:   function () {
+            var rate = 1 / this._percentage;
+            rate > 16 && (rate = 16);
+            rate < 0.065 && (rate = 0.065);
+            // console.log(rate);
+            var videos = querySelectorAll(document, 'video', true) || [];
+            if (videos.length) {
+              for (var i = 0; i < videos.length; i++) {
+                videos[i].playbackRate = rate;
+              }
+            }
+          }
+        };
+        // 默认初始化
+        timerHooker.init();
+        return timerHooker;
+      }
+    };
+
+    if (global.eHook) {
+      global.eHook.plugins({
+        name:  'acXtimer',
+        /**
+         * 插件装载
+         * @param util
+         */
+        mount: generate()
+      });
+    }
+  }(window);
+}
+
+function initKeyListener(){
+  function registerShortcutKeys(timer) {
+    // 快捷键注册
+    addEventListener('keydown', function (e) {
+      switch (e.key) {
+        // [加速]
+        case 'c': {
+          timer.changeTime(4, 0, true);
+          break;
+        }
+        // [减速]
+        case 'x': {
+          timer.changeTime(-4, 0, true);
+          break;
+        }
+        // [默认值]
+        case 'z': {
+          timer.changeTime(0, 0, false, true);
+          break;
+        }
+        case '0':{
+          if(e.altKey){
+            timer.changeTime(0, 50);
+            // TODO 延迟之后恢复速率
+            timer._setTimeout(function(){
+              XchangeTime(0, 0, false, true);
+            }, 200);
+          }
+        }
+        default:
+      }
+    });
+  }
+  function YoutubeAutoFast(timer){
+    if (location.host.indexOf("youtube.com") >= 0) {
+      // addStyle(".video-ads .ad-container .adDisplay, #player-ads, .ytp-ad-module, .ytp-ad-image-overlay{ display: none!important; }");
+      timer._setInterval(function () {
+        var adPassBtn = (document.querySelector(".ytp-ad-skip-button ") || document.querySelector(".videoAdUiSkipButton ")) || document.querySelector(".ytp-ad-overlay-close-container");
+        adPassBtn && adPassBtn.click();
+        if (document.querySelector(".ytp-ad-preview-container") != null) {
+          console.log("准备加速");
+          timer.changeTime(0, 50);
+          // 100倍速度，那么需要：10秒 = 0.1秒 = 100 ms
+          timer._setTimeout(function () {
+            console.log("结束");
+            timer.changeTime(0, 0, false, true);
+          }, 1200);
+        }
+      }, 1500)
+    }
+  }
+
+  registerShortcutKeys(acXtimer);
+  YoutubeAutoFast(acXtimer)
+}
+
+initHook();
+initTimeHook();
