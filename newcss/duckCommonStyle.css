@@ -29,7 +29,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 640px;
-    color: #2866bd;
+    color: #4879BD;
     font-size: smaller;
 }
 
@@ -58,7 +58,7 @@ body {
 #links_wrapper #links .results_links_deep h2 a:after {
     content: "";
     position: absolute;
-    border-bottom: 2px solid #2866bd;
+    border-bottom: 2px solid #4879BD;
     bottom: 1px;
     left: 100%;
     width: 0;

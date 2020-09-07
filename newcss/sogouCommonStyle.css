@@ -66,7 +66,7 @@ a, a strong {
 #main .results>div h3 a:after {
     content: "";
     position: absolute;
-    border-bottom: 2px solid #2866bd;
+    border-bottom: 2px solid #4879BD;
     bottom: 1px;
     left: 100%;
     width: 0;
