@@ -57,16 +57,16 @@ form.fm .s_ipt_wr.bg{
     width: unset; /*edit: fix baidu banner position*/
 }
 form.fm .s_btn {
-    background: #4879BD;
-    border-bottom: 1px solid #4879bd;
+    background: #3476d2;
+    border-bottom: 1px solid #3476d2;
 }
 form.fm .s_btn:hover {
     background: #4F7FbF;
-    border-bottom: 1px solid #4879BD;
+    border-bottom: 1px solid #3476d2;
 }
 #wrapper #s_tab b {
-    color: #4879BD;
-    border-bottom: 3px #4879BD solid;
+    color: #3476d2;
+    border-bottom: 3px #3476d2 solid;
 }
 
 #u a {
@@ -141,7 +141,7 @@ form.fm .s_btn:hover {
 #wrapper #content_left .op-se-listen-recommend,
 #wrapper #content_left .c-offset>div a {
     text-decoration: none;
-    color: #4879BD;
+    color: #3476d2;
 }
 #wrapper #content_left .f13 a:hover,
 #wrapper #content_left .f13 em:hover,
@@ -187,7 +187,7 @@ form.fm .s_btn:hover {
 #wrapper #content_left .c-container[tpl='soft'] .op-soft-title a em,
 #wrapper #content_left .c-container h3 a,
 #wrapper #content_left .result h3 a em {
-    color: #4879BD;
+    color: #3476d2;
     font-weight: bold;
 }
 #wrapper #content_left .op-soft-title a,
@@ -210,7 +210,7 @@ form.fm .s_btn:hover {
 #wrapper #content_left .result h3 a:after {
     content: "";
     position: absolute;
-    border-bottom: 2px solid #4879BD;
+    border-bottom: 2px solid #3476d2;
     bottom: -2px;
     left: 100%;
     width: 0;
@@ -275,7 +275,7 @@ form.fm .s_btn:hover {
 #wrapper #rs table tr a {
     margin-top: 5px;
     margin-bottom: 5px;
-    color: #4879BD;
+    color: #3476d2;
 }
 #wrapper #rs table tr a:hover {
     text-decoration: underline;
@@ -293,7 +293,7 @@ form.fm .s_btn:hover {
 }
 #wrapper #page a,
 #wrapper #page strong {
-    color:#4879BD;
+    color:#3476d2;
     height: auto;
     box-shadow: 0 0 2px gray;
     -webkit-box-shadow: 0 0 2px gray;
@@ -309,7 +309,7 @@ form.fm .s_btn:hover {
     color: #0057da;
 }
 #wrapper #page strong .pc {
-    background: #4879bd;
+    background: #3476d2;
     color: white;
 }
 .op-img-address-divide-high{

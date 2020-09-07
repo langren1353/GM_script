@@ -58,16 +58,16 @@ a em {
     width: 76%;
 }
 #form .s_btn {
-    background: #4879BD;
-    border-bottom: 1px solid #4879bd;
+    background: #3476d2;
+    border-bottom: 1px solid #3476d2;
 }
 #form .s_btn:hover {
-    background: #4879bd;
-    border-bottom: 1px solid #4879BD;
+    background: #3476d2;
+    border-bottom: 1px solid #3476d2;
 }
 #s_tab b {
-    color: #4879BD;
-    border-bottom: 3px #4879BD solid;
+    color: #3476d2;
+    border-bottom: 3px #3476d2 solid;
 }
 #s_tab {
     border-bottom: #e0e0e0 1px solid;
@@ -146,7 +146,7 @@ a em {
 #rso .op-se-listen-recommend,
 #rso .c-offset>div a {
     text-decoration: none;
-    color: #4879BD;
+    color: #3476d2;
 }
 #rso .f13 a:hover,
 #rso .f13 em:hover,
@@ -197,7 +197,7 @@ a em {
 #rso .g div.r> a em,
 .mw #res h3,
 .mw #extrares h3{
-    color: #4879BD;
+    color: #3476d2;
     font-weight: bold;
 }
 /* title:visied */
@@ -228,7 +228,7 @@ a em {
 #rso .g div.r> a:after {
     content: "";
     position: absolute;
-    border-bottom: 2px solid #4879BD;
+    border-bottom: 2px solid #3476d2;
     bottom: -2px;
     left: 100%;
     width: 0;
@@ -281,7 +281,7 @@ a em {
 #rs table tr a {
     margin-top: 5px;
     margin-bottom: 5px;
-    color: #4879BD;
+    color: #3476d2;
 }
 #rs table tr a:hover {
     text-decoration: underline;
@@ -300,7 +300,7 @@ a em {
 }
 #page a,
 #page strong {
-    color:#4879BD;
+    color:#3476d2;
     height: auto;
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
@@ -313,7 +313,7 @@ a em {
     color: #0057da;
 }
 #page strong .pc {
-    background: #4879bd;
+    background: #3476d2;
     color: white;
 }
 /* ani */
