@@ -51,7 +51,7 @@ function initHook() {
        * 对象是否为数组
        * @param arr
        */
-      isArray:       function (arr) {
+      isArray: function (arr) {
         return Array.isArray(arr) || Object.prototype.toString.call(arr) === "[object Array]";
       },
       /**
@@ -59,7 +59,7 @@ function initHook() {
        * @param func
        * @return {boolean}
        */
-      isFunction:    function (func) {
+      isFunction: function (func) {
         if (!func) {
           return false;
         }
@@ -73,13 +73,13 @@ function initHook() {
       isExistObject: function (obj) {
         return obj && (typeof obj === 'object');
       },
-      isString:      function (str) {
+      isString: function (str) {
         if (str === null) {
           return false;
         }
         return typeof str === 'string';
       },
-      uniqueNum:     1000,
+      uniqueNum: 1000,
       /**
        * 根据当前时间戳生产一个随机id
        * @returns {string}
@@ -90,7 +90,7 @@ function initHook() {
         this.uniqueNum++;
         return prefix + suffix;
       },
-      keys:          function (obj) {
+      keys: function (obj) {
         var results = [];
         for (var key in obj) {
           results.push(key);
@@ -145,7 +145,7 @@ function initHook() {
         /**
          * 打印当前时间
          */
-        printNowTime:      function () {
+        printNowTime: function () {
           var date = new Date();
           console.log(this.pattern(date, 'hh:mm:ss:S'));
         },
@@ -155,7 +155,7 @@ function initHook() {
          * @param fmt
          * @returns {*}
          */
-        pattern:           function (date, fmt) {
+        pattern: function (date, fmt) {
           var o = {
             "M+": date.getMonth() + 1, //月份
             "d+": date.getDate(), //日
@@ -164,7 +164,7 @@ function initHook() {
             "m+": date.getMinutes(), //分
             "s+": date.getSeconds(), //秒
             "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-            "S":  date.getMilliseconds() //毫秒
+            "S": date.getMilliseconds() //毫秒
           };
           var week = {
             "0": "/u65e5",
@@ -192,7 +192,7 @@ function initHook() {
          * 以当前时间获取id
          * @returns {number}
          */
-        getCurrentId:      function () {
+        getCurrentId: function () {
           var date = new Date();
           return date.getTime();
         },
@@ -251,7 +251,7 @@ function initHook() {
     // ArrayUtils
     factory('ArrayUtils', ['BaseUtils'], function (BaseUtils) {
       return {
-        isArrayObject:        function (arr) {
+        isArrayObject: function (arr) {
           return BaseUtils.isArray(arr);
         },
         /**
@@ -260,7 +260,7 @@ function initHook() {
          * @param arr {Array}
          * @param cb {Function} 回调函数
          */
-        ergodicArrayObject:   function (context, arr, cb) {
+        ergodicArrayObject: function (context, arr, cb) {
           if (!context) {
             context = window;
           }
@@ -282,7 +282,7 @@ function initHook() {
          * @param cb {Function}
          * @param checkProperty {boolean} 是否排除不拥有该属性的对象[default:true]
          */
-        getPropertyDo:        function (context, arr, propertyName, cb, checkProperty) {
+        getPropertyDo: function (context, arr, propertyName, cb, checkProperty) {
           if (checkProperty === null) {
             checkProperty = true;
           }
@@ -297,7 +297,7 @@ function initHook() {
          * @param arr {Array}
          * @returns {{}}
          */
-        parseKeyValue:        function (arr) {
+        parseKeyValue: function (arr) {
           var map = {};
           if (!(BaseUtils.isArray(arr))) {
             return map;
@@ -317,7 +317,7 @@ function initHook() {
          * @param arr {Array}
          * @returns {number}
          */
-        getHashCode:          function (arr) {
+        getHashCode: function (arr) {
           var str = arr.toString();
           var hash = 31;
           if (str.length === 0) return hash;
@@ -350,7 +350,7 @@ function initHook() {
          * @param cb {function=}
          * @returns {boolean}
          */
-        isContainsObject:     function (arr, obj, cb) {
+        isContainsObject: function (arr, obj, cb) {
           var isContainsObject = false;
           this.ergodicArrayObject(this, arr, function (value, i) {
             if (obj === value) {
@@ -369,7 +369,7 @@ function initHook() {
          * @param cb
          * @returns {*}
          */
-        getMaxInArray:        function (arr, cb) {
+        getMaxInArray: function (arr, cb) {
           var maxObject = null;
           var maxIndex = -1;
           while (maxObject === null && maxIndex < arr.length) {
@@ -405,7 +405,7 @@ function initHook() {
          * @param arr{Array<number>}
          * @param cb {function=}
          */
-        getSumInArray:        function (arr, cb) {
+        getSumInArray: function (arr, cb) {
           if (!this.isArrayObject(arr)) {
             return;
           }
@@ -426,7 +426,7 @@ function initHook() {
          * 获取数组中的平均值
          * @param arr{Array<number>}
          */
-        getAverageInArray:    function (arr) {
+        getAverageInArray: function (arr) {
           var average = 0;
           this.getSumInArray(arr, function (sum, i) {
             i === 0 || (average = sum / i);
@@ -439,7 +439,7 @@ function initHook() {
          * @param order
          * @param sortSetting {object=}
          */
-        sortingArrays:        function (arr, order, sortSetting) {
+        sortingArrays: function (arr, order, sortSetting) {
           if (!this.isArrayObject(arr)) {
             return;
           }
@@ -478,7 +478,7 @@ function initHook() {
          * 将类数组转化为数组
          * @param arrLike 类数组对象
          */
-        toArray:              function (arrLike) {
+        toArray: function (arrLike) {
           if (!arrLike || arrLike.length === 0) {
             return [];
           }
@@ -504,7 +504,7 @@ function initHook() {
          * @param o
          * @returns {boolean}
          */
-        isArrayLick:          function (o) {
+        isArrayLick: function (o) {
           if (o &&                                // o is not null, undefined, etc.
             typeof o === 'object' &&            // o is an object
             isFinite(o.length) &&               // o.length is a finite number
@@ -521,7 +521,7 @@ function initHook() {
          * @param arr
          * @param obj
          */
-        contains:             function (arr, obj) {
+        contains: function (arr, obj) {
           var contains = false;
           this.ergodicArrayObject(this, arr, function (a) {
             if (a === obj) {
@@ -544,7 +544,7 @@ function initHook() {
          * @param cb {function=}
          * @return 对象属性
          */
-        readLinkProperty:                         function (obj, linkProperty, cb) {
+        readLinkProperty: function (obj, linkProperty, cb) {
           var callback = null;
           if (BaseUtils.isFunction(cb)) {
             callback = cb;
@@ -615,7 +615,7 @@ function initHook() {
          * @param linkProperty {string|Array} 属性表达式，多个属性则用数组
          * @param value
          */
-        createLinkProperty:                       function (obj, linkProperty, value) {
+        createLinkProperty: function (obj, linkProperty, value) {
           if (obj === null) {
             obj = {};
           }
@@ -677,7 +677,7 @@ function initHook() {
          * @param cb {function} 回调函数
          * @param isReadInnerObject {boolean=} 是否遍历内部对象的属性
          */
-        ergodicObject:                            function (context, obj, cb, isReadInnerObject) {
+        ergodicObject: function (context, obj, cb, isReadInnerObject) {
           var keys = BaseUtils.keys(obj);
           ArrayUtils.ergodicArrayObject(this, keys, function (propertyName) {
             // 若内部对象需要遍历
@@ -700,7 +700,7 @@ function initHook() {
          *                                     多个属性使用数组，支持纯字符串多个属性用','隔开
          * @param cb {function} 回调函数[参数：为空或不存在的属性名,返回值为'-1'时，跳过之后的回调函数]
          */
-        whileEmptyObjectProperty:                 function (context, obj, propertyNames, cb) {
+        whileEmptyObjectProperty: function (context, obj, propertyNames, cb) {
           // 解析单个属性名
           if (typeof propertyNames === 'string') {
             // 除去所有的空格
@@ -745,7 +745,7 @@ function initHook() {
             })
           }
         },
-        whileEmptyObjectPropertyV2:               function (context, obj, propertyNames, cb) {
+        whileEmptyObjectPropertyV2: function (context, obj, propertyNames, cb) {
           this.readLinkProperty(obj, propertyNames, function (value, propertyName) {
             if (value === null || value === '' || parseInt(value) < 0) {
               return cb.call(context, propertyName);
@@ -756,7 +756,7 @@ function initHook() {
          * 克隆对象[只克隆属性，不克隆原型链]
          * @param obj {*}
          */
-        cloneObject:                              function (obj) {
+        cloneObject: function (obj) {
           var newObj = {};
           // 判断是否为基本数据类型，若是则直接返回
           if (typeof obj === 'string' ||
@@ -836,7 +836,7 @@ function initHook() {
          * @param obj {Object}
          * @returns {number}
          */
-        getObjHashCode:                           function (obj) {
+        getObjHashCode: function (obj) {
           var str = JSON.stringify(obj);
           var hash = 0, i, chr, len;
           console.log(str)
@@ -858,7 +858,7 @@ function initHook() {
          * @param isCover {boolean=} 扩展的属性和原来属性冲突时是否覆盖 默认[false]
          * @param isClone {boolean=} 是否返回一个新的对象，默认[false]返回扩展后的原对象
          */
-        expandObject:                             function (obj, extendedObj, isCover, isClone) {
+        expandObject: function (obj, extendedObj, isCover, isClone) {
           var resultObj = obj;
           if (isClone) {
             resultObj = this.cloneObject(obj);
@@ -878,11 +878,11 @@ function initHook() {
          * @param order 升降序
          * @returns {*}
          */
-        sortingArrayByProperty:                   function (arr, propertyName, order) {
+        sortingArrayByProperty: function (arr, propertyName, order) {
           var _this = this;
           var sortSetting = {
             // 是否创建新数据
-            createNewData:       false,
+            createNewData: false,
             // 通过该方法获取数组中每个对象中用来比较的属性
             getComparedProperty: function (arr) {
               var compareArr = [];
@@ -909,7 +909,7 @@ function initHook() {
          * @param obj {object|Array}判断的对象
          * @param defaultProperty {object=}
          */
-        toAimObject:                              function (obj, constructor, defaultProperty) {
+        toAimObject: function (obj, constructor, defaultProperty) {
           if (BaseUtils.isArray(obj)) {
             var originArr = [];
             ArrayUtils.ergodicArrayObject(this, obj, function (value) {
@@ -940,7 +940,7 @@ function initHook() {
          * @param arr {Array}
          * @param propertyNames
          */
-        parseTheSameObjectPropertyInArray:        function (arr, propertyNames) {
+        parseTheSameObjectPropertyInArray: function (arr, propertyNames) {
           var result = {};
           var temp = {};
           ArrayUtils.ergodicArrayObject(this, arr, function (obj) {
@@ -962,7 +962,7 @@ function initHook() {
          * 将数组中结构类似对象指定属性融合为一个数组
          * @param arr {Array}
          */
-        parseTheSameObjectAllPropertyInArray:     function (arr) {
+        parseTheSameObjectAllPropertyInArray: function (arr) {
           if (!ArrayUtils.isArrayObject(arr) || arr.length < 1) {
             return;
           }
@@ -1014,7 +1014,7 @@ function initHook() {
          * @param b
          * @return {string}
          */
-        rgbToHex:                 function (r, g, b) {
+        rgbToHex: function (r, g, b) {
           var hex = ((r << 16) | (g << 8) | b).toString(16);
           return "#" + new Array(Math.abs(hex.length - 7)).join("0") + hex;
         },
@@ -1023,7 +1023,7 @@ function initHook() {
          * @param hex
          * @return {Array}
          */
-        hexToRgb:                 function (hex) {
+        hexToRgb: function (hex) {
           hex = hex.replace(/ /g, '');
           var length = hex.length;
           var rgb = [];
@@ -1074,7 +1074,7 @@ function initHook() {
          * @param func
          * @returns {*}
          */
-        getFunctionName:   function (func) {
+        getFunctionName: function (func) {
           if (typeof func === 'function' || typeof func === 'object') {
             var name = ('' + func).match(/function\s*([\w\$]*)\s*\(/);
           }
@@ -1097,7 +1097,7 @@ function initHook() {
          * @param func_arguments
          * @returns {string}
          */
-        getCallerName:     function (func_arguments) {
+        getCallerName: function (func_arguments) {
           var caller = func_arguments.callee.caller;
           var callerName = '';
           if (caller) {
@@ -1105,7 +1105,7 @@ function initHook() {
           }
           return callerName;
         },
-        FunctionBuilder:   function (func) {
+        FunctionBuilder: function (func) {
           var _this = this;
           var fs = [];
           fs.push(func);
@@ -1132,7 +1132,7 @@ function initHook() {
             return function () {
               var declareVar = {
                 arguments: arguments,
-                this:      this
+                this: this
               };
               rfs.map(function (f) {
                 var dv = f.apply(context || this, [declareVar]);
@@ -1146,7 +1146,7 @@ function initHook() {
             }
           }
         },
-        invokeMethods:     function (context, methods, args) {
+        invokeMethods: function (context, methods, args) {
           if (!this.isArray(methods)) {
             return;
           }
@@ -1167,21 +1167,21 @@ function initHook() {
 
     factory('UrlUtils', [], function () {
       return {
-        getUrlInfo:         function (url) {
+        getUrlInfo: function (url) {
           var a = document.createElement('a');
           a.href = url;
           return {
-            source:   url,
+            source: url,
             protocol: a.protocol.replace(':', ''),
-            host:     a.hostname,
-            port:     a.port,
-            query:    a.search,
-            file:     (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
-            hash:     a.hash.replace('#', ''),
-            path:     a.pathname.replace(/^([^\/])/, '/$1'),
+            host: a.hostname,
+            port: a.port,
+            query: a.search,
+            file: (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
+            hash: a.hash.replace('#', ''),
+            path: a.pathname.replace(/^([^\/])/, '/$1'),
             relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
             segments: a.pathname.replace(/^\//, '').split('/'),
-            params:   (function () {
+            params: (function () {
               var ret = {};
               var seg = a.search.replace(/^\?/, '').split('&').filter(function (v, i) {
                 if (v !== '' && v.indexOf('=')) {
@@ -1198,19 +1198,19 @@ function initHook() {
             })()
           };
         },
-        urlMatching:        function (url, matchUrl) {
+        urlMatching: function (url, matchUrl) {
           var pattern = new RegExp(matchUrl);
           return pattern.test(url);
         },
         getUrlWithoutParam: function (url) {
           return url.split('?')[0];
         },
-        getParamFromUrl:    function (url) {
+        getParamFromUrl: function (url) {
           var params = [];
           var paramsObject = this.getUrlInfo(url).params;
           BaseUtils.keys(paramsObject).forEach(function (key) {
             params.push({
-              key:   key,
+              key: key,
               value: paramsObject[key]
             })
           });
@@ -1237,7 +1237,7 @@ function initHook() {
           // }
           return params;
         },
-        margeUrlAndParams:  function (url, params) {
+        margeUrlAndParams: function (url, params) {
           if (url.indexOf('?') !== -1 || !(params instanceof Array)) {
             return url;
           }
@@ -1262,7 +1262,7 @@ function initHook() {
         this.y = y || 0;
       };
       Point2D.prototype = {
-        constructor:                     Point2D,
+        constructor: Point2D,
         /**
          * 获取指定距离和角度对应的平面点
          * @param distance
@@ -1280,7 +1280,7 @@ function initHook() {
          * @param p
          * @returns {number}
          */
-        getDistanceFromAnotherPoint:     function (p) {
+        getDistanceFromAnotherPoint: function (p) {
           return Math.sqrt((this.x - p.x) * (this.x - p.x) + (this.y - p.y) * (this.y - p.y));
         },
         /**
@@ -1288,7 +1288,7 @@ function initHook() {
          * @param p
          * @returns {number}
          */
-        getDegFromAnotherPoint:          function (p) {
+        getDegFromAnotherPoint: function (p) {
           var usedPoint = new Point2D(p.x * 1000000 - this.x * 1000000, p.y * 1000000 - this.y * 1000000);
           var radian = Math.atan2(usedPoint.x * 1000000, usedPoint.y * 1000000);
           var deg = radian * 180 / Math.PI;
@@ -1302,7 +1302,7 @@ function initHook() {
          * @param height 矩形长
          * @returns {boolean}
          */
-        isInRect:                        function (x, y, width, height) {
+        isInRect: function (x, y, width, height) {
           var px = this.x;
           var py = this.y;
           if (px < x || px > x + width) {
@@ -1340,13 +1340,13 @@ function initHook() {
           PointUtils,
           UrlUtils) {
           utils = {
-            ArrayUtils:    ArrayUtils,
-            ObjectUtils:   ObjectUtils,
-            BaseUtils:     BaseUtils,
-            ColorUtils:    ColorUtils,
-            UrlUtils:      UrlUtils,
-            urlUtils:      UrlUtils,
-            PointUtils:    PointUtils,
+            ArrayUtils: ArrayUtils,
+            ObjectUtils: ObjectUtils,
+            BaseUtils: BaseUtils,
+            ColorUtils: ColorUtils,
+            UrlUtils: UrlUtils,
+            urlUtils: UrlUtils,
+            PointUtils: PointUtils,
             FunctionUtils: FunctionUtils
           };
         });
@@ -1407,7 +1407,7 @@ function initHook() {
        * @return {*}
        * @private
        */
-      _getHookedId:         function (context) {
+      _getHookedId: function (context) {
         var contextMap = this._getHookedContextMap();
         var hookedId = null;
         Object.keys(contextMap).forEach(key => {
@@ -1427,7 +1427,7 @@ function initHook() {
        * @return {*}
        * @private
        */
-      _getHookedMethodMap:  function (context) {
+      _getHookedMethodMap: function (context) {
         var hookedId = this._getHookedId(context);
         var hookedMap = this._getHookedMap();
         var thisTask = hookedMap[hookedId];
@@ -1448,11 +1448,11 @@ function initHook() {
         if (!utils.isExistObject(thisMethod)) {
           thisMethod = thisMethodMap[methodName] = {
             original: undefined,
-            replace:  undefined,
-            task:     {
-              before:  [],
+            replace: undefined,
+            task: {
+              before: [],
               current: undefined,
-              after:   []
+              after: []
             }
           };
         }
@@ -1466,7 +1466,7 @@ function initHook() {
        * @return result 最后一次执行方法的有效返回值
        * @private
        */
-      _invokeMethods:       function (context, methods, args) {
+      _invokeMethods: function (context, methods, args) {
         if (!utils.isArray(methods)) {
           return;
         }
@@ -1489,7 +1489,7 @@ function initHook() {
        * @param methodName {string}
        * @private
        */
-      _hook:                function (parent, methodName, context) {
+      _hook: function (parent, methodName, context) {
         if (context === undefined) {
           context = parent;
         }
@@ -1580,7 +1580,7 @@ function initHook() {
        * @param methodName {string}
        * @param config
        */
-      hook:                 function (parent, methodName, config) {
+      hook: function (parent, methodName, config) {
         var hookedFailure = -1;
         // 调用方法的上下文
         var context = config.context !== undefined ? config.context : parent;
@@ -1595,28 +1595,28 @@ function initHook() {
         var id = this._getAutoId();
         if (utils.isFunction(config.replace)) {
           methodTask.replace = {
-            id:     id,
+            id: id,
             method: config.replace
           };
           hookedFailure = 0;
         }
         if (utils.isFunction(config.before)) {
           methodTask.task.before.push({
-            id:     id,
+            id: id,
             method: config.before
           });
           hookedFailure = 0;
         }
         if (utils.isFunction(config.current)) {
           methodTask.task.current = {
-            id:     id,
+            id: id,
             method: config.current
           };
           hookedFailure = 0;
         }
         if (utils.isFunction(config.after)) {
           methodTask.task.after.push({
-            id:     id,
+            id: id,
             method: config.after
           });
           hookedFailure = 0;
@@ -1637,31 +1637,31 @@ function initHook() {
        * @param replace {function}
        * @return {number} 该次劫持的id
        */
-      hookReplace:          function (parent, methodName, replace, context) {
+      hookReplace: function (parent, methodName, replace, context) {
         return this.hook(parent, methodName, {
           replace: replace,
           context: context
         });
       },
-      hookBefore:           function (parent, methodName, before, context) {
+      hookBefore: function (parent, methodName, before, context) {
         return this.hook(parent, methodName, {
-          before:  before,
+          before: before,
           context: context
         });
       },
-      hookCurrent:          function (parent, methodName, current, context) {
+      hookCurrent: function (parent, methodName, current, context) {
         return this.hook(parent, methodName, {
           current: current,
           context: context
         });
       },
-      hookAfter:            function (parent, methodName, after, context) {
+      hookAfter: function (parent, methodName, after, context) {
         return this.hook(parent, methodName, {
-          after:   after,
+          after: after,
           context: context
         });
       },
-      hookClass:            function (parent, className, replace, innerName, excludeProperties) {
+      hookClass: function (parent, className, replace, innerName, excludeProperties) {
         var _this = this;
         var originFunc = parent[className];
         if (!excludeProperties) {
@@ -1698,7 +1698,7 @@ function initHook() {
           return resFunc;
         }, parent)
       },
-      hookedToProperties:   function (originObject, resultObject, isDefined, excludeProperties) {
+      hookedToProperties: function (originObject, resultObject, isDefined, excludeProperties) {
         var objectProperties = Object.getOwnPropertyNames(originObject);
         objectProperties.forEach(function (property) {
           if (utils.contains(excludeProperties, property)) {
@@ -1709,35 +1709,39 @@ function initHook() {
           } else {
             Object.defineProperty(resultObject, property, {
               configurable: false,
-              enumerable:   false,
-              value:        originObject[property],
-              writable:     false
+              enumerable: false,
+              value: originObject[property],
+              writable: false
             });
           }
         });
       },
-      hookedToString:       function (originObject, resultObject) {
-        Object.defineProperties(resultObject, {
-          toString:       {
-            configurable: false,
-            enumerable:   false,
-            value:        originObject.toString.bind(originObject),
-            writable:     false
-          },
-          toLocaleString: {
-            configurable: false,
-            enumerable:   false,
-            value:        originObject.toLocaleString.bind(originObject),
-            writable:     false
-          }
-        })
+      hookedToString: function (originObject, resultObject) {
+        try {
+          Object.defineProperties(resultObject, {
+            toString: {
+              configurable: false,
+              enumerable: false,
+              value: originObject.toString.bind(originObject),
+              writable: false
+            },
+            toLocaleString: {
+              configurable: false,
+              enumerable: false,
+              value: originObject.toLocaleString.bind(originObject),
+              writable: false
+            }
+          })
+        } catch (e) {
+          console.log(e);
+        }
       },
       /**
        * 劫持全局ajax
        * @param methods {object} 劫持的方法
        * @return {*|number} 劫持的id
        */
-      hookAjax:             function (methods) {
+      hookAjax: function (methods) {
         if (this.isHooked(_global, 'XMLHttpRequest')) {
           return;
         }
@@ -1806,7 +1810,7 @@ function initHook() {
        * @param methods {object} 劫持的方法
        * @return {*|number} 劫持的id
        */
-      hookAjaxV2:           function (methods) {
+      hookAjaxV2: function (methods) {
         this.hookClass(window, 'XMLHttpRequest', function () {
 
         });
@@ -1821,7 +1825,7 @@ function initHook() {
        * @param isDeeply {boolean=} 是否深度解除[默认为false]
        * @param eqId {number=}  解除指定id的劫持[可选]
        */
-      unHook:               function (context, methodName, isDeeply, eqId) {
+      unHook: function (context, methodName, isDeeply, eqId) {
         if (!context[methodName] || !utils.isFunction(context[methodName])) {
           return;
         }
@@ -1845,7 +1849,7 @@ function initHook() {
        * @param eqId
        * @returns {boolean}
        */
-      unHookById:           function (eqId) {
+      unHookById: function (eqId) {
         var hasEq = false;
         if (eqId) {
           var hookedMap = this._getHookedMap();
@@ -1877,17 +1881,17 @@ function initHook() {
        * @param context 上下文
        * @param methodName 方法名
        */
-      removeHookMethod:     function (context, methodName) {
+      removeHookMethod: function (context, methodName) {
         if (!context[methodName] || !utils.isFunction(context[methodName])) {
           return;
         }
         this._getHookedMethodMap(context)[methodName] = {
           original: undefined,
-          replace:  undefined,
-          task:     {
-            before:  [],
+          replace: undefined,
+          task: {
+            before: [],
             current: undefined,
-            after:   []
+            after: []
           }
         };
       },
@@ -1896,7 +1900,7 @@ function initHook() {
        * @param context
        * @param methodName
        */
-      isHooked:             function (context, methodName) {
+      isHooked: function (context, methodName) {
         var hookMap = this._getHookedMethodMap(context);
         return hookMap[methodName] !== undefined ? (hookMap[methodName].original !== undefined) : false;
       },
@@ -1905,13 +1909,13 @@ function initHook() {
        * @param parent
        * @param methodName
        */
-      protect:              function (parent, methodName) {
+      protect: function (parent, methodName) {
         Object.defineProperty(parent, methodName, {
           configurable: false,
-          writable:     false
+          writable: false
         });
       },
-      preventError:         function (parent, methodName, returnValue, context) {
+      preventError: function (parent, methodName, returnValue, context) {
         this.hookCurrent(parent, methodName, function (m, args) {
           var value = returnValue;
           try {
@@ -1926,7 +1930,7 @@ function initHook() {
        * 装载插件
        * @param option
        */
-      plugins:              function (option) {
+      plugins: function (option) {
         if (utils.isFunction(option.mount)) {
           var result = option.mount.call(this, utils);
           if (typeof option.name === 'string') {
@@ -1971,7 +1975,7 @@ function initHook() {
        * @return {Array}
        * @private
        */
-      _urlPatcher:       function (url) {
+      _urlPatcher: function (url) {
         var patcherList = [];
         utils.ergodicArrayObject(this, this._urlDispatcherList, function (patcherMap, i) {
           if (utils.UrlUtils.urlMatching(url, patcherMap.patcher)) {
@@ -1986,7 +1990,7 @@ function initHook() {
        * @param fullUrl
        * @private
        */
-      _xhrDispatcher:    function (xhr, fullUrl) {
+      _xhrDispatcher: function (xhr, fullUrl) {
         var url = utils.UrlUtils.getUrlWithoutParam(fullUrl);
         xhr.patcherList = this._urlPatcher(url);
       },
@@ -1996,10 +2000,10 @@ function initHook() {
        * @param xhr
        * @private
        */
-      _parseEvent:       function (e, xhr) {
+      _parseEvent: function (e, xhr) {
         try {
           Object.defineProperties(e, {
-            target:     {
+            target: {
               get: function () {
                 return xhr;
               }
@@ -2020,13 +2024,13 @@ function initHook() {
        * @param args
        * @private
        */
-      _parseOpenArgs:    function (args) {
+      _parseOpenArgs: function (args) {
         return {
-          method:  args[0],
+          method: args[0],
           fullUrl: args[1],
-          url:     utils.UrlUtils.getUrlWithoutParam(args[1]),
-          params:  utils.UrlUtils.getParamFromUrl(args[1]),
-          async:   args[2]
+          url: utils.UrlUtils.getUrlWithoutParam(args[1]),
+          params: utils.UrlUtils.getParamFromUrl(args[1]),
+          async: args[2]
         };
       },
       /**
@@ -2035,7 +2039,7 @@ function initHook() {
        * @param argsArray
        * @private
        */
-      _rebuildOpenArgs:  function (argsObject, argsArray) {
+      _rebuildOpenArgs: function (argsObject, argsArray) {
         argsArray[0] = argsObject.method;
         argsArray[1] = utils.UrlUtils.margeUrlAndParams(argsObject.url, argsObject.params);
         argsArray[2] = argsObject.async;
@@ -2046,7 +2050,7 @@ function initHook() {
        * @return {*|Array.<T>}
        * @private
        */
-      _getHookedArgs:    function (args) {
+      _getHookedArgs: function (args) {
         // 将参数中'原方法'剔除
         return Array.prototype.slice.call(args, 0).splice(1);
       },
@@ -2056,7 +2060,7 @@ function initHook() {
        * @param funcArgs
        * @private
        */
-      _onResponse:       function (outerXhr, funcArgs) {
+      _onResponse: function (outerXhr, funcArgs) {
         // 因为参数是被劫持的参数为[method(原方法),args(参数)],该方法直接获取参数并转换为数组
         var args = this._getHookedArgs(funcArgs);
         args[0][0] = this._parseEvent(args[0][0], outerXhr.xhr); // 强制事件指向外部xhr
@@ -2076,7 +2080,7 @@ function initHook() {
       /**
        * 手动开始劫持
        */
-      startHook:         function () {
+      startHook: function () {
         var _this = this;
         var normalMethods = {
           // 方法中的this指向内部xhr
@@ -2086,11 +2090,11 @@ function initHook() {
               _this._onResponse(this, arguments);
             }
           },
-          onload:             function () {
+          onload: function () {
             _this._onResponse(this, arguments);
           },
           // 拦截请求
-          open:               function () {
+          open: function () {
             var args = _this._getHookedArgs(arguments);
             var fullUrl = args[0][1];
             _this._xhrDispatcher(this, fullUrl);
@@ -2099,7 +2103,7 @@ function initHook() {
             _this._invokeAimMethods(this, 'hookRequest', [argsObject]);
             _this._rebuildOpenArgs(argsObject, args[0]);
           },
-          send:               function () {
+          send: function () {
             var args = _this._getHookedArgs(arguments);
             this.sendArgs = args;
             _this._invokeAimMethods(this, 'hookSend', args);
@@ -2116,7 +2120,7 @@ function initHook() {
        * @param response
        * @return {number}
        */
-      register:          function (urlPatcher, configOrRequest, response) {
+      register: function (urlPatcher, configOrRequest, response) {
         if (!urlPatcher) {
           return -1;
         }
@@ -2136,9 +2140,9 @@ function initHook() {
         var id = this._getAutoId();
         this._urlDispatcherList.push({
           // 指定id便于后续取消
-          id:      id,
+          id: id,
           patcher: urlPatcher,
-          config:  config
+          config: config
         });
         // 当注册一个register时，自动开始运行劫持
         if (!this.isHooked) {
@@ -2165,12 +2169,12 @@ function initHook() {
           ColorUtils,
           UrlUtils) {
           utils = {
-            ArrayUtils:    ArrayUtils,
-            ObjectUtils:   ObjectUtils,
-            BaseUtils:     BaseUtils,
-            ColorUtils:    ColorUtils,
-            UrlUtils:      UrlUtils,
-            urlUtils:      UrlUtils,
+            ArrayUtils: ArrayUtils,
+            ObjectUtils: ObjectUtils,
+            BaseUtils: BaseUtils,
+            ColorUtils: ColorUtils,
+            UrlUtils: UrlUtils,
+            urlUtils: UrlUtils,
             FunctionUtils: FunctionUtils
           };
         });
@@ -2221,9 +2225,9 @@ function initTimeHook() {
 
     var helper = function (eHookContext, timerContext, util) {
       return {
-        applyUI:                  function () {
+        applyUI: function () {
         },
-        applyGlobalAction:        function (timer) {
+        applyGlobalAction: function (timer) {
           // 界面半圆按钮点击的方法
           timer.changeTime = function (anum, cnum, isa, isr) {
             if (isr) {
@@ -2260,11 +2264,11 @@ function initTimeHook() {
                 result = 1 / ((1 / timerContext._percentage) * cnum);
               }
             }
-            console.info("速度变更", 1/result);
+            console.info("速度变更", 1 / result);
             timer.change(result);
           };
         },
-        applyHooking:             function () {
+        applyHooking: function () {
           // 劫持循环计时器
           eHookContext.hookReplace(window, 'setInterval', function (setInterval) {
             return function () {
@@ -2275,7 +2279,7 @@ function initTimeHook() {
               var resultId = setInterval.apply(window, arguments);
               // 保存每次使用计时器得到的id以及参数等
               timerContext._intervalIds[resultId] = {
-                args:  arguments,
+                args: arguments,
                 nowId: resultId
               };
               return resultId;
@@ -2331,18 +2335,19 @@ function initTimeHook() {
             if (arguments.length === 1) {
               Object.defineProperty(this, '_innerDate', {
                 configurable: false,
-                enumerable:   false,
-                value:        new timerContext._Date(arguments[0]),
-                writable:     false
+                enumerable: false,
+                value: new timerContext._Date(arguments[0]),
+                writable: false
               });
               return;
             } else if (arguments.length > 1) {
-              var definedValue = new timerContext._Date(...arguments);;
+              var definedValue = new timerContext._Date(...arguments);
+              ;
               Object.defineProperty(this, '_innerDate', {
                 configurable: false,
-                enumerable:   false,
-                value:        definedValue,
-                writable:     false
+                enumerable: false,
+                value: definedValue,
+                writable: false
               });
               return;
             }
@@ -2352,9 +2357,9 @@ function initTimeHook() {
             // console.log(__this.__lastDatetime + hookPassTime, now,__this.__lastDatetime + hookPassTime - now);
             Object.defineProperty(this, '_innerDate', {
               configurable: false,
-              enumerable:   false,
-              value:        new timerContext._Date(timerContext.__lastMDatetime + hookPassTime),
-              writable:     false
+              enumerable: false,
+              value: new timerContext._Date(timerContext.__lastMDatetime + hookPassTime),
+              writable: false
             });
           };
         },
@@ -2364,7 +2369,7 @@ function initTimeHook() {
          * @param percentage
          * @private
          */
-        percentageChangeHandler:  function (percentage) {
+        percentageChangeHandler: function (percentage) {
           // 改变所有的循环计时
           util.ergodicObject(timerContext, timerContext._intervalIds, function (idObj, id) {
             idObj.args[1] = Math.floor(idObj.args[2] * percentage);
@@ -2375,7 +2380,7 @@ function initTimeHook() {
             idObj.nowId = this._setInterval.apply(window, idObj.args);
           });
         },
-        hookShadowRoot:           function () {
+        hookShadowRoot: function () {
           var origin = Element.prototype.attachShadow;
           eHookContext.hookAfter(Element.prototype, 'attachShadow',
             function (m, args, result) {
@@ -2388,7 +2393,7 @@ function initTimeHook() {
     };
 
     var normalUtil = {
-      isInIframe:          function () {
+      isInIframe: function () {
         let is = global.parent !== global;
         try {
           is = is && global.parent.document.body.tagName !== 'FRAMESET'
@@ -2397,7 +2402,7 @@ function initTimeHook() {
         }
         return is;
       },
-      listenParentEvent:   function (handler) {
+      listenParentEvent: function (handler) {
         global.addEventListener('message', function (e) {
           var data = e.data;
           var type = data.type || '';
@@ -2412,13 +2417,13 @@ function initTimeHook() {
         if (iframes.length) {
           for (var i = 0; i < iframes.length; i++) {
             iframes[i].contentWindow.postMessage(
-              {type: 'changePercentage', percentage: percentage}, '*');
+              { type: 'changePercentage', percentage: percentage }, '*');
           }
         }
         if (frames.length) {
           for (var j = 0; j < frames.length; j++) {
             frames[j].contentWindow.postMessage(
-              {type: 'changePercentage', percentage: percentage}, '*');
+              { type: 'changePercentage', percentage: percentage }, '*');
           }
         }
       }
@@ -2447,22 +2452,22 @@ function initTimeHook() {
         var eHookContext = this;
         var timerHooker = {
           // 用于储存计时器的id和参数
-          _intervalIds:       {},
+          _intervalIds: {},
           // 计时器速率
-          __percentage:       1.0,
+          __percentage: 1.0,
           // 劫持前的原始的方法
-          _setInterval:       window['setInterval'],
-          _clearInterval:     window['clearInterval'],
-          _clearTimeout:      window['clearTimeout'],
-          _setTimeout:        window['setTimeout'],
-          _Date:              window['Date'],
-          __lastDatetime:     new Date().getTime(),
-          __lastMDatetime:    new Date().getTime(),
+          _setInterval: window['setInterval'],
+          _clearInterval: window['clearInterval'],
+          _clearTimeout: window['clearTimeout'],
+          _setTimeout: window['setTimeout'],
+          _Date: window['Date'],
+          __lastDatetime: new Date().getTime(),
+          __lastMDatetime: new Date().getTime(),
           videoSpeedInterval: 1000,
           /**
            * 初始化方法
            */
-          init:               function () {
+          init: function () {
             var timerContext = this;
             var h = helper(eHookContext, timerContext, util);
 
@@ -2500,7 +2505,7 @@ function initTimeHook() {
            * 调用该方法改变计时器速率
            * @param percentage
            */
-          change:             function (percentage) {
+          change: function (percentage) {
             var _this = this;
             this.__lastMDatetime = this._mDate.now();
             // console.log(this._mDate.toString());
@@ -2530,7 +2535,7 @@ function initTimeHook() {
             }, this.videoSpeedInterval);
             normalUtil.sentChangesToIframe(percentage);
           },
-          changeVideoSpeed:   function () {
+          changeVideoSpeed: function () {
             var rate = 1 / this._percentage;
             rate > 16 && (rate = 16);
             rate < 0.065 && (rate = 0.065);
@@ -2551,7 +2556,7 @@ function initTimeHook() {
 
     if (global.eHook) {
       global.eHook.plugins({
-        name:  'acXtimer',
+        name: 'acXtimer',
         /**
          * 插件装载
          * @param util
@@ -2562,14 +2567,14 @@ function initTimeHook() {
   }(window);
 }
 
-function initKeyListener(){
+function initKeyListener() {
   function registerShortcutKeys(timer) {
     // 快捷键注册
     addEventListener('keydown', function (e) {
       switch (e.key) {
         // [加速]
         case 'c': {
-          timer.changeTime(4, 0, true);
+          if (!e.ctrlKey) timer.changeTime(4, 0, true); // WARN 小心ctrl+c复制的时候不应该变速
           break;
         }
         // [减速]
@@ -2582,11 +2587,11 @@ function initKeyListener(){
           timer.changeTime(0, 0, false, true);
           break;
         }
-        case '0':{
-          if(e.altKey){
+        case '0': {
+          if (e.altKey) {
             timer.changeTime(0, 50);
-            // TODO 延迟之后恢复速率
-            timer._setTimeout(function(){
+            // WARN 延迟之后恢复速率
+            timer._setTimeout(function () {
               timer.changeTime(0, 0, false, true);
             }, 200);
           }
@@ -2595,7 +2600,8 @@ function initKeyListener(){
       }
     });
   }
-  function YoutubeAutoFast(timer){
+
+  function YoutubeAutoFast(timer) {
     if (location.host.indexOf("youtube.com") >= 0) {
       // addStyle(".video-ads .ad-container .adDisplay, #player-ads, .ytp-ad-module, .ytp-ad-image-overlay{ display: none!important; }");
       timer._setInterval(function () {
