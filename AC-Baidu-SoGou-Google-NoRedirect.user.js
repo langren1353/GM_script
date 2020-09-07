@@ -12,7 +12,7 @@
 // @license    GPL-3.0-only
 // @create    2015-11-25
 // @run-at    document-start
-// @version    24.7
+// @version    24.8
 // @connect    www.baidu.com
 // @include    *://ipv6.baidu.com/*
 // @include    *://www.baidu.com/*
@@ -36,6 +36,7 @@
 // @copyright  2015-2020, AC
 // @lastmodified  2020-08-06
 // @feedback-url  https://ac.tujidu.com
+// @note    2020.08-18-V24.08 更换Vue的cdn地址，尽量加快数据的载入速度；为了兼容safari将百度的https地址替换为了http地址；修复favicon获取的问题
 // @note    2020.08-06-V24.07 修复保存无效的问题；修复百度在单列居中的时候错位的问题
 // @note    2020.08-05-V24.06 修复自定义偶尔打不开的问题；修复定时器可能会造成的失效的问题；修复当存在多个脚本可能造成的冲突问题
 // @note    2020.08-03-V24.05 更新修复护眼模式的问题；修复扩展上偶尔失效的问题；旧Edge似乎经常有保存不生效的问题，测试不是我的原因
@@ -231,7 +232,7 @@
 // @resource  dogeTwoPageStyle   http://ibaidu.htt5.com/newcss/dogeTwoPageStyle.css?t=24.04
 // @resource  MainHuYanStyle     http://ibaidu.htt5.com/newcss/HuYanStyle.css?t=24.04
 // @resource  SiteConfigRules    http://ibaidu.htt5.com/newcss/SiteConfigRules.conf?t=24.04
-// @require https://lib.baomitu.com/vue/2.6.11/vue.js
+// @require https://cdn.staticfile.org/vue/2.6.11/vue.js
 // @grant    GM_getValue
 // @grant    GM.getValue
 // @grant    GM_setValue
@@ -922,27 +923,27 @@ body[baidu] #s_lg_img_new{
             DBSite = onlineDB;
           }
         }
-        if (location.host.indexOf("xueshu.baidu.com") > -1) {
+        if (location.host.includes("xueshu.baidu.com")) {
           curSite = DBSite.baidu_xueshu;
-        } else if (location.host.indexOf(".baidu.com") > -1) {
+        } else if (location.host.includes(".baidu.com")) {
           if (navigator.userAgent.replace(/(android|mobile|iphone)/igm, "") !== navigator.userAgent) {
             curSite = DBSite.mBaidu;
           } else {
             curSite = DBSite.baidu;
           }
-        } else if (location.host.indexOf("zhihu.com") > -1) {
+        } else if (location.host.includes("zhihu.com")) {
           curSite = DBSite.zhihu;
-        } else if (location.host.indexOf("sogou") > -1) {
+        } else if (location.host.includes("sogou")) {
           curSite = DBSite.sogou;
-        } else if (location.host.indexOf("so.com") > -1) {
+        } else if (location.host.includes("so.com")) {
           curSite = DBSite.haosou;
-        } else if (location.host.indexOf("google") > -1) {
+        } else if (location.host.includes("google")) {
           curSite = DBSite.google;
-        } else if (location.host.indexOf("bing") > -1) {
+        } else if (location.host.includes("bing")) {
           curSite = DBSite.bing;
-        } else if (location.host.indexOf("duckduckgo") > -1) {
+        } else if (location.host.includes("duckduckgo")) {
           curSite = DBSite.duck;
-        } else if (location.host.indexOf("dogedoge") > -1) {
+        } else if (location.host.includes("dogedoge")) {
           curSite = DBSite.doge;
         } else {
           curSite = DBSite.other;
@@ -985,7 +986,7 @@ body[baidu] #s_lg_img_new{
         let bodyNameresetTimer = setInterval(function () {
           if (document.body != null) {
             document.body.setAttribute(CONST.useItem.name, "1");
-            if (curSite.SiteTypeID === SiteType.BAIDU && location.href.indexOf("tn=news") >= 0) {
+            if (curSite.SiteTypeID === SiteType.BAIDU && location.href.includes("tn=news")) {
               document.body.setAttribute("news", "1");
             } else {
               document.body.removeAttribute("news");
@@ -1011,7 +1012,7 @@ body[baidu] #s_lg_img_new{
                 let curNode = checkNodes[i];
                 let faviconNode = curNode.querySelector(curSite.FaviconType);
                 // if(curNode.hasAttribute("acblock")) continue;
-                let host = getBaiduHost(faviconNode);
+                let host = getNodeHost(faviconNode);
                 // if(host == null) continue;
                 let faNode = curNode.querySelector(curSite.BlockType);
                 let nodeStyle = "display:unset;";
@@ -1060,7 +1061,7 @@ body[baidu] #s_lg_img_new{
             for (let i = 0; i < checkNodes.length; i++) {
               try {
                 let curNode = checkNodes[i];
-                let curHost = getBaiduHost(curNode.querySelector(curSite.FaviconType));
+                let curHost = getNodeHost(curNode.querySelector(curSite.FaviconType));
                 if (curHost == null) continue;
                 {
                   let BlockBtn = curNode.querySelector(".ghhider.ghhb");
@@ -1148,8 +1149,8 @@ body[baidu] #s_lg_img_new{
             node.setAttribute("height", "59");
           }, 300);
           document.title = document.title.replace(/^Google/, "百度一下，你就知道")
-            .replace(/ - Google 搜索/, "_百度搜索")
-            .replace(/ - Google Search/, "_百度搜索");
+          .replace(/ - Google 搜索/, "_百度搜索")
+          .replace(/ - Google Search/, "_百度搜索");
           safeWaitFunc("head", function () {
             let linkTarget = document.querySelector("link[type='image/x-icon']") || document.createElement('link');
             linkTarget.type = 'image/x-icon';
@@ -1582,6 +1583,10 @@ body[baidu] #s_lg_img_new{
             if (curSite.pager) {
               let curPageEle = getElementByXpath(curSite.pager.nextLink);
               var url = this.getFullHref(curPageEle);
+              if(curSite.SiteTypeID !== SiteType.BAIDU && navigator.userAgent.toLowerCase().includes('safari')) {
+                // MARK 为了兼容百度在safari下的
+                url = url.replace('https://', 'http://');
+              }
               if(url === '') return;
               var sepImgs = {
                 top: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAWtJREFUeNrclE0rRGEUx8c1GUpRJIVIZGdhZCVr38GGhaI0ZXwCkliglChZEcvJxhdgYWOjLEUpm/EyiLzze+o8dTzdO3PljoVTv7rPc8/5d+6555xYrEhWop6boda5+6l9wjWcWpF+WIbqCJJ9hFRcDr3QAIkIhKugz5PDfkSixkphz5aiAnqgE8rgWRxGoSOPyBkswQuUwyscw4HrmFCZL8Kt/JAg7mEFPEmo4FdPwk0BUcsdzIap0TQ8qMAPuICcEjLnd+VjSjcfJNgIc/DkZGSymYGsnK9EZMrxe4MFaNGiZjC2fT5zQ3p7QDK1dR2GSljziclAvRUe8nHYVA4jjvC43NfAuk/smB2QNqcsWxKcLbAKTFnS0hWD6n27Fd6FLqiDI5iQmQ9jpiVT0sNJ6aYd7dAE3QHBbinSAX5JWWaxuLo8F35jh/bBK9Y+/r/Cl6pLcnna8NvuDGMnslpbZRpXZYT/3r4EGACZL3ZL2afNFAAAAABJRU5ErkJggg==",
@@ -1633,7 +1638,7 @@ body[baidu] #s_lg_img_new{
                           <span id="sp-sp-gopre" class='${curSite.pageNum <= 2 ? "ac_sp_pre_gray" : "ac_sp_pre"}' title='上滚一页' ></span>
                           <span id="sp-sp-gonext" class='ac_sp_next_gray' title='下滚一页'></span>
                           <span id="sp-sp-gobottom" class='ac_sp_bottom' title='去到底部' ></span></div>`
-                        .replace(/ACX/gm, curSite.pageNum));
+                      .replace(/ACX/gm, curSite.pageNum));
                       // 插入新页面元素
                       pageElems.forEach(function (one) {
                         toElement.insertAdjacentElement(addTo, one);
@@ -1678,6 +1683,8 @@ body[baidu] #s_lg_img_new{
               // 非双列模式下尽可能的显示右侧栏
               AC_addStyle("@media screen and (min-width: 1250px) {#container{width: 80% !important;}.container_l #content_right{margin-right: calc(18% - 210px);position: absolute;right: -200px;display:block !important;overflow:hidden;width: 22vw !important;}",
                 "AC-RightRemove");
+            }else{
+              safeRemove("style[class='AC-RightRemove']")
             }
           }
           if (!ACConfig.isALineEnable) {
@@ -1797,18 +1804,21 @@ body[baidu] #s_lg_img_new{
           let expires = "expires=" + d.toUTCString();
           document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
         }
-        function getBaiduHost(sitetpNode) {
+        function getNodeHost(sitetpNode) {
+          if(sitetpNode instanceof HTMLAnchorElement){
+            return sitetpNode.host;
+          }
           if (curSite.SiteTypeID === SiteType.BAIDU) {
             var href = null;
             if (sitetpNode instanceof HTMLElement) {
               href = sitetpNode.getAttribute("href")
             }
-            if (href != null && href.indexOf("baidu.com/link") < 0) {
+            if (href != null && href.includes("baidu.com/link")) {
               // 已经解析出来了
-              return getHost(href);
+              return getTextHost(href);
             }
           }
-          return getHost(sitetpNode.innerText || sitetpNode.textContent);
+          return getTextHost(sitetpNode.innerText || sitetpNode.textContent);
         }
 
         function ACHandle() {
@@ -2321,13 +2331,13 @@ body[baidu] #s_lg_img_new{
               hasDealHrefSet.add(curhref);
               let len2 = hasDealHrefSet.size;
               if (len1 === len2) continue; // 说明数据已经处理过，存在相同的记录
-              if (curhref.indexOf("www.baidu.com/link") > -1 ||
-                curhref.indexOf("m.baidu.com/from") > -1 ||
-                curhref.indexOf("www.sogou.com/link") > -1 ||
-                curhref.indexOf("so.com/link") > -1) {
+              if (curhref.includes("www.baidu.com/link") ||
+                curhref.includes("m.baidu.com/from") ||
+                curhref.includes("www.sogou.com/link") ||
+                curhref.includes("so.com/link")) {
                 (function (c_curnode, c_curhref) {
                   let url = c_curhref.replace(/^http:/, "https:");
-                  if (curSite.SiteTypeID === SiteType.BAIDU && url.indexOf("eqid") < 0) {
+                  if (curSite.SiteTypeID === SiteType.BAIDU && !url.includes("eqid")) {
                     // 如果是百度，并且没有带有解析参数，那么手动带上
                     url = url + "&wd=&eqid=";
                   }
@@ -2337,15 +2347,14 @@ body[baidu] #s_lg_img_new{
                     url: url,
                     headers: {"Accept": "*/*", "Referer": c_curhref.replace(/^http:/, "https:")},
                     method: "GET",
-                    timeout: 5000,
-                    onreadystatechange: function (response) {
+                    timeout: 8000,
+                    onreadystatechange: function (response) { // MARK 有时候这个函数根本不进来 - 调试的问题 - timeout
                       // 由于是特殊返回-并且好搜-搜狗-百度都是这个格式，故提出
                       DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'")
                       // 这个是在上面无法处理的情况下，备用的 tm-finalurldhdg  tm-finalurlmfdh
-                      if (response.responseHeaders.indexOf("tm-finalurl") >= 0) {
+                      if (response.responseHeaders.includes("tm-finalurl")) {
                         let relURL = Reg_Get(response.responseHeaders, "tm-finalurl\\w+: ([^\\s]+)");
-                        if (relURL == null || relURL === "" || relURL.indexOf("www.baidu.com/search/error") > 0) return;
-                        // TODO 这里出现了数据无法修改原始地址的问题
+                        if (relURL == null || relURL === "" || relURL.includes("www.baidu.com/search/error")) return;
                         DealRedirect(gmRequestNode, c_curhref, relURL);
                       }
                     }
@@ -2373,10 +2382,10 @@ body[baidu] #s_lg_img_new{
           } else {
             resultResponseUrl = respText;
           }
-          if (resultResponseUrl !== null && resultResponseUrl !== "" && resultResponseUrl.indexOf("www.baidu.com/link") < 0) {
+          if (resultResponseUrl !== null && resultResponseUrl !== "" && !resultResponseUrl.includes("www.baidu.com/link")) {
             try {
               if (curSite.SiteTypeID === SiteType.SOGOU) curNodeHref = curNodeHref.replace(/^https:\/\/www.sogou.com/, "");
-              let host = getHost(resultResponseUrl);
+              let host = getTextHost(resultResponseUrl);
               // RedirectMap.set(curNodeHref, resultResponseUrl); // 进行一个数据关联
               // RedirectMap.set(resultResponseUrl, curNodeHref); // 进行一个数据关联
 
@@ -2471,7 +2480,7 @@ body[baidu] #s_lg_img_new{
 
         var HostReg = new RegExp(/(https?:\/\/)?([^/\s]+)/i);
 
-        function getHost(sbefore) {
+        function getTextHost(sbefore) {
           sbefore = (sbefore && sbefore.trim()).replace(/\s-\s\d{4}-\d{1,2}-\d{1,2}/, "") || "";
           let send;
           let result = sbefore.split('-');
@@ -2495,8 +2504,8 @@ body[baidu] #s_lg_img_new{
               if (null == citeList[index].getAttribute("ac_faviconStatus")) {
                 let curNode = citeList[index];
                 let targetNode = curNode;
-                let url = getBaiduHost(targetNode);
-                if (url == null) { // 跳过baidu.click
+                let url = getNodeHost(targetNode);
+                if (url == null || (targetNode.href && targetNode.href.includes("www.baidu.com/link"))) { // 跳过baidu.click
                   continue;
                 } else {
                   otherData.other.curHosts.acpush(url);
@@ -2545,7 +2554,7 @@ body[baidu] #s_lg_img_new{
                     insNode.setAttribute("referrerpolicy", "no-referrer");
                     insNode.style = "position:relative;z-index:1;vertical-align:sub;height:16px;width:16px;margin-right:5px;margin-bottom: 2px;";
 
-                    insNode.src = "https://favicon.yandex.net/favicon/" + host;
+                    insNode.src = "https://favicon.yandex.net/favicon/v2/" + (curNode.href || host); // MARK yandex支持这种查询规则
                     insNode.setAttribute("faviconID", "0");
                     // curNode.innerHTML = insNode.outerHTML + curNode.innerHTML;
                     // curNode.insertAdjacentHTML("afterEnd", insNode.innerHTML);
@@ -2810,9 +2819,9 @@ body[baidu] #s_lg_img_new{
               style = GM_getResourceText("MainHuYanStyle");
             }
             style = style
-              .replace(/#aaa(a*)/igm, color)
-              .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
-              .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
+            .replace(/#aaa(a*)/igm, color)
+            .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
+            .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
             AC_addStyle(style, "AC-" + CONST.useItem.name + "HuYanStyle" + (isNewGM ? "" : "-File"), "head", true); // 需要修改的，所以为true
           },
           clip255: function (value) {
