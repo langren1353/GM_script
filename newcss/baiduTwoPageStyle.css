@@ -9,6 +9,12 @@ form.fm{
 #s_tab b, #s_tab a {
     position: relative;
 }
+#wrapper #s_tab{
+    padding-left: 0;
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+}
 #wrapper .head_nums_cont_outer .search_tool_conter,
 #wrapper .head_nums_cont_outer .nums {
     width: 80%;
