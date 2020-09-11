@@ -838,6 +838,7 @@ body[baidu] #s_lg_img_new{
         let bodyNameresetTimer = setInterval(function () {
           if (document.body != null) {
             document.body.setAttribute(CONST.useItem.name, "1");
+            document.body.classList.add(CONST.useItem.name);
             if (curSite.SiteTypeID === SiteType.BAIDU && location.href.includes("tn=news")) {
               document.body.setAttribute("news", "1");
             } else {
@@ -1540,7 +1541,7 @@ body[baidu] #s_lg_img_new{
             }
           }
           if (!ACConfig.isALineEnable) {
-            AC_addStyle("a,a em{text-decoration:none}", "AC-NoLine");// 移除这些个下划线
+            AC_addStyle("a,a em{text-decoration:none}", "AC-NoLine", "body");// 移除这些个下划线
           }
           if (ACConfig.isUserStyleEnable) {
             AC_addStyle(ACConfig.UserStyleText, "AC-userStyle");// 用户自定义的样式表
