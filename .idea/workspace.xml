@@ -29,9 +29,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题">
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VideoJumper.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/VideoJumper.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test2.js" beforeDir="false" afterPath="$PROJECT_DIR$/test2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/HuYanStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/HuYanStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/dogeCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/dogeCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/sogouCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouCommonStyle.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,12 +90,6 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="684" />
-    <option name="y" value="10" />
-    <option name="width" value="1400" />
-    <option name="height" value="1000" />
-  </component>
   <component name="ProjectId" id="1P00jjeKHs16oFl0ZYO9GSw4U4W" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -124,6 +129,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.CommitDialog" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -277,6 +283,10 @@
       <workItem from="1597142640539" duration="394000" />
       <workItem from="1597147770163" duration="1350000" />
       <workItem from="1597719474901" duration="3145000" />
+      <workItem from="1599548459303" duration="12654000" />
+      <workItem from="1599637132901" duration="1136000" />
+      <workItem from="1599738900339" duration="9000" />
+      <workItem from="1599792466500" duration="4726000" />
     </task>
     <task id="LOCAL-00001" summary="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题">
       <created>1597142744545</created>
@@ -388,11 +398,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="754" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1595909475444" />
-    <state x="661" y="121" width="626" height="798" key="find.popup" timestamp="1596776640390">
+    <state x="661" y="121" width="626" height="798" key="find.popup" timestamp="1599792800951">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="470" y="85" width="566" height="559" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1594292482282" />
-    <state x="661" y="121" width="626" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596776640390" />
+    <state x="661" y="121" width="626" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599792800951" />
     <state width="600" height="428" key="javadoc.popup" timestamp="1596266730430">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

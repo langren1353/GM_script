@@ -17,8 +17,6 @@
     border-radius: 5px;
     background-color: #fff;
     box-sizing: border-box;
-    -webkit-box-shadow: 0 0 2px gray;
-    -moz-box-shadow: 0 0 2px gray;
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
 .search>#ires #rso>.g{
@@ -66,4 +64,3 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
 g-section-with-header{
     text-align: center;
 }
-

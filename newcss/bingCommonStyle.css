@@ -10,10 +10,7 @@ body {
     border-radius: 5px;
     background-color: #fff;
     box-sizing: border-box;
-    box-shadow: 0 0 2px gray;
-    border: 1px solid rgba(0,0,0,0);
-    -webkit-box-shadow: 0 0 2px gray;
-    -moz-box-shadow: 0 0 2px gray;
+    border: 1px solid rgba(0,0,0,0.1);
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
     overflow: hidden;
 }
@@ -26,9 +23,11 @@ body {
     font-size: medium;
 }
 #b_content #b_results>li:hover {
-    box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
-    border: 1px solid rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,0,0,0.3);
     background: #FCFCFC !important;
+    box-shadow: 0 0 1px grey;
+    -webkit-box-shadow: 0 0 1px grey;
+    -moz-box-shadow: 0 0 1px gray;
 }
 #b_content >#b_results li h2 {
     background-color: #f8f8f8;

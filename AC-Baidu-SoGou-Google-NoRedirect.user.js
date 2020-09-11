@@ -36,7 +36,7 @@
 // @copyright  2015-2020, AC
 // @lastmodified  2020-08-06
 // @feedback-url  https://ac.tujidu.com
-// @note    2020.08-18-V24.08 更换Vue的cdn地址，尽量加快数据的载入速度；为了兼容safari将百度的https地址替换为了http地址；修复favicon获取的问题
+// @note    2020.09-11-V24.08 更换Vue的cdn地址，尽量加快数据的载入速度；为了兼容safari将百度的https地址替换为了http地址；修复favicon获取的问题；增加favicon动态刷新；修复部分样式问题
 // @note    2020.08-06-V24.07 修复保存无效的问题；修复百度在单列居中的时候错位的问题
 // @note    2020.08-05-V24.06 修复自定义偶尔打不开的问题；修复定时器可能会造成的失效的问题；修复当存在多个脚本可能造成的冲突问题
 // @note    2020.08-03-V24.05 更新修复护眼模式的问题；修复扩展上偶尔失效的问题；旧Edge似乎经常有保存不生效的问题，测试不是我的原因
@@ -47,155 +47,7 @@
 // @note    2020.07-09-V23.33 修复bing的顶部切换错位的问题；增加ww1.baidu.com域；修复各种样式(百度、谷歌、好搜、必应)错位的问题
 // @note    2020.04-24-V23.32 版本倒退：安全起见：默认关闭搜狗的自定义域名拦截功能和重定向功能-以后考虑更换方式；默认不开启重定向功能、默认不开启广告拦截功能；更新部分说明内容；同时也对部分支持不到位的，兼容不好的效果向大家说一声抱歉，之后我会更加努力让搜索结果更加方便查看和使用
 // @note    2020.03-27-V23.31 修复google由于页面结构更新导致的block功能失效的问题，同时修复谷歌护眼模式也失效的问题。新增翻页的按钮事件，新增使用在线config，避免由于页面结构改动又需要重新提交脚本更新
-// @note    2020.03-26-V23.30 小改代码with GoogleLOGO && 修复在inject极速模式下的小问题 && 修复各种样式问题 && 自定义样式开启动态模式 && 新增自动翻页功能-妈妈再也不用担心我翻页问题了-[推荐更新]
-// @note    2019.12-16-V23.29 自定义英文和中文的显示效果 && 修复上个版本导致的block按钮丢失的问题 && 修复部分百度内容无法拦截的情况
-// @note    2019.12-15-V23.28 由于域名备案丢失了，只能换一个 && 修复自己认为的谷歌favicon已存在的问题，实际上谷歌favicon并没有显示
-// @note    2019.11-28-V23.27 修复上次更新导致的某些模式下window对象无法获取导致的异常进而导致的脚本无法运行的bug & 优化百度样式内容和谷歌单列的偏右的情况以及必应中英文的偏移位置 修复屏蔽功能失效的bug
-// @note    2019.10-05-V23.25 修复谷歌样式、必应样式、百度的部分样式问题.修复屏蔽模式在chrome内核上的小bug 新增自动全英文模式 修复被翻译导致的bug
-// @note    2019.09-13-V23.24 修复谷歌由于页面改动导致的插入之后的样式变化 & 修复上次更新导致的重定向失效的问题
-// @note    2019.09-12-V23.23 紧急修复谷歌页面的bug & 增加时间判断是否重置最新的自定样式 & 修复整体页面的内存占用以及采用RAF来替代setInterval & 优化拦截列表并修复列表数据过多的删除失败的问题 & 新增支持通配符拦截模式 & 全部使用处理结果后的顺序
-// @note    2019.08-09-V23.22 1.移除手机百度的广告内容 2.更换数据来源地址为ibaidu.ntaow.com降低服务器负载 3.变更:页面加载不载入iframe，点击显示后载入iframe 4.未启用自定义样式时间过长会更新最新的样式表 5.修复各大搜索的样式问题-侧移+背景透明 6.修复edge首页的问题 7.block屏蔽之后可以直接取消了 8.采用错误页支持后续的google的iframe嵌入
-// @note    2019.06.16-V23.21 修复在屏蔽列表中加入异常数据导致的部分数据异常，同时还无法移除的bug && 修改Baidu学术的生效页面，避免导致其他学术页面的显示出问题 && 修复在缩放150%的情况下搜索框位置异常的问题
-// @note    2019.06.15-V23.20 尽量修改在adguard上的部分兼容问题--如果有问题记得叫我
-// @note    2019.06.05-V23.19 修复由于去广告其他插件导致的本脚本异常的问题 修复必应上的样式部分异常问题 修复图标的地址异常问题
-// @note    2019.05.06-V23.18 修复Baidu学术的异常，上次修改了，但是代码没有生效 && 新增BaiduLite的样式效果-from yiclear _ pan_cao && 优化页面显示效果，加快样式的载入速度 && 根据申杰老司机的推荐修改了许多残留的bug并且优化了页面的数据提示
-// @note    2019.05.05-V23.17 修复Baidu首页的图标异常的问题
-// @note    2019.04.26-V23.15 修复护眼色调节；新增不显示lock按钮选项；新增谷歌伪装百度；修复谷歌和百度页面的搜索样式；修复百度学术页面异常
-// @note    2019.03.30-V23.14 更新一下说明文档 && 添加一个github的跳转按钮 && 新增背景色
-// @note    2019.03.28-V23.13 更新-移除部分异常的百度白屏问题.新域名baidu.mx并不是百度旗下的地址，所以跳过。顺便刷一个版本，修复谷歌的recapture的问题，感谢老司机“breath365”
-// @note    2019.02.16-V23.12 修复上次更新导致的一堆bug & 更换资源。。。腾讯CDN真的不够你们用，还是用百度的免费cdn吧
-// @note    2019.02.15-V23.11 修复和Google Search Extra Button的兼容问题。修复地址有时候不能访问的问题。修复旧ff上的forEach和innerText不能用的问题。删除部分旧日志
-// @note    2019.02.14-V23.10 安静点，我有女朋了i_i。& 修复百度图片失效的问题
-// @note    2019.02.13-V23.09 提供选项-直接删除已屏蔽的内容，避免看到一些垃圾无用信息；修复残留bug在单列时相关搜索宽度异常；优化百度图标为透明图标
-// @note    2019.01.29-V23.08 修复从首页进入的导致的block功能失效的问题；修复移动预测按钮失效的问题；新增并修复百度手机版的兼容问题-支持手机版重定向；新增原始地址展示，减少百度更新导致的看不到地址的问题；优化拦截列表的展示和刷新的问题
-// @note    2019.01.25-V23.07 修复Favion加载失败的问题-这下就可以自定义favicon了，以前遗留了很久的bug了 && 移除部分LOG减小代码
-// @note    2019.01.25-V23.06 修复由于代码优化，导致的Huyan功能开启后脚本失效的问题
-// @note    2019.01.25-V23.05 假装大家没发现bug，赶紧更新搜狗页面的bug
-// @note    2019.01.25-V23.03 优化提示效果; 修复有时候自定义按钮无法显示的情况；新增搜狗页面的多列效果
-// @note    2019.01.23-V23.02 修复初始化的时候数据异常导致的block拦截无效的问题
-// @note    2019.01.23-V23.01 新增说明-感谢大神Jefferson Scher的拦截脚本https://greasyfork.org/zh-CN/scripts/1682. Thanks for the script of Jefferson Scher Without his help I can't Implement this Function.
-// @note    2019.01.23-V23.00 新增拦截模式，可以自定义的选择拦截某个域名，拦截掉你不想看的内容
-// @note    2018.12.25-V22.06 移除谷歌底部广告
-// @note    2018.12.22-V22.05 修复小细节问题
-// @note    2018.12.22-V22.04 修复百度搜索“咨询”栏目下没有搜索结果的问题 && 同时修改部分样式 && 修复输入框右侧无法点击输入的问题
-// @note    2018.12.22-V22.03 修复edge的样式错乱问题 && 修复谷歌双列样式问题 && 修复百度顶部大空白的问题 && 修复支持DarkReader
-// @note    2018.12.20-V22.02 修复样式加载 && 修复护眼模式效果
-// @note    2018.12.20-V22.01 更换样式表插入模式，尽量避免闪烁问题; 修复edge上该模式的兼容问题
-// @note    2018.12.19-V21.15 修复上次更新导致的护眼模式失效的问题
-// @note    2018.12.19-V21.14 修复在edge上样式没有生效的问题
-// @note    2018.12.19-V21.13 修复上次更新代码忘记修改导致的bug，修复百度移动预测的遗留bug
-// @note    2018.12.18-V21.12 继续加快移除广告的内容，尽量减少闪烁的情况；
-// @note    2018.12.18-V21.11 修复在特殊情况下的样式表没有生效的问题，同时能够更快速的移除广告内容
-// @note    2018.12.18-V21.10 修复特殊关键内容搜索下，由于移除广告导致的页面顶部特殊标记显示不正确的问题。
-// @note    2018.12.18-V21.9 再次优化样式表加载速度，能更好的更快速的加载样式而不影响代码运行
-// @note    2018.12.08-V21.8 修复srcElement在firefox旧版本上不支持的问题
-// @note    2018.12.07-V21.7 修复护眼色的引入；修复GM小于4.0版本的兼容问题；优化选项的位置，避免过长
-// @note    2018.12.06-V21.6 感谢Mooncan对谷歌样式调整的建议，已经采用了该样式，效果特别好; 同时修复了谷歌右侧栏的位置问题
-// @note    2018.12.06-V21.5 P_P修复上一版没有测试导致的支持ViolentMonkey但是有不支持GreaseMonkey的问题；更换css地址；修复护眼色在百度上的部分样式问题
-// @note    2018.12.06-V21.4 修复ViolentMonkey的支持；至此已经完全支持三只猴子(TamperMonkey、ViolentMonkey、GreaseMonkey)了；如果还有BUG-直接加群反馈
-// @note    2018.12.06-V21.3 修复在edge上样式错乱的问题 && 修复宽度过宽的问题
-// @note    2018.12.05-V21.2 移除默认的护眼模式。。。
-// @note    2018.12.05-V21.1 修复GreaseMonkey不支持GM_getResourceText导致的样式无法引入的问题，使用自己的服务器中转
-// @note    2018.12.05-V21.0 新增必应单列、双列、多列展示；新增护眼模式，各种颜色自定义设置；修复谷歌已浏览的网址未变色问题；优化一定的资源占用
-// @note    2018.10.18-V20.5 修复由于谷歌更新导致的样式问题
-// @note    2018.10.08-V20.4 修复由于去广告导致的卡顿问题 & 重写favicon添加的位置元素-减少错位产生
-// @note    2018.10.03-V20.3 国庆无事,刷版本; 修复在侧边栏开启需要在1920的分辨率下的问题，默认关闭侧边栏的样式操作，如果需要开启的话，在自定义样式中设置开启即可，增加三列|四列模式
-// @note    2018.10.01-V20.2 修复拦截广告过多导致的页面显示问题-有些正常地址也被拦截了->似乎发现不是这个脚本的bug;那就刷个版本吧，正好处理下样式缓存问题 & 大家国庆节快乐
-// @note    2018.09.21-V20.1 修复在ViolentMonkey的兼容问题 && 样式加载缓慢的问题
-// @note    2018.09.21-V20.0 修复闪烁频繁的问题；修复由于扩展和脚本模式两个CSS同时加载导致的问题；新增点击任意位置关闭设置按钮；修复在bing上的计数器位置错误；调整页面单页的样式，这次是真的居中了
-// @note    2018.09.19-V19.8 修复TamperMonkey和扩展模式下的兼容问题
-// @note    2018.09.19-V19.7 分离去广告功能和自定义样式功能
-// @note    2018.09.18-V19.6 修复由于infinity扩展的地址导致的百度样式没有载入的问题；修复万年bug之搜索预测无效的问题
-// @note    2018.09.18-V19.5 新增支持扩展模式-推荐使用扩展；修复谷歌地图页面的载入问题；配置脚本GPL协议；支持旧版本的chrome上的自定义显示结果却在最底部的问题-无法解决旧版本chrome上双列的问题
-// @note    2018.08.31-V19.4 修复1.google页面中计数器Counter在账号登录后的显示错位问题； 2.排除掉百度可能存在的error情况的地址； 3.更换css样式地址，我的CDN流量撑不住了
-// @note    2018.08.24-V19.3 修复谷歌图片在单列模式下的错位问题
-// @note    2018.08.17-V19.2 修复谷歌和百度的部分样式问题
-// @note    2018.08.16-V19.1 继续修复谷歌和百度双列的问题，这次尽量采用css样式表来调整，感觉效果还可以
-// @note    2018.08.14-V18.9 修复谷歌双列的翻页错位的问题; 百度搜索结果的阴影模式; 高分屏等我找到一台高分的显示器再说吧
-// @note    2018.08.11-V18.8 紧急-修复更新规则导致的谷歌失效的问题
-// @note    2018.08.10-V18.7 推荐升级：修改生效规则，尽量避免弹出提示更新窗口；修复-chrome4x版本的bug；预计下次更新处理高分屏显示界面问题
-// @note    2018.08.08-V18.6 更新脚本命名; 尝试解决http没有自动https的问题--------刷版本号
-// @note    2018.08.04-V18.5 修复在chrome上脚本偶尔没有生效的问题；修复百度搜索顶部侧移的情况；一定情况下修复双页的分列
-// @note    2018.07.25-V18.4 仅做文本说明修改-en-jp; 下次预计修改百度首页的广告问题
-// @note    2018.07.25-V18.3 减少了偶尔从首页加载进来的时候样式表没有载入的问题~能遇到部分样式表加载失效的情况很少;优化广告移除
-// @note    2018.07.24-V18.2 修复从百度首页加载进入页面时样式表没有载入的问题
-// @note    2018.07.24-V18.1 整体优化样式表加载速度-百度和谷歌的界面美化一下就载入了特别快；修复百度搜索的小链接的重定向没有改；修复下划线移除选项的下划线移除模式
-// @note    2018.07.21-V18.0 修复搜狗搜索没有获取到真实链接的问题；处理百度重定向速度又快又好；这次更新就支持edge了，同时理论上支持safari，希望测试；其次优化谷歌的界面样式
-// @note    2018.07.12-V17.9 修改检测参数，兼容支持Opera浏览器；暂时还是不支持EDGE的链接重定向功能
-// @note    2018.07.07-V17.8 修复由于上次更新世界杯界面时导致的shadowDOM关闭，然后广告出现的问题；优化整体去广告规则---有工具何必自己造轮子-本次用了百度自带jquery的查询函数has()
-// @note    2018.06.29-V17.7 修复右边栏导致的右侧过高，左侧看不见，以及自定义页面样式丢失的问题
-// @note    2018.06.27-V17.6 暂时关闭ShadowDOM的移除功能-尽量保留搜索世界杯功能完善。修复在某些页面上脚本无法运行的情况。新增自定义样式的输入框
-// @note    2018.06.26-V17.5 默认关闭右边栏-昨天忘了关闭了
-// @note    2018.06.25-V17.4 1.修复谷歌双列问题；2.修复右边栏展示-好些人说去掉之后不好看；3.似乎上个版本又有多次插入导致的页面卡顿情况-再次修复。。。其他的似乎没有了，想起再说
-// @note    2018.06.14-V17.3 由于edge中还是不支持返回真实链接，于是暂时屏蔽掉edge浏览器总的请求，等猴子更新了再开启这个功能；connect元素中添加baidu.com避免抽风
-// @note    2018.06.13-V17.2 加快查询速度-同时不再弹窗说新连接，无需设置特殊参数；缺点：LOG中会有许多Refused to connect to "xxx": Request was redirected to a not whitelisted URL
-// @note    2018.05.25-V17.1 新增支持百度学术的重定向功能
-// @note    2018.05.25-V17.0 拆分关键词高亮这个功能，保证功能尽量不交叉，如果需要这个功能的，请安装搜索关键词自动高亮脚本
-// @note    2018.05.22-V16.5 尝试缓解内存的问题，避免对其他的进行干扰，同时减少了head标签触发
-// @note    2018.05.22-V16.4 彻底拆分双击高亮和自动高亮功能，同时保持两个功能都是关闭状态
-// @note    2018.05.22-V16.3 设置添加双击高亮按钮
-// @note    2018.05.22-V16.2 不再使用MO方式，百度的原因导致MO彻底无法使用，于是全都用DOM操作来判断吧
-// @note    2018.05.21-V16.1 优化ac_redirectstatus高亮的问题; 同时修复了一个高亮关键词的bug；在一个老司机的指点下，添加了referer参数
-// @note    2018.05.21-V16.0 谢谢朋友们关心5.20我还是一个人过的很好；大版本：修正计数器的计数问题，修正MO失效之后脚本的触发问题；新增搜索关键词高亮选项，默认关闭
-// @note    2018.05.06-V15.3 简单移除好搜的广告
-// @note    2018.04.20-V15.2 修复bing的Favicon效果，避免显示在不同行上
-// @note    2018.04.04-V15.1 继续尝试修复bug,优化整体页面效果以及谷歌其余页面的效果展示;同时将百度样式写入到#wrapper>#head中去,刷新或者更换页面时就不会异常闪烁并且很平滑了
-// @note    2018.04.02-V14.9 更新谷歌整体效果,并尝试修复图片新闻等显示问题的bug
-// @note    2018.04.01-V14.8 --日狗问题，忘了改代码，只是更新了说明。。
-// @note    2018.04.01-V14.7 经过老司机(没ID)提供的反馈，发现上一版更新的依旧有bug，修复调小触发参数导致的触发没有生效的问题--偶尔双列失效的问题
-// @note    2018.04.01-V14.6 经过老司机(没ID)提供的反馈，排查发现chrome上脚本首次载入失效的问题，已经修复
-// @note    2018.04.01-V14.5 更新并添加谷歌双列、待测试，如果有问题，可以直接反馈
-// @note    2018.03.28-V14.4 移除jquery的require，疑似jquery引起冲突问题，于是彻底弃用jquery来处理页面数据，改用原声JS处理页面
-// @note    2018.03.27-V14.3 刷一个版本号，同时优化CSS载入过多的问题，但是载入过慢的问题又出现了，下次处理
-// @note    2018.03.26-V14.2 修复由于上次更新过于流畅的bug，同时修正首页的样式显示
-// @note    2018.03.25-V14.1 再次抄点代码，借鉴老司机:浮生@未歇的部分优化代码完善已有的（@resource、GM_getResourceText、GM_addStyle），避免页面闪烁一下，同时解决部分css载入重复的问题
-// @note    2018.03.23-V14.0 1.尝试修复在百度贴吧和百度知道的文字显示异常的问题; 2.修复编号奇怪的异常问题
-// @note    2018.03.18-V13.9 更新谷歌的favicon丢失的问题
-// @note    2018.03.04-V13.8 更新图库为https模式，避免那啥显示不安全
-// @note    2018.02.16-V13.7 1.新增关闭百度搜索预测；2.新增未知图标时切换； 3.移除百度搜索建议的顶部一条
-// @note    2018.01.12-V13.6 1.新增移除右边栏的按钮；2.新增版本显示文字；3.修正favicon位置；4.修复favicon的图片错误时候的值，万年BUG
-// @note    2017.12.27-V13.5 修复由于上个版本更新处理白屏，导致的默认标准模式的右侧栏不见了
-// @note    2017.12.20-V13.4 感谢ID：磁悬浮青蛙的反馈，已经修复小概率搜索之后点击结果白屏的问题-貌似之前处理过，但是没有彻底处理掉，这次彻底了，改用CSS隐藏
-// @note    2017.12.04-V13.3 新增设置，针对百度系列的重定向问题，不常用百度系列的朋友可以开启这个功能
-// @note    2017.11.23-V13.2 感谢卡饭坛友@Apollo8511提供反馈，已经修复部分知乎的重定向问题，更多问题可以直接反馈我
-// @note    2017.11.22-V13.1 移除百度系的重定向，虽然处理了，但是百度系直连会导致文字无法直接显示，其他直连不影响
-// @note    2017.11.17-V12.13 进一步移除百度的广告，右边部分广告的处理和移除
-// @note    2017.11.15-V12.12 搜狗的搜索地址又变了，加一个
-// @note    2017.11.02-V12.11 新增在手机mobile模式下百度的重定向处理，其余网站以后再说吧，估计没有需求
-// @note    2017.10.27-V12.10 1.修复逼死强迫症的问题；2.移除完整模式-避免出现各种拦截；3.修复www.so.com的重定向问题
-// @note    2017.09.18-V12.9 更新原因：1.勿忘国耻918；2.更新百度偶尔重定向没成功的问题；3.修复页面的小问题；4.新增文字下划线开关
-// @note    2017.09.15-V12.8 紧急修复谷歌上页面卡顿的问题，排查得知为百度规则的扩展出了问题，非常感谢众多朋友的支持，没有你们的反馈就没有这个脚本。修复并移除了百度官方采用的新方式广告模式，貌似只在chrome上出现
-// @note    2017.09.13-V12.7 1.修复N年前更新导致的部分网址重定向无效，继续使用GET方法，因为好些网站不支持HEAD方法，获取成功之后就断开，尽量减少了网络开支; 2.修复搜狗的部分搜索异常; 3.修复百度在chrome61上的链接异常问题
-// @note    2017.09.13-V12.6 开学之后的第二个版本，修复上次更新导致的百度首页错乱，修复firefox上的触发，修复SuperPreloader的翻页展示
-// @note    2017.09.12-V12.5 开学之后的第一个版本，修复在百度上偶尔不触发的问题【从首页搜索的时候触发】，其次在兄弟XXX(我也忘了哪个P_P)的帮助下，修复了偶尔会全屏特殊推广模式的问题
-// @note    2017.09.06-V12.4 修复上个版本更新导致的百度知道再次异常问题;更新知乎上的重定向问题-自己的脚本
-// @note    2017.09.06-V12.3 修复双列的模式的显示问题，如果有问题希望反馈一下，顺便切换css来源
-// @note    2017.09.04-V12.2 特意修复在ViolentMonkey上的设置无效的问题以及在360浏览器上的设置不显示问题
-// @note    2017.09.04-V12.1 百度页面直接添加设置入口；360浏览器设置可能在底部页面；支持单列和双列模式，界面更美观from浮生@未歇；可能是最近一段时间的最后版本了，要开学了~~
-// @note    2017.09.02-V11.10 添加两个选项，可以选择性移除部分设置
-// @note    2017.09.01-V11.9 修复上次更新导致的百度去广告不灵的问题
-// @note    2017.08.30-V11.8 新增：1.GM设置栏目中加入设置 2.baidu-使用HEAD方式获取，减少数据传输，搜狗特殊，继续GET方式
-// @note    2017.08.29-V11.7 方便朋友们-移除知乎重定向
-// @note    2017.08.07-V11.6 调整：移除小绿点，换为点击Favicon或者是计数器弹出窗口，更换为加群链接
-// @note    2017.08.06-V11.5 修复，保存异常；预期之后会添加百度搜索页面的大调整
-// @note    2017.08.05-V11.4 新增：反馈和建议地址增加
-// @note    2017.08.04-V11.3 修复：由于英语不好导致的拼写错误，感谢shj兄弟指出
-// @note    2017.08.03-V11.2 新增：谷歌链接新标签打开; 移除搜索结果链接的下划线
-// @note    2017.07.22-V11.1 新增了开关模式，可以开启或者关闭某些自己不喜欢的功能，开关在右上角，和SuperPreload共用
-// @note    2017.06.25-V10.1 修复上次更新导致的百度去广告的问题
-// @note    2017.06.25-V10.0 修复上次更新导致的百度知道再次出现老问题
-// @note    2017.06.24-V9.9 更新了翻页的问题，经过多次的尝试应该没有太大问题了
-// @note    2017.06.24-V9.8 更新了bing上的图片favicon地址;并且尽量减少了MO触发次数，避免页面卡顿;修复搜狗的重定向问题
-// @note    2017.06.23-V9.7 上传错了~重新来，顺带处理了谷歌favicon问题
-// @note    2017.06.23-V9.6 修复了谷歌重定向的问题~~我的锅
-// @note    2017.06.11-V9.5 不再使用DOM方式来监听页面了，使用timer+MO来处理，极大减少了cpu占用时间和瞬时网速占用
-// @note    2017.05.26-V9.4 恢复favicon模式，现在这个脚本基本上全了，有需要以后再说
-// @note    2017.05.15-V9.3 暂时移除百度右边侧栏的广告移除模式，准备下次优化好了再继续
-// @note    2017.05.12-V9.2 暂时移除谷歌的安全搜索模式，因为很复杂的原因
-// @note    2017.05.12-V9.1 暂时移除Favicon的显示，因为这样就杂了，有需要的人自己去装这个脚本吧，保留百度去广告
-// @note    2017.05.12-V9.0 集合了去重定向+去广告+Favicon显示
-// @note    2017.05.12-V8.7 集合了去广告的脚本，以前的那个去广告的脚本就不用了
-// @note    2017.05.12-V8.6 修复谷歌安全搜索的BUG V2
+// @note    2017.05.12 -> 2020.03-26 && V8.6 -> V23.30 各种各样的历史更新记录，从一个版本迭代到另一个版本
 // @note    2017.05.12-V8.4 新增：默认屏蔽谷歌的安全搜索功能
 // @note    2017.05.05-V8.3 修复include范围太小导致的百度知道的屏蔽问题
 // @note    2017.05.04-V8.2 终于修复了百度知道图片替换了文字的这个大BUG; 顺便处理了superapi.zhidao.baidu.com; 新增谷歌搜索结果重定向去除
@@ -208,30 +60,29 @@
 // @note    2017.03.19-V7.2 未知原因chrome的MutationObserver无法使用了，继续回归以前的DOMNodeInserted
 // @note    2017.02.17-V7.0 修复搜狗的搜索结果重定向问题+改个名字
 // @note    2017.02.17-V6.9 修复搜狗的搜索结果重定向问题
-// @note    2016.12.10-V6.8 ***
 // @note    2016.10.27-V6.7 修复了以前的重复请求，现在的请求数应该小了很多，网络也就不卡了，感觉萌萌哒
 // @note    2016.04.24-V6.6 恢复以前的版本，因为兼容性问题
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.htt5.com/newcss/baiduCommonStyle.css?t=24.04
-// @resource  baiduOnePageStyle  http://ibaidu.htt5.com/newcss/baiduOnePageStyle.css?t=24.06
-// @resource  baiduTwoPageStyle  http://ibaidu.htt5.com/newcss/baiduTwoPageStyle.css?t=24.04
-// @resource  baiduLiteStyle     http://ibaidu.htt5.com/newcss/baiduLiteStyle.css?t=24.04
-// @resource  googleCommonStyle  http://ibaidu.htt5.com/newcss/googleCommonStyle.css?t=24.04
-// @resource  googleOnePageStyle   http://ibaidu.htt5.com/newcss/googleOnePageStyle.css?t=24.04
-// @resource  googleTwoPageStyle   http://ibaidu.htt5.com/newcss/googleTwoPageStyle.css?t=24.04
-// @resource  bingCommonStyle    http://ibaidu.htt5.com/newcss/bingCommonStyle.css?t=24.04
-// @resource  bingOnePageStyle   http://ibaidu.htt5.com/newcss/bingOnePageStyle.css?t=24.04
-// @resource  bingTwoPageStyle   http://ibaidu.htt5.com/newcss/bingTwoPageStyle.css?t=24.04
-// @resource  duckCommonStyle    http://ibaidu.htt5.com/newcss/duckCommonStyle.css?t=24.04
-// @resource  duckOnePageStyle   http://ibaidu.htt5.com/newcss/duckOnePageStyle.css?t=24.04
-// @resource  duckTwoPageStyle   http://ibaidu.htt5.com/newcss/duckTwoPageStyle.css?t=24.04
-// @resource  dogeCommonStyle    http://ibaidu.htt5.com/newcss/dogeCommonStyle.css?t=24.04
-// @resource  dogeOnePageStyle   http://ibaidu.htt5.com/newcss/dogeOnePageStyle.css?t=24.04
-// @resource  dogeTwoPageStyle   http://ibaidu.htt5.com/newcss/dogeTwoPageStyle.css?t=24.04
-// @resource  MainHuYanStyle     http://ibaidu.htt5.com/newcss/HuYanStyle.css?t=24.04
-// @resource  SiteConfigRules    http://ibaidu.htt5.com/newcss/SiteConfigRules.conf?t=24.04
+// @resource  baiduCommonStyle   http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=24.08
+// @resource  baiduOnePageStyle  http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=24.08
+// @resource  baiduTwoPageStyle  http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.08
+// @resource  baiduLiteStyle     http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=24.08
+// @resource  googleCommonStyle  http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=24.08
+// @resource  googleOnePageStyle http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=24.08
+// @resource  googleTwoPageStyle http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=24.08
+// @resource  bingCommonStyle    http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=24.08
+// @resource  bingOnePageStyle   http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=24.08
+// @resource  bingTwoPageStyle   http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=24.08
+// @resource  duckCommonStyle    http://ibaidu.ntaow.com/newcss/duckCommonStyle.css?t=24.08
+// @resource  duckOnePageStyle   http://ibaidu.ntaow.com/newcss/duckOnePageStyle.css?t=24.08
+// @resource  duckTwoPageStyle   http://ibaidu.ntaow.com/newcss/duckTwoPageStyle.css?t=24.08
+// @resource  dogeCommonStyle    http://ibaidu.ntaow.com/newcss/dogeCommonStyle.css?t=24.08
+// @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.08
+// @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.08
+// @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.08
+// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.08
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.js
 // @grant    GM_getValue
 // @grant    GM.getValue
@@ -575,6 +426,7 @@ body[baidu] #s_lg_img_new{
     let AllData = {
       ACConfig: {},
       other: otherData.other,
+      CONST: CONST,
       lan: {
         use: {},
         zh_cn: {
@@ -1281,7 +1133,7 @@ body[baidu] #s_lg_img_new{
                 return list;
               },
               AdsStyleModeChange() {
-                return {value: CONST.useItem.AdsStyleMode, another: ACConfig.Style_BaiduLite};
+                return {v1: CONST.useItem.AdsStyleMode, v2: CONST.useItem.HuYanMode, v3: ACConfig.Style_BaiduLite, v4: ACConfig.isFaviconEnable};
               }
             },
             watch: {
@@ -1292,7 +1144,7 @@ body[baidu] #s_lg_img_new{
                   if (res) node.remove();
                   else break;
                 }
-                safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle']");
+                safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle'],style[class='AC-baiduHuYanStyle-File']");
                 acCssLoadFlag = false;
                 CONST.StyleManger.init();
               }
@@ -1702,7 +1554,7 @@ body[baidu] #s_lg_img_new{
             , "AC-special-BAIDU"
           );
           /*"自定义"按钮效果*/
-          AC_addStyle(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}",
+          AC_addStyle(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}body[doge] #header{max-width: unset;}body[doge] #myuser{position: absolute;right: 40px;}",
             "AC-MENU_Btn");
           /*自定义页面内容效果*/
           AC_addStyle('body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>label:not([class="label_hide"]),\n' +
@@ -1766,6 +1618,11 @@ body[baidu] #s_lg_img_new{
               }
               if (ACConfig.isFaviconEnable) { // 显示favicon图标
                 addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
+              }else{
+                safeRemove("img.AC-faviconT");
+                document.querySelectorAll(curSite.FaviconType).forEach((one) => {
+                  one.removeAttribute("ac_faviconstatus");
+                })
               }
               if (ACConfig.doDisableSug) { // 不启用移动预测[默认]
                 acSetCookie("ORIGIN", 2, "www.baidu.com");
@@ -2928,7 +2785,7 @@ body[baidu] #s_lg_img_new{
             let result = parseInt(CONST.useItem.AdsStyleMode || -1);
             if (acCssLoadFlag === false && document.querySelector(".ACExtension") === null) {
               debug("in样式即将加载:" + result);
-              let expandStyle = "#content_left .result-op:hover,#content_left .result:hover{box-shadow:0 0 2px gray;background:rgba(230,230,230,0.1)!important;}#wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .c-container{min-width:670px;}.c-span18{width:78%!important;min-width:550px;}.c-span24{width: auto!important;}";
+              let expandStyle = "#wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .c-container{min-width:670px;}.c-span18{width:78%!important;min-width:550px;}.c-span24{width: auto!important;}";
               if (result === 1) {
                 AC_addStyle(expandStyle, "AC-Style-expand", "head");
                 CONST.StyleManger.loadCommonStyle();

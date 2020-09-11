@@ -19,10 +19,7 @@ body {
     border-radius: 5px;
     background-color: #fff;
     box-sizing: border-box;
-    box-shadow: 0 0 2px gray;
-    border: 1px solid rgba(0,0,0,0);
-    -webkit-box-shadow: 0 0 2px gray;
-    -moz-box-shadow: 0 0 2px gray;
+    border: 1px solid rgba(0,0,0,0.1);
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
 #links_wrapper #links .results_links_deep .result__title a {
@@ -38,9 +35,10 @@ body {
 }
 
 #links_wrapper #links .results_links_deep:hover {
-    box-shadow: 0 0 15px 3px rgba(0, 0, 0, .18);
-    border: 1px solid rgba(0,0,0,0.2);
-    background: #f3f3f3 !important;
+    border: 1px solid rgba(0,0,0,0.3);
+    box-shadow: 0 0 1px grey;
+    -webkit-box-shadow: 0 0 1px grey;
+    -moz-box-shadow: 0 0 1px gray;
 }
 #links_wrapper #links .results_links_deep h2 {
     background-color: #f8f8f8;

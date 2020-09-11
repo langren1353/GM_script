@@ -1,5 +1,5 @@
 /**Store BaiduOnePageStyle**/
-#wrapper_wrapper #container {
+#wrapper_wrapper #container{
     width: 100%;
     margin-left: unset;
 }
@@ -24,12 +24,15 @@ body[baidu] .pagefoot.gj{
 #wrapper  #content_left,#wrapper #container.sam_newgrid #rs, #wrapper #page{
     top: 35px;
     position:relative;
-    padding-left: 0;
+    padding-left: 0px;
     width: 50%!important;
     min-width: 670px;
     float:unset;
     margin-left: unset;
     margin: 0 auto;
+}
+#wrapper #container.sam_newgrid #content_left{
+    padding-left: 20px;
 }
 #wrapper #page{
     background: unset;
@@ -77,11 +80,15 @@ body[baidu] .pagefoot.gj{
     left: calc(45vw - 500px);
     margin-top: 25px;
 }
+.AC.sp-separator{
+    width: auto;
+}
 /*search engine jump*/
 #sej-container{
     padding-left: calc(44% - 478px) !important;
 }
 .s_form_wrapper {
+    display: flex;
     justify-content: center;
 }
 #wrapper #s_tab{
@@ -90,13 +97,13 @@ body[baidu] .pagefoot.gj{
     display: flex;
     justify-content: center;
 }
-#wrapper .head_nums_cont_outer .search_tool_conter,
-#wrapper .head_nums_cont_outer .nums {
+#wrapper #container .head_nums_cont_outer .search_tool_conter,
+#wrapper #container .head_nums_cont_outer .nums {
     width: 80%;
+    margin-left: 10%;
 }
 @media screen and (max-width:1450px){
     form.fm .s_ipt_wr.bg{
         min-width: 330px;
     }
 }
-

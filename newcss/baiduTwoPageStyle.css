@@ -1,5 +1,5 @@
 /**Store BaiduTowPageStyle**/
-#wrapper_wrapper #container  {
+#wrapper_wrapper #container {
     width: auto;
 }
 form.fm{
@@ -18,6 +18,7 @@ form.fm{
 #wrapper .head_nums_cont_outer .search_tool_conter,
 #wrapper .head_nums_cont_outer .nums {
     width: 80%;
+    margin-left: 10%;
 }
 #wrapper  .head_nums_cont_outer,
 .hint_common_restop,
@@ -28,6 +29,9 @@ form.fm{
 }
 #wrapper #header_top_bar{
     margin-bottom: 0px;
+}
+body #container.sam_newgrid #content_left{
+    width: 80%;
 }
 #wrapper #content_left{
     display: inline-grid;
@@ -49,7 +53,7 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 #wrapper #content_right{
     display:none !important;
 }
-#wrapper #rs{
+#wrapper_wrapper #container #rs{
     position: relative;
     margin: 0 auto;
 }
@@ -72,12 +76,16 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
     margin-left: 5px;
     margin-right: 15px;
 }
+
 #wrapper  #content_left>*:not([class*='result']){
 	grid-column-start: 1;
     grid-column-end: xmain-end;
 }
 .c-container h3 a{
     z-index:1;
+}
+.AC.sp-separator{
+    width: auto;
 }
 /*search engine jump*/
 #sej-container{
