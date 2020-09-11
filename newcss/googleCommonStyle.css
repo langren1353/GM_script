@@ -32,8 +32,13 @@ body[google] {
     overflow:hidden;
 }
 a,
-a em {
+a em,
+#u a {
     text-decoration: none;
+}
+a:hover,
+a:hover h3{
+    text-decoration: none !important;
 }
 /******************* rewrite header *******************/
 
@@ -71,9 +76,6 @@ a em {
 }
 #s_tab {
     border-bottom: #e0e0e0 1px solid;
-}
-#u a {
-    text-decoration: none;
 }
 /******************* rewrite - searchBox *******************/
 /* SearchTools */

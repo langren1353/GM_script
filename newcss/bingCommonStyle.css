@@ -39,9 +39,13 @@ body {
 a, a strong {
     text-decoration: none;
 }
+
 #b_content #b_results a strong,
 #b_content #b_results h2 a strong {
     text-decoration: none;
+}
+.b_algo:first-child:hover h2 a{
+    text-decoration: none !important;
 }
 #b_content #b_results a:hover:after,
 #b_content #b_results h2 a:hover:after {
@@ -51,12 +55,16 @@ a, a strong {
     -moz-transition: width 350ms;
     transition: width 350ms;
 }
+#b_content #b_results a:hover,
+#b_content #b_results h2 a:hover{
+    text-decoration: none;
+}
 #b_content #b_results a:after,
 #b_content #b_results h2 a:after {
     content: "";
     position: absolute;
     border-bottom: 2px solid #3476d2;
-    bottom: 1px;
+    bottom: -2px;
     left: 100%;
     width: 0;
     -webkit-transition: width 350ms, left 350ms;

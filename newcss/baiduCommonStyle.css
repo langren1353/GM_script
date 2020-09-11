@@ -26,7 +26,14 @@ body[baidu] {
     overflow:hidden;
 }
 body a,
-body a em {
+body a em,
+#u a ,
+#wrapper #content_left .op-soft-title a em,
+#wrapper #content_left .result h3 a em {
+    text-decoration: none;
+}
+
+body a:hover{
     text-decoration: none;
 }
 #wrapper #s_tab {
@@ -69,9 +76,6 @@ form.fm .s_btn:hover {
     border-bottom: 3px #3476d2 solid;
 }
 
-#u a {
-    text-decoration: none;
-}
 #wrapper .head_nums_cont_outer .search_tool_conter,
 #wrapper .head_nums_cont_outer .nums {
     width: 630px;
@@ -184,20 +188,19 @@ form.fm .s_btn:hover {
 #wrapper #content_left .c-container[tpl='soft'] .op-soft-title a,
 #wrapper #content_left .c-container[tpl='soft'] .op-soft-title a em,
 #wrapper #content_left .c-container h3 a,
-#wrapper #content_left .result h3 a em {
+#wrapper #content_left .result h3 a em,
+#wrapper #content_left .result-op h3 a em {
     color: #3476d2;
     font-weight: bold;
 }
 #wrapper #content_left .op-soft-title a,
-#wrapper #content_left .result h3 a {
+#wrapper #content_left .result h3 a,
+#wrapper #content_left .result-op h3 a {
     position: relative;
 }
-#wrapper #content_left .op-soft-title a em,
-#wrapper #content_left .result h3 a em {
-    text-decoration: none;
-}
 #wrapper #content_left .op-soft-title a:hover:after,
-#wrapper #content_left .result h3 a:hover:after {
+#wrapper #content_left .result h3 a:hover:after,
+#wrapper #content_left .result-op h3 a:hover:after {
     left: 0;
     width: 100%;
     -webkit-transition: width 350ms;
@@ -205,7 +208,8 @@ form.fm .s_btn:hover {
     transition: width 350ms;
 }
 #wrapper #content_left .op-soft-title a:after,
-#wrapper #content_left .result h3 a:after {
+#wrapper #content_left .result h3 a:after,
+#wrapper #content_left .result-op h3 a:after {
     content: "";
     position: absolute;
     border-bottom: 2px solid #3476d2;
@@ -217,12 +221,14 @@ form.fm .s_btn:hover {
     transition: width 350ms, left 350ms;
 }
 #wrapper #content_left .result h3,
+#wrapper #content_left .result-op h3,
 #wrapper #content_left .c-container h3{
     font-weight: bold;
     font-size: medium;
 }
 
-#wrapper #content_left .op-soft-title a #content_left .result h3 a {
+#wrapper #content_left .op-soft-title a #content_left .result h3 a,
+#wrapper #content_left .op-soft-title a #content_left .result-op h3 a {
     position: relative;
 }
 #wrapper #content_left .op-soft-title a:visited,
@@ -232,7 +238,8 @@ form.fm .s_btn:hover {
     color: #660099;
 }
 #wrapper #content_left .op-soft-title a:visited:hover:after,
-#wrapper #content_left .result h3 a:visited:hover:after {
+#wrapper #content_left .result h3 a:visited:hover:after,
+#wrapper #content_left .result-op h3 a:visited:hover:after {
     left: 0;
     width: 100%;
     -webkit-transition: width 350ms;
@@ -240,7 +247,8 @@ form.fm .s_btn:hover {
     transition: width 350ms;
 }
 #wrapper #content_left .op-soft-title a:visited:after,
-#wrapper #content_left .result h3 a:visited:after {
+#wrapper #content_left .result h3 a:visited:after,
+#wrapper #content_left .result-op h3 a:visited:after {
     content: "";
     position: absolute;
     border-bottom: 2px solid #660099;
