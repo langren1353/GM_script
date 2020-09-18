@@ -33,7 +33,8 @@ body a em,
     text-decoration: none;
 }
 
-body a:hover{
+body a:hover,
+body a:hover em{
     text-decoration: none;
 }
 #wrapper #s_tab {
@@ -324,6 +325,9 @@ form.fm .s_btn:hover {
 #container.sam_newgrid .c-container .t .AC-faviconT~a, #container.sam_newgrid .c-container .t .c-icon~a{
     display:inline
 }
+body #wrapper #content_left a[href*='official'] {
+    color: white;
+}
 #content_left .c-group-middle,#content_left  .c-group-top{
     margin-bottom: 30px !important;
 }
@@ -391,9 +395,11 @@ body .wrapper_new #head.fix-head .s_form{
     margin-top: -10px;
     width: 650px;
 }
+/*TODO 这里有超过边界了*/
 #content_left .new-pmd .c-span9,
 #content_left .new-pmd .c-span10{
     width: unset;
+    max-width: 22vw;
 }
 #wrapper #content_left .c-container[tpl='recommend_list']>div{
     margin-top: 30px;

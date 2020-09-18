@@ -409,7 +409,7 @@ div .kno-ftr a{
 /**Thanks to Mooncan -END**/
 .mw #res h3, .mw #extrares h3{
     /**reset font size**/
-    font-size: 18px;
+    font-size: medium;
 }
 /*deal with cite too long and title too short*/
 #rso>.g .r>a>div{
