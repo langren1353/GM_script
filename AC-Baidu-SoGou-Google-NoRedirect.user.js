@@ -2316,7 +2316,7 @@ body[baidu] #s_lg_img_new{
             // 移除搜索中底部广告
             safeRemove("#m-spread-bottom");
             // 移除右侧栏顶部广告
-            safeRemove("id('righttop_box')//li[.//span[contains(text(), '广告')]]");
+            safeRemove_xpath("id('righttop_box')//li[.//span[contains(text(), '广告')]]");
           } else if (curSite.SiteTypeID === SiteType.BING) {
             safeRemove(".b_ad");
           } else if (curSite.SiteTypeID === SiteType.GOOGLE) {

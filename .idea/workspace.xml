@@ -31,15 +31,6 @@
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="简单更新-不知道是啥">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingOnePageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -315,7 +306,7 @@
       <workItem from="1601172896815" duration="12619000" />
       <workItem from="1601199326961" duration="201000" />
       <workItem from="1601199538847" duration="238000" />
-      <workItem from="1601199922875" duration="1642000" />
+      <workItem from="1601199922875" duration="1976000" />
     </task>
     <task id="LOCAL-00001" summary="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题">
       <created>1597142744545</created>
