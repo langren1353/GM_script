@@ -9,7 +9,7 @@
     grid-template-areas: "xmain xmain";
     display: inline-grid;
 }
-#b_content #b_results>li{
+#b_content #b_results>li:not(#mfa_root) {
     width:98%;
 }
 #b_results .b_algo .b_deep ul{

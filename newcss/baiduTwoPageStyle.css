@@ -77,9 +77,14 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
     margin-right: 15px;
 }
 
-#wrapper  #content_left>*:not([class*='result']){
+#wrapper  #content_left>*:not([class*='result']):not([class*='c-group-wrapper']){
 	grid-column-start: 1;
     grid-column-end: xmain-end;
+}
+#content_left .new-pmd .c-span9,
+#content_left .new-pmd .c-span10{
+    width: unset;
+    max-width: calc(100% - 160px);
 }
 .c-container h3 a{
     z-index:1;

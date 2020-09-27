@@ -1,7 +1,6 @@
 /**Store BaiduCommonStyle**/
-iframe,
-.res_top_banner
-#foot,
+iframe:not([src*='chrome']),
+.res_top_banner #foot,
 #page .fk,
 #head .headBlock,
 #rs_top_new,
@@ -21,6 +20,7 @@ body>div.result-op,
 }
 body[baidu] {
     background-color: #f5f5f5;
+    transition: all 1.5s;
 }
 #ala_img_results{
     overflow:hidden;
@@ -59,6 +59,11 @@ form.fm .s_ipt_wr.bg{
     background: #fff;
     width: 66%;
     min-width: 570px;
+}
+#content_left .new-pmd .c-span9,
+#content_left .new-pmd .c-span10{
+    width: unset;
+    max-width: calc(100% - 160px);
 }
 /***fix 2k+ problem***/
 #head .head_wrapper{
@@ -260,6 +265,14 @@ form.fm .s_btn:hover {
     -moz-transition: width 350ms, left 350ms;
     transition: width 350ms, left 350ms;
 }
+#wrapper #content_left .c-group-wrapper{
+    padding: 0;
+    margin: 0 20px 20px 10px;
+}
+#wrapper #content_left .c-group-wrapper .c-group{
+    margin: 0;
+    padding-top: 10px;
+}
 #wrapper #rs{
     margin-top: 0px;
     padding: 0px 20px 15px;
@@ -395,14 +408,10 @@ body .wrapper_new #head.fix-head .s_form{
     margin-top: -10px;
     width: 650px;
 }
-/*TODO 这里有超过边界了*/
-#content_left .new-pmd .c-span9,
-#content_left .new-pmd .c-span10{
-    width: unset;
-    max-width: 22vw;
-}
-#wrapper #content_left .c-container[tpl='recommend_list']>div{
-    margin-top: 30px;
+#wrapper #content_left .c-container[tpl='recommend_list']{
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
 }
 @media screen and (max-width:1280px){
     #u .toindex, #u #imsg{

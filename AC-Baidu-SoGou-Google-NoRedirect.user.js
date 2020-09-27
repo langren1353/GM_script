@@ -10,8 +10,8 @@
 // @icon    https://ae01.alicdn.com/kf/Hac1a58055c5047cdb91349e91aa208d5k.jpg
 // @author    AC
 // @license    GPL-3.0-only
-// @create    2015-11-25
-// @run-at    document-start
+// @create     2015-11-25
+// @run-at     document-start
 // @version    24.10
 // @connect    www.baidu.com
 // @include    *://ipv6.baidu.com/*
@@ -34,9 +34,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2020-09-14
+// @lastmodified  2020-09-27
 // @feedback-url  https://ac.tujidu.com
-// @note    2020.09-14-V24.10 修复百度拦截模式的问题以及小地址尾注；修复好搜的拦截功能
+// @note    2020.09-27-V24.10 修复百度拦截模式的问题以及小地址尾注；修复好搜的拦截功能；修复部分样式问题
 // @note    2020.09-12-V24.09 修复翻页失效的问题；更新部分样式内容
 // @note    2020.09-11-V24.08 更换Vue的cdn地址，尽量加快数据的载入速度；为了兼容safari将百度的https地址替换为了http地址；修复favicon获取的问题；增加favicon动态刷新；修复部分样式问题
 // @note    2020.08-06-V24.07 修复保存无效的问题；修复百度在单列居中的时候错位的问题
@@ -67,24 +67,24 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=24.091
-// @resource  baiduOnePageStyle  http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=24.09
-// @resource  baiduTwoPageStyle  http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.09
-// @resource  baiduLiteStyle     http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=24.09
-// @resource  googleCommonStyle  http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=24.09
-// @resource  googleOnePageStyle http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=24.09
-// @resource  googleTwoPageStyle http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=24.09
-// @resource  bingCommonStyle    http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=24.09
-// @resource  bingOnePageStyle   http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=24.09
-// @resource  bingTwoPageStyle   http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=24.09
-// @resource  duckCommonStyle    http://ibaidu.ntaow.com/newcss/duckCommonStyle.css?t=24.09
-// @resource  duckOnePageStyle   http://ibaidu.ntaow.com/newcss/duckOnePageStyle.css?t=24.09
-// @resource  duckTwoPageStyle   http://ibaidu.ntaow.com/newcss/duckTwoPageStyle.css?t=24.09
-// @resource  dogeCommonStyle    http://ibaidu.ntaow.com/newcss/dogeCommonStyle.css?t=24.091
-// @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.09
-// @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.09
-// @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.09
-// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.09
+// @resource  baiduCommonStyle   http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=24.10
+// @resource  baiduOnePageStyle  http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=24.10
+// @resource  baiduTwoPageStyle  http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.10
+// @resource  baiduLiteStyle     http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=24.10
+// @resource  googleCommonStyle  http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=24.10
+// @resource  googleOnePageStyle http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=24.10
+// @resource  googleTwoPageStyle http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=24.10
+// @resource  bingCommonStyle    http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=24.10
+// @resource  bingOnePageStyle   http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=24.10
+// @resource  bingTwoPageStyle   http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=24.10
+// @resource  duckCommonStyle    http://ibaidu.ntaow.com/newcss/duckCommonStyle.css?t=24.10
+// @resource  duckOnePageStyle   http://ibaidu.ntaow.com/newcss/duckOnePageStyle.css?t=24.10
+// @resource  duckTwoPageStyle   http://ibaidu.ntaow.com/newcss/duckTwoPageStyle.css?t=24.10
+// @resource  dogeCommonStyle    http://ibaidu.ntaow.com/newcss/dogeCommonStyle.css?t=24.10
+// @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.10
+// @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.10
+// @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.10
+// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.10
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js
 // @grant    GM_getValue
@@ -240,7 +240,7 @@ div .AC-CounterT{
   -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
 }
 /****可以加一些自己的背景图片,替换引号内的内容为可外链的图片即可****/
-body{
+body[baidu]{
   background-repeat: repeat-y;
   background-size: 100%;
   background-attachment:fixed;
@@ -716,11 +716,11 @@ body[baidu] #s_lg_img_new{
       }
     }
 
-    function getAllElementsByXpath(e, t, r) {
-      return r = r || document, t = t || r, r.evaluate(e, t, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-    }
-
     function getAllElements(e, t, r, n, o) {
+      let getAllElementsByXpath = function(e, t, r) {
+        return r = r || document, t = t || r, r.evaluate(e, t, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+      }
+
       var i, s = [];
       if (!e) return s;
       if (r = r || document, n = n || window, o = o || void 0, t = t || r, "string" == typeof e) i = 0 === e.search(/^css;/i) ? function getAllElementsByCSS(e, t) {
@@ -838,18 +838,6 @@ body[baidu] #s_lg_img_new{
 
         console.log("%c[AC-Redirect] %cLet Me Introduce you a Very Good Search Engine：%c %s %cSearch Engine.", "font-weight:bold;color:cornflowerblue", "color:0", "font-weight:bold;color:darkorange", CONST.useItem.name.replace(CONST.useItem.name[0], CONST.useItem.name[0].toUpperCase()), "font-weight:normal;color:0");
 
-        let bodyNameresetTimer = setInterval(function () {
-          if (document.body != null) {
-            document.body.setAttribute(CONST.useItem.name, "1");
-            document.body.classList.add(CONST.useItem.name);
-            if (curSite.SiteTypeID === SiteType.BAIDU && location.href.includes("tn=news")) {
-              document.body.setAttribute("news", "1");
-            } else {
-              document.body.removeAttribute("news");
-            }
-            // clearInterval(bodyNameresetTimer);
-          }
-        }, 800);
         let SiteBlock = {
           /**
            * 初始化Block样式
@@ -920,6 +908,7 @@ body[baidu] #s_lg_img_new{
             for (let i = 0; i < checkNodes.length; i++) {
               try {
                 let curNode = checkNodes[i];
+                let curLink = curNode.querySelector(curSite.FaviconType).href;
                 let curHost = getNodeHost(curNode.querySelector(curSite.FaviconType));
                 if (curHost == null) continue;
                 {
@@ -929,7 +918,7 @@ body[baidu] #s_lg_img_new{
                 }
                 if (curNode.querySelector("button[ac-user-alter]") != null) continue; // 用户手动点过显示的，那么跳过check
                 let regList = vueVM.cal_UserBlockListRegex; // 使用Vue的computed属性计算的数据值，一般根本不更新
-                if (regList.findIndex(one => {
+                if (!curLink.includes("www.baidu.com/link") && regList.findIndex(one => {
                   try {
                     return one.test(curHost); // 耗时操作
                   } catch (e) {
@@ -1038,11 +1027,25 @@ body[baidu] #s_lg_img_new{
           if (curSite.SiteTypeID !== SiteType.OTHERS) {
             document.addEventListener('DOMNodeInserted', MainCallback, false);
             document.addEventListener('keyup', MainCallback, false);
+            RAFInterval(function (){
+              if (document.body != null) {
+                !document.body.hasAttribute(CONST.useItem.name) && document.body.setAttribute(CONST.useItem.name, "1");
+                !document.body.classList.contains(CONST.useItem.name) && document.body.classList.add(CONST.useItem.name);
+              }
+              if (ACConfig.AdsStyleEnable) { // 单独不需要定时器-頻繁触发-载入css
+                FSBaidu();
+                AddCustomStyle();
+              }
+            }, 230);
             RAFInterval(function () {
               rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
+              if (curSite.SiteTypeID === SiteType.BAIDU && location.href.includes("tn=news")) {
+                document.body.setAttribute("news", "1");
+              } else {
+                document.body.removeAttribute("news");
+              }
             }, 800);
           }
-
         } catch (e) {
           console.log(e);
         }
@@ -1540,7 +1543,7 @@ body[baidu] #s_lg_img_new{
           },
         };
 
-        function AutoRefresh() {
+        function AddCustomStyle() {
           if (!ACConfig.isRightDisplayEnable) {
             // 移除右边栏 -注意在#wrapper>#con-at>#result-op xpath-log有时候很重要，不能隐藏
             AC_addStyle("#content_right{display:none !important;}#content_right td>div:not([id]){display:none;}#content_right .result-op:not([id]){display:none!important;}#rhs{display:none;}",
@@ -1596,7 +1599,7 @@ body[baidu] #s_lg_img_new{
             "AC-MENU_Page");
         }
 
-        AutoRefresh();
+        AddCustomStyle();
         try {
           GM_registerMenuCommand('AC-重定向脚本设置', function () {
             document.querySelector("#sp-ac-content").style.display = 'block';
@@ -1624,13 +1627,6 @@ body[baidu] #s_lg_img_new{
             if (insertLocked === false && curSite.SiteTypeID !== SiteType.OTHERS) {
               insertLocked = true;
               ACHandle(); // 处理主重定向
-              AutoRefresh();
-              if (ACConfig.isAdsEnable) { // 放进来，减少卡顿
-                removeAD_baidu_sogou();
-              }
-              if (ACConfig.AdsStyleEnable) { // 单独不需要定时器-頻繁触发-载入css
-                FSBaidu();
-              }
               if (ACConfig.isFaviconEnable) { // 显示favicon图标
                 addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
               }else{
@@ -1638,11 +1634,6 @@ body[baidu] #s_lg_img_new{
                 document.querySelectorAll(curSite.FaviconType).forEach((one) => {
                   one.removeAttribute("ac_faviconstatus");
                 })
-              }
-              if (ACConfig.doDisableSug) { // 不启用移动预测[默认]
-                acSetCookie("ORIGIN", 2, "www.baidu.com");
-                acSetCookie("ISSW", 1);
-                acSetCookie("ISSW", 1, "www.baidu.com");
               }
               if (ACConfig.isAdsEnable) { // 移除多余的广告内容
                 removeAD_baidu_sogou();
@@ -1654,6 +1645,11 @@ body[baidu] #s_lg_img_new{
                   one.parentElement.removeAttribute('SortIndex');
                   one.remove()
                 })
+              }
+              if (ACConfig.doDisableSug) { // 不启用移动预测[默认]
+                acSetCookie("ORIGIN", 2, "www.baidu.com");
+                acSetCookie("ISSW", 1);
+                acSetCookie("ISSW", 1, "www.baidu.com");
               }
               if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
                 SiteBlock.initStyle();
@@ -2122,9 +2118,9 @@ body[baidu] #s_lg_img_new{
               e.stopPropagation(); // 阻止点击自身的时候关闭
             }, false);
             document.querySelector("body").addEventListener('click', function (e) {
-              safeRemove(function () {
+              safeFunction( () => {
                 document.querySelector("#sp-ac-content").style.display = 'none';
-              });
+              })
             }, false);
           } catch (e) {
           }
@@ -2287,47 +2283,40 @@ body[baidu] #s_lg_img_new{
 
         function removeAD_baidu_sogou() { // 移除网站自有广告
           if (curSite.SiteTypeID === SiteType.BAIDU) {
-            // safeRemove(".c-container /deep/ .c-container");
+
             // 移除shadowDOM广告；搜索关键字：淘宝；然后点击搜索框，广告会多次重现shadowdom
             safeFunction(function () {
               $('.c-container /deep/ .c-container').has('.f13>span:contains("广告")').remove();
             });
-            safeFunction(function () {
-              $('#content_right>div').has('a:contains("广告")').remove();
-            });
+
+            // 移除右侧栏广告
+            safeRemove_xpath("id('content_right')/div[.//a[contains(text(), '广告')]]");
             // 移除标准广告
-            safeFunction(function () {
-              $('#content_left>div').has('span:contains("广告")').remove();
-            });
+            safeRemove_xpath("id('content_left')/div[.//span[contains(text(), '广告')]]");
             // 移除右侧栏顶部-底部无用广告
-            safeFunction(function () {
-              $("#content_right td>div:not([id]),#content_right>br").remove();
-            });
+            safeRemove_xpath("id('content_right')/br");
+            safeRemove_xpath("id('content_right')/div[not(@id)]");
             // 移除顶部可能出现的 "为您推荐"
-            safeFunction(function () {
-              getAllElements("//div[@id='content_left']//div[contains(@class,'_rs')]").forEach(one => one.remove())
-            });
+            safeRemove_xpath("id('content_left')//div[contains(@class, '_rs')]");
+
           } else if (curSite.SiteTypeID === SiteType.MBAIDU) {
             /****移除手机模式上的部分广告****/
-            safeFunction(function () {
-              $('#page-bd #results>div:not([class*="result"])').remove();
-            });
-            safeFunction(function () {
-              $('#page-bd #results>div:not([class])').remove();
-            });
-          } else if (curSite.SiteTypeID === SiteType.SOGOU) {
-            // safeRemove("#promotion_adv_container");
-            // safeRemove("#kmap_business_title");
-            // safeRemove("#kmap_business_ul");
-            // safeRemove(".sponsored");
-            // try {
-            //   document.querySelector(".rvr-model[style='width:250px;']").style = "display:none";
-            // } catch (e) {
-            // }
+            safeRemove_xpath("id('page-bd')/div[not(contains(@class, 'result'))]");
+            safeRemove_xpath("id('page-bd')/div[not(@class)]");
+            safeRemove_xpath("//div[@class='na-like-container']");
+            // safeFunction(function () {
+            //   $('#page-bd #results>div:not([class*="result"])').remove();
+            // });
+            // safeFunction(function () {
+            //   $('#page-bd #results>div:not([class])').remove();
+            // });
           } else if (curSite.SiteTypeID === SiteType.SO) {
             safeRemove("#so_kw-ad");
             safeRemove("#m-spread-left");
+            // 移除搜索中底部广告
             safeRemove("#m-spread-bottom");
+            // 移除右侧栏顶部广告
+            safeRemove("id('righttop_box')//li[.//span[contains(text(), '广告')]]");
           } else if (curSite.SiteTypeID === SiteType.BING) {
             safeRemove(".b_ad");
           } else if (curSite.SiteTypeID === SiteType.GOOGLE) {
@@ -2524,7 +2513,10 @@ body[baidu] #s_lg_img_new{
       }
 
       function safeFunction(func) {
-        safeRemove(func);
+        try {
+          func();
+        } catch (e) {
+        }
       }
 
       function safeWaitFunc(selector, callbackFunc, time, notClear) {
@@ -2578,22 +2570,20 @@ body[baidu] #s_lg_img_new{
         }, 20, true);
       }
 
-      function safeRemove(cssSelector_OR_NEWfunction) {
-        if (typeof (cssSelector_OR_NEWfunction) == "string") {
-          try {
-            let removeNodes = document.querySelectorAll(cssSelector_OR_NEWfunction);
-            for (let i = 0; i < removeNodes.length; i++)
-              removeNodes[i].remove();
-          } catch (e) {
-          }
-        } else if (typeof (cssSelector_OR_NEWfunction) == "function") {
-          try {
-            cssSelector_OR_NEWfunction();
-          } catch (e) {
-          }
-        } else {
-          console.log("未知命令：" + cssSelector);
-        }
+      function safeRemove(cssSelector) {
+        safeFunction(() => {
+          let removeNodes = document.querySelectorAll(cssSelector);
+          for (let i = 0; i < removeNodes.length; i++)
+            removeNodes[i].remove();
+        })
+      }
+
+      function safeRemove_xpath(xpathSelector) {
+        safeFunction(() => {
+          let removeNodes = getAllElements(xpathSelector);
+          for (let i = 0; i < removeNodes.length; i++)
+            removeNodes[i].remove();
+        })
       }
 
       function checkISBaiduMain() { // 首页=true;非首页=false
