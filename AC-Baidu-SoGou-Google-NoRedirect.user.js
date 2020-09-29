@@ -12,7 +12,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.10
+// @version    24.11
 // @connect    www.baidu.com
 // @include    *://ipv6.baidu.com/*
 // @include    *://www.baidu.com/*
@@ -30,12 +30,13 @@
 // @exclude    *://*.google*/sorry*
 // @namespace  1353464539@qq.com
 // @supportURL  https://ac.tujidu.com/
-// @home-url  https://greasyfork.org/zh-TW/scripts/14178
+// @home-url   https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
 // @lastmodified  2020-09-27
 // @feedback-url  https://ac.tujidu.com
+// @note    2020.09-29-V24.11 针对百度律师函内容对脚本进行调整，扩展“百度优化”已经永久下线
 // @note    2020.09-27-V24.10 修复百度拦截模式的问题以及小地址尾注；修复好搜的拦截功能；修复部分样式问题
 // @note    2020.09-12-V24.09 修复翻页失效的问题；更新部分样式内容
 // @note    2020.09-11-V24.08 更换Vue的cdn地址，尽量加快数据的载入速度；为了兼容safari将百度的https地址替换为了http地址；修复favicon获取的问题；增加favicon动态刷新；修复部分样式问题
@@ -180,7 +181,7 @@
 
       baidu: {
         name: 'baidu',  // CSS load 的前缀标志
-        AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+        AdsStyleMode: '1', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-百度
       },
       google: {
@@ -205,7 +206,7 @@
       },
       sogou: {
         name: 'sogou',
-        AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
+        AdsStyleMode: '1', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-搜狗
       },
 
@@ -216,7 +217,7 @@
       isFaviconEnable: true, // 是否开启favicon图标功能
       defaultFaviconUrl: "https://ae01.alicdn.com/kf/HTB1dRY0X8OD3KVjSZFFq6An9pXay.jpg", // 默认图标地址
       doDisableSug: true, // 是否禁止百度搜索预测
-      isRightDisplayEnable: false, // 是否开启右侧边栏
+      isRightDisplayEnable: true, // 是否开启右侧边栏
       isCounterEnable: false, // 是否显示计数器
       isALineEnable: false, // 是否禁止下划线
       isUserStyleEnable: false, // 是否开启自定义样式

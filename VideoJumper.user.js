@@ -3,7 +3,8 @@
 // @description 视频速度加速器，遇到html5的视频进度广告的时候，按下 alt+0 步进广告，最好预留几秒。必须配合“计时器掌控者”一起食用
 // @namespace   K
 // @include     *
-// @version     1.6
+// @version     1.7
+// @note        2020-07-12-V1.7 优化，加速-减速的范围和速度
 // @note        2020-07-12-V1.6 新增，youtube视频的自动加速
 // @note        2020-01-04-V1.5 修复：谷歌的视频小广告没有自动点击掉
 // @note        2020-01-04-V1.4 修复上次加上的代码导致的加速后没有自动恢复的问题 && 修复加速速度不正常的问题 && 修复youtube的广告没有正常跳过的问题
@@ -2264,7 +2265,7 @@ function initTimeHook() {
                 result = 1 / ((1 / timerContext._percentage) * cnum);
               }
             }
-            console.info("速度变更", 1 / result);
+            console.info("速度变更->%c%s", "color:red", Number(1 / result).toFixed(2));
             timer.change(result);
           };
         },
@@ -2540,6 +2541,7 @@ function initTimeHook() {
             rate > 16 && (rate = 16);
             rate < 0.065 && (rate = 0.065);
             // console.log(rate);
+            rate = Number(rate).toFixed(2);
             var videos = querySelectorAll(document, 'video', true) || [];
             if (videos.length) {
               for (var i = 0; i < videos.length; i++) {
@@ -2574,17 +2576,17 @@ function initKeyListener() {
       switch (e.key) {
         // [加速]
         case 'c': {
-          if (!e.ctrlKey) timer.changeTime(4, 0, true); // WARN 小心ctrl+c复制的时候不应该变速
+          if (!e.ctrlKey) timer.changeTime(0.1, 0, true); // WARN 小心ctrl+c复制的时候不应该变速
           break;
         }
         // [减速]
         case 'x': {
-          timer.changeTime(-4, 0, true);
+          if (!e.ctrlKey) timer.changeTime(-0.2, 0, true);
           break;
         }
         // [默认值]
         case 'z': {
-          timer.changeTime(0, 0, false, true);
+          if (!e.ctrlKey) timer.changeTime(0, 0, false, true);
           break;
         }
         case '0': {
