@@ -2146,7 +2146,7 @@ body[baidu] #s_lg_img_new{
 
         function removeOnMouseDownFunc() {
           try {
-            let resultNodes = document.querySelectorAll(".g .rc .r a");
+            let resultNodes = document.querySelectorAll(".g .rc .yuRUbf a");
             for (let i = 0; i < resultNodes.length; i++) {
               let one = resultNodes[i];
               one.setAttribute("onmousedown", ""); // 谷歌去重定向干扰
