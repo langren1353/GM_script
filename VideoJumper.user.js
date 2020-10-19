@@ -2254,7 +2254,7 @@ function initTimeHook() {
               result = 1 / parseFloat(t);
             } else {
               if (isa && anum) {
-                if (1 / timerContext._percentage <= 1 && anum < 0) {
+                if (1 / timerContext._percentage <= 0.2 && anum < 0) {
                   return;
                 }
                 result = 1 / (1 / timerContext._percentage + anum);
@@ -2581,7 +2581,7 @@ function initKeyListener() {
         }
         // [减速]
         case 'x': {
-          if (!e.ctrlKey) timer.changeTime(-0.2, 0, true);
+          if (!e.ctrlKey) timer.changeTime(-0.1, 0, true);
           break;
         }
         // [默认值]
