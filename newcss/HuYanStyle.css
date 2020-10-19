@@ -30,7 +30,7 @@ form.fm .s_ipt_wr.bg{
 /***Bing-HuYanStyle****/
 .na_cnt .nws_itm,
 .nws_itmb,
-#b_content #b_results>li:not(#mfa_root),
+#b_content #b_results li,
 body #b_header{
     background-color: #AAAAAA ;
     border: 1px double #A2D7D4 ;
