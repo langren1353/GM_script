@@ -11,6 +11,7 @@
 }
 #b_content #b_results>li:not(#mfa_root) {
     width:98%;
+    margin-left: 1%;
 }
 #b_results .b_algo .b_deep ul{
     width: 50%;
@@ -21,7 +22,10 @@
     background-color: #FFFFFF;
 }
 body #b_content{
-    margin-left: 8vw;
+    display: flex;
+    justify-content: center;
+    margin-left: unset;
+    padding-left: unset;
 }
 body #b_header{
     width: 72vw;

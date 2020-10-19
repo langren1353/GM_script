@@ -109,6 +109,7 @@ form.fm .s_btn:hover {
     box-sizing: border-box;
     border: 1px solid rgba(0,0,0,0.1);
     transition: all 0.2s cubic-bezier(.23,1,.32,1) 0s;
+    overflow: hidden;
 }
 #wrapper #content_left .c-container:hover,
 #wrapper #content_left .result:hover,

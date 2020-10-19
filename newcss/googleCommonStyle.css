@@ -22,6 +22,9 @@ div.res_top_banner,
 body[google] {
     background-color: #fDfDfD;
 }
+#top_nav #hdtb{
+    background: unset;
+}
 #cnt #hdtbSum, #cnt>#appbar{
     background: rgba(0,0,0,0);
 }
@@ -439,7 +442,6 @@ body[google] .big.minidiv .baidu #logo img{
 .AC.sp-separator{
     margin-top: -20px;
 }
-/*Translate Btn position change*/
-.eFM0qc {
-    margin-top: 11px;
+.rc .IsZvec{
+    max-width: unset;
 }
