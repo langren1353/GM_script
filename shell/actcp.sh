@@ -5,11 +5,11 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.6
+#	Version: 1.3.2.7
 #	Author: 千影,cx9208,YLX
 #=================================================
 
-sh_ver="1.3.2.6"
+sh_ver="1.3.2.7"
 github_lotserver="github.000060000.xyz"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
@@ -18,11 +18,13 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
 #安装BBR内核
 installbbr(){
+  type curl > /dev/null 2>&1 || { echo >&2 "curl不存在，即将安装"; installwgetcurl; }
+  type wget > /dev/null 2>&1 || { echo >&2 "wget不存在，即将安装"; installwgetcurl; }
+
 	kernel_version="4.11.8"
 	bit=`uname -m`
 	rm -rf bbr
 	mkdir bbr && cd bbr
-
 	reshtml=$(curl https://github.com/ylx2016/kernel/releases)
 
 	if [[ "${release}" == "centos" ]]; then
@@ -138,7 +140,7 @@ downAndInstallKernel(){
         kernel_version=${kernel_version#kernel-}
         echo "内核版本2：${kernel_version}"
 
-        if [ -n ${res_image_name} ]; then
+        if [[ -n ${res_image_name} ]]; then
             # 执行
             wget -N --no-check-certificate ${res_imagepath}
             wget -N --no-check-certificate ${res_headerspath}
@@ -181,7 +183,7 @@ downAndInstallKernel(){
         echo "内核版本2：${kernel_version}"
 
         # 判断文件名是否有效，如果无效，return
-        if [ -n ${res_image_name} ]; then
+        if [[ -n ${res_image_name} ]]; then
             # 执行
             wget -N --no-check-certificate ${res_imagepath}
             wget -N --no-check-certificate ${res_headerspath}
@@ -224,6 +226,9 @@ UpdateKernelAndRemoveOld(){
 
 #安装BBRplus内核
 installbbrplus(){
+  type curl > /dev/null 2>&1 || { echo >&2 "curl不存在，即将安装"; installwgetcurl; }
+  type wget > /dev/null 2>&1 || { echo >&2 "wget不存在，即将安装"; installwgetcurl; }
+
 	kernel_version="4.14.160-bbrplus"
 	bit=`uname -m`
 	rm -rf bbrplus
@@ -369,6 +374,9 @@ installbbrplus(){
 
 #安装Lotserver内核
 installlot(){
+  type curl > /dev/null 2>&1 || { echo >&2 "curl不存在，即将安装"; installwgetcurl; }
+  type wget > /dev/null 2>&1 || { echo >&2 "wget不存在，即将安装"; installwgetcurl; }
+
 	if [[ "${release}" == "centos" ]]; then
 		rpm --import http://${github_lotserver}/lotserver/${release}/RPM-GPG-KEY-elrepo.org
 		yum remove -y kernel-firmware
@@ -399,6 +407,9 @@ installlot(){
 
 #安装xanmod内核  from xanmod.org
 installxanmod(){
+  type curl > /dev/null 2>&1 || { echo >&2 "curl不存在，即将安装"; installwgetcurl; }
+  type wget > /dev/null 2>&1 || { echo >&2 "wget不存在，即将安装"; installwgetcurl; }
+
 	kernel_version="5.5.1-xanmod1"
 	bit=`uname -m`
 	rm -rf xanmod
@@ -470,6 +481,9 @@ installxanmod(){
 
 #安装bbr2内核
 installbbr2(){
+  type curl > /dev/null 2>&1 || { echo >&2 "curl不存在，即将安装"; installwgetcurl; }
+  type wget > /dev/null 2>&1 || { echo >&2 "wget不存在，即将安装"; installwgetcurl; }
+
 	kernel_version="5.4.0-rc6"
 	bit=`uname -m`
 	rm -rf bbr2
@@ -541,6 +555,9 @@ installbbr2(){
 
 #安装Zen内核
 installzen(){
+  type curl > /dev/null 2>&1 || { echo >&2 "curl不存在，即将安装"; installwgetcurl; }
+  type wget > /dev/null 2>&1 || { echo >&2 "wget不存在，即将安装"; installwgetcurl; }
+
 	kernel_version="5.5.2-zen"
 	bit=`uname -m`
 	rm -rf zen
@@ -871,7 +888,6 @@ echo
 read -p " 请输入数字 :" num
 case "$num" in
     66)
-	installwgetcurl
 	start_menu
 	;;
 	0)
@@ -1004,12 +1020,12 @@ BBR_grub(){
 #############系统检测组件#############
 installwgetcurl(){
     if [[ "${release}" == "centos" ]]; then
-        yum update
         yum install -y wget curl
     else
-        apt-get update # 不更新一下，可能装不上wget和curl
         apt-get install -y wget curl
     fi
+    type wget >/dev/null 2>&1 || { echo >&2 "安装wget失败，先手动update再试试安装wget"; exit 1; }
+    type curl >/dev/null 2>&1 || { echo >&2 "安装curl失败，先手动update再试试安装curl"; exit 1; }
 }
 #检查系统
 check_sys(){
