@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         AC-独家-淘宝天猫优惠券查询领取,大额优惠券,【100元购物神券】,省钱购物,领券购买更优惠,平均优惠20%
-// @version      7.7
+// @version      7.8
 // @description  独家查询淘宝商品查询是否具有优惠券,各种大额优惠券,【3元|10元|20元|40元】优惠券领取,购物必备,特大优惠
 // @author       AC
 // @include      https://item.taobao.com/item.htm*
@@ -8,7 +8,7 @@
 // @include      https://s.taobao.com/search*
 // @include      https://cart.taobao.com/*
 // @include      *://uland.taobao.com/coupon/*
-// @note         2020.09.08-V7.7 新增time参数
+// @note         2020.11.10-V7.8 更新检查数据接口
 // @note         2020.09.08-V7.6 修复二维码无效的问题，更换自己的二维码方案，理论上不会失效了
 // @note         2020.07.16-V7.5 修复二维码无效的问题，修复部分情况下查询无效的问题；可以直接用手机淘宝扫描二维码
 // @note         2020.03.11-V7.4 修复部分情况下二维码无法显示的问题 && 修复按钮样式的调整
@@ -104,7 +104,7 @@ setTimeout(function () {
                         try{gid = node.querySelector(".pic>a").getAttribute("data-nid");} catch (e) { }
                         try{gid = gid || node.getAttribute("data-id");} catch (e) { }
                         GM_xmlhttpRequest({
-                            method: "GET", url: "https://open.lesiclub.cn/coupon/get/10005/10001/" + gid,
+                            method: "GET", url: "https://open.lesiclub.cn/coupon/get_ext/10005/10002/" + gid,
                             onload: function (res) {
                                 res = JSON.parse(res.responseText);
                                 if(res.code == 200 && res.data != null && res.data.coupon.is_valid == true){
@@ -233,13 +233,14 @@ setTimeout(function () {
                     }
                 });
             }else if(location.href.indexOf("s.taobao.com/search") > 0 || location.href.indexOf("list.tmall.com/search_product") > 0){
-                var ttcounter = 0, ttmax = 10;
+                var ttcounter = 0, ttmax = 20;
                 var gwcounter = 0, gwmax = 100;
                 var tt = setInterval(function () {
                     var nodes = document.querySelectorAll(".items .item-ad");
                     var allNodes = document.querySelectorAll(".items .J_MouserOnverReq, #content .product");
                     if(allNodes != null && (nodes.length > 0 || allNodes.length > 0)){
                         clearInterval(tt);
+                        console.log("载入了");
                         if(document.querySelector("script[src*='gwd']") == null){
                             loadSC();
                         }
@@ -251,7 +252,7 @@ setTimeout(function () {
                     if(ttcounter >= ttmax){
                         clearInterval(tt);
                     }
-                }, 100);
+                }, 200);
             } else if(location.host.indexOf("uland") >= 0){
                 addStyle("#J_MMREDBOX_MASK{display:none !important;}");
             } else if(location.href.indexOf("cart.taobao.com") >= 0) {

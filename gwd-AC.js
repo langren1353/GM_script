@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         购物党比价工具【精简优化版】
 // @namespace    none
-// @version      1.5
+// @version      1.9
 // @description  【精简版】购物党，优化了页面的部分元素，减少页面弹窗和显示，保留菜单栏。购物党提供淘宝/京东/亚马逊/当当/苏宁/等百家商城的比价系统，能让你以较优惠的方式购买到你称心如意的商品，提供商品的历史价格情况，多种相似商品推荐，同款购买，降价提醒。PS：带有推广，介意勿装
 // @author       淘宝老司机
 // @include      http*://item.taobao.com/*
@@ -13,8 +13,9 @@
 // @include      https://item.jd.hk/*
 // @include      https://detail.tmall.hk/*
 // @include      https://*.suning.com/*
-// @note		 V1.4 更换源地址为75团地址
-// @note		 V1.2 修复部分多余的隐藏无效的问题 修复之前忘了【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】
+// @note	 V1.6 更换源地址为StaticFile
+// @note	 V1.4 更换源地址为75团地址
+// @note	 V1.2 修复部分多余的隐藏无效的问题 修复之前忘了【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】
 // @grant        GM_xmlhttpRequest
 // @connect      chenzelin.herokuapp.com
 // @connect      gm.ntaow.com
@@ -139,7 +140,7 @@
 			hml = hml + "<div id='hisprice' style='width: 720px;height:350px;margin: 0;padding: 0'></div>";
 
 			return `
-<script src="https://lib.baomitu.com/echarts/4.3.0/echarts.min.js"></script>
+<script src="https://cdn.staticfile.org/echarts/4.8.0/echarts.min.js"></script>
 ${hml}
 <script>
 var pChart = echarts.init(document.getElementById('hisprice'));

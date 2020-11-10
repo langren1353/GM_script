@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2018-08-16
 // @run-at          document-start
-// @version         3.79
+// @version         3.85
 // @include         *//www.iqiyi.com/v_*
 // @include         *//www.iqiyi.com/w_*
 // @include         *//v.youku.com/v_show/*
@@ -33,12 +33,13 @@
 // @include         *//cart.taobao.com/*
 // @include         *//uland.taobao.com/coupon/*
 // @connect         gm.ntaow.com
+// @connect         open.lesiclub.cn
 // @license         GPL-3.0-only
 // @grant           GM_xmlhttpRequest
 // @supportURL      https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
 // @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
 // @copyright       2018, AC
-// @lastmodified    2020.08.08
+// @lastmodified    2020.11.10
 // @note            2020.08.08 更新支持部分网站内容
 // @note            2019.11.14 更新-修复无法全屏的bug，加快网站打开速度
 // @note            2019.11.09 再次切换镜像，这次应该能打开了
