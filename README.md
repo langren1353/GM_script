@@ -62,15 +62,15 @@ If you have any problems on using the script, please mail me for 1353464539@qq.c
 
 
 ### 关于捐赠
-如果你觉得脚本还可以的，对您有那么些小帮助的，您可以通过支付宝或者微信扫一扫，捐助X元，1分不嫌少，5毛也是爱，谢谢众位大佬~![谢谢](https://ae01.alicdn.com/kf/H10467ba7961f4604a68454f95089bd54m.png)
-如果嫌麻烦可以帮忙点一下右上角的Star小星星
-
-微信：<img src="https://ae01.alicdn.com/kf/HTB1r1exX25G3KVjSZPxq6zI3XXa0.jpg" width=200 height=200/>支付宝：<img src="https://ae01.alicdn.com/kf/HTB15mWGXW1s3KVjSZFtq6yLOpXat.jpg" width=200 height=200/>
-
+由于脚本属于非盈利内容，全靠永爱发电，什么时候没有这份精力继续了，可能就再也不会更新了，因此之后不在考虑捐赠，也不会有其他任何捐赠链接
+因此觉得脚本还行的话，不嫌麻烦可以帮忙点一下右上角的Star小星星
 
 ### 免责声明 
-本脚本仅在浏览器端运行，源码公开可见，仅做研究使用，不得用于非法获利， 如产生法律纠纷与脚本作者无关!!!
+本脚本仅在浏览器端运行，源码公开可见，仅做学习研究使用，不参与任何盈利方案，也不得用于非法获利， 如产生相关法律纠纷与脚本作者无关!!!
 其次本脚本禁止使用并修改用于制作脚本集合之类的聚合性脚本
+
+###License
+[The MIT License (MIT)](https://github.com/langren1353/GM_script/edit/master/LICENSE)
 
 ### 脚本反馈
 **QQ交流群: （[点击加群585532681](https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_)）**
