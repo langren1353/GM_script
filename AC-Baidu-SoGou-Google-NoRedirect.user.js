@@ -12,7 +12,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.12
+// @version    24.13
 // @connect    www.baidu.com
 // @include    *://ipv6.baidu.com/*
 // @include    *://www.baidu.com/*
@@ -36,6 +36,7 @@
 // @copyright  2015-2020, AC
 // @lastmodified  2020-09-27
 // @feedback-url  https://ac.tujidu.com
+// @note    2020.10-x-V24.13 修复favicon在知乎上的排版问题
 // @note    2020.10-19-V24.12 拦截时支持URL地址的匹配，调整favicon会影响标题文字选中的问题；修复谷歌拦截模式失效的问题，修复谷歌编号问题；修复必应图片偏右的问题
 // @note    2020.09-29-V24.11 针对百度律师函内容对脚本进行调整，扩展“百度优化”已经永久下线
 // @note    2020.09-27-V24.10 修复百度拦截模式的问题以及小地址尾注；修复好搜的拦截功能；修复部分样式问题
@@ -1634,7 +1635,7 @@ body[baidu] #s_lg_img_new{
             if (insertLocked === false && curSite.SiteTypeID !== SiteType.OTHERS) {
               insertLocked = true;
               ACHandle(); // 处理主重定向
-              if (ACConfig.isFaviconEnable) { // 显示favicon图标
+              if (ACConfig.isFaviconEnable && typeof(curSite.FaviconType) !== 'undefined') { // 显示favicon图标
                 AC_addStyle("h3::before, h2::before {content: ' ';display:inline-block}", "AC-Style-Favicon", "head");
                 addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
               }else{

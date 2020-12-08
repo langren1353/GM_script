@@ -126,19 +126,19 @@ body #est_cn::after, body #est_en::after{
 /* SearchItmes Bottom to Top ani */
 #b_content{
     animation-name: ani_bottomTotop;
-    animation-duration: 0.3s;
+    animation-duration: 0.6s;
     animation-timing-function: ease;
 }
 
 /* SearchBar Left to Right ani */
 body #b_header {
     animation-name: ani_topTobuttom;
-    animation-duration: 0.3s;
+    animation-duration: 0.6s;
     animation-timing-function: ease-out;
 }
 body{
     animation-name: ani_hideToShow;
-    animation-duration: 0.3s;
+    animation-duration: 0.6s;
     animation-timing-function: ease-out;
 }
 .AC.sp-separator{

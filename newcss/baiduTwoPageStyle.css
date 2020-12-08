@@ -81,11 +81,6 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 	grid-column-start: 1;
     grid-column-end: xmain-end;
 }
-#content_left .new-pmd .c-span9,
-#content_left .new-pmd .c-span10{
-    width: unset;
-    max-width: calc(100% - 160px);
-}
 .c-container h3 a{
     z-index:1;
 }

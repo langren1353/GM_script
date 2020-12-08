@@ -63,7 +63,7 @@ form.fm .s_ipt_wr.bg{
 #content_left .new-pmd .c-span9,
 #content_left .new-pmd .c-span10{
     width: unset;
-    max-width: calc(100% - 160px);
+    float: unset;
 }
 /***fix 2k+ problem***/
 #head .head_wrapper{

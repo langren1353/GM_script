@@ -28,7 +28,7 @@
 #main .mw{
     max-width: unset;
 }
-#main #cnt, #cnt #center_col, #cnt #foot{
+#main #cnt, #main #cnt #center_col, #main #cnt #foot{
     width: 80vw;
     margin: 0 auto;
 }
