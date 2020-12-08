@@ -455,10 +455,9 @@ function order() {
                     Msg_Log("账单为$0.00 USD，本次抢购比较火爆，已经被抢完。");
                     window.close();
                 } else {
-                    $("#accepttos").prop("checked", true);
-                    $("#iCheck-accepttos").click()
+                    $("#accepttos")[0].parentNode.parentNode.click();
                     $('.selector').each(function (e) {
-                        if ($(this).attr('data-value').indexOf('newalipay') != -1) {
+                        if ($(this).attr('data-value').indexOf('paypalbilling') != -1) {
                             $(this)[0].click();
                         }
                     });
