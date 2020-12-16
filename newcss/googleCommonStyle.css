@@ -106,7 +106,7 @@ a:hover h3{
     padding: 0px 20px 15px;
     margin-bottom: 40px;
 }
-#rs, #rso>.g{
+#rs, #rso .g{
     width: 760px;
     padding: 0px 20px 15px;
     margin-top: 0px;
@@ -198,8 +198,8 @@ a:hover h3{
 #rso .g div.r> a,
 #rso .g a h3,
 #rso .g div.r> a em,
-.mw #res h3,
-.mw #extrares h3{
+#rcnt #res h3,
+#rcnt #extrares h3{
     color: #3476d2;
     font-weight: bold;
 }
@@ -350,21 +350,21 @@ a:hover h3{
         opacity: 1;
     }
 }
-#rso>div:not([class]){
+#rso div.g:not([class]){
     margin-left: 18px;
     margin-right: 18px;
 }
 #rso .g .exp-outline{
     display:none;
 }
-#main .mw #rhs {
+#main #rcnt #rhs {
     margin-left: 1020px;
 }
 #res .g .ts{
     max-width: unset;
 }
 @media screen and (max-width:1400px){
-  .mw #rhs{
+  #rcnt #rhs{
     display:none;
   }
 }
@@ -410,12 +410,15 @@ div .kno-ftr a{
     position: sticky;
 }
 /**Thanks to Mooncan -END**/
-.mw #res h3, .mw #extrares h3{
+#rcnt #res h3, #rcnt #extrares h3{
     /**reset font size**/
     font-size: medium;
 }
+#rcnt #res h3 div, #rcnt #extrares h3 div{
+    display: inline-block;
+}
 /*deal with cite too long and title too short*/
-#rso>.g .r>a>div{
+#rso .g .r>a>div{
     width: 35rem;
 }
 div.rc[ac-needhide]{

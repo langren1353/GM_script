@@ -145,8 +145,6 @@ function rclone_copy(){
 		curl -s -X POST -d "hashes=${file_hash}" "${qb_web_url}/api/v2/torrents/pause" --cookie ${cookie}
         # 添加分享率限制
         curl -s -X POST -d "hashes=${file_hash}&ratioLimit=0.1&seedingTimeLimit=10" "${qb_web_url}/api/v2/torrents/setShareLimits"
-	else
-	    curl "http://212.64.10.203:5700/send_private_msg?user_id=1353464539&message=${from_dc_tag}：${torrent_name} 上传完成-耗时:${use_min}分${use_sec}秒"
     fi
 }
 

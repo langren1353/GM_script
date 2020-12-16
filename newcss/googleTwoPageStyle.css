@@ -19,13 +19,13 @@
     box-sizing: border-box;
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
-.search>#ires #rso>.g{
+.search>#ires #rso .g{
     max-width: unset;
 }
-#main .mw #rhs{
+#main #rcnt #rhs{
     display:none;
 }
-#main .mw{
+#main #rcnt{
     max-width: unset;
 }
 #main #cnt, #main #cnt #center_col, #main #cnt #foot{
@@ -45,15 +45,15 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
     width: 100% !important;
     margin-left: unset !important;
 }
-.srg, #rso{
+.srg, #rso, #rso>div{
 	display: grid;
-	grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
-    grid-template-areas: "xmain xmain";
+	/*grid-template-columns: repeat(auto-fit,minmax(50%,1fr));*/
+    /*grid-template-areas: "xmain xmain";*/
 }
-#rso>div:not(.g), #rso .srg{
-    grid-column-start: 1;
-    grid-column-end: xmain-end;
-}
+/*#rso>div:not(.g), #rso .srg{*/
+/*    grid-column-start: 1;*/
+/*    grid-column-end: xmain-end;*/
+/*}*/
 /**search box align center**/
 .srp form{
     margin:0 auto;

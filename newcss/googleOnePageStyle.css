@@ -22,10 +22,7 @@
 .search>#ires #rso>.g{
     max-width: unset;
 }
-#main .mw #rhs{
-    display:none;
-}
-#main .mw{
+#main #rcnt{
     max-width: unset;
 }
 #main #cnt, #cnt #center_col, #cnt #foot{
