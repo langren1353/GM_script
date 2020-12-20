@@ -48,7 +48,7 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
 .srg, #rso, #rso>div{
 	display: grid;
 	/*grid-template-columns: repeat(auto-fit,minmax(50%,1fr));*/
-    /*grid-template-areas: "xmain xmain";*/
+    grid-template-areas: "xmain xmain";
 }
 /*#rso>div:not(.g), #rso .srg{*/
 /*    grid-column-start: 1;*/
