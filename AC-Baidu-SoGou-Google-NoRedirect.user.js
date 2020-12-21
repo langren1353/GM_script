@@ -12,7 +12,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.14
+// @version    24.15
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -43,6 +43,7 @@
 // @copyright  2015-2020, AC
 // @lastmodified  2020-09-27
 // @feedback-url  https://ac.tujidu.com
+// @note    2020.12-21-V24.15 调整代码-减少致命异常
 // @note    2020.12-19-V24.14 修复部分内核上百度多列显示的问题；修复谷歌多列的显示问题
 // @note    2020.12-18-V24.13 修复favicon在知乎上的排版问题；修复Duck样式无效的问题；修复最新谷歌双列失效的问题 - 尝试修复部分用户翻页失效问题；修复计数器编号异常的问题；更名尝试修复实效问题
 // @note    2020.10-19-V24.12 拦截时支持URL地址的匹配，调整favicon会影响标题文字选中的问题；修复谷歌拦截模式失效的问题，修复谷歌编号问题；修复必应图片偏右的问题
@@ -1057,11 +1058,13 @@ body[baidu] #s_lg_img_new{
               }
             })
             RAFInterval(function () {
-              rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
-              if (curSite.SiteTypeID === SiteType.BAIDU && location.href.includes("tn=news")) {
-                document.body.setAttribute("news", "1");
-              } else {
-                document.body.removeAttribute("news");
+              if(document.body) {
+                rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
+                if (curSite.SiteTypeID === SiteType.BAIDU && location.href.includes("tn=news")) {
+                  document.body.setAttribute("news", "1");
+                } else {
+                  document.body.removeAttribute("news");
+                }
               }
             }, 800);
           }
@@ -1212,6 +1215,7 @@ body[baidu] #s_lg_img_new{
 
         /*以下代码大部分来源于SuprePreloader 感谢 swdyh && ywzhaiqi && NLF 以及 mach6 大佬*/
         function ac_spfunc(e) {
+          console.error("这里有问题")
           e.stopPropagation();
           var t, r = e.currentTarget;
           var Tween = {
@@ -1395,17 +1399,19 @@ body[baidu] #s_lg_img_new{
         }
 
         function windowscroll(fn) {
-          var beforeScrollTop = document.documentElement.scrollTop,
-              fn = fn || function () {};
-          setTimeout(function () { // 延时执行，避免刚载入到页面就触发翻页事件
-            window.addEventListener("scroll", function (e) {
-              var afterScrollTop = document.documentElement.scrollTop,
-                  delta = afterScrollTop - beforeScrollTop;
-              if (delta == 0) return false;
-              fn(delta > 0 ? "down" : "up", e);
-              beforeScrollTop = afterScrollTop;
-            }, false);
-          }, 1000)
+          safeWaitFunc(() => document.documentElement, () => {
+            var beforeScrollTop = document.documentElement.scrollTop,
+                fn = fn || function () {};
+            setTimeout(function () { // 延时执行，避免刚载入到页面就触发翻页事件
+              window.addEventListener("scroll", function (e) {
+                var afterScrollTop = document.documentElement.scrollTop,
+                    delta = afterScrollTop - beforeScrollTop;
+                if (delta == 0) return false;
+                fn(delta > 0 ? "down" : "up", e);
+                beforeScrollTop = afterScrollTop;
+              }, false);
+            }, 1000)
+          })
         }
 
         windowscroll(function (direction, e) {
@@ -1678,6 +1684,10 @@ body[baidu] #s_lg_img_new{
               if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
                 SiteBlock.initStyle();
                 SiteBlock.init();
+              }
+              if (curSite.SiteTypeID === SiteType.GOOGLE) {
+                CONST.isGoogleSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
+                debugger
               }
               setTimeout(function () {
                 insertLocked = false;
@@ -2559,7 +2569,7 @@ body[baidu] #s_lg_img_new{
           if ((typeof (selector) == "string" && document.querySelector(selector) != null)) {
             callbackFunc(document.querySelector(selector));
             if (doClear) return true;
-          } else if ((typeof (selector) == "function" && selector().length > 0)) {
+          } else if (typeof (selector) == "function" && (selector() != null || (selector() || []).length > 0)) {
             callbackFunc(selector()[0]);
             if (doClear) return true;
           }
@@ -2574,7 +2584,7 @@ body[baidu] #s_lg_img_new{
            * **/
           let addTo = document.querySelector(addToTarget);
           if (typeof (addToTarget) == "undefined")
-            addTo = (document.head || document.body || document.documentElement || document);
+            addTo = (document.head || document.body || document.documentElement);
           isReload = isReload || false; // 默认是非加载型
           initType = initType || "text/css";
           // 如果没有目标节点(则直接加) || 有目标节点且找到了节点(进行新增)
@@ -2817,8 +2827,6 @@ body[baidu] #s_lg_img_new{
               CONST.StyleManger.loadCSSToPlain();
               return;
             }
-            // CONST.isGoogleSpecial = true
-            CONST.isGoogleSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
             AC_addStyle(".minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;}", "AC-style-logo", "head");
             let result = parseInt(CONST.useItem.AdsStyleMode || -1);
             if (acCssLoadFlag === false && document.querySelector(".ACExtension") === null) {
@@ -2843,14 +2851,17 @@ body[baidu] #s_lg_img_new{
                 CONST.StyleManger.loadTwoPageStyle();
                 CONST.StyleManger.loadFourPageStyle();
               }
+
               if(curSite.SiteTypeID === SiteType.GOOGLE) {
+
                 safeWaitFunc("#rso", node => {
+                  debugger
                   if (CONST.isGoogleSpecial) {
                     node.style.display = 'grid';
                   } else {
                     node.style.display = 'unset';
                   }
-                })
+                }, 500)
               }
               acCssLoadFlag = true;
               debug("in样式运行结束");
