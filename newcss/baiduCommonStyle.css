@@ -15,9 +15,6 @@ body>div.result-op,
 .chunwan-wrapper{
     display: none!important;
 }
-#wrapper #content_right{
-    margin-right: -6%;
-}
 body[baidu] {
     background-color: #f5f5f5;
     transition: all 1.5s;

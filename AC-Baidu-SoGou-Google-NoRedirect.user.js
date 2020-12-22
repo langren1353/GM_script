@@ -12,7 +12,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.15
+// @version    24.16
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -41,9 +41,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2020-09-27
+// @lastmodified  2020-12-22
 // @feedback-url  https://ac.tujidu.com
-// @note    2020.12-21-V24.15 调整代码-减少致命异常
+// @note    2020.12-22-V24.16 调整代码-减少致命异常；修复谷歌双列问题
 // @note    2020.12-19-V24.14 修复部分内核上百度多列显示的问题；修复谷歌多列的显示问题
 // @note    2020.12-18-V24.13 修复favicon在知乎上的排版问题；修复Duck样式无效的问题；修复最新谷歌双列失效的问题 - 尝试修复部分用户翻页失效问题；修复计数器编号异常的问题；更名尝试修复实效问题
 // @note    2020.10-19-V24.12 拦截时支持URL地址的匹配，调整favicon会影响标题文字选中的问题；修复谷歌拦截模式失效的问题，修复谷歌编号问题；修复必应图片偏右的问题
@@ -79,24 +79,24 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=24.13
-// @resource  baiduOnePageStyle  http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=24.13
-// @resource  baiduTwoPageStyle  http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.13
-// @resource  baiduLiteStyle     http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=24.13
-// @resource  googleCommonStyle  http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=24.13
-// @resource  googleOnePageStyle http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=24.13
-// @resource  googleTwoPageStyle http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=24.13
-// @resource  bingCommonStyle    http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=24.13
-// @resource  bingOnePageStyle   http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=24.13
-// @resource  bingTwoPageStyle   http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=24.13
-// @resource  duckCommonStyle    http://ibaidu.ntaow.com/newcss/duckCommonStyle.css?t=24.13
-// @resource  duckOnePageStyle   http://ibaidu.ntaow.com/newcss/duckOnePageStyle.css?t=24.13
-// @resource  duckTwoPageStyle   http://ibaidu.ntaow.com/newcss/duckTwoPageStyle.css?t=24.13
-// @resource  dogeCommonStyle    http://ibaidu.ntaow.com/newcss/dogeCommonStyle.css?t=24.13
-// @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.13
-// @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.13
-// @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.13
-// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.13
+// @resource  baiduCommonStyle   http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=24.15
+// @resource  baiduOnePageStyle  http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=24.15
+// @resource  baiduTwoPageStyle  http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.15
+// @resource  baiduLiteStyle     http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=24.15
+// @resource  googleCommonStyle  http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=24.15
+// @resource  googleOnePageStyle http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=24.15
+// @resource  googleTwoPageStyle http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=24.15
+// @resource  bingCommonStyle    http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=24.15
+// @resource  bingOnePageStyle   http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=24.15
+// @resource  bingTwoPageStyle   http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=24.15
+// @resource  duckCommonStyle    http://ibaidu.ntaow.com/newcss/duckCommonStyle.css?t=24.15
+// @resource  duckOnePageStyle   http://ibaidu.ntaow.com/newcss/duckOnePageStyle.css?t=24.15
+// @resource  duckTwoPageStyle   http://ibaidu.ntaow.com/newcss/duckTwoPageStyle.css?t=24.15
+// @resource  dogeCommonStyle    http://ibaidu.ntaow.com/newcss/dogeCommonStyle.css?t=24.15
+// @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.15
+// @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.15
+// @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.15
+// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.15
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js
 // @grant    GM_getValue
@@ -114,6 +114,7 @@
 // @grant    unsafeWindow
 // ==/UserScript==
 
+// calc(X1(vw) + X2(px)) -> B(px) 使用 http://www.yunsuan.info/matrixcomputations/solvelinearsystems.html 进行计算
 !function () {
   let isdebug = false;
   let isLocalDebug = isdebug || false;
@@ -161,7 +162,7 @@
        */
       Array.prototype.acpush = function (data, callback) {
         // 如果是垃圾数据，那么可以丢弃的
-        if (data == null || data == "") return;
+        if (data === null || data === "") return;
         // 如果数据中有回车，那数据也是无效的正文而已
         if (data.replace(/({|}|,|\+|：|。|\n)/) !== data) return;
         if (this.findIndex(m => m === data) < 0) {
@@ -702,7 +703,7 @@ body[baidu] #s_lg_img_new{
         ACConfig = DefaultConfig;
       }
       for (var key in DefaultConfig) {
-        if (typeof (ACConfig[key]) == "undefined") {
+        if (typeof (ACConfig[key]) === "undefined") {
           ACConfig[key] = DefaultConfig[key];
         }
       }
@@ -746,7 +747,7 @@ body[baidu] #s_lg_img_new{
 
       var i, s = [];
       if (!e) return s;
-      if (r = r || document, n = n || window, o = o || void 0, t = t || r, "string" == typeof e) i = 0 === e.search(/^css;/i) ? function getAllElementsByCSS(e, t) {
+      if (r = r || document, n = n || window, o = o || void 0, t = t || r, "string" === typeof e) i = 0 === e.search(/^css;/i) ? function getAllElementsByCSS(e, t) {
         return (t || document).querySelectorAll(e);
       }(e.slice(4), t) : getAllElementsByXpath(e, t, r); else {
         if (!(i = e(r, n, o))) return s;
@@ -778,7 +779,7 @@ body[baidu] #s_lg_img_new{
 
       !function () {
         let insertLocked = false;
-        if (typeof GM_getResourceText == 'undefined') {
+        if (typeof GM_getResourceText === 'undefined') {
           GM.getResourceText = GM_getResourceText = async function (aResourceName) {
             let res = await (await fetch(await GM.getResourceUrl(aResourceName))).text();
             let saveRes = await GM.getValue(aResourceName);
@@ -795,7 +796,7 @@ body[baidu] #s_lg_img_new{
           // 且能防止谷歌百度页面规则大变动又需要更新脚本 - 特别是涉及翻页参数
           let config = GM_getResourceText("SiteConfigRules");
           eval(config);
-          if (typeof (onlineDB) == "undefined") {
+          if (typeof (onlineDB) === "undefined") {
             console.error("线上数据为空");
           } else {
             DBSite = onlineDB;
@@ -847,7 +848,7 @@ body[baidu] #s_lg_img_new{
           CONST.isGoogleImageUrl = true;
         }
 
-        if(curSite.SiteTypeID == SiteType.BAIDU_XUESHU){
+        if(curSite.SiteTypeID === SiteType.BAIDU_XUESHU){
           CONST.useItem.AdsStyleMode = 2; // 单列居中即可
         }
 
@@ -876,7 +877,7 @@ body[baidu] #s_lg_img_new{
                 let faviconNode = curNode.querySelector(curSite.FaviconType);
                 // if(curNode.hasAttribute("acblock")) continue;
                 let host = getNodeHost(faviconNode).curHost;
-                // if(host == null) continue;
+                // if(host === null) continue;
                 let faNode = curNode.querySelector(curSite.BlockType);
                 let nodeStyle = "display:unset;";
                 if (ACConfig.isBlockBtnNotDisplay) {
@@ -906,7 +907,7 @@ body[baidu] #s_lg_img_new{
             // 先插入数据---记得还要写入存储
             let node = env.sourceTarget || env.target;
             let host = node.dataset.host;
-            if (node.getAttribute("ac-user-alter") == 1) {
+            if (+node.getAttribute("ac-user-alter") === 1) {
               // 已经屏蔽之后，再次点击block应该是取消状态
               node.removeAttribute("ac-user-alter");
               ACConfig.UserBlockList.acremove(host);
@@ -929,7 +930,7 @@ body[baidu] #s_lg_img_new{
                 let curNode = checkNodes[i];
                 let {curHost, curUrl} = getNodeHost(curNode.querySelector(curSite.FaviconType));
                 curUrl = curUrl || "";
-                if (curHost == null) continue;
+                if (curHost === null) continue;
                 {
                   let BlockBtn = curNode.querySelector(".ghhider.ghhb");
                   BlockBtn.dataset.host = BlockBtn.dataset.meta = curHost;
@@ -1192,7 +1193,7 @@ body[baidu] #s_lg_img_new{
             }
           };
           if (typeof (Vue) != "undefined") {
-            if (Vue.version.charAt(0) == 2) {
+            if (+Vue.version.charAt(0) === 2) {
               vueVM = new Vue(options);
             } else {
               vueVM = Vue.createApp(options).mount(checkNode);
@@ -1203,7 +1204,7 @@ body[baidu] #s_lg_img_new{
         }, 250);
 
         function MainCallback(e) {
-          if (e.target != null && typeof (e.target.className) == "string" && e.target.className.toUpperCase().indexOf("AC-") == 0) {
+          if (e.target != null && typeof (e.target.className) === "string" && e.target.className.toUpperCase().indexOf("AC-") === 0) {
             return;
           } //屏蔽掉因为增加css导致的触发insert动作
           rapidDeal();
@@ -1398,15 +1399,14 @@ body[baidu] #s_lg_img_new{
           }
         }
 
-        function windowscroll(fn) {
+        function windowscroll(fn = ()=>{}) {
           safeWaitFunc(() => document.documentElement, () => {
-            var beforeScrollTop = document.documentElement.scrollTop,
-                fn = fn || function () {};
+            var beforeScrollTop = document.documentElement.scrollTop
             setTimeout(function () { // 延时执行，避免刚载入到页面就触发翻页事件
               window.addEventListener("scroll", function (e) {
                 var afterScrollTop = document.documentElement.scrollTop,
                     delta = afterScrollTop - beforeScrollTop;
-                if (delta == 0) return false;
+                if (delta === 0) return false;
                 fn(delta > 0 ? "down" : "up", e);
                 beforeScrollTop = afterScrollTop;
               }, false);
@@ -1440,7 +1440,7 @@ body[baidu] #s_lg_img_new{
         });
         var ShowPager = {
           getFullHref: function (e) {
-            if(e == null) return '';
+            if(e === null) return '';
             "string" != typeof e && (e = e.getAttribute("href"));
             var t = this.getFullHref.a;
             return t || (this.getFullHref.a = t = document.createElement("a")), t.href = e, t.href;
@@ -1529,7 +1529,7 @@ body[baidu] #s_lg_img_new{
                       // 插入翻页按钮元素
                       curSite.pageNum++;
                       let addTo = "beforeend";
-                      if (curSite.pager.HT_insert[1] == 1) addTo = "beforebegin";
+                      if (curSite.pager.HT_insert[1] === 1) addTo = "beforebegin";
                       toElement.insertAdjacentHTML(addTo, `<div class='sp-separator AC' id='sp-separator-ACX'>
                           <a class='sp-sp-nextlink' target='_blank'><b>第 <span style='color:#595959!important;'>ACX</span> 页</b></a>
                           <span id="sp-sp-gotop" class='ac_sp_top' title='去到顶部'></span>
@@ -1573,17 +1573,19 @@ body[baidu] #s_lg_img_new{
 
         function AddCustomStyle() {
           if (!ACConfig.isRightDisplayEnable) {
+            document.body.classList.remove("showRight")
             // 移除右边栏 -注意在#wrapper>#con-at>#result-op xpath-log有时候很重要，不能隐藏
-            AC_addStyle("#content_right{display:none !important;}#content_right td>div:not([id]){display:none;}#content_right .result-op:not([id]){display:none!important;}#rhs{display:none;}",
-              "AC-RightRemove");
+            // AC_addStyle("#content_right{display:none !important;}#content_right td>div:not([id]){display:none;}#content_right .result-op:not([id]){display:none!important;}#rhs{display:none;}",
+            //   "AC-RightRemove");
           } else {
-            if (CONST.useItem.AdsStyleMode == 2) {
-              // 非双列模式下尽可能的显示右侧栏
-              AC_addStyle("@media screen and (min-width: 1250px) {#container{width: 80% !important;}.container_l #content_right{margin-right: calc(18% - 210px);position: absolute;right: -200px;display:block !important;overflow:hidden;width: 22vw !important;}",
-                "AC-RightRemove");
-            }else{
-              safeRemove("style[class='AC-RightRemove']")
-            }
+            document.body.classList.add("showRight")
+            // if (CONST.useItem.AdsStyleMode === 2) {
+            //   // 非双列模式下尽可能的显示右侧栏
+            //   AC_addStyle("@media screen and (min-width: 1250px) {#container{width: 80% !important;}.container_l #content_right{margin-right: calc(18% - 210px);position: absolute;right: -200px;display:block !important;overflow:hidden;width: 22vw !important;}",
+            //     "AC-RightRemove");
+            // }else{
+            //   safeRemove("style[class='AC-RightRemove']")
+            // }
           }
           if (!ACConfig.isALineEnable) {
             AC_addStyle("a,a em{text-decoration:none}", "AC-NoLine", "body");// 移除这些个下划线
@@ -1686,8 +1688,15 @@ body[baidu] #s_lg_img_new{
                 SiteBlock.init();
               }
               if (curSite.SiteTypeID === SiteType.GOOGLE) {
+                let node = document.querySelector("#rso")
                 CONST.isGoogleSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
-                debugger
+                if(node) {
+                  if (CONST.isGoogleSpecial) {
+                    node.style.display !== 'grid' ? node.style.display = 'grid': ''
+                  } else {
+                    node.style.display !== 'unset' ? node.style.display = 'unset': ''
+                  }
+                }
               }
               setTimeout(function () {
                 insertLocked = false;
@@ -1775,7 +1784,7 @@ body[baidu] #s_lg_img_new{
         function ACtoggleSettingDisplay(e) {
           e.stopPropagation();
           // 显示？隐藏设置界面
-          if (document.querySelector(".iframe-father iframe") == null) {
+          if (document.querySelector(".iframe-father iframe") === null) {
             document.querySelector(".iframe-father").insertAdjacentHTML("beforeend", "<iframe src='https://ghbtns.com/github-btn.html?user=langren1353&repo=GM_script&type=star&count=true' frameborder='0' scrolling='0' style='height: 20px;max-width: 108px;padding-left:5px;box-sizing: border-box;margin-bottom: -5px;display:unset !important;'></iframe>");
           }
           setTimeout(function () {
@@ -2136,7 +2145,7 @@ body[baidu] #s_lg_img_new{
           }
           let allNodes = document.querySelectorAll(".AC-faviconT, .AC-CounterT");
           for (let i = 0; i < allNodes.length; i++) {
-            if (allNodes[i].getAttribute('acClick') == null) {
+            if (allNodes[i].getAttribute('acClick') === null) {
               allNodes[i].setAttribute('acClick', '1');
               try {
                 allNodes[i].addEventListener('click', function (e) {
@@ -2227,7 +2236,7 @@ body[baidu] #s_lg_img_new{
             // 采用闭包的方法来进行数据的传递
             let curNode = list[i];
             let curhref = curNode.href;
-            if (list[i] !== null && list[i].getAttribute("ac_redirectStatus") == null) {
+            if (list[i] !== null && list[i].getAttribute("ac_redirectStatus") === null) {
               list[i].setAttribute("ac_redirectStatus", "0");
               let len1 = hasDealHrefSet.size;
               hasDealHrefSet.add(curhref);
@@ -2256,7 +2265,7 @@ body[baidu] #s_lg_img_new{
                       // 这个是在上面无法处理的情况下，备用的 tm-finalurldhdg  tm-finalurlmfdh
                       if (response.responseHeaders.includes("tm-finalurl")) {
                         let relURL = Reg_Get(response.responseHeaders, "tm-finalurl\\w+: ([^\\s]+)");
-                        if (relURL == null || relURL === "" || relURL.includes("www.baidu.com/search/error")) return;
+                        if (relURL === null || relURL === "" || relURL.includes("www.baidu.com/search/error")) return;
                         DealRedirect(gmRequestNode, c_curhref, relURL);
                       }
                     }
@@ -2277,7 +2286,7 @@ body[baidu] #s_lg_img_new{
         }
 
         var DealRedirect = function (request, curNodeHref, respText, RegText) {
-          if (respText == null || typeof (respText) == "undefined") return;
+          if (respText === null || typeof (respText) === "undefined") return;
           let resultResponseUrl = "";
           if (RegText != null) {
             resultResponseUrl = Reg_Get(respText, RegText);
@@ -2407,11 +2416,11 @@ body[baidu] #s_lg_img_new{
         function addFavicon(citeList) {
           if (curSite.SiteTypeID !== SiteType.DOGE) {
             for (let index = 0; index < citeList.length; index++) {
-              if (null == citeList[index].getAttribute("ac_faviconStatus")) {
+              if (null === citeList[index].getAttribute("ac_faviconStatus")) {
                 let curNode = citeList[index];
                 let targetNode = curNode;
                 let { curHost, curUrl } = getNodeHost(targetNode);
-                if (curHost == null || (curUrl && curUrl.includes("www.baidu.com/link"))) { // 跳过baidu.click
+                if (curHost === null || (curUrl && curUrl.includes("www.baidu.com/link"))) { // 跳过baidu.click
                   continue;
                 } else {
                   otherData.other.curHosts.acpush(curHost + "###" + curUrl);
@@ -2443,7 +2452,7 @@ body[baidu] #s_lg_img_new{
                   }
                   targetNode = targetNode.querySelector(curSite.FaviconAddTo);
                   // 特殊处理BING
-                  // if (curSite.SiteTypeID == SiteType.BING) curNode = curNode.querySelector("h2");
+                  // if (curSite.SiteTypeID === SiteType.BING) curNode = curNode.querySelector("h2");
                   //https://api.byi.pw/favicon/?url=???? 不稳定
                   //http://"+faviconUrl+"/cdn.ico?defaulticon=http://soz.im/favicon.ico 不稳定
                   //https://www.xtwind.com/api/index.php?url=???? 挂了。。。
@@ -2451,7 +2460,7 @@ body[baidu] #s_lg_img_new{
                   //www.google.com/s2/favicons?domain=764350177.lofter.com
                   //如果地址不正确，那么丢弃
                   let host = faviconUrl.replace(/[^.]+\.([^.]+)\.([^.]+)/, "$1.$2");
-                  if (targetNode.querySelector(".AC-faviconT") == null && host.length > 3) {
+                  if (targetNode.querySelector(".AC-faviconT") === null && host.length > 3) {
                     let insNode = document.createElement("img");
                     // curNode = curNode.children[0] || curNode.firstChild ; // firstChild容易遇到text对象
                     curNode.setAttribute("ac_faviconStatus", "1");
@@ -2473,7 +2482,7 @@ body[baidu] #s_lg_img_new{
                     (function (xcur) {
                       insNode.onload = function (env) {
                         let imgNode = xcur.querySelector(".AC-faviconT");
-                        if (imgNode.naturalWidth < 10) {
+                        if ((imgNode || {}).naturalWidth < 10) {
                           imgNode.setAttribute("old-src", imgNode.src);
                           imgNode.src = ACConfig.defaultFaviconUrl;
                         }
@@ -2498,7 +2507,7 @@ body[baidu] #s_lg_img_new{
         }
 
         function InsertSettingMenu() {
-          if ((curSite.SiteTypeID !== SiteType.OTHERS) && document.querySelector("#myuser") == null) {
+          if ((curSite.SiteTypeID !== SiteType.OTHERS) && document.querySelector("#myuser") === null) {
             try {
               let parent = document.querySelector("#u, #gb>div>div>div, #b_header>#id_h, .top-bar .sogou-set-box, #header_wrapper .js-hl-button, body[doge] #header_wrapper #header"); //baidu; google; bing; 搜狗
               parent.style = "width: auto;";
@@ -2566,10 +2575,10 @@ body[baidu] #s_lg_img_new{
         notClear = notClear || false;
         let doClear = !notClear;
         RAFInterval(function () {
-          if ((typeof (selector) == "string" && document.querySelector(selector) != null)) {
+          if ((typeof (selector) === "string" && document.querySelector(selector) != null)) {
             callbackFunc(document.querySelector(selector));
             if (doClear) return true;
-          } else if (typeof (selector) == "function" && (selector() != null || (selector() || []).length > 0)) {
+          } else if (typeof (selector) === "function" && (selector() != null || (selector() || []).length > 0)) {
             callbackFunc(selector()[0]);
             if (doClear) return true;
           }
@@ -2583,12 +2592,12 @@ body[baidu] #s_lg_img_new{
            * html加载后似乎不会再次加载，body会自动加载
            * **/
           let addTo = document.querySelector(addToTarget);
-          if (typeof (addToTarget) == "undefined")
+          if (typeof (addToTarget) === "undefined")
             addTo = (document.head || document.body || document.documentElement);
           isReload = isReload || false; // 默认是非加载型
           initType = initType || "text/css";
           // 如果没有目标节点(则直接加) || 有目标节点且找到了节点(进行新增)
-          if (typeof (addToTarget) == "undefined" || (typeof (addToTarget) != "undefined" && document.querySelector(addToTarget) != null)) {
+          if (typeof (addToTarget) === "undefined" || (typeof (addToTarget) != "undefined" && document.querySelector(addToTarget) != null)) {
             // clearInterval(tout);
             // 如果true 强行覆盖，不管有没有--先删除
             // 如果false，不覆盖，但是如果有的话，要退出，不存在则新增--无需删除
@@ -2658,7 +2667,7 @@ body[baidu] #s_lg_img_new{
            * @param toClassName 预期的类名
            */
           importStyle: function (data, toClassName, useNormalCSS, mustLoad) {
-            if (typeof (data) == "undefined") {
+            if (typeof (data) === "undefined") {
               // 这个居然在VM上出问题了，很奇怪
               console.error("GM_getResourceText获取内容数据异常");
               return
@@ -2850,18 +2859,6 @@ body[baidu] #s_lg_img_new{
                 CONST.StyleManger.loadCommonStyle();
                 CONST.StyleManger.loadTwoPageStyle();
                 CONST.StyleManger.loadFourPageStyle();
-              }
-
-              if(curSite.SiteTypeID === SiteType.GOOGLE) {
-
-                safeWaitFunc("#rso", node => {
-                  debugger
-                  if (CONST.isGoogleSpecial) {
-                    node.style.display = 'grid';
-                  } else {
-                    node.style.display = 'unset';
-                  }
-                }, 500)
               }
               acCssLoadFlag = true;
               debug("in样式运行结束");

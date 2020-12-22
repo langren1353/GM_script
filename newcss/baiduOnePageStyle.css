@@ -31,9 +31,7 @@ body[baidu] .pagefoot.gj{
     margin-left: unset;
     margin: 0 auto;
 }
-#wrapper #container.sam_newgrid #content_left{
-    padding-left: 20px;
-}
+
 #wrapper #page{
     background: unset;
 }
@@ -53,16 +51,29 @@ body[baidu] .pagefoot.gj{
         min-width:800px;
     }
 }
-#wrapper  #content_right{
-    margin-right: calc(15vw - 210px);
-    display:none;
+#wrapper #container.sam_newgrid #content_left{
+    padding-left: 20px;
+    display: block;
 }
-@media screen and (min-width:1600px){
-  #wrapper  #content_right{
-    display:block;
+#wrapper #content_right{
+    display: none;
     float: unset;
     position: absolute;
-  }
+}
+body.showRight #wrapper #container.sam_newgrid #content_left{
+    transform: translateX(calc(6vw - 251px));
+}
+body.showRight #wrapper #content_right{
+    right: calc(37.5vw - 470px);
+    display: unset;
+}
+@media screen and (max-width: 1280px){
+    body.showRight #wrapper #container.sam_newgrid #content_left{
+        transform: unset;
+    }
+    body.showRight #wrapper #content_right{
+        display: none;
+    }
 }
 #wrapper #page a, #wrapper #page strong{
     margin-right: 22px !important;
@@ -102,8 +113,18 @@ body[baidu] .pagefoot.gj{
     width: 69%;
     margin-left: 16%;
 }
-@media screen and (max-width:1450px){
+form.fm .s_ipt_wr.bg{
+    min-width: calc(37.5vw - 150px);
+}
+@media screen and (min-width: 1921px) {
+    #s_tab.s_tab .s_tab_inner {
+        width: 900px;
+    }
     form.fm .s_ipt_wr.bg{
-        min-width: 330px;
+        min-width: 900px
+    }
+    body.showRight #wrapper #container.sam_newgrid #content_left{
+        transform: translateX(calc(6vw - 320px));
+        max-width: 1300px;
     }
 }
