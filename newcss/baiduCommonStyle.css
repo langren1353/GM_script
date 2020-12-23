@@ -419,8 +419,7 @@ body .wrapper_new #head.fix-head .s_form{
 @media screen and (min-width: 1921px){
     /*Baidu in 2K screen default in : center*/
     #head .head_wrapper{
-        -webkit-transform: translate3d(-140px,0,1px);
-        transform: translate3d(-140px,0,1px);
+        transform: translate3d(-120px,0,1px);
         justify-content: center;
         display: flex;
     }

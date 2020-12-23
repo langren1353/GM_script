@@ -100,11 +100,23 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 #wrapper .head_nums_cont_outer .nums {
     width: 80%;
 }
-@media screen and (max-width:1388px){
+@media screen and (max-width: 1500px) {
     form.fm .s_ipt_wr.bg{
-        min-width: 400px;
+        min-width: 450px
     }
-    .wrapper_new #result_logo{
-        margin-left: -100px;
+    .wrapper_new .head_wrapper #result_logo{
+        margin-left: -170px;
+    }
+}
+@media screen and (min-width: 1921px) {
+    #s_tab.s_tab .s_tab_inner {
+        width: 900px;
+    }
+    form.fm .s_ipt_wr.bg{
+        min-width: 900px
+    }
+    body.showRight #wrapper #container.sam_newgrid #content_left{
+        transform: translateX(calc(6vw - 320px));
+        max-width: 1300px;
     }
 }

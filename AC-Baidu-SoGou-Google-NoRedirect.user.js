@@ -162,7 +162,7 @@
        */
       Array.prototype.acpush = function (data, callback) {
         // 如果是垃圾数据，那么可以丢弃的
-        if (data === null || data === "") return;
+        if (typeof data === 'undefined' || data === null || data === "") return;
         // 如果数据中有回车，那数据也是无效的正文而已
         if (data.replace(/({|}|,|\+|：|。|\n)/) !== data) return;
         if (this.findIndex(m => m === data) < 0) {
@@ -1172,6 +1172,9 @@ body[baidu] #s_lg_img_new{
               },
               ConfigChange(){
                 return {v1: ACConfig.isEnLang};
+              },
+              isSaveButtonCanBeSee() {
+                return isElementVisible(this.$refs.bottomSaveButton)
               }
             },
             watch: {
@@ -1572,20 +1575,12 @@ body[baidu] #s_lg_img_new{
         };
 
         function AddCustomStyle() {
-          if (!ACConfig.isRightDisplayEnable) {
-            document.body.classList.remove("showRight")
-            // 移除右边栏 -注意在#wrapper>#con-at>#result-op xpath-log有时候很重要，不能隐藏
-            // AC_addStyle("#content_right{display:none !important;}#content_right td>div:not([id]){display:none;}#content_right .result-op:not([id]){display:none!important;}#rhs{display:none;}",
-            //   "AC-RightRemove");
-          } else {
-            document.body.classList.add("showRight")
-            // if (CONST.useItem.AdsStyleMode === 2) {
-            //   // 非双列模式下尽可能的显示右侧栏
-            //   AC_addStyle("@media screen and (min-width: 1250px) {#container{width: 80% !important;}.container_l #content_right{margin-right: calc(18% - 210px);position: absolute;right: -200px;display:block !important;overflow:hidden;width: 22vw !important;}",
-            //     "AC-RightRemove");
-            // }else{
-            //   safeRemove("style[class='AC-RightRemove']")
-            // }
+          if(document.body) {
+            if (!ACConfig.isRightDisplayEnable) {
+              document.body.classList.remove("showRight")
+            } else {
+              document.body.classList.add("showRight")
+            }
           }
           if (!ACConfig.isALineEnable) {
             AC_addStyle("a,a em{text-decoration:none}", "AC-NoLine", "body");// 移除这些个下划线
@@ -1823,6 +1818,7 @@ body[baidu] #s_lg_img_new{
                           <input id="sp-ac-isEnLang" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isEnLang">
                           {{ lan.use.fieldset_panel.setting_panel.useEn_text }}
                         </label>
+                        <span id="sp-ac-savebutton" @click="saveConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;margin-top: -6px;" v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
                       </li>
                       <li>
                         <label :title="lan.use.fieldset_panel.setting_panel.ads_title">
@@ -2133,7 +2129,7 @@ body[baidu] #s_lg_img_new{
                     </ul>
                     <!------------保存、取消按钮-------------->
                     <span id="sp-ac-cancelbutton" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.cancelBtn_text" style="position: relative;float: left;" v-text="lan.use.fieldset_panel.setting_panel.cancelBtn_text"></span>
-                    <span id="sp-ac-savebutton" @click="saveConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;" v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
+                    <span id="sp-ac-savebutton" ref="bottomSaveButton" @click="saveConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;" v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
                   </fieldset>
                 </div>
               </div>`;
@@ -2168,6 +2164,11 @@ body[baidu] #s_lg_img_new{
           } catch (e) {
           }
 
+        }
+
+        function isElementVisible(dom) {
+          const scrTop = document.documentElement.scrollTop || document.body.scrollTop;
+          return !(scrTop > (dom.offsetTop + dom.offsetHeight) || (scrTop + window.innerHeight) < dom.offsetTop);
         }
 
         function removeMobileBaiduDirectLink() {
@@ -2768,7 +2769,7 @@ body[baidu] #s_lg_img_new{
           loadTwoPageStyle: function () {
             this.loadStyle(CONST.useItem.name + "TwoPageStyle", CONST.useItem.name + "TwoPageStyle");
             let cssHead = "";
-            if (curSite.SiteTypeID === SiteType.BAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
+            if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
             if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
@@ -2780,7 +2781,7 @@ body[baidu] #s_lg_img_new{
           // 加载三列样式
           loadThreePageStyle: function () {
             let cssHead = "";
-            if (curSite.SiteTypeID === SiteType.BAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
+            if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
             if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
@@ -2792,7 +2793,7 @@ body[baidu] #s_lg_img_new{
           // 加载四列样式
           loadFourPageStyle: function () {
             let cssHead = "";
-            if (curSite.SiteTypeID === SiteType.BAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
+            if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
             if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";

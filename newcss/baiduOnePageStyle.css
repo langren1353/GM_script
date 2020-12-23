@@ -10,7 +10,8 @@ form.fm{
 body[baidu] .pagefoot.gj{
     margin-top: 100px;
 }
-#result_logo{
+.wrapper_new .head_wrapper #result_logo{
+    margin-left: -150px;
     position: relative;
 }
 #s_tab b,#s_tab a{
@@ -117,14 +118,19 @@ form.fm .s_ipt_wr.bg{
     min-width: calc(37.5vw - 150px);
 }
 @media screen and (min-width: 1921px) {
-    #s_tab.s_tab .s_tab_inner {
+    #head .head_wrapper{
+        transform: translate3d(140px,0,1px);
+    }
+    .wrapper_new #s_tab.s_tab .s_tab_inner {
         width: 900px;
+        padding-left: 296px;
     }
     form.fm .s_ipt_wr.bg{
-        min-width: 900px
+        min-width: calc(37.5vw - 150px);
     }
-    body.showRight #wrapper #container.sam_newgrid #content_left{
-        transform: translateX(calc(6vw - 320px));
-        max-width: 1300px;
+}
+@media screen and (min-width: 1366px) and (max-width: 1920px) {
+    .wrapper_new .head_wrapper #result_logo{
+        margin-left: 0px;
     }
 }

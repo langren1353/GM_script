@@ -208,6 +208,7 @@ a:hover h3{
 #rso .op-soft-title a:visited em,
 #rso .g div.r> a:visited,
 #rso .g div.r> a:visited em,
+#rcnt #res a:visited h3,
 #rso .g a:visited h3 {
     color: #660099;
 }
