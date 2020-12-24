@@ -28,8 +28,8 @@
 #main #rcnt{
     max-width: unset;
 }
-#main #cnt, #main #cnt #center_col, #main #cnt #foot{
-    width: 80vw;
+#main #cnt, #cnt #center_col, #cnt #foot{
+    width: calc(32.5vw + 668px);
     margin: 0 auto;
 }
 body #appbar,body .rhscol, body #top_nav, body #fbar{
@@ -65,4 +65,11 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
 /**video box align center**/
 g-section-with-header{
     text-align: center;
+}
+#hdtb #hdtb-msb{
+    justify-content: center;
+    width: 100%;
+}
+#hdtb #hdtb-msb-vis{
+    margin-left: -169px;
 }

@@ -25,10 +25,6 @@
 #main #rcnt{
     max-width: unset;
 }
-#main #cnt, #cnt #center_col, #cnt #foot{
-    width: 50vw;
-    margin: 0 auto;
-}
 body #appbar,body .rhscol, body #top_nav, body #fbar{
     min-width: unset;
 }
@@ -53,11 +49,24 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
 #top_nav{
     min-width: unset;
 }
-.srp form div[jscontroller]{
-    margin-left: unset;
-    margin: 0 auto;
-}
 /**video box align center**/
 g-section-with-header{
     text-align: center;
+}
+#hdtb #hdtb-msb{
+    justify-content: center;
+    width: 100%;
+}
+#hdtb #hdtb-msb-vis{
+    margin-left: -169px;
+}
+#main #cnt, #cnt #center_col, #cnt #foot{
+    width: calc(36.3vw + 525px);
+    margin: 0 auto;
+}
+@media screen and (max-width:1300px){
+    .srp form div[jscontroller]{
+        margin-left: unset;
+        margin: 0 auto;
+    }
 }

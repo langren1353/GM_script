@@ -2330,13 +2330,13 @@ body[baidu] #s_lg_img_new{
 
             // 移除shadowDOM广告；搜索关键字：淘宝；然后点击搜索框，广告会多次重现shadowdom
             safeFunction(function () {
-              $('.c-container >>> .c-container').has('.f13>span:contains("广告")').remove();
+              $('.c-container >>> .c-container').has('.f13>span:starts-with("广告")').remove();
             });
 
             // 移除右侧栏广告
-            safeRemove_xpath("id('content_right')/div[.//a[contains(text(), '广告')]]");
+            safeRemove_xpath("id('content_right')/div[.//a[starts-with(text(), '广告')]]");
             // 移除标准广告
-            safeRemove_xpath("id('content_left')/div[.//span[contains(text(), '广告')]]");
+            safeRemove_xpath("id('content_left')/div[.//span[(text() == '广告')]]");
             // 移除右侧栏顶部-底部无用广告
             safeRemove_xpath("id('content_right')/br");
             safeRemove_xpath("id('content_right')/div[not(@id)]");
