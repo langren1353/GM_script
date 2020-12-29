@@ -12,7 +12,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.16
+// @version    24.17
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -41,8 +41,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2020-12-22
+// @lastmodified  2020-12-29
 // @feedback-url  https://ac.tujidu.com
+// @note    2020.12-29-V24.17 调整谷歌、百度双列显示效果-各个分辨率；修复百度部分点击失效的问题；
 // @note    2020.12-22-V24.16 调整代码-减少致命异常；修复谷歌双列问题
 // @note    2020.12-19-V24.14 修复部分内核上百度多列显示的问题；修复谷歌多列的显示问题
 // @note    2020.12-18-V24.13 修复favicon在知乎上的排版问题；修复Duck样式无效的问题；修复最新谷歌双列失效的问题 - 尝试修复部分用户翻页失效问题；修复计数器编号异常的问题；更名尝试修复实效问题
@@ -79,24 +80,24 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=24.15
-// @resource  baiduOnePageStyle  http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=24.15
-// @resource  baiduTwoPageStyle  http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.15
-// @resource  baiduLiteStyle     http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=24.15
-// @resource  googleCommonStyle  http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=24.15
-// @resource  googleOnePageStyle http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=24.15
-// @resource  googleTwoPageStyle http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=24.15
-// @resource  bingCommonStyle    http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=24.15
-// @resource  bingOnePageStyle   http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=24.15
-// @resource  bingTwoPageStyle   http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=24.15
-// @resource  duckCommonStyle    http://ibaidu.ntaow.com/newcss/duckCommonStyle.css?t=24.15
-// @resource  duckOnePageStyle   http://ibaidu.ntaow.com/newcss/duckOnePageStyle.css?t=24.15
-// @resource  duckTwoPageStyle   http://ibaidu.ntaow.com/newcss/duckTwoPageStyle.css?t=24.15
-// @resource  dogeCommonStyle    http://ibaidu.ntaow.com/newcss/dogeCommonStyle.css?t=24.15
-// @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.15
-// @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.15
-// @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.15
-// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.15
+// @resource  baiduCommonStyle   http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=24.17
+// @resource  baiduOnePageStyle  http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=24.17
+// @resource  baiduTwoPageStyle  http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.17
+// @resource  baiduLiteStyle     http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=24.17
+// @resource  googleCommonStyle  http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=24.17
+// @resource  googleOnePageStyle http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=24.17
+// @resource  googleTwoPageStyle http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=24.17
+// @resource  bingCommonStyle    http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=24.17
+// @resource  bingOnePageStyle   http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=24.17
+// @resource  bingTwoPageStyle   http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=24.17
+// @resource  duckCommonStyle    http://ibaidu.ntaow.com/newcss/duckCommonStyle.css?t=24.17
+// @resource  duckOnePageStyle   http://ibaidu.ntaow.com/newcss/duckOnePageStyle.css?t=24.17
+// @resource  duckTwoPageStyle   http://ibaidu.ntaow.com/newcss/duckTwoPageStyle.css?t=24.17
+// @resource  dogeCommonStyle    http://ibaidu.ntaow.com/newcss/dogeCommonStyle.css?t=24.17
+// @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.17
+// @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.17
+// @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.17
+// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.17
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js
 // @grant    GM_getValue
@@ -162,7 +163,7 @@
        */
       Array.prototype.acpush = function (data, callback) {
         // 如果是垃圾数据，那么可以丢弃的
-        if (typeof data === 'undefined' || data === null || data === "") return;
+        if (!data) return;
         // 如果数据中有回车，那数据也是无效的正文而已
         if (data.replace(/({|}|,|\+|：|。|\n)/) !== data) return;
         if (this.findIndex(m => m === data) < 0) {
@@ -244,6 +245,7 @@
       isALineEnable: false, // 是否禁止下划线
       isUserStyleEnable: false, // 是否开启自定义样式
       normalizeDuck: true, // 是否按照常用习惯去配置DuckDuckGo
+      acceptLicense: false,
       isEnLang: false,
       isGooleInBaiduModeEnable: false, // 是否开启谷歌搜索结果页的百度图标显示
       UserBlockList: [],
@@ -444,7 +446,7 @@ body[baidu] #s_lg_img_new{
     };
     let otherData = {
       other: {
-        showSecondPanel: false, // 展示第二panel
+        curTab: 1, // 展示第二panel
         showBlockListArea: false, // blockList展示位textarea
         addBlockItem: "",     // 用户手动输入的拦截规则
         curHosts: [],         // 存放已经访问的hosts数据内容
@@ -1106,6 +1108,12 @@ body[baidu] #s_lg_img_new{
                 AC_addStyle(ACConfig.UserStyleText, "AC-userStyle", "head", true); // 用户自定义的样式表
               },
               saveConfig() {
+                if(this.other.curTab===1 && !this.ACConfig.acceptLicense){
+                  this.other.curTab = 3
+                  return
+                }
+                this.ACConfig.acceptLicense = true
+
                 this.ACConfig.lastSaveTime = new Date().getTime();
                 GM_setValue("Config", JSON.stringify(this.ACConfig));
                 if(!this.ACConfig.doDisableSug){
@@ -1802,13 +1810,13 @@ body[baidu] #s_lg_img_new{
             let Container = document.createElement('div');
             Container.id = "sp-ac-container";
             Container.innerHTML =
-              `<div id="sp-ac-content" style="display: none;">
+              `<div id="sp-ac-content" style="display: none;" xmlns="http://www.w3.org/1999/html">
                 <div id="sp-ac-main">
                   <fieldset id="sp-ac-autopager-field" style="display:block;">
                     <legend class="iframe-father">
                        <a class="linkhref" href="https://www.ntaow.com/aboutscript.html" target="_blank" v-text="lan.use.fieldset_panel.panel_title"></a>
                     </legend>
-                    <ul class="setting-main" v-show="!other.showSecondPanel">
+                    <ul class="setting-main" v-show="other.curTab === 1">
                       <li>
                         <label :title="lan.use.fieldset_panel.setting_panel.redirect_title">
                           <input id="sp-ac-redirect" name="sp-ac-a_separator" type="checkbox"  v-model="ACConfig.isRedirectEnable">
@@ -1835,7 +1843,7 @@ body[baidu] #s_lg_img_new{
                           <input id="sp-ac-block" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isBlockEnable">
                           {{ lan.use.fieldset_panel.setting_panel.blockenable_text }}
                         </label>
-                        <span id="sp-ac-blockdiybutton" class="sp-ac-spanbutton" @click="other.showSecondPanel = true" :title="lan.use.fieldset_panel.setting_panel.blockDiyBtn_title" style="margin-left: 5px;color: #888888;" v-text="lan.use.fieldset_panel.setting_panel.blockDiyBtn_text"></span>
+                        <span id="sp-ac-blockdiybutton" class="sp-ac-spanbutton" @click="other.curTab = 2" :title="lan.use.fieldset_panel.setting_panel.blockDiyBtn_title" style="margin-left: 5px;color: #888888;" v-text="lan.use.fieldset_panel.setting_panel.blockDiyBtn_text"></span>
                         <label :title="lan.use.fieldset_panel.setting_panel.blockenable_text">
                           <input :title="lan.use.fieldset_panel.setting_panel.blockAutoRemove_title" v-model="ACConfig.isBlockDisplay" id="sp-ac-removeBlock" type="checkbox">
                           {{ lan.use.fieldset_panel.setting_panel.blockAutoRemove_text }}
@@ -2106,10 +2114,10 @@ body[baidu] #s_lg_img_new{
                       </li>
                     </ul>
                     <!------------拦截域名设置panel-------------->
-                    <ul class="setting-second" v-show="other.showSecondPanel">
+                    <ul class="setting-second" v-show="other.curTab === 2">
                       <li style='margin-bottom: 8px !important;'>
                         <label>
-                          <span id='sp-ac-blockdiybutton-back' @click="other.showSecondPanel = other.showBlockListArea = false" class='sp-ac-spanbutton'>{{ lan.use.fieldset_panel.setting_panel.setting_panel_second.backBtn_text }}</span>
+                          <span id='sp-ac-blockdiybutton-back' @click="other.curTab=1,other.showBlockListArea = false" class='sp-ac-spanbutton'>{{ lan.use.fieldset_panel.setting_panel.setting_panel_second.backBtn_text }}</span>
                         </label>
                         {{ lan.use.fieldset_panel.setting_panel.setting_panel_second.blockLabel_text }}}
                       </li>
@@ -2125,6 +2133,23 @@ body[baidu] #s_lg_img_new{
                       <li>
                         {{ lan.use.fieldset_panel.setting_panel.setting_panel_second.addBlockLabel_text }}<input class="sp-ac-addRuleOne" @keyup.enter="ckAddRule" v-model="other.addBlockItem" style='width:55%;'>
                         <span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' @click="ckAddRule" style='position: relative !important;line-height: 17px;' v-text="lan.use.fieldset_panel.setting_panel.setting_panel_second.addBtnLabel_text">新增</span>
+                      </li>
+                    </ul>
+                    <ul v-show="other.curTab === 3" style="width: 300px">
+                      <li>
+                        <div class="dialog-body">
+                          <label>
+                            <span id='sp-ac-blockdiybutton-back' @click="other.curTab=1" class='sp-ac-spanbutton'>返回</span>
+                          </label>
+                          <div>
+                            <div>使用说明：</div>
+                            <div>-</div>
+                            <p>1. 本脚本不包含任何广告内容，也无意于破坏网站现有功能的完整性，仅希望通过一些显示效果的变更能更好的留存对应网站现有的用户，一定程度上更好地保证了目标网站的日活。</p>
+                            <p>
+                              2. 同时本脚本中所有功能均为学习和研究web前端技术的发展而开发，希望为学习前端技术的研究人员提供一个更好的参考代码，促进web前端技术的发展，便于技术的学习和交流，本脚本不涉及对网站源码的调试和修改，因使用本脚本进行非法用途与本脚本无关。
+                            </p>
+                          </div>
+                        </div>
                       </li>
                     </ul>
                     <!------------保存、取消按钮-------------->
