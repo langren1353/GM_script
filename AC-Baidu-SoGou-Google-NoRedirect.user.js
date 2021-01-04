@@ -2,7 +2,6 @@
 // @name    AC-baidu-重定向优化百度搜狗谷歌必应搜索_favicon_双列
 // @name:en    AC-baidu-google_sogou_bing_RedirectRemove_favicon_adaway_TwoLine
 // @name:zh    AC-baidu-重定向优化百度搜狗谷歌必应搜索_favicon_双列
-// @name:zh-CN  AC-baidu-重定向优化百度搜狗谷歌必应搜索_favicon_双列
 // @name:ja    AC-baidu-重定向最適化Baiduの搜狗のGoogleのBing検索結果のリダイレクト除去+favicon
 // @description  1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.新增自定义网站拦截功能 3添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能 7.自动翻页功能
 // @description:en  1.bypass the redirect link at baidu\sogou\google\haosou; 2.remove ads at baidu; 3.add Favicon for each website; 4.render your own style; 5.counter; 6.Switch to handle all 7.Auto Pager
@@ -12,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.17
+// @version    24.18
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -35,6 +34,8 @@
 // @include    *://*duckduckgo.com/*
 // @include    *://*.dogedoge.com/*
 // @exclude    *://*.google*/sorry*
+// @exclude    https://zhidao.baidu.com/*
+// @exclude    https://*.zhidao.baidu.com/*
 // @namespace  1353464539@qq.com
 // @supportURL  https://ac.tujidu.com/
 // @home-url   https://greasyfork.org/zh-TW/scripts/14178
@@ -43,6 +44,7 @@
 // @copyright  2015-2020, AC
 // @lastmodified  2020-12-29
 // @feedback-url  https://ac.tujidu.com
+// @note    2020.12-29-V24.18 调整侧边栏功能效果，优化双列显示效果，处理duckduck的样式
 // @note    2020.12-29-V24.17 调整谷歌、百度双列显示效果-各个分辨率；修复百度部分点击失效的问题；
 // @note    2020.12-22-V24.16 调整代码-减少致命异常；修复谷歌双列问题
 // @note    2020.12-19-V24.14 修复部分内核上百度多列显示的问题；修复谷歌多列的显示问题
@@ -80,26 +82,26 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=24.17
-// @resource  baiduOnePageStyle  http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=24.17
-// @resource  baiduTwoPageStyle  http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.17
-// @resource  baiduLiteStyle     http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=24.17
-// @resource  googleCommonStyle  http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=24.17
-// @resource  googleOnePageStyle http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=24.17
-// @resource  googleTwoPageStyle http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=24.17
-// @resource  bingCommonStyle    http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=24.17
-// @resource  bingOnePageStyle   http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=24.17
-// @resource  bingTwoPageStyle   http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=24.17
-// @resource  duckCommonStyle    http://ibaidu.ntaow.com/newcss/duckCommonStyle.css?t=24.17
-// @resource  duckOnePageStyle   http://ibaidu.ntaow.com/newcss/duckOnePageStyle.css?t=24.17
-// @resource  duckTwoPageStyle   http://ibaidu.ntaow.com/newcss/duckTwoPageStyle.css?t=24.17
-// @resource  dogeCommonStyle    http://ibaidu.ntaow.com/newcss/dogeCommonStyle.css?t=24.17
-// @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.17
-// @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.17
-// @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.17
-// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.17
-// @require https://cdn.staticfile.org/vue/2.6.11/vue.js
-// @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js
+// @resource  baiduCommonStyle   http://ibaidu.ntaow.com/newcss/baiduCommonStyle.css?t=24.18
+// @resource  baiduOnePageStyle  http://ibaidu.ntaow.com/newcss/baiduOnePageStyle.css?t=24.18
+// @resource  baiduTwoPageStyle  http://ibaidu.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.18
+// @resource  baiduLiteStyle     http://ibaidu.ntaow.com/newcss/baiduLiteStyle.css?t=24.18
+// @resource  googleCommonStyle  http://ibaidu.ntaow.com/newcss/googleCommonStyle.css?t=24.18
+// @resource  googleOnePageStyle http://ibaidu.ntaow.com/newcss/googleOnePageStyle.css?t=24.18
+// @resource  googleTwoPageStyle http://ibaidu.ntaow.com/newcss/googleTwoPageStyle.css?t=24.18
+// @resource  bingCommonStyle    http://ibaidu.ntaow.com/newcss/bingCommonStyle.css?t=24.18
+// @resource  bingOnePageStyle   http://ibaidu.ntaow.com/newcss/bingOnePageStyle.css?t=24.18
+// @resource  bingTwoPageStyle   http://ibaidu.ntaow.com/newcss/bingTwoPageStyle.css?t=24.18
+// @resource  duckCommonStyle    http://ibaidu.ntaow.com/newcss/duckCommonStyle.css?t=24.18
+// @resource  duckOnePageStyle   http://ibaidu.ntaow.com/newcss/duckOnePageStyle.css?t=24.18
+// @resource  duckTwoPageStyle   http://ibaidu.ntaow.com/newcss/duckTwoPageStyle.css?t=24.18
+// @resource  dogeCommonStyle    http://ibaidu.ntaow.com/newcss/dogeCommonStyle.css?t=24.18
+// @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.18
+// @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.18
+// @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.18
+// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.18
+// @require https://cdn.staticfile.org/vue/2.6.11/vue.min.js
+// @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js
 // @grant    GM_getValue
 // @grant    GM.getValue
 // @grant    GM_setValue
@@ -114,7 +116,6 @@
 // @grant    GM_registerMenuCommand
 // @grant    unsafeWindow
 // ==/UserScript==
-
 // calc(X1(vw) + X2(px)) -> B(px) 使用 http://www.yunsuan.info/matrixcomputations/solvelinearsystems.html 进行计算
 !function () {
   let isdebug = false;
@@ -153,30 +154,6 @@
         for (var i = 0; i < this.length; i++) {
           callback.call(thisArg, this[i], i, this);
         }
-      };
-    }
-    if (!Array.prototype.acpush) {
-      /**
-       * 进行不重复插入，插入后执行回调函数
-       * @param data 待插入数据
-       * @param callback 回调函数
-       */
-      Array.prototype.acpush = function (data, callback) {
-        // 如果是垃圾数据，那么可以丢弃的
-        if (!data) return;
-        // 如果数据中有回车，那数据也是无效的正文而已
-        if (data.replace(/({|}|,|\+|：|。|\n)/) !== data) return;
-        if (this.findIndex(m => m === data) < 0) {
-          this.push(data);
-          callback && callback(this);
-        }
-      };
-      Array.prototype.acremove = function (data, callback) {
-        let delId = this.findIndex(m => m === data);
-        if (delId >= 0) {
-          this.splice(delId, 1);
-          callback && callback(this);
-        } // 删除delId的数据，删除一个
       };
     }
     // let RedirectMap = new Map();
@@ -779,6 +756,38 @@ body[baidu] #s_lg_img_new{
         CONST.hasNewFuncNeedDisplay = needDisplayNewFun;
       }
 
+      !function() {
+        /**
+         * 进行不重复插入，插入后执行回调函数
+         * @param data 待插入数据
+         * @param callback 回调函数
+         */
+        function acpush(data, callback) {
+          // 如果是垃圾数据，那么可以丢弃的
+          if (!data) return;
+          // 如果数据中有回车，那数据也是无效的正文而已
+          if (data.replace(/({|}|,|\+|：|。|\n)/) !== data) return;
+          if (this.findIndex(m => m === data) < 0) {
+            this.push(data);
+            callback && callback(this);
+          }
+        }
+        function acremove(data, callback) {
+          let delId = this.findIndex(m => m === data);
+          if (delId >= 0) {
+            this.splice(delId, 1);
+            callback && callback(this);
+          } // 删除delId的数据，删除一个
+        }
+        // 避免污染全局原型链
+        Object.defineProperty(ACConfig.UserBlockList, 'acpush', {value: acpush})
+        Object.defineProperty(ACConfig.UserBlockList, 'acremove', {value: acremove})
+        Object.defineProperty(otherData.other.curHosts, 'acpush', {value: acpush})
+        Object.defineProperty(otherData.other.curHosts, 'acremove', {value: acremove})
+      }();
+
+
+
       !function () {
         let insertLocked = false;
         if (typeof GM_getResourceText === 'undefined') {
@@ -1125,6 +1134,9 @@ body[baidu] #s_lg_img_new{
                   window.location.reload();
                 }, 200);
               },
+              closePanel() {
+                document.querySelector("#sp-ac-content").style.display = 'none';
+              },
               useThisHuyanColor(env) {
                 this.ACConfig.defaultHuYanColor = env.target.value || env.target.dataset.value;
                 console.log(this.ACConfig.defaultHuYanColor);
@@ -1176,7 +1188,14 @@ body[baidu] #s_lg_img_new{
                 return list;
               },
               AdsStyleModeChange() {
-                return {v1: CONST.useItem.AdsStyleMode, v2: CONST.useItem.HuYanMode, v3: ACConfig.Style_BaiduLite, v4: ACConfig.isFaviconEnable, v5: CONST.isGoogleSpecial};
+                return {
+                  v1: CONST.useItem.AdsStyleMode,
+                  v2: CONST.useItem.HuYanMode,
+                  v3: ACConfig.Style_BaiduLite,
+                  v4: ACConfig.isFaviconEnable,
+                  v5: CONST.isGoogleSpecial,
+                  v6: ACConfig.isRightDisplayEnable
+                };
               },
               ConfigChange(){
                 return {v1: ACConfig.isEnLang};
@@ -1583,13 +1602,6 @@ body[baidu] #s_lg_img_new{
         };
 
         function AddCustomStyle() {
-          if(document.body) {
-            if (!ACConfig.isRightDisplayEnable) {
-              document.body.classList.remove("showRight")
-            } else {
-              document.body.classList.add("showRight")
-            }
-          }
           if (!ACConfig.isALineEnable) {
             AC_addStyle("a,a em{text-decoration:none}", "AC-NoLine", "body");// 移除这些个下划线
           }
@@ -1689,6 +1701,13 @@ body[baidu] #s_lg_img_new{
               if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
                 SiteBlock.initStyle();
                 SiteBlock.init();
+              }
+              if(document.body){
+                if (!ACConfig.isRightDisplayEnable) { // 右侧栏显示
+                  document.body.classList.remove("showRight")
+                } else {
+                  document.body.classList.add("showRight")
+                }
               }
               if (curSite.SiteTypeID === SiteType.GOOGLE) {
                 let node = document.querySelector("#rso")
@@ -2153,7 +2172,7 @@ body[baidu] #s_lg_img_new{
                       </li>
                     </ul>
                     <!------------保存、取消按钮-------------->
-                    <span id="sp-ac-cancelbutton" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.cancelBtn_text" style="position: relative;float: left;" v-text="lan.use.fieldset_panel.setting_panel.cancelBtn_text"></span>
+                    <span id="sp-ac-cancelbutton" class="sp-ac-spanbutton endbutton" @click="closePanel" :title="lan.use.fieldset_panel.setting_panel.cancelBtn_text" style="position: relative;float: left;" v-text="lan.use.fieldset_panel.setting_panel.cancelBtn_text"></span>
                     <span id="sp-ac-savebutton" ref="bottomSaveButton" @click="saveConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;" v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
                   </fieldset>
                 </div>
@@ -2286,13 +2305,16 @@ body[baidu] #s_lg_img_new{
                     method: "GET",
                     timeout: 8000,
                     onreadystatechange: function (response) { // MARK 有时候这个函数根本不进来 - 调试的问题 - timeout
-                      // 由于是特殊返回-并且好搜-搜狗-百度都是这个格式，故提出
-                      DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'")
-                      // 这个是在上面无法处理的情况下，备用的 tm-finalurldhdg  tm-finalurlmfdh
-                      if (response.responseHeaders.includes("tm-finalurl")) {
-                        let relURL = Reg_Get(response.responseHeaders, "tm-finalurl\\w+: ([^\\s]+)");
-                        if (relURL === null || relURL === "" || relURL.includes("www.baidu.com/search/error")) return;
-                        DealRedirect(gmRequestNode, c_curhref, relURL);
+                      if(response.responseText || response.responseHeaders) {
+                        // 由于是特殊返回-并且好搜-搜狗-百度都是这个格式，故提出
+                        DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'")
+                        // 这个是在上面无法处理的情况下，备用的 tm-finalurldhdg  tm-finalurlmfdh
+
+                        if (response.responseHeaders.includes("tm-finalurl")) {
+                          let relURL = Reg_Get(response.responseHeaders, "tm-finalurl\\w+: ([^\\s]+)");
+                          if (relURL === null || relURL === "" || relURL.includes("www.baidu.com/search/error")) return;
+                          DealRedirect(gmRequestNode, c_curhref, relURL);
+                        }
                       }
                     }
                   });
@@ -2361,7 +2383,7 @@ body[baidu] #s_lg_img_new{
             // 移除右侧栏广告
             safeRemove_xpath("id('content_right')/div[.//a[starts-with(text(), '广告')]]");
             // 移除标准广告
-            safeRemove_xpath("id('content_left')/div[.//span[(text() == '广告')]]");
+            safeRemove_xpath("id('content_left')/div[.//span[contains(text(), '广告')]]");
             // 移除右侧栏顶部-底部无用广告
             safeRemove_xpath("id('content_right')/br");
             safeRemove_xpath("id('content_right')/div[not(@id)]");
@@ -2795,36 +2817,36 @@ body[baidu] #s_lg_img_new{
             this.loadStyle(CONST.useItem.name + "TwoPageStyle", CONST.useItem.name + "TwoPageStyle");
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-            if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div";
+            if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div:not(.g)";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
-            AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit, minmax(50%,1fr));grid-template-areas:'xmain xmain';grid-column-gap: 1px;}.AC.sp-separator{grid-column-start: 1;grid-column-end: xmain-end;}",
+            AC_addStyle(cssHead + "{grid-template-columns: repeat(2, minmax(50%,1fr));grid-template-areas:'xmain xmain';grid-column-gap: 1px;}.AC.sp-separator{grid-column-start: 1;grid-column-end: xmain-end;}",
               "AC-TwoPageExStyle", "head");
           },
           // 加载三列样式
           loadThreePageStyle: function () {
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-            if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div";
+            if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div:not(.g)";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
-            AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit, minmax(33.3%,1fr));grid-template-areas:'xmain xmain xmain';grid-column-gap: 10px;}",
+            AC_addStyle(cssHead + "{grid-template-columns: repeat(3, minmax(33.3%,1fr));grid-template-areas:'xmain xmain xmain';grid-column-gap: 10px;}",
               "AC-ThreePageExStyle", "head");
           },
           // 加载四列样式
           loadFourPageStyle: function () {
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-            if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div";
+            if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div:not(.g)";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
-            AC_addStyle(cssHead + "{grid-template-columns: repeat(auto-fit, minmax(25%,1fr));grid-template-areas:'xmain xmain xmain xmain';grid-column-gap: 1px;}",
+            AC_addStyle(cssHead + "{grid-template-columns: repeat(4, minmax(25%,1fr));grid-template-areas:'xmain xmain xmain xmain';grid-column-gap: 1px;}",
               "AC-FourPageExStyle", "head");
           },
           loadPlainToCSS: function () {

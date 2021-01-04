@@ -22,6 +22,18 @@ body {
     border: 1px solid rgba(0,0,0,0.1);
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
+.dark-bg #links_wrapper #links .results_links_deep{
+    background-color: #333;
+}
+.dark-bg #links_wrapper #links .results_links_deep h2 {
+    background-color: #345;
+}
+.dark-bg #links_wrapper #links .results_links_deep .result__title a {
+    color: #CCCCCC;
+}
+.dark-bg #links_wrapper #links .results_links_deep .result__title a:visited {
+    color: #b7663e;
+}
 #links_wrapper #links .results_links_deep .result__title a {
     overflow: hidden;
     text-overflow: ellipsis;

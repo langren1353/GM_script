@@ -57,7 +57,6 @@ body[baidu] .pagefoot.gj{
     display: block;
 }
 #wrapper #content_right{
-    display: none;
     float: unset;
     position: absolute;
 }
@@ -66,7 +65,6 @@ body.showRight #wrapper #container.sam_newgrid #content_left{
 }
 body.showRight #wrapper #content_right{
     right: calc(37.5vw - 470px);
-    display: unset;
 }
 @media screen and (max-width: 1280px){
     body.showRight #wrapper #container.sam_newgrid #content_left{
@@ -97,7 +95,9 @@ body.showRight #wrapper #content_right{
 }
 /*search engine jump*/
 #sej-container{
-    padding-left: calc(44% - 478px) !important;
+    padding-left: 0;
+    margin-left: 0;
+    text-align: center;
 }
 .s_form_wrapper {
     display: flex;

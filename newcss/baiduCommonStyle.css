@@ -406,6 +406,12 @@ body .wrapper_new #head.fix-head .s_form{
     margin-top: -10px;
     width: 650px;
 }
+#wrapper #content_right{
+    display: none;
+}
+body.showRight #wrapper #content_right{
+    display: unset;
+}
 #wrapper #content_left .c-container[tpl='recommend_list']{
     padding-top: 10px;
     display: flex;

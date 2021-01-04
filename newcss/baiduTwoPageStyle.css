@@ -89,7 +89,9 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 }
 /*search engine jump*/
 #sej-container{
-    padding-left: calc(12% - 113px) !important;
+    padding-left: 0;
+    margin-left: 0;
+    text-align: center;
 }
 .s_form_wrapper {
     justify-content: center;
@@ -114,9 +116,5 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
     }
     form.fm .s_ipt_wr.bg{
         min-width: 900px
-    }
-    body.showRight #wrapper #container.sam_newgrid #content_left{
-        transform: translateX(calc(6vw - 320px));
-        max-width: 1300px;
     }
 }

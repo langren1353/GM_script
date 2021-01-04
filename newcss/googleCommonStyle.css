@@ -364,10 +364,11 @@ a:hover h3{
 #res .g .ts{
     max-width: unset;
 }
-@media screen and (max-width:1400px){
-  #rcnt #rhs{
+#main #rcnt #rhs{
     display:none;
-  }
+}
+.showRight #main #rcnt #rhs{
+    display:unset;
 }
 cite{
     font-weight:normal;

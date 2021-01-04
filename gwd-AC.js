@@ -18,6 +18,7 @@
 // @note	 V1.2 修复部分多余的隐藏无效的问题 修复之前忘了【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】
 // @grant        GM_xmlhttpRequest
 // @connect      chenzelin.herokuapp.com
+// @connect      open.lesiclub.cn
 // @connect      gm.ntaow.com
 // @connect      gwdang.com
 // @connect      alicdn.com
