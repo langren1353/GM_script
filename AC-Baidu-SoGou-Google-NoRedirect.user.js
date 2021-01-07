@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.18
+// @version    24.19
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -44,6 +44,7 @@
 // @copyright  2015-2020, AC
 // @lastmodified  2020-12-29
 // @feedback-url  https://ac.tujidu.com
+// @note    2020.12-29-V24.19 数据本地缓存，一定程度上保证重装后数据不丢失
 // @note    2020.12-29-V24.18 调整侧边栏功能效果，优化双列显示效果，处理duckduck的样式
 // @note    2020.12-29-V24.17 调整谷歌、百度双列显示效果-各个分辨率；修复百度部分点击失效的问题；
 // @note    2020.12-22-V24.16 调整代码-减少致命异常；修复谷歌双列问题
@@ -672,14 +673,19 @@ body[baidu] #s_lg_img_new{
     let vueVM = null;
     /**初始化所有的设置**/
     Promise.all([GM.getValue("Config")]).then(function (data) {
-      if (data[0] != null) {
+      let res = data[0]
+      if (res != null) {
         try {
-          ACConfig = JSON.parse(data[0]);
+          ACConfig = JSON.parse(res);
         } catch (e) {
-          ACConfig = data[0];
+          ACConfig = res;
         }
       } else {
         ACConfig = DefaultConfig;
+      }
+      const localData = localStorage.ACConfig;
+      if(localData && localData.length > 0) {
+        ACConfig = JSON.parse(localData);
       }
       for (var key in DefaultConfig) {
         if (typeof (ACConfig[key]) === "undefined") {
@@ -687,7 +693,7 @@ body[baidu] #s_lg_img_new{
         }
       }
       if (ACConfig.isUserStyleEnable === false && (new Date().getTime() - ACConfig.lastSaveTime > 2592000000)) { // 大约30天时间
-        // 如果用户取消了设置，并且长时间(3天)没有进行过处理，那么直接将数据置空 -> 用于刷新数据
+        // 如果用户取消了设置，并且长时间(30天)没有进行过处理，那么直接将数据置空 -> 用于刷新数据
         console.log("ac-baidu css reset for time");
         ACConfig.lastSaveTime = new Date().getTime();
         ACConfig.UserStyleText = DefaultConfig.UserStyleText;
@@ -707,6 +713,13 @@ body[baidu] #s_lg_img_new{
         return RegE.exec(HTML)[1];
       } catch (e) {
         return "";
+      }
+    }
+
+    function ACSetValue(key, value) {
+      GM_setValue(key, value);
+      if(key === 'Config'){
+        localStorage.ACConfig = value;
       }
     }
 
@@ -928,7 +941,7 @@ body[baidu] #s_lg_img_new{
               ACConfig.UserBlockList.acpush(host);
             }
             DBConfig.UserBlockList = ACConfig.UserBlockList;
-            GM_setValue("Config", JSON.stringify(DBConfig)); // 点击一次，保存一次
+            ACSetValue("Config", JSON.stringify(DBConfig)); // 点击一次，保存一次
             SiteBlock.renderDisplay();
             env.stopPropagation();
           },
@@ -1124,7 +1137,7 @@ body[baidu] #s_lg_img_new{
                 this.ACConfig.acceptLicense = true
 
                 this.ACConfig.lastSaveTime = new Date().getTime();
-                GM_setValue("Config", JSON.stringify(this.ACConfig));
+                ACSetValue("Config", JSON.stringify(this.ACConfig));
                 if(!this.ACConfig.doDisableSug){
                   acSetCookie("ORIGIN", 1, "www.baidu.com", new Date().getTime() - 86400000);
                   acSetCookie("ISSW", 1, null, new Date().getTime() - 86400000);
@@ -1197,8 +1210,15 @@ body[baidu] #s_lg_img_new{
                   v6: ACConfig.isRightDisplayEnable
                 };
               },
-              ConfigChange(){
-                return {v1: ACConfig.isEnLang};
+              UserStyleEnableChange() {
+                return {
+                  v1: ACConfig.isUserStyleEnable
+                }
+              },
+              lanChange(){
+                return {
+                  v1: ACConfig.isEnLang
+                };
               },
               isSaveButtonCanBeSee() {
                 return isElementVisible(this.$refs.bottomSaveButton)
@@ -1216,7 +1236,14 @@ body[baidu] #s_lg_img_new{
                 acCssLoadFlag = false;
                 CONST.StyleManger.init();
               },
-              ConfigChange(){
+              UserStyleEnableChange() {
+                if(ACConfig.isUserStyleEnable) {
+                  this.loadCustomStyle();
+                } else {
+                  safeRemove("style[class='AC-userStyle']")
+                }
+              },
+              lanChange(){
                 AllData.lan.use = ACConfig.isEnLang ? AllData.lan.en : AllData.lan.zh_cn;
                 document.querySelector("#myuser").remove();
               }
@@ -1814,7 +1841,7 @@ body[baidu] #s_lg_img_new{
               document.querySelector("#sp-ac-content").style.display = 'none';
             } else {
               DBConfig.oldVersion = ACConfig.oldVersion = GM_info.script.version; // 只需要写出一部分的关键数据即可
-              GM_setValue("Config", JSON.stringify(DBConfig));
+              ACSetValue("Config", JSON.stringify(DBConfig));
               document.querySelector(".ac-newversionDisplay").style.display = 'none';
               document.querySelector("#sp-ac-content").style.display = 'block';
             }
