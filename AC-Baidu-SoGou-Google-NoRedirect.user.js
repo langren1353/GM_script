@@ -36,14 +36,13 @@
 // @exclude    *://*.google*/sorry*
 // @exclude    https://zhidao.baidu.com/*
 // @exclude    https://*.zhidao.baidu.com/*
-// @namespace  1353464539@qq.com
 // @supportURL  https://ac.tujidu.com/
 // @home-url   https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
 // @lastmodified  2020-12-29
-// @feedback-url  https://ac.tujidu.com
+// @feedback-url  https://github.com/langren1353/GM_script
 // @note    2020.12-29-V24.19 数据本地缓存，一定程度上保证重装后数据不丢失
 // @note    2020.12-29-V24.18 调整侧边栏功能效果，优化双列显示效果，处理duckduck的样式
 // @note    2020.12-29-V24.17 调整谷歌、百度双列显示效果-各个分辨率；修复百度部分点击失效的问题；
@@ -537,7 +536,7 @@ body[baidu] #s_lg_img_new{
               showUserStyle_text: "附加10-自定义样式",
 
               contactMe_text: "联系作者,提建议,寻求帮助,自定义样式,脚本定制点我",
-              contactMe_url: "https://ac.tujidu.com",
+              contactMe_url: "https://github.com/langren1353/GM_script",
 
               setting_panel_second: {
                 backBtn_text: "<-返回",
@@ -1724,6 +1723,9 @@ body[baidu] #s_lg_img_new{
                 acSetCookie("ORIGIN", 2, "www.baidu.com");
                 acSetCookie("ISSW", 1);
                 acSetCookie("ISSW", 1, "www.baidu.com");
+              }
+              if(document.querySelector("style[class*='darkreader']") != null) {
+                CONST.useItem.HuYanMode = true;
               }
               if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
                 SiteBlock.initStyle();
