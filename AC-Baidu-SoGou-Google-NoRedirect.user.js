@@ -41,9 +41,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2020-12-29
+// @lastmodified  2021-02-02
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2020.12-29-V24.19 数据本地缓存，一定程度上保证重装后数据不丢失
+// @note    2021.02-02-V24.19 数据本地缓存，一定程度上保证重装后数据不丢失 && 修复谷歌部分内容失效的问题
 // @note    2020.12-29-V24.18 调整侧边栏功能效果，优化双列显示效果，处理duckduck的样式
 // @note    2020.12-29-V24.17 调整谷歌、百度双列显示效果-各个分辨率；修复百度部分点击失效的问题；
 // @note    2020.12-22-V24.16 调整代码-减少致命异常；修复谷歌双列问题
@@ -99,7 +99,7 @@
 // @resource  dogeOnePageStyle   http://ibaidu.ntaow.com/newcss/dogeOnePageStyle.css?t=24.18
 // @resource  dogeTwoPageStyle   http://ibaidu.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.18
 // @resource  MainHuYanStyle     http://ibaidu.ntaow.com/newcss/HuYanStyle.css?t=24.18
-// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.18
+// @resource  SiteConfigRules    http://ibaidu.ntaow.com/newcss/SiteConfigRules.conf?t=24.19
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.min.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js
 // @grant    GM_getValue
@@ -682,7 +682,7 @@ body[baidu] #s_lg_img_new{
       } else {
         ACConfig = DefaultConfig;
       }
-      const localData = localStorage.ACConfig;
+      const localData = localStorage.ACConfig; // 小心隐私模式
       if(localData && localData.length > 0) {
         ACConfig = JSON.parse(localData);
       }
@@ -1562,6 +1562,7 @@ body[baidu] #s_lg_img_new{
                 console.error("[AC-Script]", "翻页到达底部了 - 或者异常 - 出现异常请直接反馈作者修改");
                 return;
               }// 不会重复加载相同的页面
+              console.log("加载翻页地址：" + url)
               curSite.pageUrl = url;
               // 对url的数据进行读取
               curSite.pager.startFilter && curSite.pager.startFilter();
@@ -1606,6 +1607,9 @@ body[baidu] #s_lg_img_new{
                         let oriE = getAllElements(curSite.pager.replaceE);
                         let repE = getAllElements(curSite.pager.replaceE, newBody, newBody);
                         if (oriE.length === repE.length) {
+                          if(oriE.length === 0) {
+                            throw "翻页-替换翻页元素 'replaceE' 失效";
+                          }
                           for (var i = 0; i < oriE.length; i++) {
                             oriE[i].outerHTML = repE[i].outerHTML;
                           }
@@ -2262,7 +2266,7 @@ body[baidu] #s_lg_img_new{
 
         function removeOnMouseDownFunc() {
           try {
-            let resultNodes = document.querySelectorAll(".g .rc a");
+            let resultNodes = document.querySelectorAll(".g .rc a, #rs, #rso .g a");
             for (let i = 0; i < resultNodes.length; i++) {
               let one = resultNodes[i];
               one.setAttribute("onmousedown", ""); // 谷歌去重定向干扰

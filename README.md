@@ -1,6 +1,6 @@
-如果有任何问题的话，可以直接联系我，我的邮件：1353464539@qq.com 或者是提交一个issue
+如果有任何问题的话，请提交一个issue
 
-If you have any problems on using the script, please mail me for 1353464539@qq.com or submit a issue
+If you have any problems on using the script, please submit an issue
 # AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.8-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)
 
@@ -20,13 +20,15 @@ If you have any problems on using the script, please mail me for 1353464539@qq.c
 - 提供护眼模式，颜色自定义，夜晚不伤眼
 - 支持自定义页面效果，如果你会css样式表的话，你可以自己优化整体的页面效果
 - 添加百度、搜狗、谷歌搜索结果中Favicon显示效果，页面效果更加美观和实用
-- 添加标记数量，标记当前的id，界面更好看
+- 添加标记数量，标记当前的id，界面更好看f
 - 百度和谷歌、必应和搜狗搜索页面都可以设置为单列、双列模式以及多列模式，视野更大
 - 请求是异步请求，并不会出现一个链接没有反馈回来，其余等待的情况，每个链接的请求都是独立的，互不影响，对于网络的影响几乎没有
 
 ### 更新日志
 
-***2019.03.28*** : V23.13 更新-移除部分异常的百度白屏问题.新域名baidu.mx并不是百度旗下的地址，所以跳过。顺便刷一个版本，修复谷歌的recapture的问题，感谢老司机“breath365”
+***2021.02.02*** : 数据本地缓存，一定程度上保证重装后数据不丢失 && 修复谷歌部分内容失效的问题
+
+*
 
 ***2019.02.15*** : V23.11 修复和Google Search Extra Button的兼容问题。修复地址有时候不能访问的问题。修复旧ff上的forEach和innerText不能用的问题。删除部分旧日志
 
