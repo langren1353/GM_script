@@ -74,7 +74,5 @@ If you have any problems on using the script, please submit an issue
 ###License
 [The MIT License (MIT)](https://github.com/langren1353/GM_script/edit/master/LICENSE)
 
-### 脚本反馈
-**QQ交流群: （[点击加群585532681](https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_)）**
 ### 脚本推荐
 [TUJIDU-VIP视频解析助手](https://greasyfork.org/zh-CN/scripts/371262)

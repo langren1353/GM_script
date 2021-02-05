@@ -1225,12 +1225,14 @@ body[baidu] #s_lg_img_new{
             },
             watch: {
               AdsStyleModeChange(data) {
+                debugger
                 // 需要先删除原有的节点数据
                 while (true) {
                   const {res, node} = checkDocmentHasNode("AC-")
                   if (res) node.remove();
                   else break;
                 }
+
                 safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle'],style[class='AC-baiduHuYanStyle-File']");
                 acCssLoadFlag = false;
                 CONST.StyleManger.init();
@@ -1744,7 +1746,13 @@ body[baidu] #s_lg_img_new{
               }
               if (curSite.SiteTypeID === SiteType.GOOGLE) {
                 let node = document.querySelector("#rso")
-                CONST.isGoogleSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
+                const isSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
+                if(isSpecial !== CONST.isGoogleSpecial && CONST.isGoogleSpecial === false) {
+                    CONST.isGoogleSpecial = true
+                    safeRemove("style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle']");
+                    acCssLoadFlag = false;
+                    CONST.StyleManger.init();
+                }
                 if(node) {
                   if (CONST.isGoogleSpecial) {
                     node.style.display !== 'grid' ? node.style.display = 'grid': ''

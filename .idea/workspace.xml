@@ -29,14 +29,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="简单更新-不知道是啥">
-      <change afterPath="$PROJECT_DIR$/Once.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/work.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/SiteConfigRules.conf" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/SiteConfigRules.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notepad/Notepad2.html" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/Notepad2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notepad/Notepad2.js" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/Notepad2.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -448,10 +443,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="661" y="121" width="626" height="798" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1611146973127" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1611146968249">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1612427582807">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1611146968249" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1612427582807" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand>
