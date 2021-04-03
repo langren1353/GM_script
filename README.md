@@ -71,7 +71,7 @@ If you have any problems on using the script, please submit an issue
 本脚本仅在浏览器端运行，源码公开可见，仅做学习研究使用，不参与任何盈利方案，也不得用于非法获利， 如产生相关法律纠纷与脚本作者无关!!!
 其次本脚本禁止使用并修改用于制作脚本集合之类的聚合性脚本
 
-###License
+### License
 [The MIT License (MIT)](https://github.com/langren1353/GM_script/edit/master/LICENSE)
 
 ### 脚本推荐
