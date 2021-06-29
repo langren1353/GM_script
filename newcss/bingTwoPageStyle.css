@@ -1,33 +1,42 @@
 /*Store BingTwoPageStyle*/
+
 #container #content_left .hit_top_new,
-#b_content aside, #b_results #mfa_root{
-    display:none;
+#b_content aside,
+#b_results #mfa_root {
+    display: none;
 }
-#b_content #b_results{
+
+#b_content #b_results {
     width: 73vw;
-    grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
+    grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
     grid-template-areas: "xmain xmain";
     display: inline-grid;
 }
+
 #b_content #b_results>li:not(#mfa_root) {
-    width:98%;
+    width: 98%;
     margin-left: 1%;
 }
-#b_results .b_algo .b_deep ul{
+
+#b_results .b_algo .b_deep ul {
     width: 50%;
 }
-#b_msg, #b_pag{
+
+#b_msg,
+#b_pag {
     grid-column-end: xmain-end;
     grid-column-start: 1;
     background-color: #FFFFFF;
 }
-body #b_content{
+
+body #b_content {
     display: flex;
     justify-content: center;
     margin-left: unset;
     padding-left: unset;
 }
-body #b_header{
+
+body #b_header {
     width: 72vw;
     text-align: center;
     margin: 0 auto;
