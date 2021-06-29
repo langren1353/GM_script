@@ -546,7 +546,7 @@ body[baidu] .c-container h3{
                             showALine_text: "附加9-文字下划线",
                             showUserStyle_text: "附加10-自定义样式",
 
-                            contactMe_text: "联系作者,提建议,寻求帮助,自定义样式,脚本定制点我",
+                            contactMe_text: "项目主页",
                             contactMe_url: "https://github.com/langren1353/GM_script",
 
                             setting_panel_second: {
