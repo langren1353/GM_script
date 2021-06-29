@@ -151,6 +151,35 @@
         GM.setValue = GM_setValue;
         GM.getValue = GM_getValue;
     }
+
+    if (window.location.href.match(/cn\.bing\.com/)) {
+        // var timer = setInterval(function(){
+        // 	if(document.getElementById('b_content')){
+        // 		if(document.getElementById('b_content').style.float!=="left"){
+        //     	document.getElementById('b_content').style.float="left";
+        //     	document.getElementById('b_content').style.paddingLeft="0";
+        //     	document.getElementById('b_content').style.transform="translate(-50%, 0)";
+        //     	document.getElementById('b_content').style.position="relative";
+        //     	document.getElementById('b_content').style.left="50%";
+        //     	document.getElementById('b_header').style.marginLeft="auto";
+        //     	document.getElementById('b_header').style.marginRight="auto";
+        //   		console.log("尝试居中")
+        // 		}else{
+        // 			clearInterval(timer)
+        // 			console.log("居中成功")
+        // 		}
+        // 	}
+        // },1000)
+        // document.getElementById('b_content').style.float = "left";
+        // document.getElementById('b_content').style.paddingLeft = "0";
+        // document.getElementById('b_content').style.transform = "translate(-50%, 0)";
+        // document.getElementById('b_content').style.position = "relative";
+        // document.getElementById('b_content').style.left = "50%";
+        // document.getElementById('b_header').style.marginLeft = "auto";
+        // document.getElementById('b_header').style.marginRight = "auto";
+        document.getElementById('dynamicMap_7').style.width = "auto";
+    }
+
     (function() {
         debug("程序执行");
         let needDisplayNewFun = true; // 本次更新是否有新功能需要展示

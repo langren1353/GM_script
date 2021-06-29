@@ -1,11 +1,7 @@
 /*Store BingOnePageStyle*/
 
-#b_content aside {
-    display: none;
-}
-
 #b_content #b_results {
-    width: 73vw;
+    width: 60vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,4 +23,11 @@ body #b_content {
 
 #b_content #b_results>li:not(#mfa_root) {
     width: 98%;
+}
+
+
+/* remove Related Search */
+
+.b_rrsr {
+    display: none;
 }
