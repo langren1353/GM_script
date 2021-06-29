@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name    AC-baidu-重定向优化百度搜狗谷歌必应搜索_favicon_双列
-// @name:en    AC-baidu-google_sogou_bing_RedirectRemove_favicon_adaway_TwoLine
-// @name:zh    AC-baidu-重定向优化百度搜狗谷歌必应搜索_favicon_双列
-// @name:ja    AC-baidu-重定向最適化Baiduの搜狗のGoogleのBing検索結果のリダイレクト除去+favicon
+// @name    AC
+// @name:en    AC
+// @name:zh    AC
+// @name:ja    AC
 // @description  1.繞過百度、搜狗、谷歌、好搜搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂 2.新增自定义网站拦截功能 3添加Favicon显示 4.页面CSS 5.添加计数 6.开关选择以上功能 7.自动翻页功能
 // @description:en  1.bypass the redirect link at baidu\sogou\google\haosou; 2.remove ads at baidu; 3.add Favicon for each website; 4.render your own style; 5.counter; 6.Switch to handle all 7.Auto Pager
 // @description:ja  1.迂回Baidu、Sogou、Google、Haosou検索検索結果の中の自分の遷移リンク; 2.Baiduの余分な広告を取り除く; 3.コメントを追加; 4.ページのカスタムCSP; 5.カウントを追加; 6.スイッチは以上の機能を選択します; 7.自動ページめくり.
@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.20
+// @version    24.24
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -36,13 +36,17 @@
 // @exclude    *://*.google*/sorry*
 // @exclude    https://zhidao.baidu.com/*
 // @exclude    https://*.zhidao.baidu.com/*
+// @exclude    https://www.baidu.com/img/*
 // @supportURL  https://ac.tujidu.com/
 // @home-url   https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2021-02-10
+// @lastmodified  2021-04-15
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2021.06-15-V24.24 更换cdn地址
+// @note    2021.04-12-V24.23 修复谷歌多列失效的问题 && 修复谷歌翻页失效 && 修复谷歌护眼问题
+// @note    2021.04-12-V24.21 修复谷歌搜索错位的问题 && 修复谷歌图片加载的问题 && 修复谷歌翻页的问题
 // @note    2021.02-10-V24.20 修复谷歌部分失效的问题 && 修复由于BA失效导致的脚本无效的问题
 // @note    2021.02-02-V24.19 数据本地缓存，一定程度上保证重装后数据不丢失 && 修复谷歌部分内容失效的问题
 // @note    2020.12-29-V24.18 调整侧边栏功能效果，优化双列显示效果，处理duckduck的样式
@@ -83,24 +87,24 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=24.19
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=24.19
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=24.19
-// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=24.19
-// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=24.19
-// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=24.19
-// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=24.19
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=24.19
-// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=24.19
-// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=24.19
-// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=24.19
-// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=24.19
-// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=24.19
-// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=24.19
-// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=24.19
-// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=24.19
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=24.19
-// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=24.19
+// @resource  baiduCommonStyle   http://sync.ntaow.com/newcss/baiduCommonStyle.css?t=24.24
+// @resource  baiduOnePageStyle  http://sync.ntaow.com/newcss/baiduOnePageStyle.css?t=24.24
+// @resource  baiduTwoPageStyle  http://sync.ntaow.com/newcss/baiduTwoPageStyle.css?t=24.24
+// @resource  baiduLiteStyle     http://sync.ntaow.com/newcss/baiduLiteStyle.css?t=24.24
+// @resource  googleCommonStyle  http://sync.ntaow.com/newcss/googleCommonStyle.css?t=24.24
+// @resource  googleOnePageStyle http://sync.ntaow.com/newcss/googleOnePageStyle.css?t=24.24
+// @resource  googleTwoPageStyle http://sync.ntaow.com/newcss/googleTwoPageStyle.css?t=24.24
+// @resource  bingCommonStyle    http://sync.ntaow.com/newcss/bingCommonStyle.css?t=24.24
+// @resource  bingOnePageStyle   http://sync.ntaow.com/newcss/bingOnePageStyle.css?t=24.24
+// @resource  bingTwoPageStyle   http://sync.ntaow.com/newcss/bingTwoPageStyle.css?t=24.24
+// @resource  duckCommonStyle    http://sync.ntaow.com/newcss/duckCommonStyle.css?t=24.24
+// @resource  duckOnePageStyle   http://sync.ntaow.com/newcss/duckOnePageStyle.css?t=24.24
+// @resource  duckTwoPageStyle   http://sync.ntaow.com/newcss/duckTwoPageStyle.css?t=24.24
+// @resource  dogeCommonStyle    http://sync.ntaow.com/newcss/dogeCommonStyle.css?t=24.24
+// @resource  dogeOnePageStyle   http://sync.ntaow.com/newcss/dogeOnePageStyle.css?t=24.24
+// @resource  dogeTwoPageStyle   http://sync.ntaow.com/newcss/dogeTwoPageStyle.css?t=24.24
+// @resource  MainHuYanStyle     http://sync.ntaow.com/newcss/HuYanStyle.css?t=24.24
+// @resource  SiteConfigRules    http://sync.ntaow.com/newcss/SiteConfigRules.conf?t=24.24
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.min.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js
 // @grant    GM_getValue
@@ -116,12 +120,13 @@
 // @grant    GM_getResourceText
 // @grant    GM_registerMenuCommand
 // @grant    unsafeWindow
+// @namespace 1353464539@qq.com
 // ==/UserScript==
 // calc(X1(vw) + X2(px)) -> B(px) 使用 http://www.yunsuan.info/matrixcomputations/solvelinearsystems.html 进行计算
 !function () {
   let isdebug = false;
   let isLocalDebug = isdebug || false;
-  let debug = isdebug ? console.log.bind(console) : ()=>{}
+  let debug = isdebug ? console.log.bind(console) : () => { }
   let acCssLoadFlag = false;
 
   let inExtMode = typeof (isExtension) !== "undefined";
@@ -135,7 +140,7 @@
   // false  true =仅GM代码 执行
   // false  false=异常 但是还是要执行代码
   debug("程序开始");
-  if (inExtMode === true && inGMMode === true || typeof(window.AC666Init) !== 'undefined') {
+  if (inExtMode === true && inGMMode === true || typeof (window.AC666Init) !== 'undefined') {
     console.log("扩展模式-脚本不启用");
     return;
   }
@@ -242,23 +247,30 @@ div .AC-CounterT{
   -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
   -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
 }
-/****可以加一些自己的背景图片,替换引号内的内容为可外链的图片即可****/
-body[baidu]{
-  background-repeat: repeat-y;
-  background-size: 100%;
-  background-attachment:fixed;
-  background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564756277250&di=868b9eac9be14df1dedd8c7d6a710844&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20130530%2FImg377502333.jpg');
+body[baidu] {
+  position: relative;
 }
-/*****窗口背景的透明虚化效果*****/
-body>#wrapper,body>.wrap,body>#main,body #appbar,body #hdtbSum{
-  background: rgba(225,225,225,0.8);
+body[baidu]:before {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  content: '';
+  background-image: url('https://img.tujidu.com/image/5fdde8468423e.jpg');
+  background-size: 100% auto;
+  opacity: 1; /*背景图透明度=0.8，最大1*/
 }
 /**隐藏首页的大图标-修复可能导致外援样式异常**/
 body[baidu] #s_lg_img_new{
   display:none !important;
 }
-#wrapper #content_left .result, #wrapper #content_left .c-container{
+body[baidu] .c-container{
   border-radius: 5px;
+  background-color: rgba(255,255,255, 0.3) !important; /*百度搜索块体的颜色；透明度=0.1，最大1*/
+}
+body[baidu] .c-container h3{
+  background-color: rgba(248,248,248, 0.3) !important; /*百度搜索块体 - 标题的颜色；透明度=0.1，最大1*/
 }`,
       oldVersion: "",
       lastSaveTime: new Date().getTime(),
@@ -340,7 +352,7 @@ body[baidu] #s_lg_img_new{
           nextLink: 'id("pnnext") | id("navbar navcnt nav")//td[span]/following-sibling::td[1]/a | id("nn")/parent::a',
           pageElement: '//div[@id="res"]',
           HT_insert: ["css;#res", 2],
-          replaceE: '//div[@id="navcnt"] | //div[@id="foot"][@role="navigation"]'
+          replaceE: '//div[@id="navcnt"] | //div[@id="rcnt"]//div[@role="navigation"]'
         }
       },
       bing: {
@@ -440,7 +452,7 @@ body[baidu] #s_lg_img_new{
           menu_text: "自定义",
           curLang: "zh_cn",
           fieldset_panel: {
-            panel_title: "AC-重定向设置 " + GM_info.script.version + (inExtMode? 'Ext':''),
+            panel_title: "AC-重定向设置 " + GM_info.script.version + (inExtMode ? 'Ext' : ''),
             setting_panel: {
               redirect_text: "主功能-重定向功能",
               redirect_title: "重定向功能的开启与否",
@@ -556,7 +568,7 @@ body[baidu] #s_lg_img_new{
           menu_text: "CUSTOM",
           curLang: "en",
           fieldset_panel: {
-            panel_title: "AC Redirect Settings " + GM_info.script.version + (inExtMode? 'Ext':''),
+            panel_title: "AC Redirect Settings " + GM_info.script.version + (inExtMode ? 'Ext' : ''),
             setting_panel: {
               redirect_text: "Main-RedirectFunc",
               redirect_title: "Turn on or off redirect",
@@ -684,7 +696,7 @@ body[baidu] #s_lg_img_new{
         ACConfig = DefaultConfig;
       }
       const localData = localStorage.ACConfig; // 小心隐私模式
-      if(localData && localData.length > 0) {
+      if (localData && localData.length > 0) {
         ACConfig = JSON.parse(localData);
       }
       for (var key in DefaultConfig) {
@@ -718,7 +730,7 @@ body[baidu] #s_lg_img_new{
 
     function ACSetValue(key, value) {
       GM_setValue(key, value);
-      if(key === 'Config'){
+      if (key === 'Config') {
         localStorage.ACConfig = value;
       }
     }
@@ -733,7 +745,7 @@ body[baidu] #s_lg_img_new{
     }
 
     function getAllElements(e, t, r, n, o) {
-      let getAllElementsByXpath = function(e, t, r) {
+      let getAllElementsByXpath = function (e, t, r) {
         return r = r || document, t = t || r, r.evaluate(e, t, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
       }
 
@@ -769,7 +781,7 @@ body[baidu] #s_lg_img_new{
         CONST.hasNewFuncNeedDisplay = needDisplayNewFun;
       }
 
-      !function() {
+      !function () {
         /**
          * 进行不重复插入，插入后执行回调函数
          * @param data 待插入数据
@@ -793,10 +805,10 @@ body[baidu] #s_lg_img_new{
           } // 删除delId的数据，删除一个
         }
         // 避免污染全局原型链
-        Object.defineProperty(ACConfig.UserBlockList, 'acpush', {value: acpush})
-        Object.defineProperty(ACConfig.UserBlockList, 'acremove', {value: acremove})
-        Object.defineProperty(otherData.other.curHosts, 'acpush', {value: acpush})
-        Object.defineProperty(otherData.other.curHosts, 'acremove', {value: acremove})
+        Object.defineProperty(ACConfig.UserBlockList, 'acpush', { value: acpush })
+        Object.defineProperty(ACConfig.UserBlockList, 'acremove', { value: acremove })
+        Object.defineProperty(otherData.other.curHosts, 'acpush', { value: acpush })
+        Object.defineProperty(otherData.other.curHosts, 'acremove', { value: acremove })
       }();
 
 
@@ -864,15 +876,15 @@ body[baidu] #s_lg_img_new{
         curSite.pageLoading = false;
         curSite.pageUrl = "";
         if (
-          (curSite.SiteTypeID === SiteType.GOOGLE && location.href.replace(/tbm=(isch|lcl|shop|flm)/, "") !== location.href ) ||
-          (curSite.SiteTypeID === SiteType.BING && location.href.replace(/images\/search/, "") !== location.href )
+          (curSite.SiteTypeID === SiteType.GOOGLE && location.href.replace(/tbm=(isch|lcl|shop|flm)/, "") !== location.href) ||
+          (curSite.SiteTypeID === SiteType.BING && location.href.replace(/images\/search/, "") !== location.href)
         ) {
           // 图片站 、地图站、购物站
           console.log("特殊站,不加载样式，不添加menu");
           CONST.isGoogleImageUrl = true;
         }
 
-        if(curSite.SiteTypeID === SiteType.BAIDU_XUESHU){
+        if (curSite.SiteTypeID === SiteType.BAIDU_XUESHU) {
           CONST.useItem.AdsStyleMode = 2; // 单列居中即可
         }
 
@@ -917,7 +929,7 @@ body[baidu] #s_lg_img_new{
             this.initListener();
             this.renderDisplay();
           },
-          getBlockBtnTitle(host){
+          getBlockBtnTitle(host) {
             return `点击即可屏蔽 ${host} 放开，需要在自定义中手动配置放开`;
           },
           initListener: function () {
@@ -952,7 +964,7 @@ body[baidu] #s_lg_img_new{
             for (let i = 0; i < checkNodes.length; i++) {
               try {
                 let curNode = checkNodes[i];
-                let {curHost, curUrl} = getNodeHost(curNode.querySelector(curSite.FaviconType));
+                let { curHost, curUrl } = getNodeHost(curNode.querySelector(curSite.FaviconType));
                 curUrl = curUrl || "";
                 if (curHost === null) continue;
                 {
@@ -1042,8 +1054,8 @@ body[baidu] #s_lg_img_new{
             node.setAttribute("height", "59");
           }, 300);
           document.title = document.title.replace(/^Google/, "百度一下，你就知道")
-          .replace(/ - Google 搜索/, "_百度搜索")
-          .replace(/ - Google Search/, "_百度搜索");
+            .replace(/ - Google 搜索/, "_百度搜索")
+            .replace(/ - Google Search/, "_百度搜索");
           safeWaitFunc("head", function () {
             let linkTarget = document.querySelector("link[type='image/x-icon']") || document.createElement('link');
             linkTarget.type = 'image/x-icon';
@@ -1054,7 +1066,7 @@ body[baidu] #s_lg_img_new{
         }
         if (curSite.SiteTypeID === SiteType.DUCK) {
           addStyle = AC_addStyle // 兼容Duck的CSP同源规则
-          if(ACConfig.normalizeDuck){
+          if (ACConfig.normalizeDuck) {
             setTimeout(function () {
               try {
                 DDG.settings.set("kn", 1, {  // 新窗口打开页面
@@ -1083,7 +1095,7 @@ body[baidu] #s_lg_img_new{
               }
             })
             RAFInterval(function () {
-              if(document.body) {
+              if (document.body) {
                 rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
                 if (curSite.SiteTypeID === SiteType.BAIDU && location.href.includes("tn=news")) {
                   document.body.setAttribute("news", "1");
@@ -1130,7 +1142,7 @@ body[baidu] #s_lg_img_new{
                 AC_addStyle(ACConfig.UserStyleText, "AC-userStyle", "head", true); // 用户自定义的样式表
               },
               saveConfig() {
-                if(this.other.curTab===1 && !this.ACConfig.acceptLicense){
+                if (this.other.curTab === 1 && !this.ACConfig.acceptLicense) {
                   this.other.curTab = 3
                   return
                 }
@@ -1138,7 +1150,7 @@ body[baidu] #s_lg_img_new{
 
                 this.ACConfig.lastSaveTime = new Date().getTime();
                 ACSetValue("Config", JSON.stringify(this.ACConfig));
-                if(!this.ACConfig.doDisableSug){
+                if (!this.ACConfig.doDisableSug) {
                   acSetCookie("ORIGIN", 1, "www.baidu.com", new Date().getTime() - 86400000);
                   acSetCookie("ISSW", 1, null, new Date().getTime() - 86400000);
                   acSetCookie("ISSW", 1, "www.baidu.com", new Date().getTime() - 86400000);
@@ -1215,7 +1227,7 @@ body[baidu] #s_lg_img_new{
                   v1: ACConfig.isUserStyleEnable
                 }
               },
-              lanChange(){
+              lanChange() {
                 return {
                   v1: ACConfig.isEnLang
                 };
@@ -1225,27 +1237,33 @@ body[baidu] #s_lg_img_new{
               }
             },
             watch: {
-              AdsStyleModeChange(data) {
-                debugger
-                // 需要先删除原有的节点数据
-                while (true) {
-                  const {res, node} = checkDocmentHasNode("AC-")
-                  if (res) node.remove();
-                  else break;
+              'CONST.useItem.HuYanMode': {
+                immediate: true,
+                handler(val) {
+                  if (val) CONST.StyleManger.loadHuYanStyle()
                 }
-
-                safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle'],style[class='AC-baiduHuYanStyle-File']");
-                acCssLoadFlag = false;
-                CONST.StyleManger.init();
+              },
+              AdsStyleModeChange: {
+                handler() {
+                  // 需要先删除原有的节点数据
+                  while (true) {
+                    const { res, node } = checkDocmentHasNode("AC-")
+                    if (res) node.remove();
+                    else break;
+                  }
+                  safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle'],style[class*='HuYanStyle-File']");
+                  acCssLoadFlag = false;
+                  CONST.StyleManger.init();
+                }
               },
               UserStyleEnableChange() {
-                if(ACConfig.isUserStyleEnable) {
+                if (ACConfig.isUserStyleEnable) {
                   this.loadCustomStyle();
                 } else {
                   safeRemove("style[class='AC-userStyle']")
                 }
               },
-              lanChange(){
+              lanChange() {
                 AllData.lan.use = ACConfig.isEnLang ? AllData.lan.en : AllData.lan.zh_cn;
                 document.querySelector("#myuser").remove();
               }
@@ -1279,128 +1297,128 @@ body[baidu] #s_lg_img_new{
           e.stopPropagation();
           var t, r = e.currentTarget;
           var Tween = {
-                Linear: function Linear(e, t, r, n) {
-                  return r * e / n + t;
-                },
-                Quad: {
-                  easeIn: function easeIn(e, t, r, n) {
-                    return r * (e /= n) * e + t;
-                  },
-                  easeOut: function easeOut(e, t, r, n) {
-                    return -r * (e /= n) * (e - 2) + t;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n) {
-                    return (e /= n / 2) < 1 ? r / 2 * e * e + t : -r / 2 * (--e * (e - 2) - 1) + t;
-                  }
-                },
-                Cubic: {
-                  easeIn: function easeIn(e, t, r, n) {
-                    return r * (e /= n) * e * e + t;
-                  },
-                  easeOut: function easeOut(e, t, r, n) {
-                    return r * ((e = e / n - 1) * e * e + 1) + t;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n) {
-                    return (e /= n / 2) < 1 ? r / 2 * e * e * e + t : r / 2 * ((e -= 2) * e * e + 2) + t;
-                  }
-                },
-                Quart: {
-                  easeIn: function easeIn(e, t, r, n) {
-                    return r * (e /= n) * e * e * e + t;
-                  },
-                  easeOut: function easeOut(e, t, r, n) {
-                    return -r * ((e = e / n - 1) * e * e * e - 1) + t;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n) {
-                    return (e /= n / 2) < 1 ? r / 2 * e * e * e * e + t : -r / 2 * ((e -= 2) * e * e * e - 2) + t;
-                  }
-                },
-                Quint: {
-                  easeIn: function easeIn(e, t, r, n) {
-                    return r * (e /= n) * e * e * e * e + t;
-                  },
-                  easeOut: function easeOut(e, t, r, n) {
-                    return r * ((e = e / n - 1) * e * e * e * e + 1) + t;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n) {
-                    return (e /= n / 2) < 1 ? r / 2 * e * e * e * e * e + t : r / 2 * ((e -= 2) * e * e * e * e + 2) + t;
-                  }
-                },
-                Sine: {
-                  easeIn: function easeIn(e, t, r, n) {
-                    return -r * Math.cos(e / n * (Math.PI / 2)) + r + t;
-                  },
-                  easeOut: function easeOut(e, t, r, n) {
-                    return r * Math.sin(e / n * (Math.PI / 2)) + t;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n) {
-                    return -r / 2 * (Math.cos(Math.PI * e / n) - 1) + t;
-                  }
-                },
-                Expo: {
-                  easeIn: function easeIn(e, t, r, n) {
-                    return 0 == e ? t : r * Math.pow(2, 10 * (e / n - 1)) + t;
-                  },
-                  easeOut: function easeOut(e, t, r, n) {
-                    return e == n ? t + r : r * (1 - Math.pow(2, -10 * e / n)) + t;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n) {
-                    return 0 == e ? t : e == n ? t + r : (e /= n / 2) < 1 ? r / 2 * Math.pow(2, 10 * (e - 1)) + t : r / 2 * (2 - Math.pow(2, -10 * --e)) + t;
-                  }
-                },
-                Circ: {
-                  easeIn: function easeIn(e, t, r, n) {
-                    return -r * (Math.sqrt(1 - (e /= n) * e) - 1) + t;
-                  },
-                  easeOut: function easeOut(e, t, r, n) {
-                    return r * Math.sqrt(1 - (e = e / n - 1) * e) + t;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n) {
-                    return (e /= n / 2) < 1 ? -r / 2 * (Math.sqrt(1 - e * e) - 1) + t : r / 2 * (Math.sqrt(1 - (e -= 2) * e) + 1) + t;
-                  }
-                },
-                Elastic: {
-                  easeIn: function easeIn(e, t, r, n, a, o) {
-                    return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
-                      i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), -a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) + t);
-                    var i;
-                  },
-                  easeOut: function easeOut(e, t, r, n, a, o) {
-                    return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
-                      i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), a * Math.pow(2, -10 * e) * Math.sin((e * n - i) * (2 * Math.PI) / o) + r + t);
-                    var i;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n, a, o) {
-                    return 0 == e ? t : 2 == (e /= n / 2) ? t + r : (o || (o = n * (.3 * 1.5)), !a || a < Math.abs(r) ? (a = r,
-                      i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), e < 1 ? a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * -.5 + t : a * Math.pow(2, -10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * .5 + r + t);
-                    var i;
-                  }
-                },
-                Back: {
-                  easeIn: function easeIn(e, t, r, n, a) {
-                    return null == a && (a = 1.70158), r * (e /= n) * e * ((a + 1) * e - a) + t;
-                  },
-                  easeOut: function easeOut(e, t, r, n, a) {
-                    return null == a && (a = 1.70158), r * ((e = e / n - 1) * e * ((a + 1) * e + a) + 1) + t;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n, a) {
-                    return null == a && (a = 1.70158), (e /= n / 2) < 1 ? r / 2 * (e * e * ((1 + (a *= 1.525)) * e - a)) + t : r / 2 * ((e -= 2) * e * ((1 + (a *= 1.525)) * e + a) + 2) + t;
-                  }
-                },
-                Bounce: {
-                  easeIn: function easeIn(e, t, r, n) {
-                    return r - Tween.Bounce.easeOut(n - e, 0, r, n) + t;
-                  },
-                  easeOut: function easeOut(e, t, r, n) {
-                    return (e /= n) < 1 / 2.75 ? r * (7.5625 * e * e) + t : e < 2 / 2.75 ? r * (7.5625 * (e -= 1.5 / 2.75) * e + .75) + t : e < 2.5 / 2.75 ? r * (7.5625 * (e -= 2.25 / 2.75) * e + .9375) + t : r * (7.5625 * (e -= 2.625 / 2.75) * e + .984375) + t;
-                  },
-                  easeInOut: function easeInOut(e, t, r, n) {
-                    return e < n / 2 ? .5 * Tween.Bounce.easeIn(2 * e, 0, r, n) + t : .5 * Tween.Bounce.easeOut(2 * e - n, 0, r, n) + .5 * r + t;
-                  }
-                }
+            Linear: function Linear(e, t, r, n) {
+              return r * e / n + t;
+            },
+            Quad: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r * (e /= n) * e + t;
               },
-              TweenM = ["Linear", "Quad", "Cubic", "Quart", "Quint", "Sine", "Expo", "Circ", "Elastic", "Back", "Bounce"],
-              TweenEase = ["easeIn", "easeOut", "easeInOut"];
+              easeOut: function easeOut(e, t, r, n) {
+                return -r * (e /= n) * (e - 2) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? r / 2 * e * e + t : -r / 2 * (--e * (e - 2) - 1) + t;
+              }
+            },
+            Cubic: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r * (e /= n) * e * e + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return r * ((e = e / n - 1) * e * e + 1) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? r / 2 * e * e * e + t : r / 2 * ((e -= 2) * e * e + 2) + t;
+              }
+            },
+            Quart: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r * (e /= n) * e * e * e + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return -r * ((e = e / n - 1) * e * e * e - 1) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? r / 2 * e * e * e * e + t : -r / 2 * ((e -= 2) * e * e * e - 2) + t;
+              }
+            },
+            Quint: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r * (e /= n) * e * e * e * e + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return r * ((e = e / n - 1) * e * e * e * e + 1) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? r / 2 * e * e * e * e * e + t : r / 2 * ((e -= 2) * e * e * e * e + 2) + t;
+              }
+            },
+            Sine: {
+              easeIn: function easeIn(e, t, r, n) {
+                return -r * Math.cos(e / n * (Math.PI / 2)) + r + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return r * Math.sin(e / n * (Math.PI / 2)) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return -r / 2 * (Math.cos(Math.PI * e / n) - 1) + t;
+              }
+            },
+            Expo: {
+              easeIn: function easeIn(e, t, r, n) {
+                return 0 == e ? t : r * Math.pow(2, 10 * (e / n - 1)) + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return e == n ? t + r : r * (1 - Math.pow(2, -10 * e / n)) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return 0 == e ? t : e == n ? t + r : (e /= n / 2) < 1 ? r / 2 * Math.pow(2, 10 * (e - 1)) + t : r / 2 * (2 - Math.pow(2, -10 * --e)) + t;
+              }
+            },
+            Circ: {
+              easeIn: function easeIn(e, t, r, n) {
+                return -r * (Math.sqrt(1 - (e /= n) * e) - 1) + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return r * Math.sqrt(1 - (e = e / n - 1) * e) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? -r / 2 * (Math.sqrt(1 - e * e) - 1) + t : r / 2 * (Math.sqrt(1 - (e -= 2) * e) + 1) + t;
+              }
+            },
+            Elastic: {
+              easeIn: function easeIn(e, t, r, n, a, o) {
+                return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
+                  i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), -a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) + t);
+                var i;
+              },
+              easeOut: function easeOut(e, t, r, n, a, o) {
+                return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
+                  i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), a * Math.pow(2, -10 * e) * Math.sin((e * n - i) * (2 * Math.PI) / o) + r + t);
+                var i;
+              },
+              easeInOut: function easeInOut(e, t, r, n, a, o) {
+                return 0 == e ? t : 2 == (e /= n / 2) ? t + r : (o || (o = n * (.3 * 1.5)), !a || a < Math.abs(r) ? (a = r,
+                  i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), e < 1 ? a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * -.5 + t : a * Math.pow(2, -10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * .5 + r + t);
+                var i;
+              }
+            },
+            Back: {
+              easeIn: function easeIn(e, t, r, n, a) {
+                return null == a && (a = 1.70158), r * (e /= n) * e * ((a + 1) * e - a) + t;
+              },
+              easeOut: function easeOut(e, t, r, n, a) {
+                return null == a && (a = 1.70158), r * ((e = e / n - 1) * e * ((a + 1) * e + a) + 1) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n, a) {
+                return null == a && (a = 1.70158), (e /= n / 2) < 1 ? r / 2 * (e * e * ((1 + (a *= 1.525)) * e - a)) + t : r / 2 * ((e -= 2) * e * ((1 + (a *= 1.525)) * e + a) + 2) + t;
+              }
+            },
+            Bounce: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r - Tween.Bounce.easeOut(n - e, 0, r, n) + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return (e /= n) < 1 / 2.75 ? r * (7.5625 * e * e) + t : e < 2 / 2.75 ? r * (7.5625 * (e -= 1.5 / 2.75) * e + .75) + t : e < 2.5 / 2.75 ? r * (7.5625 * (e -= 2.25 / 2.75) * e + .9375) + t : r * (7.5625 * (e -= 2.625 / 2.75) * e + .984375) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return e < n / 2 ? .5 * Tween.Bounce.easeIn(2 * e, 0, r, n) + t : .5 * Tween.Bounce.easeOut(2 * e - n, 0, r, n) + .5 * r + t;
+              }
+            }
+          },
+            TweenM = ["Linear", "Quad", "Cubic", "Quart", "Quint", "Sine", "Expo", "Circ", "Elastic", "Back", "Bounce"],
+            TweenEase = ["easeIn", "easeOut", "easeInOut"];
           var prefs = {
             s_method: 3,
             s_ease: 2,
@@ -1419,7 +1437,7 @@ body[baidu] #s_lg_img_new{
             var r = sp_transition.TweenF;
             r || (r = (r = Tween[TweenM[prefs.s_method]])[TweenEase[prefs.s_ease]] || r, sp_transition.TweenF = r);
             var n = 1e3 / prefs.s_FPS, a = 0, o = e, i = t - e, s = Math.ceil(prefs.s_duration / n),
-                c = window.scrollX;
+              c = window.scrollX;
             !function transition() {
               var e = Math.ceil(r(a, o, i, s));
               window.scroll(c, e), a < s && (a++, setTimeout(transition, n));
@@ -1458,13 +1476,13 @@ body[baidu] #s_lg_img_new{
           }
         }
 
-        function windowscroll(fn = ()=>{}) {
+        function windowscroll(fn = () => { }) {
           safeWaitFunc(() => document.documentElement, () => {
             var beforeScrollTop = document.documentElement.scrollTop
             setTimeout(function () { // 延时执行，避免刚载入到页面就触发翻页事件
               window.addEventListener("scroll", function (e) {
                 var afterScrollTop = document.documentElement.scrollTop,
-                    delta = afterScrollTop - beforeScrollTop;
+                  delta = afterScrollTop - beforeScrollTop;
                 if (delta === 0) return false;
                 fn(delta > 0 ? "down" : "up", e);
                 beforeScrollTop = afterScrollTop;
@@ -1499,7 +1517,7 @@ body[baidu] #s_lg_img_new{
         });
         var ShowPager = {
           getFullHref: function (e) {
-            if(e === null) return '';
+            if (e === null) return '';
             "string" != typeof e && (e = e.getAttribute("href"));
             var t = this.getFullHref.a;
             return t || (this.getFullHref.a = t = document.createElement("a")), t.href = e, t.href;
@@ -1538,13 +1556,13 @@ body[baidu] #s_lg_img_new{
             if (curSite.pager) {
               let curPageEle = getElementByXpath(curSite.pager.nextLink);
               var url = this.getFullHref(curPageEle);
-              if(curSite.SiteTypeID === SiteType.GOOGLE ) {
-                if(navigator.userAgent.toLowerCase().includes('macintosh')) {
+              if (curSite.SiteTypeID === SiteType.GOOGLE) {
+                if (navigator.userAgent.toLowerCase().includes('macintosh')) {
                   // MARK 为了兼容百度在safari下的
                   url = url.replace('https://', 'http://');
                 }
               }
-              if(url === '') return;
+              if (url === '') return;
               var sepImgs = {
                 top: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAWtJREFUeNrclE0rRGEUx8c1GUpRJIVIZGdhZCVr38GGhaI0ZXwCkliglChZEcvJxhdgYWOjLEUpm/EyiLzze+o8dTzdO3PljoVTv7rPc8/5d+6555xYrEhWop6boda5+6l9wjWcWpF+WIbqCJJ9hFRcDr3QAIkIhKugz5PDfkSixkphz5aiAnqgE8rgWRxGoSOPyBkswQuUwyscw4HrmFCZL8Kt/JAg7mEFPEmo4FdPwk0BUcsdzIap0TQ8qMAPuICcEjLnd+VjSjcfJNgIc/DkZGSymYGsnK9EZMrxe4MFaNGiZjC2fT5zQ3p7QDK1dR2GSljziclAvRUe8nHYVA4jjvC43NfAuk/smB2QNqcsWxKcLbAKTFnS0hWD6n27Fd6FLqiDI5iQmQ9jpiVT0sNJ6aYd7dAE3QHBbinSAX5JWWaxuLo8F35jh/bBK9Y+/r/Cl6pLcnna8NvuDGMnslpbZRpXZYT/3r4EGACZL3ZL2afNFAAAAABJRU5ErkJggg==",
                 bottom: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXFJREFUeNrM1c8rBGEcx/FdtCEkLqYtpdwkKSUHUhxwITdK+Z3yM2cOLnJ39Cc44SgHScmJwlFxsIdlCScO6/2t76Onp52dXTtbnno1M8+Pz84+zzMzkcg/KA3oRTzM0A4cI4VTdIUVPIM3pPGO5aABJTkGx1BqjYmFFZxW7nnBwXmXogWX6bEGc2jEIU7+kNWDUSSwZyqndSvJ3N1g2Bm0oLtB2j+w7rQP4MpqXzRT0YRaPW/BthMedYLs60HsoE2vq9BsPwAJa8XFLUa0fUrvROo/saT1Q9adGimdlt8yj6TT6Q6d2vaida9YRbtP6EqmBZC5fHA6X+AAz1bwEc6cfk9+oaZM4NoZJL70+J2hTaZtNpet041zK8yP/Mgl+rOF1emr0UM1xnAfEPyISd0Jno6vtx+QuM6PZ22lpO7dbEV2Siv6rPeIjNs1HdYC7ixfG+YBqdTVDqPIv6iIWvO7iXGUFxAqi72PraJ9IH8EGACQcYjYRd5GHwAAAABJRU5ErkJggg==",
@@ -1578,6 +1596,8 @@ body[baidu] #s_lg_img_new{
                     var newBody = ShowPager.createDocumentByString(response.responseText);
                     // xx.evaluate(xpath, xx)
                     let pageElems = getAllElements(curSite.pager.pageElement, newBody, newBody);
+                    const scriptElems = getAllElements('//script', newBody, newBody);
+
                     let toElement = getAllElements(curSite.pager.HT_insert[0])[0];
                     if (pageElems.length >= 0) {
                       // 处理最后一个翻页按钮
@@ -1596,7 +1616,7 @@ body[baidu] #s_lg_img_new{
                           <span id="sp-sp-gopre" class='${curSite.pageNum <= 2 ? "ac_sp_pre_gray" : "ac_sp_pre"}' title='上滚一页' ></span>
                           <span id="sp-sp-gonext" class='ac_sp_next_gray' title='下滚一页'></span>
                           <span id="sp-sp-gobottom" class='ac_sp_bottom' title='去到底部' ></span></div>`
-                      .replace(/ACX/gm, curSite.pageNum));
+                        .replace(/ACX/gm, curSite.pageNum));
                       // 插入新页面元素
                       pageElems.forEach(function (one) {
                         toElement.insertAdjacentElement(addTo, one);
@@ -1605,12 +1625,25 @@ body[baidu] #s_lg_img_new{
                         per.setAttribute("bind", 1);
                         per.addEventListener("click", ac_spfunc);
                       });
+
+                      // 插入scripts & style - 保证js加载
+                      if (curSite.SiteTypeID === SiteType.GOOGLE) {
+                        var scriptText = "";
+                        scriptElems.forEach((one) => {
+                          scriptText += one.innerHTML;
+                        });
+
+                        const scriptNode = document.createElement("script");
+                        scriptNode.innerHTML = scriptText;
+                        toElement.appendChild(scriptNode)
+                      }
+
                       // 替换待替换元素
                       try {
                         let oriE = getAllElements(curSite.pager.replaceE);
                         let repE = getAllElements(curSite.pager.replaceE, newBody, newBody);
                         if (oriE.length === repE.length) {
-                          if(oriE.length === 0) {
+                          if (oriE.length === 0) {
                             throw "翻页-替换翻页元素 'replaceE' 失效";
                           }
                           for (var i = 0; i < oriE.length; i++) {
@@ -1635,9 +1668,6 @@ body[baidu] #s_lg_img_new{
         };
 
         function AddCustomStyle() {
-          if (!ACConfig.isALineEnable) {
-            AC_addStyle("a,a em{text-decoration:none}", "AC-NoLine", "body");// 移除这些个下划线
-          }
           if (ACConfig.isUserStyleEnable) {
             AC_addStyle(ACConfig.UserStyleText, "AC-userStyle");// 用户自定义的样式表
           } else {
@@ -1706,21 +1736,27 @@ body[baidu] #s_lg_img_new{
             if (insertLocked === false && curSite.SiteTypeID !== SiteType.OTHERS) {
               insertLocked = true;
               ACHandle(); // 处理主重定向
-              if (ACConfig.isFaviconEnable && typeof(curSite.FaviconType) !== 'undefined') { // 显示favicon图标
+              if (ACConfig.isFaviconEnable && typeof (curSite.FaviconType) !== 'undefined') { // 显示favicon图标
                 AC_addStyle("h3::before, h2::before {content: ' ';display:inline-block}", "AC-Style-Favicon", "head");
                 addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
-              }else{
+              } else {
                 safeRemove("img.AC-faviconT");
                 document.querySelectorAll(curSite.FaviconType).forEach((one) => {
                   one.removeAttribute("ac_faviconstatus");
                 })
+              }
+              // 动态下划线
+              if (!ACConfig.isALineEnable) {
+                AC_addStyle("a,a em{text-decoration:none !important}", "AC-NoLine", "body");// 移除这些个下划线
+              } else {
+                safeRemove("style[class='AC-NoLine']")
               }
               if (ACConfig.isAdsEnable) { // 移除多余的广告内容
                 removeAD_baidu_sogou();
               }
               if (ACConfig.isCounterEnable) { // 显示计数器
                 addCounter(document.querySelectorAll(curSite.CounterType));
-              }else{
+              } else {
                 document.querySelectorAll(".AC-CounterT").forEach(one => {
                   one.parentElement.removeAttribute('SortIndex');
                   one.remove()
@@ -1731,14 +1767,14 @@ body[baidu] #s_lg_img_new{
                 acSetCookie("ISSW", 1);
                 acSetCookie("ISSW", 1, "www.baidu.com");
               }
-              if(document.querySelector("style[class*='darkreader']") != null) {
+              if (CONST.useItem.HuYanMode === false && document.querySelector("style[class*='darkreader']") != null) {
                 CONST.useItem.HuYanMode = true;
               }
               if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
                 SiteBlock.initStyle();
                 SiteBlock.init();
               }
-              if(document.body){
+              if (document.body) {
                 if (!ACConfig.isRightDisplayEnable) { // 右侧栏显示
                   document.body.classList.remove("showRight")
                 } else {
@@ -1746,21 +1782,28 @@ body[baidu] #s_lg_img_new{
                 }
               }
               if (curSite.SiteTypeID === SiteType.GOOGLE) {
-                let node = document.querySelector("#rso")
+                let nodeList = document.querySelectorAll("#rso")
                 const isSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
-                if(isSpecial !== CONST.isGoogleSpecial && CONST.isGoogleSpecial === false) {
-                    CONST.isGoogleSpecial = true
-                    safeRemove("style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle']");
-                    acCssLoadFlag = false;
-                    CONST.StyleManger.init();
+                if (isSpecial !== CONST.isGoogleSpecial && CONST.isGoogleSpecial === false) {
+                  CONST.isGoogleSpecial = true
+                  safeRemove("style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle']");
+                  acCssLoadFlag = false;
+                  CONST.StyleManger.init();
                 }
-                if(node) {
-                  if (CONST.isGoogleSpecial) {
-                    node.style.display !== 'grid' ? node.style.display = 'grid': ''
-                  } else {
-                    node.style.display !== 'unset' ? node.style.display = 'unset': ''
-                  }
+                if (nodeList.length > 0) {
+                  nodeList.forEach((node) => {
+                    if (CONST.isGoogleSpecial) {
+                      node.style.display !== 'grid' ? node.style.display = 'grid' : ''
+                    } else {
+                      node.style.display !== 'unset' ? node.style.display = 'unset' : ''
+                    }
+                  })
                 }
+
+                // 特殊元素一行处理
+                document.querySelectorAll("#rso>div:not(.g)>div[jsmodel]").forEach(one => {
+                  one.parentNode.style.display = "unset"
+                })
               }
               setTimeout(function () {
                 insertLocked = false;
@@ -1772,16 +1815,18 @@ body[baidu] #s_lg_img_new{
         }
 
         function acSetCookie(cname, cvalue, domain, exdays) {
-          exdays = exdays || 30;
-          let d = new Date();
-          domain = (domain ? "domain=" + domain : "") + ";";
-          d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-          let expires = "expires=" + d.toUTCString();
-          document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
+          try {
+            exdays = exdays || 30;
+            let d = new Date();
+            domain = (domain ? "domain=" + domain : "") + ";";
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
+          } catch (e) { }
         }
         function getNodeHost(sitetpNode) {
-          if(sitetpNode instanceof HTMLAnchorElement){
-            return {curHost: sitetpNode.host, curUrl: sitetpNode.href};
+          if (sitetpNode instanceof HTMLAnchorElement) {
+            return { curHost: sitetpNode.host, curUrl: sitetpNode.href };
           }
           if (curSite.SiteTypeID === SiteType.BAIDU) {
             var href = null;
@@ -1790,10 +1835,10 @@ body[baidu] #s_lg_img_new{
             }
             if (href != null && href.includes("baidu.com/link")) {
               // 已经解析出来了
-              return  {curHost: getTextHost(href), curUrl: href};
+              return { curHost: getTextHost(href), curUrl: href };
             }
           }
-          return {curHost: getTextHost(sitetpNode.innerText || sitetpNode.textContent), curUrl: null};
+          return { curHost: getTextHost(sitetpNode.innerText || sitetpNode.textContent), curUrl: null };
         }
 
         function ACHandle() {
@@ -2013,7 +2058,7 @@ body[baidu] #s_lg_img_new{
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_4line }}
                           </label>
                         </label>
-                        <!------------必应样式-------------->
+                        <!------------搜狗样式-------------->
 <!--                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>-->
 <!--                        &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;搜狗样式&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
 <!--                        <label class="container-label sogou">-->
@@ -2243,7 +2288,7 @@ body[baidu] #s_lg_img_new{
               e.stopPropagation(); // 阻止点击自身的时候关闭
             }, false);
             document.querySelector("body").addEventListener('click', function (e) {
-              safeFunction( () => {
+              safeFunction(() => {
                 document.querySelector("#sp-ac-content").style.display = 'none';
               })
             }, false);
@@ -2343,11 +2388,11 @@ body[baidu] #s_lg_img_new{
                     // from: "acxhr",
                     extData: c_curhref, // 用于扩展
                     url: url,
-                    headers: {"Accept": "*/*", "Referer": c_curhref.replace(/^http:/, "https:")},
+                    headers: { "Accept": "*/*", "Referer": c_curhref.replace(/^http:/, "https:") },
                     method: "GET",
                     timeout: 8000,
                     onreadystatechange: function (response) { // MARK 有时候这个函数根本不进来 - 调试的问题 - timeout
-                      if(response.responseText || response.responseHeaders) {
+                      if (response.responseText || response.responseHeaders) {
                         // 由于是特殊返回-并且好搜-搜狗-百度都是这个格式，故提出
                         DealRedirect(gmRequestNode, c_curhref, response.responseText, "URL='([^']+)'")
                         // 这个是在上面无法处理的情况下，备用的 tm-finalurldhdg  tm-finalurlmfdh
@@ -2389,7 +2434,7 @@ body[baidu] #s_lg_img_new{
               let host = getTextHost(resultResponseUrl);
               // RedirectMap.set(curNodeHref, resultResponseUrl); // 进行一个数据关联
               // RedirectMap.set(resultResponseUrl, curNodeHref); // 进行一个数据关联
-              document.querySelectorAll("*[href*='" + curNodeHref + "']").forEach( per => {
+              document.querySelectorAll("*[href*='" + curNodeHref + "']").forEach(per => {
                 let changeNode = per;
 
                 changeNode.setAttribute("ac_redirectStatus", "2");
@@ -2476,7 +2521,7 @@ body[baidu] #s_lg_img_new{
               // 数据值不同
               // 数据没有被翻译
               if (+index !== checkValue && !/^\d+$/.test(oriIndex)) { // 按需更新
-                curCounter.innerText =checkValue;
+                curCounter.innerText = checkValue;
                 cur.setAttribute('SortIndex', checkValue);
               }
             }
@@ -2588,7 +2633,7 @@ body[baidu] #s_lg_img_new{
             for (let faNode of checkNodes) {
               let faviconNode = faNode.querySelector(".result__icon img");
               let beforeNode = faNode.querySelector(".result__title a");
-              if(faviconNode && beforeNode){
+              if (faviconNode && beforeNode) {
                 faviconNode.style = "vertical-align:middle;margin-right:5px;";
                 beforeNode.parentNode.insertBefore(faviconNode, beforeNode);
               }
@@ -2627,24 +2672,24 @@ body[baidu] #s_lg_img_new{
         const needCount = period / 1000 * 60;
         let times = 0; // 已经计数的数量
 
-        if(runNow === true){ // 对于立即执行函数的立即判定，否则进行
+        if (runNow === true) { // 对于立即执行函数的立即判定，否则进行
           const shouldFinish = callback();
-          if(shouldFinish) return;
+          if (shouldFinish) return;
         }
 
         function step() {
-          if(times < needCount){
+          if (times < needCount) {
             // 计数未结束-继续计数
             times++;
             requestAnimationFrame(step)
-          }else{
+          } else {
             // 计数结束-停止计数，判定结果
             const shouldFinish = callback() || false;
-            if(!shouldFinish){
+            if (!shouldFinish) {
               // 返回值为false，重启计数器
               times = 0;
               requestAnimationFrame(step)
-            }else{
+            } else {
               // 返回值为true，结束计数器
               return
             }
@@ -2730,7 +2775,7 @@ body[baidu] #s_lg_img_new{
       function checkISBaiduMain() { // 首页=true;非首页=false
         // 如果是百度 &&  没有(百度搜索结果的标志-[存在]百度的内容) return;
         return !(curSite.SiteTypeID === SiteType.BAIDU && !(location.href.replace(/(&|\?)(wd|word)=/, "") !== location.href || document.querySelector("#content_left") ||
-            ((document.querySelector("#kw") && document.querySelector("#kw").getAttribute("value")) || "") !== "")
+          ((document.querySelector("#kw") && document.querySelector("#kw").getAttribute("value")) || "") !== "")
         )
       }
 
@@ -2742,9 +2787,9 @@ body[baidu] #s_lg_img_new{
       function checkDocmentHasNode(nodeClass) {
         for (let i = 0; i < document.childNodes.length; i++) {
           if (document.childNodes[i].data && document.childNodes[i].data.indexOf(nodeClass) > 0)
-            return {res: true, node: document.childNodes[i]};
+            return { res: true, node: document.childNodes[i] };
         }
-        return {res: false, node: null};
+        return { res: false, node: null };
       }
 
       function FSBaidu() { // thanks for code from 浮生@未歇 @page https://greasyfork.org/zh-TW/scripts/31642
@@ -2757,7 +2802,7 @@ body[baidu] #s_lg_img_new{
            * @param toClassName 预期的类名
            */
           importStyle: function (data, toClassName, useNormalCSS, mustLoad) {
-            if (typeof (data) === "undefined") {
+            if (typeof (data) === "undefined" || data === null) {
               // 这个居然在VM上出问题了，很奇怪
               console.error("GM_getResourceText获取内容数据异常");
               return
@@ -2769,7 +2814,7 @@ body[baidu] #s_lg_img_new{
               // 通过must参数来判定style是否加载
               // data = data.replace(/baidu.com#\$#/igm, '');
               if (data.indexOf("http") !== 0) data = "data:text/css;utf-8," + encodeURIComponent(data);
-              var {res,} = checkDocmentHasNode(toClassName);
+              var { res, } = checkDocmentHasNode(toClassName);
               if (!res) {
                 let pi = document.createProcessingInstruction(
                   "xml-stylesheet",
@@ -2801,7 +2846,7 @@ body[baidu] #s_lg_img_new{
             } else if (isNewGM === true) {
               // 仅用于GreaseMonkey4.0+
               debug("特殊模式-加载样式：" + insClassName);
-              setUrl = setUrl || "https://baidu.tujidu.com/newcss/" + styleName + ".css";
+              setUrl = setUrl || "https://sync.tujidu.com/newcss/" + styleName + ".css";
               this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
             } else {
               debug("加载样式：" + insClassName);
@@ -2822,9 +2867,9 @@ body[baidu] #s_lg_img_new{
               style = GM_getResourceText("MainHuYanStyle");
             }
             style = style
-            .replace(/#aaa(a*)/igm, color)
-            .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
-            .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
+              .replace(/#aaa(a*)/igm, color)
+              .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
+              .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
             AC_addStyle(style, "AC-" + CONST.useItem.name + "HuYanStyle" + (isNewGM ? "" : "-File"), "head", true); // 需要修改的，所以为true
           },
           clip255: function (value) {
@@ -2957,7 +3002,6 @@ body[baidu] #s_lg_img_new{
                 CONST.StyleManger.loadBaiduLiteStyle();
               }
             }
-
             if (curSite.SiteTypeID !== SiteType.BAIDU && curSite.SiteTypeID !== SiteType.BAIDU_XUESHU && curSite.SiteTypeID !== SiteType.GOOGLE && curSite.SiteTypeID !== SiteType.BING && curSite.SiteTypeID !== SiteType.SOGOU && curSite.SiteTypeID !== SiteType.DUCK && curSite.SiteTypeID !== SiteType.DOGE) return;
 
             // 如果是谷歌 && (地址替换->是谷歌图像页面 || 是地图页面)[替换要变] return;
