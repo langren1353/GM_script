@@ -1,32 +1,7 @@
 /*Store BingCommonStyle*/
 
 body {
-    background-color: #f5f5f5;
-}
-
-#b_content #b_results>li:not(#mfa_root) {
-    width: 670px;
-    padding: 12px 20px !important;
-    margin-top: 0px;
-    margin-bottom: 25px;
-    border-radius: 5px;
-    background-color: #fff;
-    box-sizing: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    transition: all 0.25s cubic-bezier(.23, 1, .32, 1) 0s;
-    overflow: hidden;
-}
-
-#b_content #b_results a,
-#b_content #b_results h2 a {
-    position: relative;
-    color: #3476d2;
-}
-
-#b_content #b_results h2 a,
-#b_results h2 strong {
-    font-weight: bold;
-    font-size: medium;
+    background-color: #ffffff;
 }
 
 #b_content #b_results>li:hover {
@@ -106,7 +81,7 @@ a strong {
 }
 
 body #b_header {
-    background-color: #f5f5f5;
+    background-color: #ffffff;
 }
 
 #b_content .b_underSearchbox {
