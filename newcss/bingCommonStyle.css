@@ -33,15 +33,6 @@ a strong {
     text-decoration: none !important;
 }
 
-#b_content #b_results a:hover:after,
-#b_content #b_results h2 a:hover:after {
-    left: 0;
-    width: 100%;
-    -webkit-transition: width 350ms;
-    -moz-transition: width 350ms;
-    transition: width 350ms;
-}
-
 #b_content #b_results a:hover,
 #b_content #b_results h2 a:hover {
     text-decoration: none;
