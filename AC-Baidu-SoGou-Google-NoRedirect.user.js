@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.24.1608
+// @version    24.24.1755
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -152,7 +152,7 @@
         GM.getValue = GM_getValue;
     }
 
-    if (window.location.href.match(/cn\.bing\.com/)) {
+    if (window.location.href.match(/www\.bing\.com/)) {
         // var timer = setInterval(function(){
         // 	if(document.getElementById('b_content')){
         // 		if(document.getElementById('b_content').style.float!=="left"){
@@ -178,6 +178,7 @@
         // document.getElementById('b_header').style.marginLeft = "auto";
         // document.getElementById('b_header').style.marginRight = "auto";
         document.getElementById('dynamicMap_7').style.width = "auto";
+        console.log("map wdith modified");
     }
 
     (function() {
