@@ -444,9 +444,14 @@ body[google] .big.minidiv .baidu #logo img{
     width: unset;
     margin-top: -18px;
 }
+body[google] .A8SBwf{
+    max-width: 692px;
+    width: unset;
+    margin-left: 25%;
+}
 .AC.sp-separator{
     margin-top: -20px;
 }
-.rc .IsZvec{
+#rso>div .IsZvec{
     max-width: unset;
 }

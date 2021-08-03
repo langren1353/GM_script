@@ -29,7 +29,7 @@
     max-width: unset;
 }
 #main #cnt, #cnt #center_col, #cnt #foot{
-    width: calc(32.5vw + 668px);
+    width: calc(32.5vw + 888px);
     margin: 0 auto;
 }
 body #appbar,body .rhscol, body #top_nav, body #fbar{
@@ -58,11 +58,6 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
 .srp form{
     margin:0 auto;
 }
-.srp form div[jscontroller]{
-    margin-left: unset;
-    margin: 0 auto;
-}
-/**video box align center**/
 g-section-with-header{
     text-align: center;
 }

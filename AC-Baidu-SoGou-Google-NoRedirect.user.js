@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.20
+// @version    24.25
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -36,13 +36,18 @@
 // @exclude    *://*.google*/sorry*
 // @exclude    https://zhidao.baidu.com/*
 // @exclude    https://*.zhidao.baidu.com/*
+// @exclude    https://www.baidu.com/img/*
 // @supportURL  https://ac.tujidu.com/
 // @home-url   https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2021-02-10
+// @lastmodified  2021-07-27
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2021.07-16-V24.25 修复一个bug；兼容百度下搜索股票tag；
+// @note    2021.06-15-V24.24 更换cdn地址
+// @note    2021.04-12-V24.23 修复谷歌多列失效的问题 && 修复谷歌翻页失效 && 修复谷歌护眼问题
+// @note    2021.04-12-V24.21 修复谷歌搜索错位的问题 && 修复谷歌图片加载的问题 && 修复谷歌翻页的问题
 // @note    2021.02-10-V24.20 修复谷歌部分失效的问题 && 修复由于BA失效导致的脚本无效的问题
 // @note    2021.02-02-V24.19 数据本地缓存，一定程度上保证重装后数据不丢失 && 修复谷歌部分内容失效的问题
 // @note    2020.12-29-V24.18 调整侧边栏功能效果，优化双列显示效果，处理duckduck的样式
@@ -242,23 +247,30 @@ div .AC-CounterT{
   -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
   -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
 }
-/****可以加一些自己的背景图片,替换引号内的内容为可外链的图片即可****/
-body[baidu]{
-  background-repeat: repeat-y;
-  background-size: 100%;
-  background-attachment:fixed;
-  background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564756277250&di=868b9eac9be14df1dedd8c7d6a710844&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20130530%2FImg377502333.jpg');
+body[baidu] {
+  position: relative;
 }
-/*****窗口背景的透明虚化效果*****/
-body>#wrapper,body>.wrap,body>#main,body #appbar,body #hdtbSum{
-  background: rgba(225,225,225,0.8);
+body[baidu]:before {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  content: '';
+  background-image: url('https://img.tujidu.com/image/5fdde8468423e.jpg');
+  background-size: 100% auto;
+  opacity: 1; /*背景图透明度=0.8，最大1*/
 }
 /**隐藏首页的大图标-修复可能导致外援样式异常**/
 body[baidu] #s_lg_img_new{
   display:none !important;
 }
-#wrapper #content_left .result, #wrapper #content_left .c-container{
+body[baidu] .c-container{
   border-radius: 5px;
+  background-color: rgba(255,255,255, 0.3) !important; /*百度搜索块体的颜色；透明度=0.1，最大1*/
+}
+body[baidu] .c-container h3{
+  background-color: rgba(248,248,248, 0.3) !important; /*百度搜索块体 - 标题的颜色；透明度=0.1，最大1*/
 }`,
       oldVersion: "",
       lastSaveTime: new Date().getTime(),
@@ -340,7 +352,7 @@ body[baidu] #s_lg_img_new{
           nextLink: 'id("pnnext") | id("navbar navcnt nav")//td[span]/following-sibling::td[1]/a | id("nn")/parent::a',
           pageElement: '//div[@id="res"]',
           HT_insert: ["css;#res", 2],
-          replaceE: '//div[@id="navcnt"] | //div[@id="foot"][@role="navigation"]'
+          replaceE: '//div[@id="navcnt"] | //div[@id="rcnt"]//div[@role="navigation"]'
         }
       },
       bing: {
@@ -1225,18 +1237,24 @@ body[baidu] #s_lg_img_new{
               }
             },
             watch: {
-              AdsStyleModeChange(data) {
-                debugger
-                // 需要先删除原有的节点数据
-                while (true) {
-                  const {res, node} = checkDocmentHasNode("AC-")
-                  if (res) node.remove();
-                  else break;
+              'CONST.useItem.HuYanMode': {
+                immediate: true,
+                handler(val) {
+                  if(val) CONST.StyleManger.loadHuYanStyle()
                 }
-
-                safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle'],style[class='AC-baiduHuYanStyle-File']");
-                acCssLoadFlag = false;
-                CONST.StyleManger.init();
+              },
+              AdsStyleModeChange: {
+                handler() {
+                  // 需要先删除原有的节点数据
+                  while (true) {
+                    const {res, node} = checkDocmentHasNode("AC-")
+                    if (res) node.remove();
+                    else break;
+                  }
+                  safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle'],style[class*='HuYanStyle-File']");
+                  acCssLoadFlag = false;
+                  CONST.StyleManger.init();
+                }
               },
               UserStyleEnableChange() {
                 if(ACConfig.isUserStyleEnable) {
@@ -1274,6 +1292,16 @@ body[baidu] #s_lg_img_new{
         }
 
         /*以下代码大部分来源于SuprePreloader 感谢 swdyh && ywzhaiqi && NLF 以及 mach6 大佬*/
+        /*
+        Super_preloaderPlus_one_New: Preload and Autopager.
+        Copyright (C) 2020 Mach6
+
+        This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3.
+
+        This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+         */
         function ac_spfunc(e) {
           console.error("这里有问题")
           e.stopPropagation();
@@ -1578,6 +1606,8 @@ body[baidu] #s_lg_img_new{
                     var newBody = ShowPager.createDocumentByString(response.responseText);
                     // xx.evaluate(xpath, xx)
                     let pageElems = getAllElements(curSite.pager.pageElement, newBody, newBody);
+                    const scriptElems = getAllElements('//script', newBody, newBody);
+
                     let toElement = getAllElements(curSite.pager.HT_insert[0])[0];
                     if (pageElems.length >= 0) {
                       // 处理最后一个翻页按钮
@@ -1605,6 +1635,19 @@ body[baidu] #s_lg_img_new{
                         per.setAttribute("bind", 1);
                         per.addEventListener("click", ac_spfunc);
                       });
+
+                      // 插入scripts & style - 保证js加载
+                      if(curSite.SiteTypeID === SiteType.GOOGLE) {
+                        var scriptText = "";
+                        scriptElems.forEach((one) => {
+                          scriptText += one.innerHTML;
+                        });
+
+                        const scriptNode = document.createElement("script");
+                        scriptNode.innerHTML = scriptText;
+                        toElement.appendChild(scriptNode)
+                      }
+
                       // 替换待替换元素
                       try {
                         let oriE = getAllElements(curSite.pager.replaceE);
@@ -1635,9 +1678,6 @@ body[baidu] #s_lg_img_new{
         };
 
         function AddCustomStyle() {
-          if (!ACConfig.isALineEnable) {
-            AC_addStyle("a,a em{text-decoration:none}", "AC-NoLine", "body");// 移除这些个下划线
-          }
           if (ACConfig.isUserStyleEnable) {
             AC_addStyle(ACConfig.UserStyleText, "AC-userStyle");// 用户自定义的样式表
           } else {
@@ -1715,6 +1755,12 @@ body[baidu] #s_lg_img_new{
                   one.removeAttribute("ac_faviconstatus");
                 })
               }
+              // 动态下划线
+              if (!ACConfig.isALineEnable) {
+                AC_addStyle("a,a em{text-decoration:none !important}", "AC-NoLine", "body");// 移除这些个下划线
+              } else{
+                safeRemove("style[class='AC-NoLine']")
+              }
               if (ACConfig.isAdsEnable) { // 移除多余的广告内容
                 removeAD_baidu_sogou();
               }
@@ -1731,9 +1777,9 @@ body[baidu] #s_lg_img_new{
                 acSetCookie("ISSW", 1);
                 acSetCookie("ISSW", 1, "www.baidu.com");
               }
-              if(document.querySelector("style[class*='darkreader']") != null) {
-                CONST.useItem.HuYanMode = true;
-              }
+              // if(CONST.useItem.HuYanMode === false && document.querySelector("style[class*='darkreader']") != null) {
+              //   CONST.useItem.HuYanMode = true;
+              // }
               if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
                 SiteBlock.initStyle();
                 SiteBlock.init();
@@ -1746,7 +1792,7 @@ body[baidu] #s_lg_img_new{
                 }
               }
               if (curSite.SiteTypeID === SiteType.GOOGLE) {
-                let node = document.querySelector("#rso")
+                let nodeList = document.querySelectorAll("#rso")
                 const isSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
                 if(isSpecial !== CONST.isGoogleSpecial && CONST.isGoogleSpecial === false) {
                     CONST.isGoogleSpecial = true
@@ -1754,13 +1800,20 @@ body[baidu] #s_lg_img_new{
                     acCssLoadFlag = false;
                     CONST.StyleManger.init();
                 }
-                if(node) {
-                  if (CONST.isGoogleSpecial) {
-                    node.style.display !== 'grid' ? node.style.display = 'grid': ''
-                  } else {
-                    node.style.display !== 'unset' ? node.style.display = 'unset': ''
-                  }
+                if(nodeList.length > 0) {
+                  nodeList.forEach((node) => {
+                    if (CONST.isGoogleSpecial) {
+                      node.style.display !== 'grid' ? node.style.display = 'grid': ''
+                    } else {
+                      node.style.display !== 'unset' ? node.style.display = 'unset': ''
+                    }
+                  })
                 }
+
+                // 特殊元素一行处理
+                document.querySelectorAll("#rso>div:not(.g)>div[jsmodel]").forEach(one => {
+                  one.parentNode.style.display = "unset"
+                })
               }
               setTimeout(function () {
                 insertLocked = false;
@@ -1772,12 +1825,14 @@ body[baidu] #s_lg_img_new{
         }
 
         function acSetCookie(cname, cvalue, domain, exdays) {
-          exdays = exdays || 30;
-          let d = new Date();
-          domain = (domain ? "domain=" + domain : "") + ";";
-          d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-          let expires = "expires=" + d.toUTCString();
-          document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
+          try{
+            exdays = exdays || 30;
+            let d = new Date();
+            domain = (domain ? "domain=" + domain : "") + ";";
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
+          }catch(e){}
         }
         function getNodeHost(sitetpNode) {
           if(sitetpNode instanceof HTMLAnchorElement){
@@ -2426,6 +2481,8 @@ body[baidu] #s_lg_img_new{
             safeRemove_xpath("id('content_right')/div[.//a[starts-with(text(), '广告')]]");
             // 移除标准广告
             safeRemove_xpath("id('content_left')/div[.//span[contains(text(), '广告')]]");
+            // 移除标准广告 - 新
+            safeRemove_xpath("id('content_left')//div[contains(@class, 'se_st_footer')]/a[contains(text(), '广告')]");
             // 移除右侧栏顶部-底部无用广告
             safeRemove_xpath("id('content_right')/br");
             safeRemove_xpath("id('content_right')/div[not(@id)]");
@@ -2522,6 +2579,10 @@ body[baidu] #s_lg_img_new{
                   if (targetNode != null && targetNode.querySelector(curSite.FaviconAddTo) != null) {
                     break;
                   }
+                }
+                if(targetNode.parentNode.hasAttribute('tpl') && targetNode.parentNode.getAttribute('tpl').includes('stock')) {
+                  curNode.setAttribute("ac_faviconStatus", "-3");
+                  continue
                 }
                 //console.log(index+"."+faviconUrl+"--"+II);
                 if (II <= 5) {
@@ -2757,7 +2818,7 @@ body[baidu] #s_lg_img_new{
            * @param toClassName 预期的类名
            */
           importStyle: function (data, toClassName, useNormalCSS, mustLoad) {
-            if (typeof (data) === "undefined") {
+            if (typeof (data) === "undefined" || data === null) {
               // 这个居然在VM上出问题了，很奇怪
               console.error("GM_getResourceText获取内容数据异常");
               return
@@ -2801,7 +2862,7 @@ body[baidu] #s_lg_img_new{
             } else if (isNewGM === true) {
               // 仅用于GreaseMonkey4.0+
               debug("特殊模式-加载样式：" + insClassName);
-              setUrl = setUrl || "https://baidu.tujidu.com/newcss/" + styleName + ".css";
+              setUrl = setUrl || "https://sync.tujidu.com/newcss/" + styleName + ".css";
               this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
             } else {
               debug("加载样式：" + insClassName);
@@ -2957,7 +3018,6 @@ body[baidu] #s_lg_img_new{
                 CONST.StyleManger.loadBaiduLiteStyle();
               }
             }
-
             if (curSite.SiteTypeID !== SiteType.BAIDU && curSite.SiteTypeID !== SiteType.BAIDU_XUESHU && curSite.SiteTypeID !== SiteType.GOOGLE && curSite.SiteTypeID !== SiteType.BING && curSite.SiteTypeID !== SiteType.SOGOU && curSite.SiteTypeID !== SiteType.DUCK && curSite.SiteTypeID !== SiteType.DOGE) return;
 
             // 如果是谷歌 && (地址替换->是谷歌图像页面 || 是地图页面)[替换要变] return;

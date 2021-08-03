@@ -64,9 +64,8 @@ g-section-with-header{
     width: calc(36.3vw + 525px);
     margin: 0 auto;
 }
-@media screen and (max-width:1300px){
-    .srp form div[jscontroller]{
-        margin-left: unset;
-        margin: 0 auto;
+@media screen and (max-width:1440px){
+    .RNNXgb{
+        width: 80% !important;
     }
 }

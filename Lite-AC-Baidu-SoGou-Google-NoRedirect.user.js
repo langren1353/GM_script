@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name AC-baidu： 优化百度、搜狗、谷歌搜索结果之重定向 lite
-// @icon            https://gitee.com/remixAC/GM_script/raw/master/images/head.jpg
+// @icon            https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
 // @grant		    GM_xmlhttpRequest
 // @author          AC
 // @create          2015-11-25
 // @run-at          document-start
-// @version         10.0
-// @connect         *
+// @version         11.0
+// @connect         www.baidu.com
 // @include         http://www.baidu.com/*
 // @include         https://www.baidu.com/*
 // @include         http://www.sogou.com/*
@@ -20,8 +20,9 @@
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
 // @description     1.繞過百度、搜狗搜索結果中的自己的跳轉鏈接，直接訪問原始網頁-反正都能看懂
-// @lastmodified    2017-06-25
+// @lastmodified    2019-05-22
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/30504
+// @note            2019.05.22-V11.0 诈尸，修复一直弹窗的问题，这个版本的基本上不会更新了，但是处理Baidu和搜狗的重定向功能算是完善的
 // @note            2017.06.25-V10.0 修复上次更新导致的百度知道的老问题的出现
 // @note            2017.06.24-V9.8 更新了bing上的图片favicon地址;并且尽量减少了MO触发次数，避免页面卡顿;修复搜狗的重定向问题
 // @note            2017.06.23-V9.7 上传错了~重新来，顺带处理了谷歌favicon问题
@@ -68,18 +69,10 @@
     var Stype; // 去重定向的选择
     var Ftype; // favicon的选择
     var maxOneHtmlHeight=2500;
-    var SiteTypeID; // 标记当前是哪个站点[百度=1;搜狗=2;谷歌=3;必应=4;知乎=5;其他=6]
-    var SiteType={
-        BAIDU:1,
-        SOGOU:2,
-        GOOGLE:3,
-        BING:4,
-        // ZHIHU:5,
-        OTHERS:6,
-    };
     var ACMO = window.MutationObserver||window.WebKitMutationObserver||window.MozMutationObserver;
     var option = {'childList':true,'subtree':true};
     var observer = new ACMO(function(records){
+        //console.log(document.body.scrollHeight);
         if(records.length<100){
             if(records.length > 5 || document.body.scrollHeight > 4000){
                 //console.log("in"+records.length);
@@ -88,28 +81,24 @@
         }
     });
     if (location.host.indexOf("www.baidu.com") > -1) {
-        SiteTypeID = SiteType.BAIDU;
         Stype = "h3.t>a";
         Ftype = ".f13 .c-showurl[href],.c-container>div[class^='c-'] .c-showurl[href],.c-container>div[class^='c-'] .texttolink[href]";
         startBaidu();
     } else if (location.host.indexOf("sogou") > -1) {
-        SiteTypeID = SiteType.SOGOU;
         Stype = "h3.pt>a, h3.vrTitle>a";
         Ftype = "cite[id*='cacheresult_info_']";
         srartOthers();
     } else if (location.host.indexOf("google") > -1){
-        SiteTypeID = SiteType.GOOGLE;
         Stype = "";
         Ftype = "._Rm";
         srartOthers();
     } else if (location.host.indexOf("bing") > -1){
-        SiteTypeID = SiteType.BING;
         Stype = "";
         Ftype = ".b_attribution>cite";
         srartOthers();
+        maxOneHtmlHeight = 4000;
     } else {
-        SiteTypeID = SiteType.OTHERS;
-        AC_addStyle(".word-replace{display: none  !important;}");
+        addStyle(".word-replace{display: none  !important;}");
         return;
     }
     function startBaidu(){
@@ -141,18 +130,12 @@
             });
         }catch(e){}
     }
-    function AC_addStyle(css, className){
-        var tout = setInterval(function(){
-            if(document.body != null){
-                clearInterval(tout);
-                try{document.querySelector("."+className).remove();}catch (e){};
-                var cssNode = document.createElement("style");
-                if(className != null)
-                    cssNode.className = className;
-                cssNode.innerHTML = css;
-                try{document.body.appendChild(cssNode);}catch (e){console.log(e.message);}
-            }
-        }, 200);
+    function addStyle(css) { //添加CSS的代码--copy的
+        var pi = document.createProcessingInstruction(
+            'xml-stylesheet',
+            'type="text/css" href="data:text/css;utf-8,' + encodeURIComponent(css) + '"'
+        );
+        return document.insertBefore(pi, document.documentElement);
     }
     function resetURL(list){
         for(var i = 0; i < list.length; i++){
@@ -163,23 +146,21 @@
                 list[i].setAttribute("ac_redirectStatus", "0");
                 if(curhref.indexOf("baidu.com") > -1 || curhref.indexOf("sogou.com") > -1){
                     (function(c_curhref){
+                        var url = c_curhref.replace(/^http:/, "https:");
+                        if (curhref.indexOf("baidu.com") > -1 && url.indexOf("eqid") < 0) {
+                            // 如果是百度，并且没有带有解析参数，那么手动带上
+                            url = url + "&wd=&eqid=";
+                        }
                         setTimeout(function(){
                             GM_xmlhttpRequest({
-                                url: c_curhref,
+                                url: url,
                                 headers: {
                                     "Accept": "text/html"
                                 },
-                                method: curhref.indexOf("baidu.com") > -1 ? "HEAD" : "GET",
+                                method: "GET",
                                 onreadystatechange:function(response) {
-                                    if (response.finalUrl != curhref) {
-                                        var resultURL = response.finalUrl;
-                                        if (SiteTypeID == SiteType.SOGOU) {
-                                            //如果是搜狗的结果
-                                            var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
-                                            if (resultResponseUrl != null)
-                                                resultURL = resultResponseUrl;
-                                        }
-                                        c_curnode.href = resultURL;
+                                    if(response.status==200){
+                                        DealResult(response, c_curhref);
                                     }
                                 }
                             });
@@ -192,24 +173,25 @@
         }
     }
     function DealResult(response, c_curhref){ // 数据获取成功，替换页面地址为真实地址
-        var resultURL = response.finalUrl;
-        if(Stype.length > 10){
-            //如果是搜狗的结果
+        try{
+            var resultURL = response.finalUrl;
             var resultResponseUrl = Reg_Get(response.responseText, "URL='([^']+)'");
             if(resultResponseUrl != null)
                 resultURL = resultResponseUrl;
-        }
-        //console.log(resultURL);
-        var indexhref = Reg_Get(c_curhref, "((?:http)[^&]+)");// 必须要提取部分数据，因为之后的莫名加了其他参数ck=0.0.0.0.....
-        var ccnode = document.querySelectorAll("h3>[href*='"+indexhref+"']")[0];
-        if(ccnode != null){
-            ccnode.href = resultURL;
-        }else{
-            console.log("该链接已经被其他脚本干掉了哦"+resultURL);
+            //console.log(resultURL);
+            var indexhref = Reg_Get(c_curhref, "((?:http)[^&]+)");// 必须要提取部分数据，因为之后的莫名加了其他参数ck=0.0.0.0.....
+            var ccnode = document.querySelectorAll("h3>[href*='"+indexhref+"']")[0];
+            if(ccnode != null){
+                ccnode.href = resultURL;
+            }else{
+                console.log("该链接已经被其他脚本干掉了哦"+resultURL);
+            }
+        }catch (e) {
         }
     }
     function Reg_Get(HTML, reg){
         var RegE = new RegExp(reg);
         return RegE.exec(HTML)[1];
     }
+
 })();

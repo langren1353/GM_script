@@ -117,6 +117,26 @@ body.showRight #wrapper #content_right{
 form.fm .s_ipt_wr.bg{
     min-width: calc(37.5vw - 150px);
 }
+
+.result-molecule.new-pmd {
+    margin: 0 auto;
+    min-width: 800px;
+    width: 40% !important;
+    margin-top: 60px;
+    padding-left: 20px;
+}
+
+.new-pmd #rs_new {
+    background-color: white;
+    width: calc(100% - 20px);
+    padding: 10px 0 10px 20px;
+}
+
+.new-pmd #rs_new table{
+    width: 100%;
+    margin-top: 12px;
+}
+
 @media screen and (min-width: 1921px) {
     #head .head_wrapper{
         transform: translate3d(140px,0,1px);
@@ -127,6 +147,9 @@ form.fm .s_ipt_wr.bg{
     }
     form.fm .s_ipt_wr.bg{
         min-width: calc(37.5vw - 150px);
+    }
+    .head_wrapper #u {
+        right: 200px;
     }
 }
 @media screen and (min-width: 1366px) and (max-width: 1920px) {

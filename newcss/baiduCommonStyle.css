@@ -417,6 +417,10 @@ body.showRight #wrapper #content_right{
     display: flex;
     align-items: center;
 }
+#content_left .hit-toptip{
+    grid-column-start: 1;
+    grid-column-end: xmain-end;
+}
 @media screen and (max-width:1280px){
     #u .toindex, #u #imsg{
         display: none;
