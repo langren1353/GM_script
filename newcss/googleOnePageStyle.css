@@ -22,6 +22,9 @@
 .search>#ires #rso>.g{
     max-width: unset;
 }
+#rso>.g ~ div:not(.g){
+    overflow: hidden;
+}
 #main #rcnt{
     max-width: unset;
 }

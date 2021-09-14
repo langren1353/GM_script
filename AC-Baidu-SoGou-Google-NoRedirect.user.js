@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.25
+// @version    24.26
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -42,8 +42,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2021-07-27
+// @lastmodified  2021-09-02
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2021.09-02-V24.26 修复必应多favicon，修复百度百科问题；修复谷歌一个小问题
 // @note    2021.07-16-V24.25 修复一个bug；兼容百度下搜索股票tag；
 // @note    2021.06-15-V24.24 更换cdn地址
 // @note    2021.04-12-V24.23 修复谷歌多列失效的问题 && 修复谷歌翻页失效 && 修复谷歌护眼问题
@@ -88,24 +89,24 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=24.19
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=24.19
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=24.19
-// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=24.19
-// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=24.19
-// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=24.19
-// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=24.19
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=24.19
-// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=24.19
-// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=24.19
-// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=24.19
-// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=24.19
-// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=24.19
-// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=24.19
-// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=24.19
-// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=24.19
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=24.19
-// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=24.19
+// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=24.26
+// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=24.26
+// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=24.26
+// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=24.26
+// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=24.26
+// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=24.26
+// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=24.26
+// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=24.26
+// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=24.26
+// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=24.26
+// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=24.26
+// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=24.26
+// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=24.26
+// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=24.26
+// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=24.26
+// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=24.26
+// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=24.26
+// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=24.26
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.min.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js
 // @grant    GM_getValue
@@ -1520,6 +1521,9 @@ body[baidu] .c-container h3{
                   }
                 } else {
                   ShowPager.loadMorePage();
+                  if(curSite.pager && curSite.pager.stylish) {
+                    AC_addStyle(curSite.pager.stylish, "AC-pager-stylish")
+                  }
                 }
               }
             }
@@ -2589,6 +2593,7 @@ body[baidu] .c-container h3{
                   // 先用父节点判断一下是否存在img
                   let tmpHTML = targetNode.innerHTML;
                   let pos = tmpHTML.indexOf("fav-url")
+                    & tmpHTML.indexOf("wr_fav")
                     & tmpHTML.indexOf("favurl")
                     & tmpHTML.indexOf("tit-ico")
                     & tmpHTML.indexOf("img_fav rms_img")
