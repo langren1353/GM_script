@@ -29,8 +29,7 @@
     max-width: unset;
 }
 #main #cnt, #cnt #center_col, #cnt #foot{
-    width: calc(32.5vw + 888px);
-    margin: 0 auto;
+    width: calc(54vw + 360px);
 }
 body #appbar,body .rhscol, body #top_nav, body #fbar{
     min-width: unset;

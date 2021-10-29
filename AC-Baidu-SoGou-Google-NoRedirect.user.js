@@ -44,6 +44,7 @@
 // @copyright  2015-2020, AC
 // @lastmodified  2021-09-02
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2021.10-29-V24.27 移除必应能选择的广告；增加自定义样式less的支持
 // @note    2021.09-02-V24.26 修复必应多favicon，修复百度百科问题；修复谷歌一个小问题
 // @note    2021.07-16-V24.25 修复一个bug；兼容百度下搜索股票tag；
 // @note    2021.06-15-V24.24 更换cdn地址
@@ -109,6 +110,7 @@
 // @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=24.26
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.min.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js
+// @require https://greasyfork.org/scripts/433620-less4-1-2-fixed/code/Less4_1_2_fixed.js?version=977551
 // @grant    GM_getValue
 // @grant    GM.getValue
 // @grant    GM_setValue
@@ -124,6 +126,7 @@
 // @grant    unsafeWindow
 // ==/UserScript==
 // calc(X1(vw) + X2(px)) -> B(px) 使用 http://www.yunsuan.info/matrixcomputations/solvelinearsystems.html 进行计算
+
 !function () {
   let isdebug = false;
   let isLocalDebug = isdebug || false;
@@ -546,8 +549,9 @@ body[baidu] .c-container h3{
 
               showRight_text: "附加7-显示右侧栏",
               showCounter_text: "附加8-编号功能",
+              hintShowCounter_text: "可能会导致图片加载异常",
               showALine_text: "附加9-文字下划线",
-              showUserStyle_text: "附加10-自定义样式",
+              showUserStyle_text: "附加10-自定义样式 支持Less.js",
 
               contactMe_text: "联系作者,提建议,寻求帮助,自定义样式,脚本定制点我",
               contactMe_url: "https://github.com/langren1353/GM_script",
@@ -562,6 +566,7 @@ body[baidu] .c-container h3{
               },
               cancelBtn_text: "取消",
               okBtn_text: "保存",
+              resetBtn_text: "重置",
             }
           }
         },
@@ -662,8 +667,9 @@ body[baidu] .c-container h3{
 
               showRight_text: "Add7-Right Side Column",
               showCounter_text: "Add8-NumFunc",
+              hintShowCounter_text: "May Cause image load problem",
               showALine_text: "Add9-TextUnderLine",
-              showUserStyle_text: "Add10-Your own Style",
+              showUserStyle_text: "Add10-Your own Style support Less.js",
 
               contactMe_text: "For contact the writter, suggests, ask for help then click me",
               contactMe_url: "https://github.com/langren1353/GM_script/",
@@ -678,6 +684,7 @@ body[baidu] .c-container h3{
               },
               cancelBtn_text: "Cancel",
               okBtn_text: "Save",
+              resetBtn_text: "Reset",
             }
           }
         }
@@ -1113,7 +1120,12 @@ body[baidu] .c-container h3{
           var options = {
             el: checkNode,
             data: function () {
-              return AllData;
+              return {
+                ...AllData,
+                LiveConfig: {
+                  css_has_error: false
+                }
+              }
             },
             methods: {
               labelShowHideEnv(e) {
@@ -1140,7 +1152,15 @@ body[baidu] .c-container h3{
                 this.other.addBlockItem = "";
               },
               loadCustomStyle() {
-                AC_addStyle(ACConfig.UserStyleText, "AC-userStyle", "head", true); // 用户自定义的样式表
+                less.render(ACConfig.UserStyleText, (e, css) => {
+                  if(e) {
+                    this.LiveConfig.css_has_error = true
+                  } else {
+                    this.LiveConfig.css_has_error = false
+                    css = css.css || ''
+                    AC_addStyle(css, "AC-userStyle", "head", true); // 用户自定义的样式表
+                  }
+                });
               },
               saveConfig() {
                 if(this.other.curTab===1 && !this.ACConfig.acceptLicense){
@@ -1156,6 +1176,17 @@ body[baidu] .c-container h3{
                   acSetCookie("ISSW", 1, null, new Date().getTime() - 86400000);
                   acSetCookie("ISSW", 1, "www.baidu.com", new Date().getTime() - 86400000);
                 }
+                setTimeout(function () {
+                  window.location.reload();
+                }, 200);
+              },
+              changeResetText() {
+                this.lan.zh_cn.fieldset_panel.setting_panel.resetBtn_text = '双击重置'
+                this.lan.en.fieldset_panel.setting_panel.resetBtn_text = 'DBl click to Reset'
+              },
+              resetConfig() {
+                // 显示为双击重置
+                ACSetValue("Config", '{}');
                 setTimeout(function () {
                   window.location.reload();
                 }, 200);
@@ -1947,6 +1978,7 @@ body[baidu] .c-container h3{
                           {{ lan.use.fieldset_panel.setting_panel.useEn_text }}
                         </label>
                         <span id="sp-ac-savebutton" @click="saveConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;margin-top: -6px;" v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
+                        <span id="sp-ac-resetbutton" @click="changeResetText" @dblclick="resetConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.resetBtn_text" style="position: relative;float: right;margin-top: -6px;" v-text="lan.use.fieldset_panel.setting_panel.resetBtn_text"></span>
                       </li>
                       <li>
                         <label :title="lan.use.fieldset_panel.setting_panel.ads_title">
@@ -2212,7 +2244,7 @@ body[baidu] .c-container h3{
                         </label>
                         <label>
                           <input id="sp-ac-counter" v-model="ACConfig.isCounterEnable" name="sp-ac-a_force" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.showCounter_text }}
+                          <span :title="lan.use.fieldset_panel.setting_panel.hintShowCounter_text">{{ lan.use.fieldset_panel.setting_panel.showCounter_text }}</span>
                         </label>
                         <label>
                           <input id="sp-ac-aline" v-model="ACConfig.isALineEnable" name="sp-ac-a_force" type="checkbox">
@@ -2225,6 +2257,7 @@ body[baidu] .c-container h3{
                           <input id="sp-ac-userstyle" v-model="ACConfig.isUserStyleEnable" name="sp-ac-a_force" type="checkbox">
                           {{ lan.use.fieldset_panel.setting_panel.showUserStyle_text }}
                         </label>
+                        <label v-if="LiveConfig.css_has_error" style="color: red">error</label>
                       </li>
                       <li>
                         <textarea id="sp-ac-userstyleTEXT" v-model="ACConfig.UserStyleText" @keyup="loadCustomStyle" @change="loadCustomStyle" @paste="loadCustomStyle" name="sp-ac-a_force" style="width:85%;height: 66px;margin-left:30px;" type="input" ></textarea>
@@ -2486,7 +2519,7 @@ body[baidu] .c-container h3{
             // 移除标准广告
             safeRemove_xpath("id('content_left')/div[.//span[contains(text(), '广告')]]");
             // 移除标准广告 - 新
-            safeRemove_xpath("id('content_left')//div[contains(@class, 'se_st_footer')]/a[contains(text(), '广告')]");
+            safeRemove_xpath("id('content_left')/div[.//a[text()='广告']]");
             // 移除右侧栏顶部-底部无用广告
             safeRemove_xpath("id('content_right')/br");
             safeRemove_xpath("id('content_right')/div[not(@id)]");
@@ -2513,6 +2546,7 @@ body[baidu] .c-container h3{
             safeRemove_xpath("id('righttop_box')//li[.//span[contains(text(), '广告')]]");
           } else if (curSite.SiteTypeID === SiteType.BING) {
             safeRemove(".b_ad");
+            safeRemove_xpath("id('b_results')/li[./div[@class='ad_fls']]", true);
           } else if (curSite.SiteTypeID === SiteType.GOOGLE) {
             safeRemove("#bottomads");
           }
@@ -2785,11 +2819,24 @@ body[baidu] .c-container h3{
         })
       }
 
-      function safeRemove_xpath(xpathSelector) {
+      function hideNode(node) {
+        if(node.hasAttribute('ac-ad-hide')) return
+        node.setAttribute('ac-ad-hide', '1')
+        node.style = 'display: none !important;'
+      }
+
+      function safeRemove_xpath(xpathSelector, isHide=false) {
         safeFunction(() => {
           let removeNodes = getAllElements(xpathSelector);
-          for (let i = 0; i < removeNodes.length; i++)
-            removeNodes[i].remove();
+          if(isHide) {
+            for (let i = 0; i < removeNodes.length; i++){
+              hideNode(removeNodes[i])
+            }
+          } else {
+            for (let i = 0; i < removeNodes.length; i++){
+              removeNodes[i].remove();
+            }
+          }
         })
       }
 

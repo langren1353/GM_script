@@ -15,7 +15,6 @@ div.res_top_banner,
 #content_right,
 #center_col>#taw,
 #fld,
-div[aria-hidden=true],
 #demo {
     display: none!important;
 }
