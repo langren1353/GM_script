@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    24.27
+// @version    24.29
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -42,8 +42,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2021-09-02
+// @lastmodified  2021-11-02
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2021.10-31-V24.29 fixed Less requirement for faster Load
 // @note    2021.10-29-V24.27 移除必应能选择的广告；增加自定义样式less的支持
 // @note    2021.09-02-V24.26 修复必应多favicon，修复百度百科问题；修复谷歌一个小问题
 // @note    2021.07-16-V24.25 修复一个bug；兼容百度下搜索股票tag；
@@ -110,7 +111,7 @@
 // @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=24.26
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.min.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js
-// @require https://greasyfork.org/scripts/433620-less4-1-2-fixed/code/Less4_1_2_fixed.js?version=977551
+// @require https://cdn.jsdelivr.net/gh/langren1353/GM_script/Less4_1_2_fixed.js
 // @grant    GM_getValue
 // @grant    GM.getValue
 // @grant    GM_setValue
