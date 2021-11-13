@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         AC-独家-淘宝天猫优惠券查询领取,大额优惠券,【100元购物神券】,省钱购物,领券购买更优惠,平均优惠20%
-// @version      7.12
+// @version      7.13
 // @description  独家查询淘宝商品查询是否具有优惠券,各种大额优惠券,【3元|10元|20元|40元】优惠券领取,购物必备,特大优惠
 // @author       AC
 // @include      https://item.taobao.com/item.htm*
@@ -8,6 +8,7 @@
 // @include      https://s.taobao.com/search*
 // @include      https://cart.taobao.com/*
 // @include      *://uland.taobao.com/coupon/*
+// @note         2021.11.13-V7.13 修复查询失败的问题
 // @note         2021.08.01-V7.11 修复代码格式规范，以及一个样式问题
 // @note         2020.11.10-V7.8 更新检查数据接口
 // @note         2020.09.08-V7.6 修复二维码无效的问题，更换自己的二维码方案，理论上不会失效了
@@ -76,6 +77,7 @@
 setTimeout(function () {
     if(typeof(acTB) == "undefined"){
         acTB = 1;
+        debugger
         (function(){
             var goodTitle = "";
             function addStyle(css) {
@@ -132,6 +134,7 @@ setTimeout(function () {
                 if(node.dataset.url.indexOf("javascript:void") < 0)
                     window.open(node.dataset.url);
             };
+
             addStyle(".ac-btn{opacity: 0.85} .ac-btn:hover,.copon-search-list:hover,.ac-btn-cart:hover,.tm-detailGo-btn:hover{color: rgba(255,200,0,30)!important;text-shadow: 0 0px rgba(242,33,49,30),0 0px 0px rgba(242,33,49,30),0 1px 1px rgba(242,33,49,30),1px 0 1px rgba(242,33,49,30),-1px 0 1px rgba(242,33,49,30),0 0 1px rgba(242,33,49,30)!important;}");
             addStyle(".ac-btn:hover,.tm-detailGo-btn:hover{color: white!important;}.acMobileQRPanel{display:grid;}.ac-hide{display:none;}.coupon-gobtn:hover .tm-inner{background-color:red!important;}");
             if(location.href.indexOf("item.taobao.com") + location.href.indexOf("detail.tmall.com") >= 0) {
@@ -142,6 +145,7 @@ setTimeout(function () {
                     if (r != null) return unescape(r[2]);
                     return null;
                 }
+                debugger
                 var goodID = getQueryString("id");
                 queryData(goodID);
                 function AutoStart(time, cssSelector, dealFunc) {
@@ -189,12 +193,24 @@ setTimeout(function () {
                     }, 120);
                 }
                 function queryData(goodID) {
+                    debugger
                     var cgoodTitle = document.title+"";
                     var ret = GM_xmlhttpRequest({
-                        method: "GET", url: "http://gm.ntaow.com/?op=66&iid=" + goodID,
+                        method: "GET", url: "https://open.lesiclub.cn/coupon/get_ext/10005/10003/" + goodID,
                         onload: function (res) {
                             res = JSON.parse(res.responseText);
-                            acBuyScript(res);
+                            debugger
+                            const { data = {} } = res
+                            const { coupon = {} } = data
+                            const item_res = {
+                                retcode: +(coupon === {}),
+                                data: {
+                                    couponAmount: coupon.coupon_money,
+                                    couponUrl: `https://item.taobao.com/item.htm?id=${goodID}`
+                                }
+                            }
+
+                            acBuyScript(item_res);
                         }
                     });
                 }

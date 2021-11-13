@@ -10,7 +10,7 @@
 // @author    AC
 // @license    GPL-3.0-only
 // @create     2015-11-25
-// @run-at     document-start
+// @run-at     document-body
 // @version    24.29
 // @connect    baidu.com
 // @connect    google.com
@@ -111,7 +111,7 @@
 // @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=24.26
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.min.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js
-// @require https://cdn.jsdelivr.net/gh/langren1353/GM_script/Less4_1_2_fixed.js
+// @require https://cdn.jsdelivr.net/npm/less_browser_fix@4.1.2/dist/less.js
 // @grant    GM_getValue
 // @grant    GM.getValue
 // @grant    GM_setValue
