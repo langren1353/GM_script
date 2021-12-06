@@ -9,6 +9,8 @@ div.res_top_banner,
 #rso>div[id*="30"],
 #rso .c-recommend,
 #rso .leftBlock,
+#rso .oUAcPd,
+#search #z9PoV,
 #rso .hit_top_new,
 #rso #fld,
 #rso div.rrecom-btn-parent,
@@ -92,6 +94,7 @@ a:hover h3{
     animation-name: ani_bottomTotop;
     animation-duration: .3s;
     animation-timing-function: ease;
+    justify-items: center;
 }
 /* SearchBar Left to Right ani */
 .srp form{
@@ -452,6 +455,6 @@ body[google] .A8SBwf{
 .AC.sp-separator{
     margin-top: -20px;
 }
-#rso>div .IsZvec{
-    max-width: unset;
+div[jscontroller] a, div[jsname] a{
+    position: relative;
 }

@@ -22,6 +22,10 @@ body[baidu] .pagefoot.gj{
     left: 20%;
     width: 60%;
 }
+#wrapper #content_left{
+    margin: 0 auto !important;
+    padding-left: unset !important;
+}
 #wrapper  #content_left,#wrapper #container.sam_newgrid #rs, #wrapper #page{
     top: 35px;
     position:relative;

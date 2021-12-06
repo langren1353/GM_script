@@ -49,9 +49,8 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
 	grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
     grid-template-areas: "xmain xmain";
 }
-/*#rso>div:not(.g), #rso .srg{*/
-/*    grid-column-start: 1;*/
-/*    grid-column-end: xmain-end;*/
+/*#rso>div:not(.g):last-child, #rso .srg{*/
+/*    grid-column-start: span 2;*/
 /*}*/
 /**search box align center**/
 .srp form{
