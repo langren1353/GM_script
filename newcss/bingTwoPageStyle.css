@@ -7,7 +7,7 @@
     width: 73vw;
     grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
     grid-template-areas: "xmain xmain";
-    display: inline-grid;
+    display: grid;
 }
 #b_content #b_results>li:not(#mfa_root) {
     width:98%;

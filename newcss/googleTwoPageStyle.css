@@ -30,6 +30,7 @@
 }
 #main #cnt, #cnt #center_col, #cnt #foot{
     width: calc(54vw + 360px);
+    margin: 0 auto;
 }
 body #appbar,body .rhscol, body #top_nav, body #fbar{
     min-width: unset;

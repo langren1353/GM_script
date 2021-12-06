@@ -415,6 +415,9 @@ body .wrapper_new #head.fix-head .s_form{
 body.showRight #wrapper #content_right{
     display: unset;
 }
+.result-molecule #page >div{
+    width: unset;
+}
 #wrapper #content_left .c-container[tpl='recommend_list']{
     padding-top: 10px;
     display: flex;

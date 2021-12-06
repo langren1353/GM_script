@@ -43,7 +43,7 @@
 #links_wrapper .results--main #links{
     width: 80vw;
     /* This may cause Page failed */
-    display: inline-grid;
+    display: grid;
     grid-template-columns: 50% 50%;
     grid-template-areas: "xmain xmain";
 }

@@ -27,6 +27,10 @@ form.fm{
     left: 10%;
     width: 80%;
 }
+#wrapper #content_left, #container .result-molecule {
+    margin: 0 auto !important;
+    padding-left: unset !important;
+}
 #wrapper #header_top_bar{
     margin-bottom: 0px;
 }
@@ -34,7 +38,7 @@ body #container.sam_newgrid #content_left{
     width: 80%;
 }
 #wrapper #content_left{
-    display: inline-grid;
+    display: grid;
     grid-template-columns: 50% 50%;
     grid-template-areas: "xmain xmain";
     margin: 0 auto;
@@ -46,7 +50,7 @@ body #container.sam_newgrid #content_left{
     margin-bottom: 30px;
 }
 body[news] #wrapper #content_left>div:not([class]):not([id]){
-    display: inline-grid;
+    display: grid;
     grid-template-columns: 50% 50%;
     grid-template-areas: "xmain xmain";
 }
@@ -103,6 +107,10 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
     min-width: 800px;
     width: 40% !important;
     padding-left: 20px;
+}
+
+.result-molecule #page >div{
+    width: unset;
 }
 
 .new-pmd #rs_new {

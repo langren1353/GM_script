@@ -65,6 +65,7 @@ g-section-with-header{
 }
 #main #cnt, #cnt #center_col, #cnt #foot{
     width: calc(36.3vw + 525px);
+    margin: 0 auto;
 }
 @media screen and (max-width:1440px){
     .RNNXgb{

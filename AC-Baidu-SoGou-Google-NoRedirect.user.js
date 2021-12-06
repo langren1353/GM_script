@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    24.29
+// @version    25.01
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -42,38 +42,15 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2020, AC
-// @lastmodified  2021-11-02
+// @lastmodified  2021-12-06
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2021.12-06-V25.01 修复百度样式偏左 & 修复谷歌样式显示
 // @note    2021.10-31-V24.29 fixed Less requirement for faster Load
 // @note    2021.10-29-V24.27 移除必应能选择的广告；增加自定义样式less的支持
 // @note    2021.09-02-V24.26 修复必应多favicon，修复百度百科问题；修复谷歌一个小问题
 // @note    2021.07-16-V24.25 修复一个bug；兼容百度下搜索股票tag；
 // @note    2021.06-15-V24.24 更换cdn地址
-// @note    2021.04-12-V24.23 修复谷歌多列失效的问题 && 修复谷歌翻页失效 && 修复谷歌护眼问题
-// @note    2021.04-12-V24.21 修复谷歌搜索错位的问题 && 修复谷歌图片加载的问题 && 修复谷歌翻页的问题
-// @note    2021.02-10-V24.20 修复谷歌部分失效的问题 && 修复由于BA失效导致的脚本无效的问题
-// @note    2021.02-02-V24.19 数据本地缓存，一定程度上保证重装后数据不丢失 && 修复谷歌部分内容失效的问题
-// @note    2020.12-29-V24.18 调整侧边栏功能效果，优化双列显示效果，处理duckduck的样式
-// @note    2020.12-29-V24.17 调整谷歌、百度双列显示效果-各个分辨率；修复百度部分点击失效的问题；
-// @note    2020.12-22-V24.16 调整代码-减少致命异常；修复谷歌双列问题
-// @note    2020.12-19-V24.14 修复部分内核上百度多列显示的问题；修复谷歌多列的显示问题
-// @note    2020.12-18-V24.13 修复favicon在知乎上的排版问题；修复Duck样式无效的问题；修复最新谷歌双列失效的问题 - 尝试修复部分用户翻页失效问题；修复计数器编号异常的问题；更名尝试修复实效问题
-// @note    2020.10-19-V24.12 拦截时支持URL地址的匹配，调整favicon会影响标题文字选中的问题；修复谷歌拦截模式失效的问题，修复谷歌编号问题；修复必应图片偏右的问题
-// @note    2020.09-29-V24.11 针对百度律师函内容对脚本进行调整，扩展“百度优化”已经永久下线
-// @note    2020.09-27-V24.10 修复百度拦截模式的问题以及小地址尾注；修复好搜的拦截功能；修复部分样式问题
-// @note    2020.09-12-V24.09 修复翻页失效的问题；更新部分样式内容
-// @note    2020.09-11-V24.08 更换Vue的cdn地址，尽量加快数据的载入速度；为了兼容safari将百度的https地址替换为了http地址；修复favicon获取的问题；增加favicon动态刷新；修复部分样式问题
-// @note    2020.08-06-V24.07 修复保存无效的问题；修复百度在单列居中的时候错位的问题
-// @note    2020.08-05-V24.06 修复自定义偶尔打不开的问题；修复定时器可能会造成的失效的问题；修复当存在多个脚本可能造成的冲突问题
-// @note    2020.08-03-V24.05 更新修复护眼模式的问题；修复扩展上偶尔失效的问题；旧Edge似乎经常有保存不生效的问题，测试不是我的原因
-// @note    2020.08-02-V24.04 动态样式切换，多列效果一键切换，无需刷新 修复各种样式问题 修复必应翻页问题 测试兼容GM和VM.彻底不支持搜狗搜索--别问为什么，我还想多活几年
-// @note    2020.07-27-V24.2&3 更换Vue为75团的地址 修复百度的lite模式切换无效的问题
-// @note    2020.07-27-V24.01 更新支持Linux下的Firefox emm修复上次提交过于着急导致的样式未提交 更新支持DogeDoge多吉搜索-但不处理重定向
-// @note    2020.07-26-V24.00 部分内容更换为Vue初始化，减少一定的资源占用 && 新增DuckGoGo的样式效果 - 考虑到DuckGoGo的特性，不对其进行广告过滤
-// @note    2020.07-09-V23.33 修复bing的顶部切换错位的问题；增加ww1.baidu.com域；修复各种样式(百度、谷歌、好搜、必应)错位的问题
-// @note    2020.04-24-V23.32 版本倒退：安全起见：默认关闭搜狗的自定义域名拦截功能和重定向功能-以后考虑更换方式；默认不开启重定向功能、默认不开启广告拦截功能；更新部分说明内容；同时也对部分支持不到位的，兼容不好的效果向大家说一声抱歉，之后我会更加努力让搜索结果更加方便查看和使用
-// @note    2020.03-27-V23.31 修复google由于页面结构更新导致的block功能失效的问题，同时修复谷歌护眼模式也失效的问题。新增翻页的按钮事件，新增使用在线config，避免由于页面结构改动又需要重新提交脚本更新
-// @note    2017.05.12 -> 2020.03-26 && V8.6 -> V23.30 各种各样的历史更新记录，从一个版本迭代到另一个版本
+// @note    2017.05.12 -> 2021.06-15 && V8.6 -> V24.24 各种各样的历史更新记录，从一个版本迭代到另一个版本
 // @note    2017.05.12-V8.4 新增：默认屏蔽谷歌的安全搜索功能
 // @note    2017.05.05-V8.3 修复include范围太小导致的百度知道的屏蔽问题
 // @note    2017.05.04-V8.2 终于修复了百度知道图片替换了文字的这个大BUG; 顺便处理了superapi.zhidao.baidu.com; 新增谷歌搜索结果重定向去除
@@ -91,27 +68,28 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=24.26
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=24.26
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=24.26
-// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=24.26
-// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=24.26
-// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=24.26
-// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=24.26
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=24.26
-// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=24.26
-// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=24.26
-// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=24.26
-// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=24.26
-// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=24.26
-// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=24.26
-// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=24.26
-// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=24.26
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=24.26
-// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=24.26
+// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=25.01
+// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=25.012
+// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=25.012
+// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=25.01
+// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=25.01
+// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=25.01
+// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=25.01
+// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=25.01
+// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=25.01
+// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=25.01
+// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=25.01
+// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=25.01
+// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=25.01
+// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=25.01
+// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=25.01
+// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=25.01
+// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=25.01
+// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=25.01
 // @require https://cdn.staticfile.org/vue/2.6.11/vue.min.js
 // @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js
 // @require https://cdn.jsdelivr.net/npm/less_browser_fix@4.1.2/dist/less.js
+// @require https://greasyfork.org/scripts/130-portable-md5-function/code/Portable%20MD5%20Function.js?version=10066
 // @grant    GM_getValue
 // @grant    GM.getValue
 // @grant    GM_setValue
@@ -127,7 +105,6 @@
 // @grant    unsafeWindow
 // ==/UserScript==
 // calc(X1(vw) + X2(px)) -> B(px) 使用 http://www.yunsuan.info/matrixcomputations/solvelinearsystems.html 进行计算
-
 !function () {
   let isdebug = false;
   let isLocalDebug = isdebug || false;
@@ -982,7 +959,9 @@ body[baidu] .c-container h3{
                   BlockBtn.title = this.getBlockBtnTitle(curHost);
                 }
                 if (curNode.querySelector("button[ac-user-alter]") != null) continue; // 用户手动点过显示的，那么跳过check
-                let regList = vueVM.cal_UserBlockListRegex; // 使用Vue的computed属性计算的数据值，一般根本不更新
+                let { md5: md5_tag, list: regList = []} = vueVM.calc_block_data; // 使用Vue的computed属性计算的数据值，一般根本不更新
+                // 减少数据计算
+                if(curNode.dataset.md5 && curNode.data.md5 === md5_tag) break
                 if (!curUrl.includes("www.baidu.com/link") && regList.findIndex(one => {
                   try {
                     return one.test(curHost) || one.test(curUrl); // 耗时操作
@@ -1025,6 +1004,7 @@ body[baidu] .c-container h3{
                     curNode.querySelector(".blockShow").remove();
                   });
                 }
+                curNode.dataset.md5 = md5_tag
               } catch (e) {
               }
             }
@@ -1125,7 +1105,9 @@ body[baidu] .c-container h3{
                 ...AllData,
                 LiveConfig: {
                   css_has_error: false
-                }
+                },
+                resetCSS_text: '重置CSS',
+                calc_block_data: {}
               }
             },
             methods: {
@@ -1195,6 +1177,16 @@ body[baidu] .c-container h3{
               closePanel() {
                 document.querySelector("#sp-ac-content").style.display = 'none';
               },
+              resetCSS() {
+                if(this.resetCSS_text.includes('重置CSS')) {
+                  this.resetCSS_text = '确认重置'
+                  return
+                }
+                if(this.resetCSS_text.includes('确认重置')) {
+                  this.ACConfig.UserStyleText = DefaultConfig.UserStyleText
+                  this.resetCSS_text = '重置CSS'
+                }
+              },
               useThisHuyanColor(env) {
                 this.ACConfig.defaultHuYanColor = env.target.value || env.target.dataset.value;
                 console.log(this.ACConfig.defaultHuYanColor);
@@ -1214,7 +1206,7 @@ body[baidu] .c-container h3{
             computed: {
               getBlockList() { // 会自动的render到html上去，不用手动去渲染一遍
                 let insHTML = "";
-                let UserBlockRegList = this.cal_UserBlockListRegex;
+                let { list: UserBlockRegList } = this.cal_UserBlockListRegex;
                 for (let i = 0; i < this.ACConfig.UserBlockList.length; i++) {
                   let insClass = this.other.curHosts.findIndex(m => {
                     try {
@@ -1243,7 +1235,11 @@ body[baidu] .c-container h3{
                 if (typeof (this.other.addBlockItem) !== "undefined" && this.other.addBlockItem !== "") {
                   list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
                 }
-                return list;
+                this.calc_block_data = {
+                  md5: hex_md5(JSON.stringify(list)),
+                  list
+                };
+                return this.calc_block_data
               },
               AdsStyleModeChange() {
                 return {
@@ -2258,7 +2254,8 @@ body[baidu] .c-container h3{
                           <input id="sp-ac-userstyle" v-model="ACConfig.isUserStyleEnable" name="sp-ac-a_force" type="checkbox">
                           {{ lan.use.fieldset_panel.setting_panel.showUserStyle_text }}
                         </label>
-                        <label v-if="LiveConfig.css_has_error" style="color: red">error</label>
+                        <label v-if="LiveConfig.css_has_error" style="color: red; font-weight: bold;">error</label>
+                        <span class="sp-ac-spanbutton" @click="resetCSS" title="Reset CSS" v-text="resetCSS_text"></span>
                       </li>
                       <li>
                         <textarea id="sp-ac-userstyleTEXT" v-model="ACConfig.UserStyleText" @keyup="loadCustomStyle" @change="loadCustomStyle" @paste="loadCustomStyle" name="sp-ac-a_force" style="width:85%;height: 66px;margin-left:30px;" type="input" ></textarea>
@@ -2550,6 +2547,9 @@ body[baidu] .c-container h3{
             safeRemove_xpath("id('b_results')/li[./div[@class='ad_fls']]", true);
           } else if (curSite.SiteTypeID === SiteType.GOOGLE) {
             safeRemove("#bottomads");
+            safeFunction(function () {
+              $('div[aria-label="广告"]').remove();
+            });
           }
         }
 

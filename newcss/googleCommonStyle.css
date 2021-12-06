@@ -361,9 +361,6 @@ a:hover h3{
 #rso .g .exp-outline{
     display:none;
 }
-#main #rcnt #rhs {
-    margin-left: 1020px;
-}
 #res .g .ts{
     max-width: unset;
 }
@@ -457,4 +454,16 @@ body[google] .A8SBwf{
 }
 div[jscontroller] a, div[jsname] a{
     position: relative;
+}
+@media screen and (min-width: 1366px){
+    #main #rcnt #rhs {
+        padding-left: 40px;
+        margin-left: 800px;
+    }
+}
+@media screen and (min-width: 1920px){
+    #main #rcnt #rhs {
+        margin-left: 1300px;
+        padding-left: 40px;
+    }
 }

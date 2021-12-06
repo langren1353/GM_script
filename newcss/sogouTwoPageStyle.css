@@ -12,7 +12,7 @@
 }
 #main .results{
     width: 100%;
-    display: inline-grid;
+    display: grid;
     grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
     grid-template-areas: "xmain xmain";
 }
