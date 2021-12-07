@@ -5,11 +5,10 @@
 }
 #rso .jUmkFb:hover {
     margin-bottom: 30px;
-    margin-left: 20px;
 }
 #rso .g, .vk_c{
-    width: unset;
-    margin-left: 20px;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     padding: 10px 20px 15px;
     margin-top: 0px;
@@ -49,10 +48,19 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
 	display: grid;
 	grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
     grid-template-areas: "xmain xmain";
+    grid-gap: 20px !important;
+    justify-items: stretch;
+    align-items: stretch;
+    width: 100%;
 }
-/*#rso>div:not(.g):last-child, #rso .srg{*/
-/*    grid-column-start: span 2;*/
-/*}*/
+#rso>.g ~ div:not(.g){
+    margin-bottom: 10px;
+}
+.AC.sp-separator {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
 /**search box align center**/
 .srp form{
     margin:0 auto;

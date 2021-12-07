@@ -1,29 +1,38 @@
 /**Store GoogleTwoPageStyle**/
-#rso {
+#search #rso {
     position: relative;
     float: unset;
+    width: 800px;
+    margin: 0 auto;
+    align-items: stretch;
+    justify-items: stretch;
+    grid-gap: 20px;
 }
 #rso .jUmkFb:hover {
     margin-bottom: 30px;
     margin-left: 20px;
 }
 #rso .g{
-    width: unset;
-    margin-left: 20px;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     padding: 0px 20px 15px;
     margin-top: 0px;
-    margin-bottom: 30px;
     border-radius: 5px;
     background-color: #fff;
     box-sizing: border-box;
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
 }
+#rso>div {
+    width: 100%;
+}
 .search>#ires #rso>.g{
     max-width: unset;
 }
 #rso>.g ~ div:not(.g){
+    width: 100%;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 #main #rcnt{
     max-width: unset;
@@ -62,6 +71,15 @@ g-section-with-header{
 }
 #hdtb #hdtb-msb-vis{
     margin-left: -169px;
+}
+.AC.sp-separator {
+    margin-top: -20px;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.FxLDp{
+    padding: unset;
 }
 #main #cnt, #cnt #center_col, #cnt #foot{
     width: calc(36.3vw + 525px);

@@ -2978,7 +2978,7 @@ body[baidu] .c-container h3{
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
-            AC_addStyle(cssHead + "{grid-template-columns: repeat(2, minmax(50%,1fr));grid-template-areas:'xmain xmain';grid-column-gap: 1px;}.AC.sp-separator{grid-column-start: 1;grid-column-end: xmain-end;}",
+            AC_addStyle(cssHead + "{grid-template-columns: repeat(2, minmax(50%,1fr));grid-template-areas:'xmain xmain';}.AC.sp-separator{grid-column-start: 1;grid-column-end: xmain-end;}",
               "AC-TwoPageExStyle", "head");
           },
           // 加载三列样式
@@ -2990,7 +2990,7 @@ body[baidu] .c-container h3{
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
-            AC_addStyle(cssHead + "{grid-template-columns: repeat(3, minmax(33.3%,1fr));grid-template-areas:'xmain xmain xmain';grid-column-gap: 10px;}",
+            AC_addStyle(cssHead + "{grid-template-columns: repeat(3, minmax(33.3%,1fr));grid-template-areas:'xmain xmain xmain';}",
               "AC-ThreePageExStyle", "head");
           },
           // 加载四列样式
@@ -3002,7 +3002,7 @@ body[baidu] .c-container h3{
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
-            AC_addStyle(cssHead + "{grid-template-columns: repeat(4, minmax(25%,1fr));grid-template-areas:'xmain xmain xmain xmain';grid-column-gap: 1px;}",
+            AC_addStyle(cssHead + "{grid-template-columns: repeat(4, minmax(25%,1fr));grid-template-areas:'xmain xmain xmain xmain';}",
               "AC-FourPageExStyle", "head");
           },
           loadPlainToCSS: function () {

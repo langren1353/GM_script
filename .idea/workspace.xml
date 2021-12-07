@@ -31,16 +31,8 @@
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="简单更新-不知道是啥">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/dogeTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/dogeTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/duckTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/sogouTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouTwoPageStyle.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -430,64 +422,6 @@
     <MESSAGE value="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题" />
     <MESSAGE value="简单更新-不知道是啥" />
     <option name="LAST_COMMIT_MESSAGE" value="简单更新-不知道是啥" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="93" y="93" width="1862" height="926" key="DiffContextDialog" timestamp="1638803114749">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state x="93" y="93" width="1862" height="926" key="DiffContextDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1638803114749" />
-    <state width="2005" height="376" key="GridCell.Tab.0.bottom" timestamp="1638795897417">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897417" />
-    <state width="2005" height="376" key="GridCell.Tab.0.center" timestamp="1638795897417">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897417" />
-    <state width="2005" height="376" key="GridCell.Tab.0.left" timestamp="1638795897417">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897417" />
-    <state width="2005" height="376" key="GridCell.Tab.0.right" timestamp="1638795897417">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897417" />
-    <state width="2005" height="376" key="GridCell.Tab.1.bottom" timestamp="1638795897418">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.1.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897418" />
-    <state width="2005" height="376" key="GridCell.Tab.1.center" timestamp="1638795897417">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.1.center/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897417" />
-    <state width="2005" height="376" key="GridCell.Tab.1.left" timestamp="1638795897417">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.1.left/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897417" />
-    <state width="2005" height="376" key="GridCell.Tab.1.right" timestamp="1638795897417">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.1.right/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897417" />
-    <state width="2005" height="376" key="GridCell.Tab.2.bottom" timestamp="1638795897418">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.2.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897418" />
-    <state width="2005" height="376" key="GridCell.Tab.2.center" timestamp="1638795897418">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.2.center/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897418" />
-    <state width="2005" height="376" key="GridCell.Tab.2.left" timestamp="1638795897418">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.2.left/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897418" />
-    <state width="2005" height="376" key="GridCell.Tab.2.right" timestamp="1638795897418">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state width="2005" height="376" key="GridCell.Tab.2.right/0.0.2048.1112@0.0.2048.1112" timestamp="1638795897418" />
-    <state x="723" y="288" width="602" height="536" key="find.popup" timestamp="1638803175009">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state x="723" y="288" width="602" height="536" key="find.popup/0.0.2048.1112@0.0.2048.1112" timestamp="1638803175009" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand>
