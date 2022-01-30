@@ -13,7 +13,7 @@
     margin-left: 20px;
 }
 #rso .g{
-    width: 100%;
+    width: 100% !important;
     height: 100%;
     overflow: hidden;
     padding: 0px 20px 15px;

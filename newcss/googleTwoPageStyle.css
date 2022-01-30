@@ -7,7 +7,7 @@
     margin-bottom: 30px;
 }
 #rso .g, .vk_c{
-    width: 100%;
+    width: 100% !important;
     height: 100%;
     overflow: hidden;
     padding: 10px 20px 15px;

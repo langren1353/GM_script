@@ -1,6 +1,7 @@
 /**Store BaiduTowPageStyle**/
 #wrapper_wrapper #container {
     width: auto;
+    margin-left: unset;
 }
 form.fm{
     position: relative;

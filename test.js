@@ -1,257 +1,146 @@
 // ==UserScript==
-// @name         AC-购物党比价工具【精简版】
-// @namespace    none
-// @version      1.0
-// @description  AC-精简版购物党数据
-// @author       淘宝老司机
-// @include      http*://item.taobao.com/*
-// @include      http*://s.taobao.com/*
-// @include      http*://detail.tmall.com/item.htm*
-// @include      http*://detail.liangxinyao.com/item.htm*
-// @include      http*://chaoshi.detail.tmall.com/item.htm*
-// @include      http*://item.jd.com/*
-// @include      https://item.jd.hk/*
-// @include      https://detail.tmall.hk/*
-// @include      https://*.suning.com/*
-// @grant        GM_xmlhttpRequest
-// @connect      chenzelin.herokuapp.com
-// @connect      gwdang.com
-// @connect      alicdn.com
+// @name AC-美化百度-谷歌-必应-搜狗搜索结果之Favicon的显示
+// @namespace BlockKafanTopicinGoogle
+// @include        /^https?://www.baidu.com/.*/
+// @include        /^https?://www.sogou.com/.*/
+// @include        /^https?://\w+.bing.com/.*/
+// @include        /^https?://encrypted.google.[^\/]+/
+// @include        /^https?://www.google.[^\/]+/
+// @icon    https://coding.net/u/zb227/p/zbImg/git/raw/master/img0/icon.jpg
+// @author       AC
+// @version 0.5.6
+// @connect https?://[\S]+
+// @description 美化百度、谷歌、必应、搜狗的搜索结果，显示网站的favicon图标，看着更好看
+// @note 0.5.6 修复favicon的地址失效的问题
+// @note 0.5.5 修复在baidu下的部分小程序启用不正常的问题
+// @note 0.5.4 继续在以前的服务器中徘徊
+// @note 0.5.3 修复必应的部分 BUG 以及显示部分搜索为两个图标的问题
+// @note 0.5.1 由于谷歌的问题，赶紧换成 DOMNodeInserted 算了
+// @note 0.5.0 改个名字~
+// @note 0.4.9 顺带处理了搜狗搜索结果的favicon
+// @note 0.4.8 根据建议，扩大bing的正则匹配范围
+// @note 0.4.7 修复部分百度贴吧地址问题
+// @note 0.4.6 修复之前因为小程序而遗留的BUG
+// @note 0.4.5 切换错误的显示图标为另一个源的，避免taobaosvn显示错误
+// @note 0.4.4 修复部分百度搜索结果中小程序的显示异常问题
+// @note 0.4.3 修复部分谷歌地址搜索的结果问题，以及百度的小程序图标显示
+// @note 0.4.2 修复百度文库的图标显示两个的问题
+// @note 0.4.1 修复谷歌图标显示不出的问题，同时加了一个bing的搜索结果显示
+// @note 0.4.0 修复百度的各种图标丢失问题
+// @note http://bbs.kafan.cn/thread-2074740-1-1.html
+// @grant none
+// @license MIT
+
 // ==/UserScript==
-(function () {
-	var goodId = "";
-	// 提取url中的参数
-	function getUrlAttribute(attribute, needDecode) {
-		var searchValue = (window.location.search.substr(1) + "").split("&");
-		for (var i = 0; i < searchValue.length; i++) {
-			var key_value = searchValue[i].split("=");
-			var reg = new RegExp("^" + attribute + "$");
-			if (reg.test(key_value[0])) {
-				var searchWords = key_value[1];
-				return needDecode ? decodeURIComponent(searchWords) : searchWords;
-			}
+
+//===================================================普通规则变量定义=======================================================
+
+//===================================================主入口=======================================================
+var fatherName = [
+	"c-container", //baidu1
+	"rc", //google
+	"b_algo", //bing1
+	"b_ans", //bing2
+	"vrwrap", //sogou1
+	"rb"//sogou2
+];
+document.addEventListener('DOMNodeInserted', blockKafanBaidu, false);
+
+function blockKafanBaidu() {
+	var citeList;
+	if(location.hostname.indexOf("baidu") > -1 && location.hostname.indexOf("baidu") < 20){
+		citeList = document.querySelectorAll(".c-showurl");
+	}else if(location.hostname.indexOf("google") > -1  && location.hostname.indexOf("google") < 20){
+		citeList = document.querySelectorAll("._Rm");
+	}else if(location.hostname.indexOf("bing.com") > -1 && location.hostname.indexOf("bing") < 20){
+		citeList = document.querySelectorAll(".b_attribution>cite");
+	}else if(location.hostname.indexOf("sogou") > -1 && location.hostname.indexOf("sogou") < 20){
+		citeList = document.querySelectorAll("cite[id*='cacheresult_info_']");
+	}
+	deal(citeList);
+}
+
+// 传入nodelist，然后查找两个列，查看是否一致，一致则删除
+function deal(citeList){
+	for (var index = 0; index < citeList.length; index++) {
+		var url = replaceAll(citeList[index].innerHTML); // 只能通过这个来判定，因为url无法得知
+		if(null == citeList[index].getAttribute("deal")){
+			if(url === "") continue;
+			deal_fatherNode(citeList[index], getFaviconUrl(url));
 		}
 	}
-	function safeWaitFunc(selector, callbackFunc, time, notClear) {
-		time = time || 200;
-		notClear = notClear || false;
-		var doClear = !notClear;
-		var id = setInterval(function () {
-			var selectRes = document.querySelectorAll(selector);
-			if ((typeof (selector) == "string" && selectRes.length > 0)) {
-				if (doClear) clearInterval(id);
-				if(selectRes.length == 1) selectRes = selectRes[0];
-				callbackFunc(selectRes);
-			} else if ((typeof (selector) == "function" && selector().length > 0)) {
-				if (doClear) clearInterval(id);
-				callbackFunc(selector()[0]);
-			}
-		}, time);
-	}
-	function addStyle(css) { //添加CSS的代码--copy的--注意里面必须是双引号
-		var pi = document.createProcessingInstruction(
-			'xml-stylesheet',
-			'type="text/css" href="data:text/css;utf-8,' + encodeURIComponent(css) + '"'
-		);
-		return document.insertBefore(pi, document.documentElement);
-	}
-	function addScript(src) {
-		let node = document.createElement("script");
-		node.src = src;
-		node.charset = "UTF-8";
-		document.head.appendChild(node);
-	}
-
-	function init() {
-		function dealRes(json){
-			var allHide = "";
-			var yearHide = "";
-			var monthHide = "";
-			if (json.store[0].all_line == null) {
-				allHide = "style='display: none;'";
-			}
-			if (json.store[0].year_line == null) {
-				yearHide = "style='display: none;'";
-			}
-			if (json.store[0].month_line == null) {
-				monthHide = "style='display: none;'";
-			}
-			var ddata;
-			if (json.store.length > 1) {
-				ddata = json.store[1].all_line;
-			}
-
-			var ddata;
-			if (json.store.length > 1) {
-				ddata = json.store[1].all_line;
-			}
-
-			let pdata = json.store[0].all_line;
-			let pbeginTime = json.store[0].all_line_begin_time;
-			let picdata = ddata;
-
-			var hml = "<div   style='margin-left:50px;margin-top:20px;display: block;'><a class='active-plot type-plot' " + allHide + " id='plotAll'>全部</a><a class='type-plot' " + yearHide + " id='plotYear'>年线</a><a class='type-plot' " + monthHide + " id='plotMonth'>月线</a>";
-			hml = hml + "<div id='hisprice' style='width: 720px;height:350px;margin: 0;padding: 0'></div>";
-
-			return `
-<html>
-<head>
-<meta charset="gbk" />
-<meta name="renderer" content="webkit"/>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
-</head>
-<TITLE>历史价格</TITLE>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.3.0/echarts.min.js"></script>
-<BODY BGCOLOR=#ffffff>
-${hml}
-</BODY>
-<script>
-var pChart = echarts.init(document.getElementById('hisprice'));
-showPrice();
-function showPrice() {
-var data =[${pdata}];
-var beginTime =${pbeginTime};
-var picdata =[${picdata}];
-var dt = [];
-for (var i = 0; i < data.length; i++) {
-var d = new Date(beginTime);
-d.setDate(d.getDate() + i);
-dt.push(d.toLocaleDateString());
 }
 
-// 指定图表的配置项和数据
-var option = {
+function deal_fatherNode(node, faviconUrl){
+	//https://api.byi.pw/favicon/?url=???? 不稳定
+	//http://"+faviconUrl+"/cdn.ico?defaulticon=http://soz.im/favicon.ico 不稳定
+	//https://www.xtwind.com/api/index.php?url=???? 挂了。。。
+	//https://statics.dnspod.cn/proxy_favicon/_/favicon?domain=sina.cn
+	// 如果地址不正确，那么丢弃
 
-tooltip: {
-enterable: true,
-trigger: 'axis',
-formatter: function (params) {
-
-return params[0].axisValue + "<br/>" + params[0].data;
-},
-axisPointer: {
-animation: false
-}
-},
-legend: {
-data: ['页面价', '到手价'],
-selected: {
-'页面价': true,
-'到手价': true
-
-}
-
-},
-xAxis: {
-data: dt,
-splitArea: { show: false },
-boundaryGap: false,
-splitLine: {
-show: true,
-
-},
-axisLabel: {
-
-interval: parseInt((data.length) / 10),
-formatter: function (value) {
-
-return value.substring(5);
-}
-},
-},
-yAxis: {
-splitArea: { show: false },
-splitLine: {
-show: true,
-
-}
-},
-series: [{
-name: '页面价',
-type: 'line',
-data: data,
-showSymbol: false,
-hoverAnimation: false,
-markPoint: {
-symbol: 'pin',
-
-data: [
-{ type: 'max', name: '最大值' },
-{ type: 'min', name: '最小值' }
-]
-},
-markLine: {
-data: [
-{ type: 'average', name: '平均值' }
-]
-}
-},
-{
-name: '到手价',
-type: 'line',
-data: picdata,
-showSymbol: false,
-hoverAnimation: false,
-markPoint: {
-symbol: 'pin',
-
-data: [
-{ type: 'max', name: '最大值' },
-{ type: 'min', name: '最小值' }
-]
-},
-markLine: {
-data: [
-{ type: 'average', name: '平均值' }
-]
-}
-}
-]
-};
-
-
-pChart.setOption(option);
-};
-</script>
-</html>
-`
+	var curNode = node;
+	for(II = 0; II <= 5; II++){
+		curNode = curNode.parentNode;
+		if(isInUrlList(curNode.className)){
+			break;
 		}
-		function opWind(purl, pisweb, pname, phml) {
-			var url = purl;
-			var name = pname;
-			var iWidth = 800;
-			var iHeight = 450;
-			var iTop = (window.screen.height - 30 - iHeight) / 2;
-			var iLeft = (window.screen.width - 10 - iWidth) / 2;
-			var OpenWindow = window.open(url, name, 'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
-			if (pisweb == 0) {
-				OpenWindow.document.write(phml);
-				OpenWindow.document.close();
-				OpenWindow.focus();
-			}
-		}
-		GM_xmlhttpRequest({
-			url: "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(location.href),
-			method: 'GET',
-			timeout: 10000,
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'Cache-Control': 'public'
-			},
-			onload: function (res) {
-				const json = JSON.parse(res.responseText)
-				if (json.is_ban == null) {
-					console.log(json);
-
-					let data = dealRes(json);
-					opWind('', 0, '比价', data);
-				} else {
-					console.log(json.action.to);
-					opWind(json.action.to, '1', '请验证后刷新页面！', '');
-				}
-			}
-		});
 	}
-	init();
-})()
+	if(II <= 5){
+		var pos = curNode.innerHTML.indexOf("fav-url");
+		pos = (pos===-1) ? curNode.innerHTML.indexOf("favurl"):pos;
+		pos = (pos===-1) ? curNode.innerHTML.indexOf("tit-ico"):pos;
+		pos = (pos===-1) ? curNode.innerHTML.indexOf("c-gap-icon-right-small\""):pos;
+		pos = (pos===-1) ? curNode.innerHTML.indexOf("img_fav rms_img"):pos;
+		pos = (pos===-1) ? curNode.innerHTML.indexOf("c-tool-"):pos;
+		//他自己已经做了favicon了
+		if(pos > 0)
+			return;
+		if(faviconUrl === "") return;
+
+		var imgHTML = "<img class=\"faviconT\" style=\"vertical-align:sub;\" src='https://favicon.yandex.net/favicon/v2/"+faviconUrl+"?size=32' height=20 width=20>&nbsp;";
+
+		//var errorUrl = "onerror=\"this.src='http://code.remix.ac.cn/favicon.ico'\"";
+		//var imgHTML = "<img class=\"faviconT\" style=\"vertical-align:sub;\" src=\"http://www.google.cn/s2/favicons?domain="+faviconUrl+"\" height=20 width=20 " + errorUrl + "/>&nbsp;";
+		var insNode = curNode.firstChild;
+		if(insNode.length > 0){ //如果是false，那么就是正常节点，否则为文字节点
+			insNode = curNode.childNodes[1];
+		}
+		if(insNode.innerHTML.indexOf("class=\"faviconT") > 0) {
+			node.setAttribute("deal", "1"); return;
+		}
+		insNode.innerHTML = imgHTML + insNode.innerHTML;
+		node.setAttribute("deal", "1");
+	}
+}
+/*去掉网址中的<xxx>*/
+function replaceAll(sbefore){
+	return sbefore;
+	// const result = sbefore.split('-');
+	// if(location.hostname.indexOf("sogou") > -1 && location.href.indexOf("sogou") < 20){
+	// 	// --搜狗专用；如果第一个是中文的话，地址就是第二个
+	// 	sbefore = result[1];
+	// }
+	// cosnt send = sbefore.replace(/(\/[^/]*|\s*)/g ,"").replace(/<[^>]*>/g, ""); //.replace(/<?[^>]*?\s*>?/g ,"");
+	// // console.log(send);
+	// return send;
+}
+function getFaviconUrl(citeUrl){
+	return citeUrl.replace(/[^.]+\.([^.]+)\.([^.]+)/, "$1.$2")
+	// var result = citeUrl.split('- ');
+	// if(location.hostname.indexOf("sogou") > -1 && location.href.indexOf("sogou") < 20){
+	// 	// --搜狗专用；如果第一个是中文的话，地址就是第二个
+	// 	citeUrl = result[1];
+	// }
+	// citeUrl = citeUrl.replace(/https?:\/\//g,"").replace(/<\/?strong>/g,"").replace(/<\/?b>/g,"")
+	// 	.replace(/<?>?/g,"").replace(/( |\/).*/g,"");
+	// //return citeUrl+"/favicon.ico";
+	// return citeUrl;
+}
+function isInUrlList(url){
+	for(let i = 0; i < fatherName.length; i++){
+		if(url.indexOf(fatherName[i]) >= 0){
+			return true;
+		}
+	}
+	return false;
+}

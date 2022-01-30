@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2018-08-16
 // @run-at          document-start
-// @version         3.85
+// @version         3.90
 // @include         *//www.iqiyi.com/v_*
 // @include         *//www.iqiyi.com/w_*
 // @include         *//v.youku.com/v_show/*
@@ -34,12 +34,13 @@
 // @include         *//uland.taobao.com/coupon/*
 // @connect         gm.ntaow.com
 // @connect         open.lesiclub.cn
+// @antifeature referral-link 含有优惠券地址以及对应的返利链接
 // @license         GPL-3.0-only
 // @grant           GM_xmlhttpRequest
-// @supportURL      https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
-// @feedback-url    https://qm.qq.com/cgi-bin/qm/qr?k=fOg8ij6TuwOAfS8g16GRYNf5YYFu5Crw&jump_from=&auth=-l05paasrPe5zigt5ahdzn_dzXiB1jJ_
 // @copyright       2018, AC
-// @lastmodified    2020.11.10
+// @lastmodified    2022.01.29 优化腾讯视频的地址
+// @note            2022.01.29 修复代码不能使用的问题
+// @note            2021.10.31 优化代码结构 & 优化代码执行周期，减少资源占用
 // @note            2020.08.08 更新支持部分网站内容
 // @note            2019.11.14 更新-修复无法全屏的bug，加快网站打开速度
 // @note            2019.11.09 再次切换镜像，这次应该能打开了
@@ -52,7 +53,7 @@
 (function(){
 	var mCurSite = null;
 	var isDebug = false;
-	var debugX = isDebug?console.log.bind(console):function(){};
+	var debugX = isDebug ? console.log.bind(console): () => {};
 	var Config = {
 		iqiyi:{
 			// 爱奇艺视频 https://www.iqiyi.com/v_19rrfq5ajk.html
@@ -63,7 +64,7 @@
 			// title 标题文字内容获取
 			insertTo:".mod-play-tit, .title-score, .side-content>.qy-play-list .main-title, .public-vip .public-vip-text,.qy-player-detail .qy-player-title, .qy-play-feed-top .feed-title-box h1",
 			adStyle:".pw-video>div[data-cupid]>div[style*='position']{display:none !important}",
-			sStyle:"width: 5rem;",
+			sStyle:"width: 5rem; pading: 1px",
 			title:".detail-left #widget-videotitle",
 		},
 		youku:{
@@ -84,7 +85,7 @@
 		v_qq:{
 			// 腾讯视频 https://v.qq.com/x/cover/au757x4acdk6jea.html
 			// https://v.qq.com/x/page/q0390tz0d2o.html
-			insertTo:".mod_intro>.video_base, .scroll_top .player_title, .tvip_open_wrap .tvip_open_lf>.tvip_open_btn",
+			insertTo:".mod_intro>.video_base, .scroll_top .player_title, .tvip_open_wrap .tvip_open_lf>.tvip_open_btn, .txp_ad_skip",
 			adStyle:"",
 			sStyle:"height: 36px;line-height: 36px;margin: 0px 5px;font-size: 24px;width: 6rem;",
 			title:".player_headline ._video_title",
@@ -183,10 +184,10 @@
 		}
 	};
 	function initSite(){
-		for(var key in Config){
+		for(const [key, value] of Object.entries(Config)) {
 			if(location.host.replace(/\./ig, "_").indexOf(key) >= 0){
 				debugX("当前站点："+key);
-				mCurSite = Config[key];
+				mCurSite = value;
 				mCurSite.name = key;
 				break;
 			}
@@ -194,41 +195,41 @@
 	}
 	function safeRemove(node){
 		try{
-			faNodes[i].querySelector(".acInG").remove();
+			node.remove();
 		}catch (e) {}
 	}
 	function TU_addStyle(css, className, addToTarget, isReload){ // 添加CSS代码，不考虑文本载入时间，带有className
 		var tout = setInterval(function(){
 			addToTarget = addToTarget || "body";
 			isReload = isReload || false;
-			if(document.querySelector(addToTarget) != null){
+			if(document.querySelector(addToTarget) !== null){
 				clearInterval(tout);
-				if(isReload == true){
+				if(isReload === true){
 					safeRemove(document.querySelector("."+className));
-				}else if(isReload == false && document.querySelector("."+className) != null){
+				}else if(isReload === false && document.querySelector("."+className) !== null){
 					// 节点存在 && 不准备覆盖
 					return;
 				}
-				var cssNode = document.createElement("style");
-				if(className != null) cssNode.className = className;
-				cssNode.id = "AC-"+className;
+				const cssNode = document.createElement("style");
+				if(className !== null) cssNode.className = className;
+				cssNode.id = "AC-" + className;
 				cssNode.setAttribute("type", "text/css")
 				cssNode.innerHTML = css;
 				try{
 					document.querySelector(addToTarget).appendChild(cssNode);
 				}catch (e){console.log(e.message);}
 			}
-		}, 50);
+		}, 100);
 	}
 	function getTrueUrl(){
-		var oriUrl = location.href;
+		let oriUrl = location.href;
 		try{
-			var oriText = $(".player>embed").attr("src")
+			const oriText = $(".player>embed").attr("src")
 				|| $(".article__video iframe").attr("src") // lolshipin
 				|| $("input[id='fe_text']").attr("value")	//飞熊视频
 				|| "vid="+$(".txp_value[data-role='txp-ui-console-vid']").text()
 			;
-			if(typeof(mCurSite.source) != "undefined" && mCurSite.source == "qq"){
+			if(typeof(mCurSite.source) !== "undefined" && mCurSite.source === "qq"){
 				oriUrl = /vid=([^&]+)/.exec(oriText)[1];
 				oriUrl = "https://v.qq.com/x/page/"+oriUrl+".html"
 			}
@@ -242,14 +243,14 @@
 	 * 执行站点VIP解析插入操作
 	 */
 	function doInsert(){
-		if(mCurSite == null) return;
+		if(mCurSite === null) return;
 		TU_addStyle(mCurSite.adStyle, "tu-ad-style-remove"); // 添加部分拦截广告的规则
-		var insertNode = document.createElement("span");
+		const insertNode = document.createElement("span");
 		insertNode.style = ";background-color:#fff700;width: 4.5rem;cursor: pointer; text-decoration: none; color: red; padding: 0px 5px; border: 1px solid red; font-size: 17px; display: inline-flex; height: 24px; line-height: 24px; margin: 0px 5px;" + mCurSite.sStyle;
 		insertNode.innerHTML = "VIP解析";
 		insertNode.target = "_balnk";
 		insertNode.className = "acInG";
-		var title = "";
+		let title = "";
 		try{
 			title = document.querySelector(mCurSite.title).innerText.split("   ")[0].trim();
 			title = encodeURIComponent(title);
@@ -259,17 +260,17 @@
 			debugX(e);
 		}
 		title = title.replace(/VIP解析$/, "");
-		var url = "https://thinkibm.now.sh/?url=" + getTrueUrl() + "&title=" + title;
+		const url = "https://thinkibm.vercel.app/?url=" + getTrueUrl() + "&title=" + title;
 		insertNode.dataset.url = url;
 		insertNode.setAttribute("onclick", "window.open(this.dataset.url);");
-		var faNodes = document.querySelectorAll(mCurSite.insertTo);
-		for(var i = 0; i < faNodes.length; i++){
-			if(faNodes[i].querySelector(".acInG:not([title])") == null){
+		let faNodes = document.querySelectorAll(mCurSite.insertTo);
+		for(let i = 0; i < faNodes.length; i++){
+			if(faNodes[i].querySelector(".acInG:not([title])") === null){
 				debugX("新增按钮");
 				safeRemove(faNodes[i].querySelector(".acInG"));
 				faNodes[i].appendChild(insertNode.cloneNode(true));
 				faNodes[i].setAttribute("acIns", "");
-				if(title != "") {
+				if(title !== "") {
 					faNodes[i].setAttribute("title", title);
 				}
 			}else{
@@ -280,10 +281,10 @@
 	debugX("数据初始化");
 	initSite();
 	(function(){
-		TU_addStyle(".acInG:hover{color: rgba(255,200,0,30) !important;border: 1px dashed rgba(255,200,100,10) !important;text-shadow: 0 0px rgba(242,33,49,30),0 0px 0px rgba(242,33,49,30),0 1px 1px rgba(242,33,49,30),1px 0 1px rgba(242,33,49,30),-1px 0 1px rgba(242,33,49,30),0 0 1px rgba(242,33,49,30) !important;}");
+		TU_addStyle(".acInG:hover{border: 1px dashed rgba(255,200,100,10) !important;color: rgba(255,200,0,30) !important;text-shadow: 0 0px rgba(242,33,49,30),0 0px 0px rgba(242,33,49,30),0 1px 1px rgba(242,33,49,30),1px 0 1px rgba(242,33,49,30),-1px 0 1px rgba(242,33,49,30),0 0 1px rgba(242,33,49,30) !important;}");
 		document.addEventListener('DOMNodeInserted', function (e) {
 			debugX("html文档载入完成");
-			if(e.target != null && e.target.className != null && e.target.id.indexOf("AC-") == 0){ return; } //屏蔽掉因为增加css导致的触发insert动作
+			if(e.target !== null && e.target.className !== null && e.target.id.indexOf("AC-") === 0){ return; } //屏蔽掉因为增加css导致的触发insert动作
 			doInsert();
 		}, false);
 	})();

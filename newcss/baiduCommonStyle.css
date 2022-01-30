@@ -266,6 +266,10 @@ form.fm .s_btn:hover {
 #wrapper #content_left .c-group-wrapper{
     padding: 30px;
     margin: 0 0 20px 0;
+    min-width: 610px;
+}
+#wrapper #content_left .c-group-wrapper .c-container{
+    min-width: unset;
 }
 #wrapper #content_left .c-group-wrapper .c-group{
     margin: 0;

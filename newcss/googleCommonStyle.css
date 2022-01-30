@@ -94,7 +94,7 @@ a:hover h3{
     animation-name: ani_bottomTotop;
     animation-duration: .3s;
     animation-timing-function: ease;
-    justify-items: center;
+    /*justify-items: center;*/
 }
 /* SearchBar Left to Right ani */
 .srp form{
@@ -428,8 +428,8 @@ div.rc[ac-needhide]{
     margin-bottom: -15px;
 }
 /*reset logo position at drop */
-.logo{
-    top:unset;
+.logo.baidu{
+    top: -20px;
 }
 body[google] .big .baidu{
     transform: unset !important;

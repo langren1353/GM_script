@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    25.01
+// @version    25.02
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -44,6 +44,7 @@
 // @copyright  2015-2020, AC
 // @lastmodified  2021-12-06
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2022.01-29-V25.02 修复谷歌、百度、必应的部分样式错位的问题
 // @note    2021.12-06-V25.01 修复百度样式偏左 & 修复谷歌样式显示
 // @note    2021.10-31-V24.29 fixed Less requirement for faster Load
 // @note    2021.10-29-V24.27 移除必应能选择的广告；增加自定义样式less的支持
@@ -68,27 +69,28 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=25.01
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=25.012
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=25.012
-// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=25.01
-// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=25.01
-// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=25.01
-// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=25.01
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=25.01
-// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=25.01
-// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=25.01
-// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=25.01
-// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=25.01
-// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=25.01
-// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=25.01
-// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=25.01
-// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=25.01
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=25.01
-// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=25.01
-// @require https://cdn.staticfile.org/vue/2.6.11/vue.min.js
-// @require https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js
-// @require https://cdn.jsdelivr.net/npm/less_browser_fix@4.1.2/dist/less.js
+// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=25.021
+// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=25.021
+// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=25.021
+// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=25.021
+// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=25.021
+// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=25.021
+// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=25.021
+// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=25.021
+// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=25.021
+// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=25.021
+// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=25.021
+// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=25.021
+// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=25.021
+// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=25.021
+// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=25.021
+// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=25.021
+// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=25.021
+// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=25.021
+// @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
+// @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
+// @require https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.14/vue.min.js
+// @require https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/less.js/4.1.2/less.min.js
 // @require https://greasyfork.org/scripts/130-portable-md5-function/code/Portable%20MD5%20Function.js?version=10066
 // @grant    GM_getValue
 // @grant    GM.getValue
@@ -1776,76 +1778,80 @@ body[baidu] .c-container h3{
         function rapidDeal() {
           try {
             if (insertLocked === false && curSite.SiteTypeID !== SiteType.OTHERS) {
-              insertLocked = true;
-              ACHandle(); // 处理主重定向
-              if (ACConfig.isFaviconEnable && typeof(curSite.FaviconType) !== 'undefined') { // 显示favicon图标
-                AC_addStyle("h3::before, h2::before {content: ' ';display:inline-block}", "AC-Style-Favicon", "head");
-                addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
-              }else{
-                safeRemove("img.AC-faviconT");
-                document.querySelectorAll(curSite.FaviconType).forEach((one) => {
-                  one.removeAttribute("ac_faviconstatus");
-                })
-              }
-              // 动态下划线
-              if (!ACConfig.isALineEnable) {
-                AC_addStyle("a,a em{text-decoration:none !important}", "AC-NoLine", "body");// 移除这些个下划线
-              } else{
-                safeRemove("style[class='AC-NoLine']")
-              }
-              if (ACConfig.isAdsEnable) { // 移除多余的广告内容
-                removeAD_baidu_sogou();
-              }
-              if (ACConfig.isCounterEnable) { // 显示计数器
-                addCounter(document.querySelectorAll(curSite.CounterType));
-              }else{
-                document.querySelectorAll(".AC-CounterT").forEach(one => {
-                  one.parentElement.removeAttribute('SortIndex');
-                  one.remove()
-                })
-              }
-              if (ACConfig.doDisableSug) { // 不启用移动预测[默认]
-                acSetCookie("ORIGIN", 2, "www.baidu.com");
-                acSetCookie("ISSW", 1);
-                acSetCookie("ISSW", 1, "www.baidu.com");
-              }
-              // if(CONST.useItem.HuYanMode === false && document.querySelector("style[class*='darkreader']") != null) {
-              //   CONST.useItem.HuYanMode = true;
-              // }
-              if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
-                SiteBlock.initStyle();
-                SiteBlock.init();
-              }
-              if(document.body){
-                if (!ACConfig.isRightDisplayEnable) { // 右侧栏显示
-                  document.body.classList.remove("showRight")
-                } else {
-                  document.body.classList.add("showRight")
+              try{
+                insertLocked = true;
+                ACHandle(); // 处理主重定向
+                if (ACConfig.isFaviconEnable && typeof(curSite.FaviconType) !== 'undefined') { // 显示favicon图标
+                  AC_addStyle("h3::before, h2::before {content: ' ';display:inline-block}", "AC-Style-Favicon", "head");
+                  addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
+                }else{
+                  safeRemove("img.AC-faviconT");
+                  document.querySelectorAll(curSite.FaviconType).forEach((one) => {
+                    one.removeAttribute("ac_faviconstatus");
+                  })
                 }
-              }
-              if (curSite.SiteTypeID === SiteType.GOOGLE) {
-                let nodeList = document.querySelectorAll("#rso")
-                const isSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
-                if(isSpecial !== CONST.isGoogleSpecial && CONST.isGoogleSpecial === false) {
+                // 动态下划线
+                if (!ACConfig.isALineEnable) {
+                  AC_addStyle("a,a em{text-decoration:none !important}", "AC-NoLine", "body");// 移除这些个下划线
+                } else{
+                  safeRemove("style[class='AC-NoLine']")
+                }
+                if (ACConfig.isAdsEnable) { // 移除多余的广告内容
+                  removeAD_baidu_sogou();
+                }
+                if (ACConfig.isCounterEnable) { // 显示计数器
+                  addCounter(document.querySelectorAll(curSite.CounterType));
+                }else{
+                  document.querySelectorAll(".AC-CounterT").forEach(one => {
+                    one.parentElement.removeAttribute('SortIndex');
+                    one.remove()
+                  })
+                }
+                if (ACConfig.doDisableSug) { // 不启用移动预测[默认]
+                  acSetCookie("ORIGIN", 2, "www.baidu.com");
+                  acSetCookie("ISSW", 1);
+                  acSetCookie("ISSW", 1, "www.baidu.com");
+                }
+                // if(CONST.useItem.HuYanMode === false && document.querySelector("style[class*='darkreader']") != null) {
+                //   CONST.useItem.HuYanMode = true;
+                // }
+                if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
+                  SiteBlock.initStyle();
+                  SiteBlock.init();
+                }
+                if(document.body){
+                  if (!ACConfig.isRightDisplayEnable) { // 右侧栏显示
+                    document.body.classList.remove("showRight")
+                  } else {
+                    document.body.classList.add("showRight")
+                  }
+                }
+                if (curSite.SiteTypeID === SiteType.GOOGLE) {
+                  let nodeList = document.querySelectorAll("#rso")
+                  const isSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
+                  if(isSpecial !== CONST.isGoogleSpecial && CONST.isGoogleSpecial === false) {
                     CONST.isGoogleSpecial = true
                     safeRemove("style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle']");
                     acCssLoadFlag = false;
-                    CONST.StyleManger.init();
-                }
-                if(nodeList.length > 0) {
-                  nodeList.forEach((node) => {
-                    if (CONST.isGoogleSpecial) {
-                      node.style.display !== 'grid' ? node.style.display = 'grid': ''
-                    } else {
-                      node.style.display !== 'unset' ? node.style.display = 'unset': ''
-                    }
+                    CONST.StyleManger.init && CONST.StyleManger.init();
+                  }
+                  if(nodeList.length > 0) {
+                    nodeList.forEach((node) => {
+                      if (CONST.isGoogleSpecial) {
+                        node.style.display !== 'grid' ? node.style.display = 'grid': ''
+                      } else {
+                        node.style.display !== 'unset' ? node.style.display = 'unset': ''
+                      }
+                    })
+                  }
+
+                  // 特殊元素一行处理
+                  document.querySelectorAll("#rso>div:not(.g)>div[jsmodel]").forEach(one => {
+                    one.parentNode.style.display = "unset"
                   })
                 }
-
-                // 特殊元素一行处理
-                document.querySelectorAll("#rso>div:not(.g)>div[jsmodel]").forEach(one => {
-                  one.parentNode.style.display = "unset"
-                })
+              }catch (e){
+                console.error(e)
               }
               setTimeout(function () {
                 insertLocked = false;
