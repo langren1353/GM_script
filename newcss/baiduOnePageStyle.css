@@ -122,11 +122,13 @@ form.fm .s_ipt_wr.bg{
 }
 
 .result-molecule.new-pmd {
-    margin: 0 auto;
     min-width: 800px;
     width: 40% !important;
     margin-top: 6px;
-    padding-left: 20px;
+    padding-left: 0 !important;
+
+    transform: translateX(-50%);
+    margin-left: 50% !important;
 }
 
 .new-pmd #rs_new {
@@ -136,6 +138,7 @@ form.fm .s_ipt_wr.bg{
 }
 .result-molecule #page >div{
     width: unset;
+    padding-left: unset;
 }
 
 .new-pmd #rs_new table{

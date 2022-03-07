@@ -111,6 +111,7 @@ form.fm .s_btn:hover {
 #wrapper #content_left>.c-container:hover,
 #wrapper #content_left>.result:hover,
 #wrapper #content_left>.c-container:hover article{
+    background-color: #FCFCFC !important;
     border: 1px solid rgba(0,0,0,.3);
     box-shadow: 0 0 1px grey;
     -webkit-box-shadow: 0 0 1px grey;

@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    25.02
+// @version    25.04
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -44,6 +44,7 @@
 // @copyright  2015-2020, AC
 // @lastmodified  2021-12-06
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2022.03-07-V25.04 修复谷歌、必应样式问题；修复并优化拦截功能
 // @note    2022.01-29-V25.02 修复谷歌、百度、必应的部分样式错位的问题
 // @note    2021.12-06-V25.01 修复百度样式偏左 & 修复谷歌样式显示
 // @note    2021.10-31-V24.29 fixed Less requirement for faster Load
@@ -69,28 +70,28 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=25.021
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=25.021
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=25.021
-// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=25.021
-// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=25.021
-// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=25.021
-// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=25.021
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=25.021
-// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=25.021
-// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=25.021
-// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=25.021
-// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=25.021
-// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=25.021
-// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=25.021
-// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=25.021
-// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=25.021
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=25.021
-// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=25.021
+// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=25.04
+// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=25.04
+// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=25.04
+// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=25.04
+// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=25.04
+// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=25.04
+// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=25.04
+// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=25.04
+// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=25.04
+// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=25.04
+// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=25.04
+// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=25.04
+// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=25.04
+// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=25.04
+// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=25.04
+// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=25.04
+// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=25.04
+// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=25.04
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
-// @require https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.14/vue.min.js
-// @require https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/less.js/4.1.2/less.min.js
+// @require https://lib.baomitu.com/vue/2.6.14/vue.min.js
+// @require https://lib.baomitu.com/less.js/4.1.2/less.min.js
 // @require https://greasyfork.org/scripts/130-portable-md5-function/code/Portable%20MD5%20Function.js?version=10066
 // @grant    GM_getValue
 // @grant    GM.getValue
@@ -99,7 +100,6 @@
 // @grant    GM_addStyle
 // @grant    GM_getResourceURL
 // @grant    GM_listValues
-// @grant    GM_getResourceUrl
 // @grant    GM.getResourceUrl
 // @grant    GM_xmlhttpRequest
 // @grant    GM_getResourceText
@@ -221,41 +221,75 @@
 div .AC-CounterT{
   background: #FD9999;
 }
-/**右侧栏的样式-其实不开启更好看一些*/
-#content_right{
-  padding: 20px 15px 15px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-sizing: border-box;
-  box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-  -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-  -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
-}
+/**百度样式区域**/
 body[baidu] {
   position: relative;
+  
+  /**右侧栏的样式-其实不开启更好看一些*/
+  #content_right{
+    padding: 20px 15px 15px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
+  }
+
+  &:before{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    content: '';
+    background-image: url('https://img.tujidu.com/image/620210010b2cd.jpg');
+    background-size: 100% auto;
+    opacity: 0.6; /*背景图透明度=0.8，最大1*/
+  }
+  
+  /**隐藏首页的大图标-修复可能导致外援样式异常**/
+  #s_lg_img_new{
+    display:none !important;
+  }
+  
+  .c-container{
+    border-radius: 5px;
+    background-color: rgba(255,255,255, 0.6) !important; /*百度搜索块体的颜色；透明度=0.1，最大1*/
+    
+    h3{
+      background-color: rgba(248,248,248, 0.6) !important; /*百度搜索块体 - 标题的颜色；透明度=0.1，最大1*/
+    }
+  }
 }
-body[baidu]:before {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  content: '';
-  background-image: url('https://img.tujidu.com/image/5fdde8468423e.jpg');
-  background-size: 100% auto;
-  opacity: 1; /*背景图透明度=0.8，最大1*/
+body[google] {
+
+  &:before {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    content: '';
+    background-image: url('https://img.tujidu.com/image/620210010b2cd.jpg');
+    background-size: 100% auto;
+    opacity: 0.8; /*背景图透明度=0.8，最大1*/
+  }
+  
+  #rso .g, .sfbg, .f6F9Be, .k8XOCe {
+    background-color: rgba(248,248,248, 0.6) !important; 
+  }
+  
+  .sfbg{
+    margin-top: -10px;
+  }
+  
+  .yg51vc{
+    background-color: transparent !important; 
+  }
 }
-/**隐藏首页的大图标-修复可能导致外援样式异常**/
-body[baidu] #s_lg_img_new{
-  display:none !important;
-}
-body[baidu] .c-container{
-  border-radius: 5px;
-  background-color: rgba(255,255,255, 0.3) !important; /*百度搜索块体的颜色；透明度=0.1，最大1*/
-}
-body[baidu] .c-container h3{
-  background-color: rgba(248,248,248, 0.3) !important; /*百度搜索块体 - 标题的颜色；透明度=0.1，最大1*/
-}`,
+
+`,
       oldVersion: "",
       lastSaveTime: new Date().getTime(),
     };
@@ -344,7 +378,7 @@ body[baidu] .c-container h3{
         MainType: "#b_results>li",
         FaviconType: ".b_attribution>cite",
         FaviconAddTo: "h2",
-        CounterType: "#b_results>li[class~=b_ans]>h2,#b_results>li[class~=b_algo]>h2,#b_results>li[class~=b_algo]>h2",
+        CounterType: "#b_results>li[class~=b_ans] h2,#b_results>li[class~=b_algo] h2",
         BlockType: "h2 a",
         pager: {
           nextLink: "//a[contains(@class,\"sb_pagN\")]",
@@ -424,6 +458,7 @@ body[baidu] .c-container h3{
         showBlockListArea: false, // blockList展示位textarea
         addBlockItem: "",     // 用户手动输入的拦截规则
         curHosts: [],         // 存放已经访问的hosts数据内容
+        isBlockChecking: false, // 当前Block功能是否还在执行中，避免多次执行，导致页面卡顿
       }
     };  // 到时候挂载到other上
     let AllData = {
@@ -762,6 +797,23 @@ body[baidu] .c-container h3{
       }(i);
     }
 
+    const throttle = (callback, wait = 100) => {
+      let it = 0
+      let preT = 0
+      return function(...args) {
+        const nowT = + new Date()
+        if(nowT - preT > wait) {
+          preT = nowT
+          clearTimeout(it)
+
+          it = setTimeout(() => {
+            callback.apply(this, args)
+            clearTimeout(it)
+          }, wait)
+        }
+      }
+    }
+
     function callback() {
       if (ACConfig.oldVersion === GM_info.script.version) {
         CONST.hasNewFuncNeedDisplay = false;
@@ -942,12 +994,16 @@ body[baidu] .c-container h3{
             }
             DBConfig.UserBlockList = ACConfig.UserBlockList;
             ACSetValue("Config", JSON.stringify(DBConfig)); // 点击一次，保存一次
-            SiteBlock.renderDisplay();
             env.stopPropagation();
           },
           // 刷新显示效果--耗时操作
-          renderDisplay: function () {
+          renderDisplay: throttle(function () {
+            // 增加checking中的检查，避免多次重复调用，减少cpu消耗
+            if(otherData.other.isBlockChecking) return
+            otherData.other.isBlockChecking = true
+
             let checkNodes = document.querySelectorAll(curSite.MainType);
+            let { md5: md5_tag = '', list: regList = []} = (vueVM && vueVM.calc_block_data) || {}; // 使用Vue的computed属性计算的数据值，一般根本不更新
             let flag = "ac-needhide";
             for (let i = 0; i < checkNodes.length; i++) {
               try {
@@ -955,20 +1011,18 @@ body[baidu] .c-container h3{
                 let {curHost, curUrl} = getNodeHost(curNode.querySelector(curSite.FaviconType));
                 curUrl = curUrl || "";
                 if (curHost === null) continue;
-                {
-                  let BlockBtn = curNode.querySelector(".ghhider.ghhb");
-                  BlockBtn.dataset.host = BlockBtn.dataset.meta = curHost;
-                  BlockBtn.title = this.getBlockBtnTitle(curHost);
-                }
+                let BlockBtn = curNode.querySelector(".ghhider.ghhb");
+                BlockBtn.dataset.host = BlockBtn.dataset.meta = curHost;
+                BlockBtn.title = this.getBlockBtnTitle(curHost);
                 if (curNode.querySelector("button[ac-user-alter]") != null) continue; // 用户手动点过显示的，那么跳过check
-                let { md5: md5_tag, list: regList = []} = vueVM.calc_block_data; // 使用Vue的computed属性计算的数据值，一般根本不更新
+
                 // 减少数据计算
-                if(curNode.dataset.md5 && curNode.data.md5 === md5_tag) break
+                if(curNode.dataset.md5 && curNode.dataset.md5 === md5_tag) break
                 if (!curUrl.includes("www.baidu.com/link") && regList.findIndex(one => {
                   try {
                     return one.test(curHost) || one.test(curUrl); // 耗时操作
                   } catch (e) {
-                    return m === curHost;
+                    return one === curHost;
                   }
                 }) >= 0) {
                   // 只检查在屏蔽表中的数据
@@ -1010,7 +1064,9 @@ body[baidu] .c-container h3{
               } catch (e) {
               }
             }
-          }
+
+            otherData.other.isBlockChecking = false
+          }, 50)
         };
 
         function addStyle(css) { //添加CSS的代码--copy的
@@ -1036,13 +1092,13 @@ body[baidu] .c-container h3{
           });
           safeWaitFunc("#main .logo img[alt='Google']", function (node) {
             node.removeAttribute("srcset");
-            node.src = "https://www.baidu.com/img/bd_logo1.png?where=super";
-            node.setAttribute("height", "59");
+            node.src = "https://pic.rmb.bdstatic.com/c86255e8028696139d3e3e4bb44c047b.png";
+            node.setAttribute("height", "40");
           }, 300);
           safeWaitFunc("form[role='search'] .logo img", function (node) {
             node.removeAttribute("srcset");
-            node.src = "https://www.baidu.com/img/bd_logo1.png?where=super";
-            node.setAttribute("height", "59");
+            node.src = "https://pic.rmb.bdstatic.com/c86255e8028696139d3e3e4bb44c047b.png";
+            node.setAttribute("height", "40");
           }, 300);
           document.title = document.title.replace(/^Google/, "百度一下，你就知道")
           .replace(/ - Google 搜索/, "_百度搜索")
@@ -1215,7 +1271,7 @@ body[baidu] .c-container h3{
                       let [curHost, curUrl] = m.split("###");
                       return UserBlockRegList[i].test(curHost) || UserBlockRegList[i].test(curUrl);
                     } catch (e) {
-                      return m === ACConfig.UserBlockList[i];
+                      return m === this.ACConfig.UserBlockList[i];
                     }
                   }) >= 0 ? " ac-block-high" : ""; // 如果当前页面存在，则高亮
                   insHTML += `<li><label class="ac-block-item${insClass}" data-host="${this.ACConfig.UserBlockList[i]}">${this.ACConfig.UserBlockList[i]}</label><label class="ac-block-item ac-block-itemdel" data-host="${this.ACConfig.UserBlockList[i]}">x</label></li>\n`;
@@ -1272,6 +1328,11 @@ body[baidu] .c-container h3{
                 immediate: true,
                 handler(val) {
                   if(val) CONST.StyleManger.loadHuYanStyle()
+                }
+              },
+              calc_block_data: {
+                handler() {
+                  SiteBlock.renderDisplay()
                 }
               },
               AdsStyleModeChange: {
@@ -1713,7 +1774,12 @@ body[baidu] .c-container h3{
 
         function AddCustomStyle() {
           if (ACConfig.isUserStyleEnable) {
-            AC_addStyle(ACConfig.UserStyleText, "AC-userStyle");// 用户自定义的样式表
+            less.render(ACConfig.UserStyleText, (e, css) => {
+              if(!e) {
+                css = css.css || ''
+                AC_addStyle(css, "AC-userStyle", "head", true); // 用户自定义的样式表
+              }
+            });
           } else {
             // 为了方便调整样式和查看效果，暂时不移除
             // safeRemove("style[class='AC-userStyle']")
@@ -1783,7 +1849,10 @@ body[baidu] .c-container h3{
                 ACHandle(); // 处理主重定向
                 if (ACConfig.isFaviconEnable && typeof(curSite.FaviconType) !== 'undefined') { // 显示favicon图标
                   AC_addStyle("h3::before, h2::before {content: ' ';display:inline-block}", "AC-Style-Favicon", "head");
-                  addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
+                  // 延迟2秒加载，减少可能出现的问题
+                  setTimeout(() => {
+                    addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
+                  }, 600)
                 }else{
                   safeRemove("img.AC-faviconT");
                   document.querySelectorAll(curSite.FaviconType).forEach((one) => {
@@ -1799,8 +1868,11 @@ body[baidu] .c-container h3{
                 if (ACConfig.isAdsEnable) { // 移除多余的广告内容
                   removeAD_baidu_sogou();
                 }
-                if (ACConfig.isCounterEnable) { // 显示计数器
-                  addCounter(document.querySelectorAll(curSite.CounterType));
+                if (ACConfig.isCounterEnable) {
+                  // 延迟加载，避免页面出现js问题
+                  setTimeout(() => {
+                    addCounter(document.querySelectorAll(curSite.CounterType)); // 显示计数器
+                  }, 800)
                 }else{
                   document.querySelectorAll(".AC-CounterT").forEach(one => {
                     one.parentElement.removeAttribute('SortIndex');
@@ -1827,17 +1899,17 @@ body[baidu] .c-container h3{
                   }
                 }
                 if (curSite.SiteTypeID === SiteType.GOOGLE) {
-                  let nodeList = document.querySelectorAll("#rso")
-                  const isSpecial = document.querySelector("#rso>.g") !== null // 存在一个节点即为special
-                  if(isSpecial !== CONST.isGoogleSpecial && CONST.isGoogleSpecial === false) {
-                    CONST.isGoogleSpecial = true
-                    safeRemove("style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle']");
-                    acCssLoadFlag = false;
-                    CONST.StyleManger.init && CONST.StyleManger.init();
-                  }
+                  let nodeList = document.querySelectorAll(".srg, #rso, #rso>div")
+
+                  // 对于这些块，都判定一下结构，如果子节点中div数量不足2个的，那么丢弃grid布局
                   if(nodeList.length > 0) {
                     nodeList.forEach((node) => {
-                      if (CONST.isGoogleSpecial) {
+                      const children = node.childNodes
+                      let childDivCount = 0
+                      for(const child of children) {
+                        if(child.tagName.toUpperCase() === 'DIV') childDivCount++
+                      }
+                      if (childDivCount >= 2) {
                         node.style.display !== 'grid' ? node.style.display = 'grid': ''
                       } else {
                         node.style.display !== 'unset' ? node.style.display = 'unset': ''
@@ -2553,14 +2625,13 @@ body[baidu] .c-container h3{
             safeRemove_xpath("id('b_results')/li[./div[@class='ad_fls']]", true);
           } else if (curSite.SiteTypeID === SiteType.GOOGLE) {
             safeRemove("#bottomads");
-            safeFunction(function () {
-              $('div[aria-label="广告"]').remove();
-            });
+            safeRemove('div[aria-label="广告"]');
+            safeRemove('div[aria-label="Ads"]');
           }
         }
 
         function addCounter(citeList) {
-          let cssText = "position:relative;z-index:1;margin-right:4px;display:inline-block;color:white;font-family:'微软雅黑';font-size:16px;text-align:center;width:22px;line-height:22px;border-radius:50%;";
+          let cssText = "font-style:normal;position:relative;z-index:1;margin-right:4px;display:inline-block;color:white;font-family:'微软雅黑';font-size:16px;text-align:center;width:22px;line-height:22px;border-radius:50%;";
           let div = document.createElement('div');
           for (let i = 0; i < citeList.length; i++) {
             let cur = citeList[i]
@@ -2664,7 +2735,7 @@ body[baidu] .c-container h3{
                     // curNode.insertBefore(insNode, curNode.firstChild);
                     insNode.className = "AC-faviconT";
                     insNode.setAttribute("referrerpolicy", "no-referrer");
-                    insNode.style = "position:relative;z-index:1;vertical-align:sub;height:16px;width:16px;margin-right:4px;margin-bottom:4px;user-select:none;";
+                    insNode.style = "position:relative;z-index:1;vertical-align:text-top;height:16px;width:16px;margin-right:4px;user-select:none;";
 
                     insNode.src = "https://favicon.yandex.net/favicon/v2/" + (curNode.href || host) + "?size=32"; // MARK yandex支持这种查询规则
                     insNode.setAttribute("faviconID", "0");
@@ -2818,11 +2889,11 @@ body[baidu] .c-container h3{
         }, 20, true);
       }
 
-      function safeRemove(cssSelector) {
+      function safeRemove(cssSelector, deleteItem = true) {
         safeFunction(() => {
           let removeNodes = document.querySelectorAll(cssSelector);
           for (let i = 0; i < removeNodes.length; i++)
-            removeNodes[i].remove();
+              removeNodes[i].remove();
         })
       }
 
@@ -2979,7 +3050,7 @@ body[baidu] .c-container h3{
             this.loadStyle(CONST.useItem.name + "TwoPageStyle", CONST.useItem.name + "TwoPageStyle");
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-            if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div:not(.g)";
+            if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, #rso>div:not(.g), #kp-wp-tab-overview";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
@@ -2991,7 +3062,7 @@ body[baidu] .c-container h3{
           loadThreePageStyle: function () {
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-            if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div:not(.g)";
+            if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, #rso>div:not(.g), #kp-wp-tab-overview";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
@@ -3003,7 +3074,7 @@ body[baidu] .c-container h3{
           loadFourPageStyle: function () {
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-            if (curSite.SiteTypeID === SiteType.GOOGLE) CONST.isGoogleSpecial ? cssHead = ".srg, #rso" : cssHead = ".srg, #rso>div:not(.g)";
+            if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, #rso>div:not(.g), #kp-wp-tab-overview";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";

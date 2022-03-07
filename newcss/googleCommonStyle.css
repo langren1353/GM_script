@@ -124,6 +124,7 @@ a:hover h3{
     max-width:unset;
 }
 #rso .g:hover{
+    background-color: #FCFCFC !important;
     border: 1px solid rgba(0,0,0,0.3);
     box-shadow: 0 0 1px grey;
     -webkit-box-shadow: 0 0 1px grey;
@@ -429,7 +430,7 @@ div.rc[ac-needhide]{
 }
 /*reset logo position at drop */
 .logo.baidu{
-    top: -20px;
+    top: -5px;
 }
 body[google] .big .baidu{
     transform: unset !important;

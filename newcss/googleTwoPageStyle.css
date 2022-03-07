@@ -11,8 +11,8 @@
     height: 100%;
     overflow: hidden;
     padding: 10px 20px 15px;
-    margin-top: 0px;
-    margin-bottom: 25px;
+    margin-top: 0;
+    margin-bottom: 0;
     border-radius: 5px;
     background-color: #fff;
     box-sizing: border-box;
@@ -34,7 +34,8 @@
 body #appbar,body .rhscol, body #top_nav, body #fbar{
     min-width: unset;
 }
-#rso .COEoid{
+#rso .COEoid,
+#kp-wp-tab-overview>div{
     margin: unset;
 }
 .col{
@@ -44,7 +45,7 @@ body #appbar,body .rhscol, body #top_nav, body #fbar{
     width: 100% !important;
     margin-left: unset !important;
 }
-.srg, #rso, #rso>div{
+.srg, #rso, #rso>div, #kp-wp-tab-overview{
 	display: grid;
 	grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
     grid-template-areas: "xmain xmain";

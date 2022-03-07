@@ -112,6 +112,7 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
 
 .result-molecule #page >div{
     width: unset;
+    padding-left: unset;
 }
 
 .new-pmd #rs_new {
