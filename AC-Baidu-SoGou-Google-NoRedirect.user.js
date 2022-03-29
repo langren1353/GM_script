@@ -315,9 +315,10 @@ body[google] {
     let DBSite = {
       baidu: {
         SiteTypeID: 1,
-        MainType: "#content_left .c-container",
+        MainType: "#content_left>.c-container",
         Stype_Normal: "h3.t>a, .c-container article a",
         FaviconType: ".c-showurl",
+        FaviconType1: ".c-title a",
         FaviconAddTo: "h3",
         CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
         BlockType: "h3 a",
@@ -951,6 +952,9 @@ body[google] {
               try {
                 let curNode = checkNodes[i];
                 let faviconNode = curNode.querySelector(curSite.FaviconType);
+                if(!faviconNode){
+                    faviconNode = curNode.querySelector(curSite.FaviconType1);
+                }
                 // if(curNode.hasAttribute("acblock")) continue;
                 let host = getNodeHost(faviconNode).curHost;
                 // if(host === null) continue;
@@ -961,7 +965,6 @@ body[google] {
                 }
                 faNode.insertAdjacentHTML("afterend", `<button style='${nodeStyle}' class='ghhider ghhb' href="${faviconNode.href || faviconNode.innerText}" meta="${host}" data-host="${host}" title='${this.getBlockBtnTitle(host)}'>block</button>`);
 
-                curNode.setAttribute("acblock", "0");
                 curNode.setAttribute("acblock", "0");
               } catch (e) {
               }
@@ -1008,7 +1011,11 @@ body[google] {
             for (let i = 0; i < checkNodes.length; i++) {
               try {
                 let curNode = checkNodes[i];
-                let {curHost, curUrl} = getNodeHost(curNode.querySelector(curSite.FaviconType));
+                var faviconNode = curNode.querySelector(curSite.FaviconType);
+                if (!faviconNode){
+                    faviconNode = curNode.querySelector(curSite.FaviconType1);
+                }
+                let {curHost, curUrl} = getNodeHost(faviconNode);
                 curUrl = curUrl || "";
                 if (curHost === null) continue;
                 let BlockBtn = curNode.querySelector(".ghhider.ghhb");
