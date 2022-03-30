@@ -151,10 +151,3 @@ If you have any problems on using the script, please submit an issue
 
 ### 脚本推荐
 [TUJIDU-VIP视频解析助手](https://greasyfork.org/zh-CN/scripts/371262)
-
-
-###License
-[The MIT License (MIT)](https://github.com/langren1353/GM_script/edit/master/LICENSE)
-
-### 脚本推荐
-[TUJIDU-VIP视频解析助手](https://greasyfork.org/zh-CN/scripts/371262)
