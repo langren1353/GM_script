@@ -5,7 +5,7 @@
 // @author          AC
 // @create          2018-08-16
 // @run-at          document-start
-// @version         3.90
+// @version         3.91
 // @include         *//www.iqiyi.com/v_*
 // @include         *//www.iqiyi.com/w_*
 // @include         *//v.youku.com/v_show/*
@@ -38,6 +38,7 @@
 // @license         GPL-3.0-only
 // @grant           GM_xmlhttpRequest
 // @copyright       2018, AC
+// @lastmodified    2022.04.05 移除mgtv的支持
 // @lastmodified    2022.01.29 优化腾讯视频的地址
 // @note            2022.01.29 修复代码不能使用的问题
 // @note            2021.10.31 优化代码结构 & 优化代码执行周期，减少资源占用
@@ -98,13 +99,13 @@
 			sStyle:"width:unset;color: red !important;font-size:unset;",
 			title:".td-playbase #subtitle",
 		},
-		mgtv:{
-			// 芒果TV https://www.mgtv.com/b/318945/4470636.html
-			insertTo:".m-movie-aside .info .name, .m-player-open .control-left .title",
-			adStyle:"",
-			sStyle:"width: unset;font-size:unset;height:unset;line-height:unset;",
-			title:".v-panel-info .route-til",
-		},
+		// mgtv:{
+		// 	// 芒果TV https://www.mgtv.com/b/318945/4470636.html
+		// 	insertTo:".m-movie-aside .info .name, .m-player-open .control-left .title",
+		// 	adStyle:"",
+		// 	sStyle:"width: unset;font-size:unset;height:unset;line-height:unset;",
+		// 	title:".v-panel-info .route-til",
+		// },
 		sohu:{
 			// 搜狐视频 https://tv.sohu.com/v/MjAxODA4MDIvbjYwMDU3NzU0NS5zaHRtbA==.html
 			// https://film.sohu.com/album/9337002.html?channeled=1200030002 ---- 新增支持
@@ -284,7 +285,7 @@
 		TU_addStyle(".acInG:hover{border: 1px dashed rgba(255,200,100,10) !important;color: rgba(255,200,0,30) !important;text-shadow: 0 0px rgba(242,33,49,30),0 0px 0px rgba(242,33,49,30),0 1px 1px rgba(242,33,49,30),1px 0 1px rgba(242,33,49,30),-1px 0 1px rgba(242,33,49,30),0 0 1px rgba(242,33,49,30) !important;}");
 		document.addEventListener('DOMNodeInserted', function (e) {
 			debugX("html文档载入完成");
-			if(e.target !== null && e.target.className !== null && e.target.id.indexOf("AC-") === 0){ return; } //屏蔽掉因为增加css导致的触发insert动作
+			if(e.target !== null && e.target.className !== null && e.target.id && e.target.id.indexOf("AC-") === 0){ return; } //屏蔽掉因为增加css导致的触发insert动作
 			doInsert();
 		}, false);
 	})();
