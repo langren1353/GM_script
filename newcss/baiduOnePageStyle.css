@@ -46,9 +46,13 @@ body[baidu] .pagefoot.gj{
     position: relative;
     margin: 30px auto -20px auto;
 }
+
+#wrapper  #content_left .result,
+#wrapper  #content_left .result-op,
+#wrapper #content_left div[class*='vmp-project'],
 #wrapper  #content_left .c-container{
     width: 100% !important;
-    min-width:650px;
+    min-width: 650px;
 }
 @media screen and (min-width: 1000px) {
     #wrapper  #content_left, #wrapper  #rs{
@@ -122,11 +126,13 @@ form.fm .s_ipt_wr.bg{
 }
 
 .result-molecule.new-pmd {
+    position: relative;
+    z-index: 233;
+
     min-width: 800px;
     width: 40% !important;
     margin-top: 6px;
     padding-left: 0 !important;
-
     transform: translateX(-50%);
     margin-left: 50% !important;
 }

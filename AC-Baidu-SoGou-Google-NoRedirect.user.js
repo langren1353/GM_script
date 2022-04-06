@@ -317,16 +317,16 @@ body[google] {
         SiteTypeID: 1,
         MainType: "#content_left>.c-container",
         Stype_Normal: "h3.t>a, .c-container article a",
-        FaviconType: ".c-showurl,.c-title a",
+        FaviconType: ".c-showurl, .c-title a",
         FaviconAddTo: "h3",
         CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
         BlockType: "h3 a",
         pager: {
           nextLink: '//div[@id="page"]//a[contains(text(),"下一页")][@href]',
           pageElement: "css;div#content_left > *",
-          HT_insert: ["css;div#content_left", 2],
+          HT_insert: ["css;div#content_left", 2], // 1 = beforebegin; 2 = beforeend
           replaceE: "css;#page",
-          stylish: ".autopagerize_page_info, div.sp-separator {margin-bottom: 10px !important;}",
+          stylish: ".autopagerize_page_info, div.sp-separator {margin-bottom: 10px !important;}.c-img-border{display:none}",
         }
       },
       sogou: {
@@ -340,7 +340,7 @@ body[google] {
         pager: {
           nextLink: "//div[@id=\"pagebar_container\"]//a[@id=\"sogou_next\"]",
           pageElement: "//div[@class=\"results\"]/div",
-          HT_insert: ["//div[@class=\"results\"]", 2],
+          HT_insert: ["//div[@class=\"results\"]", 2], // 1 = beforebegin; 2 = beforeend
           replaceE: "id(\"pagebar_container\")"
         }
       },
@@ -355,7 +355,7 @@ body[google] {
         pager: {
           nextLink: "//div[@id='page']//a[text()='下一页>'] | id('snext')",
           pageElement: "//div[@id='container']/div",
-          HT_insert: ["//div[@id='container']", 2],
+          HT_insert: ["//div[@id='container']", 2], // 1 = beforebegin; 2 = beforeend
           replaceE: "id('page')"
         }
       },
@@ -365,11 +365,11 @@ body[google] {
         FaviconType: ".iUh30",
         FaviconAddTo: "h3",
         CounterType: "#rso .g h3,._yE>div[class~=_kk] h3",
-        BlockType: ".rc>.r>a",
+        BlockType: "#rso a[ping]",
         pager: {
-          nextLink: 'id("pnnext") | id("navbar navcnt nav")//td[span]/following-sibling::td[1]/a | id("nn")/parent::a',
-          pageElement: '//div[@id="res"]',
-          HT_insert: ["css;#res", 2],
+          nextLink: "id('pnnext')|id('navbar navcnt nav')//td[span]/following-sibling::td[1]/a|id('nn')/parent::a",
+          pageElement: "id('rso')|id('center_col')/style[contains(.,'relative')][id('rso')]",
+          HT_insert: ["css;#res", 2], // 1 = beforebegin; 2 = beforeend
           replaceE: '//div[@id="navcnt"] | //div[@id="rcnt"]//div[@role="navigation"]'
         }
       },
@@ -383,7 +383,7 @@ body[google] {
         pager: {
           nextLink: "//a[contains(@class,\"sb_pagN\")]",
           pageElement: "id(\"b_results\")/li[not(contains(@class,\"b_pag\") or contains(@class,\"b_ans b_top\"))]",
-          HT_insert: ["id(\"b_results\")/li[@class=\"b_pag\"]", 1],
+          HT_insert: ["id(\"b_results\")/li[@class=\"b_pag\"]", 1], // 1 = beforebegin; 2 = beforeend
           replaceE: "id(\"b_results\")//nav[@role=\"navigation\"]",
         }
       },
@@ -397,7 +397,7 @@ body[google] {
         pager: {
           nextLink: "//a[contains(@class,\"sb_pagN\")]",
           pageElement: "id(\"b_results\")/li[not(contains(@class,\"b_pag\") or contains(@class,\"b_ans b_top\"))]",
-          HT_insert: ["id(\"b_results\")/li[@class=\"b_pag\"]", 1],
+          HT_insert: ["id(\"b_results\")/li[@class=\"b_pag\"]", 1], // 1 = beforebegin; 2 = beforeend
           replaceE: "id(\"b_results\")//nav[@role=\"navigation\"]",
         }
       },
@@ -411,7 +411,7 @@ body[google] {
         pager: {
           nextLink: "//a[contains(@class,\"sb_pagN\")]",
           pageElement: "id(\"b_results\")/li[not(contains(@class,\"b_pag\") or contains(@class,\"b_ans b_top\"))]",
-          HT_insert: ["id(\"b_results\")/li[@class=\"b_pag\"]", 1],
+          HT_insert: ["id(\"b_results\")/li[@class=\"b_pag\"]", 1], // 1 = beforebegin; 2 = beforeend
           replaceE: "id(\"b_results\")//nav[@role=\"navigation\"]",
         }
       },
@@ -458,6 +458,7 @@ body[google] {
         showBlockListArea: false, // blockList展示位textarea
         addBlockItem: "",     // 用户手动输入的拦截规则
         curHosts: [],         // 存放已经访问的hosts数据内容
+        faviconListMap: { }, // favicon的遍历表 -> .AC-faviconTStyle
         isBlockChecking: false, // 当前Block功能是否还在执行中，避免多次执行，导致页面卡顿
       }
     };  // 到时候挂载到other上
@@ -946,23 +947,29 @@ body[google] {
            * 初始化屏蔽按钮加载
            */
           init: function () {
-            let checkNodes = document.querySelectorAll(curSite.MainType + ":not([acblock])");
+            let checkNodes = document.querySelectorAll(curSite.MainType + ":not([bhandle])");
             for (let i = 0; i < checkNodes.length; i++) {
+              let curNode = checkNodes[i];
               try {
-                let curNode = checkNodes[i];
                 let faviconNode = curNode.querySelector(curSite.FaviconType);
-                // if(curNode.hasAttribute("acblock")) continue;
                 let host = getNodeHost(faviconNode).curHost;
-                // if(host === null) continue;
                 let faNode = curNode.querySelector(curSite.BlockType);
                 let nodeStyle = "display:unset;";
                 if (ACConfig.isBlockBtnNotDisplay) {
                   nodeStyle = "display:none;";
                 }
-                faNode.insertAdjacentHTML("afterend", `<button style='${nodeStyle}' class='ghhider ghhb' href="${faviconNode.href || faviconNode.innerText}" meta="${host}" data-host="${host}" title='${this.getBlockBtnTitle(host)}'>block</button>`);
-
-                curNode.setAttribute("acblock", "0");
+                // 避免父节点出现两个block按钮
+                if (!faNode.hasAttribute('hasInsert')) {
+                  faNode.insertAdjacentHTML("afterend", `<button style='${nodeStyle}' class='ghhider ghhb' href="${faviconNode.href || faviconNode.innerText}" meta="${host}" data-host="${host}" title='${this.getBlockBtnTitle(host)}'>block</button>`);
+                }
+                faNode.setAttribute("hasInsert", "1");
+                curNode.setAttribute("bhandle", "1");
               } catch (e) {
+                const failed_count = +(curNode.getAttribute('failed_count') || 1)
+                curNode.setAttribute('failed_count', failed_count + 1)
+                if(failed_count > 3) {
+                  curNode.setAttribute("bhandle", "1");
+                }
               }
             }
             this.initListener();
@@ -1017,7 +1024,7 @@ body[google] {
 
                 // 减少数据计算
                 if(curNode.dataset.md5 && curNode.dataset.md5 === md5_tag) break
-                if (!curUrl.includes("www.baidu.com/link") && regList.findIndex(one => {
+                if (curUrl && regList.findIndex(one => {
                   try {
                     return one.test(curHost) || one.test(curUrl); // 耗时操作
                   } catch (e) {
@@ -1323,6 +1330,26 @@ body[google] {
               }
             },
             watch: {
+              'other.faviconListMap' : {
+                immediate: true,
+                deep: true,
+                handler(val) {
+                  console.log('触发数据变更')
+                  debugger
+                  // 遍历所有的数据，然后生成新的数据内容
+                  const baseCSS = '*[data-favicon-t]:before{width: 16px; height: 16px; margin-right: 4px; background-size: 100% 100%; vertical-align: text-top;}'
+                  const css = Object.entries(val).reduce((preCSS, cur) => {
+                    const [, { tagName = '', url = '' }] = cur
+                    let nowCSS = ''
+                    if (url) {
+                      const imgUrl = "https://favicon.yandex.net/favicon/v2/" + url + "?size=32"
+                      nowCSS = tagName + `[data-favicon-t='${url}']:before{background-image: url('${imgUrl}');}`
+                    }
+                    return preCSS + nowCSS
+                  }, baseCSS)
+                  AC_addStyle(css, 'AC-faviconTStyle', 'head', true)
+                }
+              },
               'CONST.useItem.HuYanMode': {
                 immediate: true,
                 handler(val) {
@@ -1744,14 +1771,16 @@ body[google] {
 
                       // 替换待替换元素
                       try {
-                        let oriE = getAllElements(curSite.pager.replaceE);
-                        let repE = getAllElements(curSite.pager.replaceE, newBody, newBody);
-                        if (oriE.length === repE.length) {
-                          if(oriE.length === 0) {
-                            throw "翻页-替换翻页元素 'replaceE' 失效";
-                          }
-                          for (var i = 0; i < oriE.length; i++) {
-                            oriE[i].outerHTML = repE[i].outerHTML;
+                        if(curSite.pager.replaceE) {
+                          let oriE = getAllElements(curSite.pager.replaceE);
+                          let repE = getAllElements(curSite.pager.replaceE, newBody, newBody);
+                          if (oriE.length === repE.length) {
+                            if(oriE.length === 0) {
+                              throw "翻页-替换翻页元素 'replaceE' 失效";
+                            }
+                            for (var i = 0; i < oriE.length; i++) {
+                              oriE[i].outerHTML = repE[i].outerHTML;
+                            }
                           }
                         }
                       } catch (e) {
@@ -1813,7 +1842,7 @@ body[google] {
             '  body[doge] #sp-ac-container .container-label[class*="doge"]>.label_hide\n' + // 注意尾部逗号
             '{' +
             'display:none;\n' +
-            '}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
+            '}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{user-select: none;border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
             "AC-MENU_Page");
         }
 
@@ -1853,7 +1882,7 @@ body[google] {
                     addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
                   }, 600)
                 }else{
-                  safeRemove("img.AC-faviconT");
+                  safeRemove(".AC-faviconTStyle");
                   document.querySelectorAll(curSite.FaviconType).forEach((one) => {
                     one.removeAttribute("ac_faviconstatus");
                   })
@@ -1943,21 +1972,26 @@ body[google] {
             document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
           }catch(e){}
         }
+
+        /**
+         * isBaiduLink = 是否为未处理之前的百度链接
+         * */
         function getNodeHost(sitetpNode) {
-          if(sitetpNode instanceof HTMLAnchorElement){
-            return {curHost: sitetpNode.host, curUrl: sitetpNode.href};
-          }
           if (curSite.SiteTypeID === SiteType.BAIDU) {
-            var href = null;
-            if (sitetpNode instanceof HTMLElement) {
-              href = sitetpNode.getAttribute("href")
-            }
-            if (href != null && href.includes("baidu.com/link")) {
+            const href = sitetpNode.getAttribute("href");
+            if (href != null && !href.includes("baidu.com/link")) {
               // 已经解析出来了
               return  {curHost: getTextHost(href), curUrl: href};
+            } else {
+              const host = getTextHost(sitetpNode.innerText || sitetpNode.textContent)
+              return {curHost: host, curUrl: host, isBaiduLink: true }; // 未被解密
             }
+          } else if(sitetpNode instanceof HTMLAnchorElement){
+            return {curHost: sitetpNode.host, curUrl: sitetpNode.href};
+          } else {
+            const host = getTextHost(sitetpNode.innerText || sitetpNode.textContent)
+            return {curHost: host, curUrl: host};
           }
-          return {curHost: getTextHost(sitetpNode.innerText || sitetpNode.textContent), curUrl: null};
         }
 
         function ACHandle() {
@@ -2374,7 +2408,10 @@ body[google] {
                             <div>-</div>
                             <p>1. 本脚本不包含任何广告内容，也无意于破坏网站现有功能的完整性，仅希望通过一些显示效果的变更能更好的留存对应网站现有的用户，一定程度上更好地保证了目标网站的日活。</p>
                             <p>
-                              2. 同时本脚本中所有功能均为学习和研究web前端技术的发展而开发，希望为学习前端技术的研究人员提供一个更好的参考代码，促进web前端技术的发展，便于技术的学习和交流，本脚本不涉及对网站源码的调试和修改，因使用本脚本进行非法用途与本脚本无关。
+                              2. 同时本脚本中所有功能均为学习和研究web前端技术的发展而开发，希望为学习前端技术的研究人员提供一个更好的参考代码，促进web前端技术的发展，便于技术的学习和交流，仅用于学习研究使用，无意于损害任何网站利益，不使用任何盈利方案或参与任何盈利组织。
+                            </p>
+                            <p>
+                              3. 因使用本脚本引起的或与本脚本有关的任何争议，各方应友好协商解决，本脚本对使用本脚本所提供的软件时可能对用户自己或他人造成的任何形式的损失和伤害不承担任何责任。如用户下载、安装和使用本产品中所提供的软件，即表明用户信任本作者及其相关协议和免责声明。
                             </p>
                           </div>
                         </div>
@@ -2390,19 +2427,6 @@ body[google] {
               document.body.appendChild(Container);
             } catch (e) {
               console.log(e);
-            }
-          }
-          let allNodes = document.querySelectorAll(".AC-faviconT, .AC-CounterT");
-          for (let i = 0; i < allNodes.length; i++) {
-            if (allNodes[i].getAttribute('acClick') === null) {
-              allNodes[i].setAttribute('acClick', '1');
-              try {
-                allNodes[i].addEventListener('click', function (e) {
-                  return ACtoggleSettingDisplay(e);
-                }, true);
-              } catch (e) {
-                console.log(e);
-              }
             }
           }
           try {
@@ -2676,13 +2700,14 @@ body[google] {
         }
 
         function addFavicon(citeList) {
+          const insertList = []
           if (curSite.SiteTypeID !== SiteType.DOGE) {
             for (let index = 0; index < citeList.length; index++) {
               if (null === citeList[index].getAttribute("ac_faviconStatus")) {
                 let curNode = citeList[index];
                 let targetNode = curNode;
                 let { curHost, curUrl } = getNodeHost(targetNode);
-                if (curHost === null || (curUrl && curUrl.includes("www.baidu.com/link"))) { // 跳过baidu.click
+                if (!curHost) { // 跳过解不出来的地址
                   continue;
                 } else {
                   otherData.other.curHosts.acpush(curHost + "###" + curUrl);
@@ -2727,35 +2752,18 @@ body[google] {
                   //www.google.com/s2/favicons?domain=764350177.lofter.com
                   //如果地址不正确，那么丢弃
                   let host = faviconUrl.replace(/[^.]+\.([^.]+)\.([^.]+)/, "$1.$2");
-                  if (targetNode.querySelector(".AC-faviconT") === null && host.length > 3) {
-                    let insNode = document.createElement("img");
-                    // curNode = curNode.children[0] || curNode.firstChild ; // firstChild容易遇到text对象
-                    curNode.setAttribute("ac_faviconStatus", "1");
-                    // curNode.insertBefore(insNode, curNode.firstChild);
-                    insNode.className = "AC-faviconT";
-                    insNode.setAttribute("referrerpolicy", "no-referrer");
-                    insNode.style = "position:relative;z-index:1;vertical-align:text-top;height:16px;width:16px;margin-right:4px;user-select:none;";
 
-                    insNode.src = "https://favicon.yandex.net/favicon/v2/" + (curNode.href || host) + "?size=32"; // MARK yandex支持这种查询规则
-                    insNode.setAttribute("faviconID", "0");
-                    insNode.setAttribute("ondragstart", "return false;") // 禁止拖动图片-避免拖错了
-                    // curNode.innerHTML = insNode.outerHTML + curNode.innerHTML;
-                    // curNode.insertAdjacentHTML("afterEnd", insNode.innerHTML);
-                    let beforeIndex = 0;
-                    if (targetNode.childNodes[beforeIndex].className === "AC-CounterT") {
-                      beforeIndex = 1;
+                  if (!targetNode.hasAttribute("data-favicon-t") && host.length >= 3) {
+                    let faviconUrl = curNode.href || host
+                    if(curSite.SiteTypeID === SiteType.BAIDU && faviconUrl.includes("baidu.com/link")) {
+                      faviconUrl = host
                     }
-                    targetNode.insertBefore(insNode, targetNode.childNodes[beforeIndex]);
-                    (function (xcur) {
-                      insNode.onload = function (env) {
-                        let imgNode = xcur.querySelector(".AC-faviconT");
-                        if ((imgNode || {}).naturalWidth < 10) {
-                          imgNode.setAttribute("old-src", imgNode.src);
-                          imgNode.src = ACConfig.defaultFaviconUrl;
-                        }
-                        imgNode.onload = "javascript:void(0);";
-                      };
-                    })(targetNode);
+
+                    targetNode.setAttribute('data-favicon-t', faviconUrl)
+                    insertList.push({
+                      tagName: targetNode.tagName.toLowerCase(),
+                      url: faviconUrl
+                    })
                   }
                 }
               }
@@ -2770,6 +2778,15 @@ body[google] {
                 beforeNode.parentNode.insertBefore(faviconNode, beforeNode);
               }
             }
+          }
+          if(insertList.length) {
+            insertList.map(one => {
+              if(vueVM) {
+                vueVM.$set(vueVM.other.faviconListMap, one.url, one) // 之后的更新用这个 - 用于触发watch
+              } else {
+                otherData.other.faviconListMap[one.url] = one // 初始化的更新用这个
+              }
+            })
           }
         }
 

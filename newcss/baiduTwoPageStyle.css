@@ -75,10 +75,12 @@ body[news] #wrapper #content_left>div:not([class]):not([id]){
     padding-left: 0;
 }
 #wrapper  #content_left .result,
+#wrapper  #content_left .result-op,
+#wrapper #content_left div[class*='vmp-project'],
 #wrapper  #content_left .c-container {
     width: unset !important;
     max-width: 100%;
-    margin-left: 5px;
+    margin-left: 0;
     margin-right: 15px;
 }
 

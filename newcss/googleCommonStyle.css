@@ -94,7 +94,9 @@ a:hover h3{
     animation-name: ani_bottomTotop;
     animation-duration: .3s;
     animation-timing-function: ease;
-    /*justify-items: center;*/
+    width: 800px;
+    align-items: stretch;
+    justify-items: stretch;
 }
 /* SearchBar Left to Right ani */
 .srp form{
@@ -110,7 +112,7 @@ a:hover h3{
     margin-bottom: 40px;
 }
 #rs, #rso .g{
-    width: 760px;
+    width: 100% !important;
     padding: 0px 20px 15px;
     margin-top: 0px;
     margin-bottom: 40px;
@@ -119,6 +121,10 @@ a:hover h3{
     box-sizing: border-box;
     border: 1px solid rgba(0,0,0,0.1);
     transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
+}
+#rso>.g ~ div:not(.g){
+    width: 100%;
+    overflow: hidden;
 }
 #rs, #rso .g div.rc .s{
     max-width:unset;

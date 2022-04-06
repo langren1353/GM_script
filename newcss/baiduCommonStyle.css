@@ -96,10 +96,12 @@ form.fm .s_btn:hover {
 
 #wrapper #rs,
 #wrapper #content_left .result,
+#wrapper #content_left .result-op,
 #wrapper #content_left>.c-container {
     width: 670px;
-    padding: 0px 20px 15px;
-    margin-top: 0px;
+    padding: 0 0 15px 20px;
+    margin-top: 0;
+    margin-left: 0;
     margin-bottom: 30px;
     border-radius: 0;
     background-color: #fff;
@@ -110,6 +112,7 @@ form.fm .s_btn:hover {
 }
 #wrapper #content_left>.c-container:hover,
 #wrapper #content_left>.result:hover,
+#wrapper #content_left>.result-op:hover,
 #wrapper #content_left>.c-container:hover article{
     background-color: #FCFCFC !important;
     border: 1px solid rgba(0,0,0,.3);
@@ -119,12 +122,14 @@ form.fm .s_btn:hover {
 }
 #wrapper #rs[ac-needhide],
 #wrapper #content_left>.result[ac-needhide],
+#wrapper #content_left>.result-op[ac-needhide],
 #wrapper #content_left>.c-container[ac-needhide]{
     padding: 5px;
     padding-left: 15px;
 }
 #wrapper #content_left>.result[tpl='soft'] .op-soft-title,
 #wrapper #content_left>.result h3,
+#wrapper #content_left>.result-op h3,
 #wrapper #content_left>.c-container h3 {
     background-color: #f8f8f8;
     margin: 0px -20px 10px -20px;
@@ -191,13 +196,17 @@ form.fm .s_btn:hover {
     margin-left: 10px;
 }
 #wrapper #content_left>.c-container[tpl='soft'] .op-soft-title a,
-#wrapper #content_left>.c-container[tpl='soft'] .op-soft-title a em,
-#wrapper #content_left>.c-container h3 a,
-#wrapper #content_left .result h3 a em,
-#wrapper #content_left .result-op h3 a em {
+#wrapper #content_left>.c-container h3 a {
     color: #3476d2;
     font-weight: bold;
 }
+#wrapper #content_left>.c-container[tpl='soft'] .op-soft-title a em,
+#wrapper #content_left .result h3 a em,
+#wrapper #content_left .result-op h3 a em {
+    color: #f73131;
+    font-weight: bold;
+}
+
 #wrapper #content_left .op-soft-title a,
 #wrapper #content_left .result h3 a,
 #wrapper #content_left .result-op h3 a {
@@ -237,9 +246,7 @@ form.fm .s_btn:hover {
     position: relative;
 }
 #wrapper #content_left .op-soft-title a:visited,
-#wrapper #content_left .op-soft-title a:visited em,
-#wrapper #content_left .result h3 a:visited,
-#wrapper #content_left .result h3 a:visited em {
+#wrapper #content_left .result h3 a:visited {
     color: #660099;
 }
 #wrapper #content_left .op-soft-title a:visited:hover:after,

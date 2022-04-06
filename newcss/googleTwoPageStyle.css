@@ -1,7 +1,8 @@
 /**Store GoogleTwoPageStyle**/
-#rso {
+#search #rso {
     position: relative;
     float: unset;
+    width: unset;
 }
 #rso .jUmkFb:hover {
     margin-bottom: 30px;
