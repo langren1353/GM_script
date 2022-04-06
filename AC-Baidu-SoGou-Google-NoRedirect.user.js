@@ -361,11 +361,11 @@ body[google] {
       },
       google: {
         SiteTypeID: 4,
-        MainType: "#rso .g",
+        MainType: "#rso>div",
         FaviconType: ".iUh30",
         FaviconAddTo: "h3",
         CounterType: "#rso .g h3,._yE>div[class~=_kk] h3",
-        BlockType: ".rc>.r>a",
+        BlockType: "a",
         pager: {
           nextLink: 'id("pnnext") | id("navbar navcnt nav")//td[span]/following-sibling::td[1]/a | id("nn")/parent::a',
           pageElement: '//div[@id="res"]',
