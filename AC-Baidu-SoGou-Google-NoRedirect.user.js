@@ -2734,7 +2734,7 @@ body[google] {
                     // curNode.insertBefore(insNode, curNode.firstChild);
                     insNode.className = "AC-faviconT";
                     insNode.setAttribute("referrerpolicy", "no-referrer");
-                    insNode.style = "position:relative;z-index:1;vertical-align:text-top;height:16px;width:16px;margin-right:4px;user-select:none;";
+                    insNode.style = "position:relative;z-index:1;vertical-align:text-top;height:16px;width:16px;margin-right:4px;margin-top:2px;user-select:none;";
 
                     insNode.src = "https://favicon.yandex.net/favicon/v2/" + (curNode.href || host) + "?size=32"; // MARK yandex支持这种查询规则
                     insNode.setAttribute("faviconID", "0");
