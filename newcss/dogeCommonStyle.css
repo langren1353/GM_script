@@ -79,7 +79,7 @@ body {
 
 /* SearchItmes Bottom to Top ani */
 #links_wrapper #links {
-    animation-name: ani_bottomTotop;
+    animation-name: ani_topTobuttom;
     animation-duration: .3s;
     animation-timing-function: ease;
 }
@@ -96,10 +96,10 @@ body {
 @keyframes ani_leftToright {
     0% {
         transform: translateX(-32px);
-        opacity: 0;
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;
@@ -112,10 +112,10 @@ body {
 @keyframes ani_bottomTotop {
     0% {
         transform: translateY(32px);
-        opacity: 0;
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;

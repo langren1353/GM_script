@@ -17,7 +17,7 @@ body>div.result-op,
 }
 body[baidu] {
     background-color: #f5f5f5;
-    transition: all 1.5s;
+    /*transition: all ease-out 0.8s;*/
 }
 #ala_img_results{
     overflow:hidden;
@@ -84,13 +84,13 @@ form.fm .s_btn:hover {
     width: 630px;
 }
 #wrapper #content_left {
-    animation-name: ani_bottomTotop;
+    animation-name: ani_topTobuttom;
     -webkit-animation-duration: .2s;
     -webkit-animation-timing-function: ease;
 }
 #head .head_wrapper{
     animation-name: ani_leftToright;
-    -webkit-animation-duration: .2s;
+    -webkit-animation-duration: 0.5s;
     -webkit-animation-timing-function: ease-out;
 }
 
@@ -99,7 +99,7 @@ form.fm .s_btn:hover {
 #wrapper #content_left .result-op,
 #wrapper #content_left>.c-container {
     width: 670px;
-    padding: 0 0 15px 20px;
+    padding: 0 8px 15px 20px;
     margin-top: 0;
     margin-left: 0;
     margin-bottom: 30px;
@@ -107,14 +107,13 @@ form.fm .s_btn:hover {
     background-color: #fff;
     box-sizing: border-box;
     border: 1px solid rgba(0,0,0,0.1);
-    transition: all 0.2s cubic-bezier(.23,1,.32,1) 0s;
-    overflow: hidden;
+    /*transition: all 0.2s cubic-bezier(.23,1,.32,1) 0s;*/
+    /*overflow: hidden;*/
 }
 #wrapper #content_left>.c-container:hover,
 #wrapper #content_left>.result:hover,
 #wrapper #content_left>.result-op:hover,
 #wrapper #content_left>.c-container:hover article{
-    background-color: #FCFCFC !important;
     border: 1px solid rgba(0,0,0,.3);
     box-shadow: 0 0 1px grey;
     -webkit-box-shadow: 0 0 1px grey;
@@ -129,12 +128,16 @@ form.fm .s_btn:hover {
 }
 #wrapper #content_left>.result[tpl='soft'] .op-soft-title,
 #wrapper #content_left>.result h3,
-#wrapper #content_left>.result-op h3,
+
 #wrapper #content_left>.c-container h3 {
     background-color: #f8f8f8;
-    margin: 0px -20px 10px -20px;
+    margin: 0px -23px 10px -20px;
     padding: 8px 20px 5px;
     border-radius: 5px 5px 0px 0px;
+}
+
+#wrapper #content_left>.result-op h3{
+    margin: 0px -8px 10px -20px;
 }
 #wrapper #content_left .f13 a,
 #wrapper #content_left .f13 em,
@@ -357,13 +360,13 @@ body #wrapper #content_left a[href*='official'] {
 #content_left .c-group-middle,#content_left  .c-group-top{
     margin-bottom: 30px !important;
 }
-@-webkit-keyframes ani_bottomTotop {
+@keyframes ani_bottomTotop {
     0% {
-        -webkit-transform: translateY(32px);
-        opacity: 0;
+        transform: translateY(32px);
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;
@@ -372,13 +375,13 @@ body #wrapper #content_left a[href*='official'] {
         opacity: 1;
     }
 }
-@-webkit-keyframes ani_leftToright {
+@keyframes ani_leftToright {
     0% {
-        -webkit-transform: translateX(-32px);
-        opacity: 0;
+        transform: translateX(-32px);
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;
@@ -387,13 +390,13 @@ body #wrapper #content_left a[href*='official'] {
         opacity: 1;
     }
 }
-@-webkit-keyframes ani_topTobuttom {
+@keyframes ani_topTobuttom {
     0% {
-        -webkit-transform: translateY(-32px);
-        opacity: 0;
+        transform: translateY(-32px);
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;

@@ -91,7 +91,7 @@ body #pagebar_container a{
 }
 /* SearchItmes Bottom to Top ani */
 #main .results{
-    animation-name: ani_bottomTotop;
+    animation-name: ani_topTobuttom;
     animation-duration: .3s;
     animation-timing-function: ease;
 }
@@ -105,10 +105,10 @@ body #pagebar_container a{
 @keyframes ani_leftToright {
     0% {
         transform: translateX(-32px);
-        opacity: 0;
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;
@@ -121,10 +121,10 @@ body #pagebar_container a{
 @keyframes ani_bottomTotop {
     0% {
         transform: translateY(32px);
-        opacity: 0;
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;

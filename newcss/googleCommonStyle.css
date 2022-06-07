@@ -91,7 +91,7 @@ a:hover h3{
 
 /* SearchItmes Bottom to Top ani */
 #search #rso{
-    animation-name: ani_bottomTotop;
+    animation-name: ani_topTobuttom;
     animation-duration: .3s;
     animation-timing-function: ease;
     width: 800px;
@@ -130,7 +130,6 @@ a:hover h3{
     max-width:unset;
 }
 #rso .g:hover{
-    background-color: #FCFCFC !important;
     border: 1px solid rgba(0,0,0,0.3);
     box-shadow: 0 0 1px grey;
     -webkit-box-shadow: 0 0 1px grey;
@@ -334,10 +333,10 @@ a:hover h3{
 @keyframes ani_bottomTotop {
     0% {
         transform: translateY(32px);
-        opacity: 0;
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;
@@ -349,10 +348,10 @@ a:hover h3{
 @keyframes ani_leftToright {
     0% {
         transform: translateX(-32px);
-        opacity: 0;
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;

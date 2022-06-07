@@ -4,15 +4,16 @@
 // @icon            https://gitee.com/remixAC/GM_script/raw/master/images/head.jpg
 // @author          AC
 // @create          2018-05-25
-// @version         2.2
+// @version         2.3
 // @include         *
 // @exclude         *://www.bilibili.com/*
 // @home-url        https://greasyfork.org/zh-TW/scripts/368418
 // @home-url2       https://github.com/langren1353/GM_script
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
-// @lastmodified    2019-08-09
+// @lastmodified    2022-04-24
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/368418
+// @note            2022.04.24-V2.3 增加搜索引擎：fsou的支持
 // @note            2019.08.09-V2.2 排除bilibili的地址，避免导致bilibili无法播放
 // @note            2019.06.05-V2.1 修复样式加载刚开始的时候还是黑色的，颜色没有及时更新的问题 其次优化脚本的处理速速，减少不必要的查询和处理
 // @note            2018.10.08-V2.0 修复多次触发导致的卡顿现象；修复搜索时高亮的问题
@@ -60,7 +61,8 @@ function sayLength(){
 		GOOGLE:4,
 		BING:5,
 		ZHIHU:6,
-		OTHERS:7
+		OTHERS:7,
+		FSOU: 8,
 	};
 	/*在搜索引擎上面会刷新当前搜索关键词内容*/
 	if (location.host.indexOf("www.baidu.com") > -1) {
@@ -73,6 +75,8 @@ function sayLength(){
 		SiteTypeID = SiteType.GOOGLE;
 	} else if (location.host.indexOf("bing") > -1) {
 		SiteTypeID = SiteType.BING;
+	}  else if (location.host.indexOf("fsoufsou") > -1) {
+		SiteTypeID = SiteType.FSOU;
 	} else if (location.host.indexOf("zhihu.com") > -1) {
 		SiteTypeID = SiteType.ZHIHU;
 	} else {

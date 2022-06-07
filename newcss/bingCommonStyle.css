@@ -28,7 +28,6 @@ body {
 }
 #b_content #b_results>li:hover {
     border: 1px solid rgba(0,0,0,0.3);
-    background: #FCFCFC !important;
     box-shadow: 0 0 1px grey;
     -webkit-box-shadow: 0 0 1px grey;
     -moz-box-shadow: 0 0 1px gray;
@@ -128,7 +127,7 @@ body #est_cn::after, body #est_en::after{
 }
 /* SearchItmes Bottom to Top ani */
 #b_content{
-    animation-name: ani_bottomTotop;
+    animation-name: ani_topTobuttom;
     animation-duration: 0.6s;
     animation-timing-function: ease;
 }
@@ -150,10 +149,10 @@ body{
 @keyframes ani_leftToright {
     0% {
         transform: translateX(-32px);
-        opacity: 0;
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;
@@ -166,10 +165,10 @@ body{
 @keyframes ani_bottomTotop {
     0% {
         transform: translateY(32px);
-        opacity: 0;
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;
@@ -180,11 +179,11 @@ body{
 }
 @-webkit-keyframes ani_topTobuttom {
     0% {
-        -webkit-transform: translateY(-32px);
-        opacity: 0;
+        transform: translateY(-32px);
+        opacity: 0.2;
     }
     20% {
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
         opacity: 0.8;
@@ -196,14 +195,12 @@ body{
 @-webkit-keyframes ani_hideToShow {
     0% {
         display:none;
-        opacity: 0;
+        opacity: 0.2;
     }
     20% {
-        display:none;
-        opacity: 0;
+        opacity: 0.5;
     }
     30% {
-        display:none;
         opacity: 0.8;
     }
     100% {
