@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    25.06
+// @version    25.07
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -44,6 +44,7 @@
 // @copyright  2015-2022, AC
 // @lastmodified  2022-06-16
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2022.06-17-V25.07 修复可能出现的脚本参数读取失败导致的脚本不执行的异常
 // @note    2022.06-16-V25.06 优化重定向逻辑，部分网站只需要稍作处理，不用做接口请求了，感谢众多搜索引擎的版本迭代更新
 // @note    2022.04-08-V25.05 主要修复Block功能；其次优化样式加载速度-减少撕裂感
 // @note    2022.03-07-V25.04 修复谷歌、必应样式问题；修复并优化拦截功能
@@ -720,7 +721,7 @@ body[google] {
     /**初始化所有的设置**/
     Promise.all([GM.getValue("Config")]).then(function (data) {
       let res = data[0]
-      if (res != null) {
+      if (res || (res !== 'undefined' || res !== 'null')) {
         try {
           ACConfig = JSON.parse(res);
         } catch (e) {
@@ -768,7 +769,7 @@ body[google] {
     function ACSetValue(key, value) {
       GM_setValue(key, value);
       if(key === 'Config'){
-        localStorage.ACConfig = value;
+        if (value) localStorage.ACConfig = value;
       }
     }
 
