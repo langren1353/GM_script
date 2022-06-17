@@ -1,0 +1,148 @@
+/*Store BingCommonStyle*/
+body {
+    background-color: #f5f5f5;
+}
+.sh_favicon{
+    margin-left: 16px;
+}
+#b_content #b_results>li:not(#mfa_root) {
+    width: 670px;
+    padding: 12px 20px !important;
+    margin-top: 0px;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-sizing: border-box;
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
+    overflow: hidden;
+}
+#b_content #b_results a,
+#b_content #b_results h2 a {
+    position: relative;
+    color: #3476d2;
+}
+#b_content #b_results h2 a, #b_results h2 strong{
+    font-weight: bold;
+    font-size: medium;
+}
+#b_content #b_results>li:hover {
+    border: 1px solid rgba(0,0,0,0.3);
+    box-shadow: 0 0 1px grey;
+    -webkit-box-shadow: 0 0 1px grey;
+    -moz-box-shadow: 0 0 1px gray;
+}
+#b_content >#b_results li:not(#mfa_root) h2 {
+    background-color: #f8f8f8;
+    margin: -12px -20px 10px -20px;
+    padding: 8px 20px 5px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+a, a strong {
+    text-decoration: none;
+}
+
+#b_content #b_results a strong,
+#b_content #b_results h2 a strong {
+    text-decoration: none;
+}
+.b_algo:first-child:hover h2 a{
+    text-decoration: none !important;
+}
+#b_content #b_results a:hover:after,
+#b_content #b_results h2 a:hover:after {
+    left: 0;
+    width: 100%;
+    -webkit-transition: width 350ms;
+    -moz-transition: width 350ms;
+    transition: width 350ms;
+}
+#b_content #b_results a:hover,
+#b_content #b_results h2 a:hover{
+    text-decoration: none;
+}
+#b_content #b_results a:after,
+#b_content #b_results h2 a:after {
+    content: "";
+    position: absolute;
+    border-bottom: 2px solid #3476d2;
+    bottom: -2px;
+    left: 100%;
+    width: 0;
+    -webkit-transition: width 350ms, left 350ms;
+    -moz-transition: width 350ms, left 350ms;
+    transition: width 350ms, left 350ms;
+}
+#b_content #b_results h2 a:visited,
+#b_content #b_results h2 a:visited strong,
+#b_content #b_results h2 h2 a:visited,
+#b_content #b_results h2 h2 a:visited strong {
+    color: #660099;
+}
+#b_content #b_results h2 a:visited:hover:after,
+#b_content #b_results h2 h2 a:visited:hover:after {
+    left: 0;
+    width: 100%;
+    -webkit-transition: width 350ms;
+    -moz-transition: width 350ms;
+    transition: width 350ms;
+}
+#b_content>ol#b_context{
+    display:none;
+}
+body #b_header{
+    background-color: #f5f5f5;
+}
+#b_content .b_underSearchbox{
+    margin-top: 10px;
+}
+#b_header .b_scopebar{
+    margin: unset;
+}
+/*search engine jump*/
+.tsf-p>.logocont, #sej-container{
+    margin-right: 350px;
+    text-align: center;
+}
+.tsf-p>.sfibbbc{
+    margin-right: 350px;
+    text-align: center;
+}
+.b_searchboxForm .sa_tm{
+    text-align: left; /* SearchBox text Center */
+}
+body #b_header #est_switch{
+    margin: 0 auto;
+    padding-right: 10%; /**TODO***/
+}
+body #est_cn::after, body #est_en::after{
+    transform: scale(1.1,1.3) perspective(.5em) rotateX(0deg);
+    -webkit-transform: scale(1.1,1.3) perspective(.5em) rotateX(0deg);
+}
+@media (max-width: 1100px){
+    body #b_header #est_switch{
+        transform: translateX(1.2rem);
+    }
+}
+/* SearchItmes Bottom to Top ani */
+#b_content{
+    animation-name: ani_topTobuttom;
+    animation-duration: 0.6s;
+    animation-timing-function: ease;
+}
+
+/* SearchBar Left to Right ani */
+body #b_header {
+    animation-name: ani_topTobuttom;
+    animation-duration: 0.6s;
+    animation-timing-function: ease-out;
+}
+body{
+    animation-name: ani_hideToShow;
+    animation-duration: 0.6s;
+    animation-timing-function: ease-out;
+}
+.AC.sp-separator{
+    margin-top: -15px;
+}

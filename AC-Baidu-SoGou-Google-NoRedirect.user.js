@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    25.08
+// @version    25.09
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -44,7 +44,7 @@
 // @copyright  2015-2022, AC
 // @lastmodified  2022-06-17
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2022.06-17-V25.08 修复可能出现的脚本参数读取失败导致的脚本不执行的异常 & 修复 拦截规则特殊参数的问题
+// @note    2022.06-18-V25.09 修复可能出现的脚本参数读取失败导致的脚本不执行的异常 & 修复 拦截规则特殊参数的问题 & 更换CDN地址
 // @note    2022.06-16-V25.06 优化重定向逻辑，部分网站只需要稍作处理，不用做接口请求了，感谢众多搜索引擎的版本迭代更新
 // @note    2022.04-08-V25.05 主要修复Block功能；其次优化样式加载速度-减少撕裂感
 // @note    2022.03-07-V25.04 修复谷歌、必应样式问题；修复并优化拦截功能
@@ -73,24 +73,23 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=25.06
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=25.06
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=25.06
-// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=25.06
-// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=25.06
-// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=25.06
-// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=25.06
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=25.06
-// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=25.06
-// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=25.06
-// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=25.06
-// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=25.06
-// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=25.06
-// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=25.06
-// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=25.06
-// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=25.06
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=25.06
-// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=25.06
+// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=25.06
+// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=25.06
+// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=25.06
+// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=25.06
+// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=25.06
+// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=25.06
+// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=25.06
+// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=25.06
+// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=25.06
+// @resource  duckCommonStyle    http://sync.ntaow.com/newcss/duckCommonStyle.less?t=25.06
+// @resource  duckOnePageStyle   http://sync.ntaow.com/newcss/duckOnePageStyle.less?t=25.06
+// @resource  duckTwoPageStyle   http://sync.ntaow.com/newcss/duckTwoPageStyle.less?t=25.06
+// @resource  dogeCommonStyle    http://sync.ntaow.com/newcss/dogeCommonStyle.less?t=25.06
+// @resource  dogeOnePageStyle   http://sync.ntaow.com/newcss/dogeOnePageStyle.less?t=25.06
+// @resource  dogeTwoPageStyle   http://sync.ntaow.com/newcss/dogeTwoPageStyle.less?t=25.06
+// @resource  MainHuYanStyle     http://sync.ntaow.com/newcss/HuYanStyle.less?t=25.06
+// @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
 // @require https://lib.baomitu.com/vue/2.6.14/vue.min.js
@@ -929,17 +928,6 @@ body[google] {
             return res;
           }
         }
-        if (GM_getResourceText) {
-          // 仅在支持GM_getResourceText的容器上进行动态数据更新
-          // 且能防止谷歌百度页面规则大变动又需要更新脚本 - 特别是涉及翻页参数
-          let config = await GM_getResourceText("SiteConfigRules");
-          eval(config);
-          if (typeof (onlineDB) === "undefined") {
-            console.error("线上数据为空");
-          } else {
-            DBSite = onlineDB;
-          }
-        }
         if (location.host.includes("xueshu.baidu.com")) {
           curSite = DBSite.baidu_xueshu;
         } else if (location.host.includes(".baidu.com")) {
@@ -1222,6 +1210,9 @@ body[google] {
                 AddCustomStyle();
               }
             })
+            if (ACConfig.isAdsEnable) { // 先来移除多余的广告内容
+              removeAD_baidu_sogou();
+            }
             setInterval(function() {
               if (document.body) {
                 rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
@@ -1230,7 +1221,6 @@ body[google] {
                 } else {
                   document.body.removeAttribute("news");
                 }
-
               }
             }, 800);
             setInterval(() => {
@@ -1967,6 +1957,87 @@ body[google] {
             'display:none;\n' +
             '}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{user-select: none;border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
             "AC-MENU_Page");
+
+          // 添加 自定义的动画
+          const aniStyle = `@keyframes ani_leftToright {
+    0% {
+        transform: translateX(-32px);
+        opacity: 0.2;
+    }
+    20% {
+        opacity: 0.5;
+    }
+    30% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+/* ani */
+@keyframes ani_bottomTotop {
+    0% {
+        transform: translateY(32px);
+        opacity: 0.2;
+    }
+    20% {
+        opacity: 0.5;
+    }
+    30% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes ani_topTobuttom {
+    0% {
+        transform: translateY(-32px);
+        opacity: 0.2;
+    }
+    20% {
+        opacity: 0.5;
+    }
+    30% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes ani_hideToShow {
+    0% {
+        display:none;
+        opacity: 0.2;
+    }
+    20% {
+        opacity: 0.5;
+    }
+    30% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes ani_showToHide {
+    0% {
+        display:none;
+        opacity: 1;
+    }
+    20% {
+        opacity: 0.8;
+    }
+    30% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}`;
+          AC_addStyle(aniStyle, "AC-AnimationStyle", "head", false); // 需要修改的，所以为true
+          // 添加删除效果的动画
+          AC_addStyle('.aniDelete{transition: all 0.38s cubic-bezier(0.4, 0, 1, 1);opacity: 0.1}')
         }
 
         AddCustomStyle();
@@ -1990,6 +2061,9 @@ body[google] {
           try {
             if (insertLocked === false && curSite.SiteTypeID !== SiteType.OTHERS) {
               try {
+                if (ACConfig.isAdsEnable) { // 移除多余的广告内容
+                  removeAD_baidu_sogou();
+                }
                 insertLocked = true;
                 RedirectHandle(); // 处理主重定向
                 if (ACConfig.isFaviconEnable && typeof (curSite.FaviconType) !== 'undefined') { // 显示favicon图标
@@ -2007,9 +2081,6 @@ body[google] {
                   AC_addStyle("a,a em{text-decoration:none !important}", "AC-NoLine", "body");// 移除这些个下划线
                 } else {
                   safeRemove("style[class='AC-NoLine']")
-                }
-                if (ACConfig.isAdsEnable) { // 移除多余的广告内容
-                  removeAD_baidu_sogou();
                 }
                 if (ACConfig.isCounterEnable) {
                   // 延迟加载，避免页面出现js问题
@@ -2044,7 +2115,8 @@ body[google] {
                     document.body.classList.add("showRight")
                   }
                 }
-                if (curSite.SiteTypeID === SiteType.GOOGLE) {
+                // 谷歌 + 多列模式
+                if (curSite.SiteTypeID === SiteType.GOOGLE && CONST.useItem.AdsStyleMode >= 3) {
                   let nodeList = document.querySelectorAll(".srg, #rso, #rso>div")
 
                   // 对于这些块，都判定一下结构，如果子节点中div数量不足2个的，那么丢弃grid布局
@@ -2067,6 +2139,8 @@ body[google] {
                   document.querySelectorAll("#rso>div:not(.g)>div[jsmodel]").forEach(one => {
                     one.parentNode.style.display = "unset"
                   })
+
+                  AC_addStyle('#rso>div{display: grid;}', "AC-GoogleGridDelta-Style", "head", false); // 需要修改的，所以为true
                 }
               } catch (e) {
                 console.error(e)
@@ -2754,22 +2828,22 @@ body[google] {
             });
 
             // 移除右侧栏广告
-            safeRemove_xpath("id('content_right')/div[.//a[starts-with(text(), '广告')]]");
+            safeRemove_xpath("id('content_right')/div[.//a[starts-with(text(), '广告')]]", false, true);
             // 移除标准广告
-            safeRemove_xpath("id('content_left')/div[.//span[contains(text(), '广告')]]");
+            safeRemove_xpath("id('content_left')/div[.//span[contains(text(), '广告')]]", false, true);
             // 移除标准广告 - 新
-            safeRemove_xpath("id('content_left')/div[.//a[text()='广告']]");
+            safeRemove_xpath("id('content_left')/div[.//a[text()='广告']]", false, true);
             // 移除右侧栏顶部-底部无用广告
-            safeRemove_xpath("id('content_right')/br");
-            safeRemove_xpath("id('content_right')/div[not(@id)]");
+            safeRemove_xpath("id('content_right')/br", false, true);
+            safeRemove_xpath("id('content_right')/div[not(@id)]", false, true);
             // 移除顶部可能出现的 "为您推荐"
-            safeRemove_xpath("id('content_left')//div[contains(@class, '_rs')]");
+            safeRemove_xpath("id('content_left')//div[contains(@class, '_rs')]", false, true);
 
           } else if (curSite.SiteTypeID === SiteType.MBAIDU) {
             /****移除手机模式上的部分广告****/
-            safeRemove_xpath("id('page-bd')/div[not(contains(@class, 'result'))]");
-            safeRemove_xpath("id('page-bd')/div[not(@class)]");
-            safeRemove_xpath("//div[@class='na-like-container']");
+            safeRemove_xpath("id('page-bd')/div[not(contains(@class, 'result'))]", false, true);
+            safeRemove_xpath("id('page-bd')/div[not(@class)]", false, true);
+            safeRemove_xpath("//div[@class='na-like-container']", false, true);
             // safeFunction(function () {
             //   $('#page-bd #results>div:not([class*="result"])').remove();
             // });
@@ -2782,14 +2856,14 @@ body[google] {
             // 移除搜索中底部广告
             safeRemove("#m-spread-bottom");
             // 移除右侧栏顶部广告
-            safeRemove_xpath("id('righttop_box')//li[.//span[contains(text(), '广告')]]");
+            safeRemove_xpath("id('righttop_box')//li[.//span[contains(text(), '广告')]]", false, true);
           } else if (curSite.SiteTypeID === SiteType.BING) {
             safeRemove(".b_ad");
             safeRemove_xpath("id('b_results')/li[./div[@class='ad_fls']]", true);
           } else if (curSite.SiteTypeID === SiteType.GOOGLE) {
             safeRemove("#bottomads");
-            safeRemove('div[aria-label="广告"]');
-            safeRemove('div[aria-label="Ads"]');
+            safeRemove('div[aria-label="广告"]', false, true);
+            safeRemove('div[aria-label="Ads"]', false, true);
           }
         }
 
@@ -2974,7 +3048,7 @@ body[google] {
         try {
           func();
         } catch (e) {
-          failCb()
+          failCb && failCb()
         }
       }
 
@@ -3039,12 +3113,24 @@ body[google] {
         }, 20, true);
       }
 
-      function safeRemove(cssSelector, deleteItem = true) {
+      function safeRemove(cssSelector, withAni = false) {
         safeFunction(() => {
           let removeNodes = document.querySelectorAll(cssSelector);
-          for (let i = 0; i < removeNodes.length; i++)
-              removeNodes[i].remove();
+          for (let i = 0; i < removeNodes.length; i++) {
+            aniRemove(removeNodes[i], withAni)
+          }
         })
+      }
+
+      function aniRemove(node, withAni) {
+        if(withAni) {
+          node.classList.add('aniDelete')
+          setTimeout(() => {
+            node.remove();
+          }, 400)
+        } else {
+          node.remove();
+        }
       }
 
       function hideNode(node) {
@@ -3053,7 +3139,7 @@ body[google] {
         node.style = 'display: none !important;'
       }
 
-      function safeRemove_xpath(xpathSelector, isHide=false) {
+      function safeRemove_xpath(xpathSelector, isHide=false, withAni = false) {
         safeFunction(() => {
           let removeNodes = getAllElements(xpathSelector);
           if(isHide) {
@@ -3062,7 +3148,7 @@ body[google] {
             }
           } else {
             for (let i = 0; i < removeNodes.length; i++){
-              removeNodes[i].remove();
+              aniRemove(removeNodes[i], withAni)
             }
           }
         })

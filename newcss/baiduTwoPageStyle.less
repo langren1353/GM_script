@@ -1,0 +1,153 @@
+/**Store BaiduTowPageStyle**/
+#wrapper_wrapper #container {
+    width: auto;
+    margin-left: unset;
+}
+form.fm{
+    position: relative;
+    background-color: unset;
+}
+#s_tab b, #s_tab a {
+    position: relative;
+}
+#wrapper #s_tab{
+    padding-left: 0;
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+}
+#wrapper .head_nums_cont_outer .search_tool_conter,
+#wrapper .head_nums_cont_outer .nums {
+    width: 80%;
+    margin-left: 10%;
+}
+#wrapper  .head_nums_cont_outer,
+.hint_common_restop,
+#header_top_bar {
+    position: relative;
+    left: 10%;
+    width: 80%;
+}
+#wrapper #content_left, #container .result-molecule {
+    margin: 0 auto !important;
+    padding-left: unset !important;
+}
+#wrapper #header_top_bar{
+    margin-bottom: 0px;
+}
+body #container.sam_newgrid #content_left{
+    width: 80%;
+}
+#wrapper #content_left{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas: "xmain xmain";
+    margin: 0 auto;
+    position: relative;
+    padding-left: 5%;
+    float: unset;
+    width: 80%;
+    margin-left:7%;
+    margin-bottom: 30px;
+}
+body[news] #wrapper #content_left>div:not([class]):not([id]){
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas: "xmain xmain";
+}
+#wrapper #content_right{
+    display:none !important;
+}
+#wrapper_wrapper #container #rs{
+    position: relative;
+    margin: 0 auto;
+}
+#wrapper #page {
+    min-width: 710px;
+    height: 40px;
+    line-height: 40px;
+    padding: 5px 10px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+
+    .page-inner{
+        padding-left: 0;
+    }
+}
+#wrapper  #content_left {
+    .result,
+    .result-op,
+    div[class*='vmp-project'],
+    &>.c-container {
+        width: unset !important;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 15px;
+    }
+
+    >*:not([class*='result']):not([class*='c-group-wrapper']){
+        grid-column-start: 1;
+        grid-column-end: xmain-end;
+    }
+}
+
+.c-container h3 a{
+    z-index:1;
+}
+.AC.sp-separator{
+    width: auto;
+}
+/*search engine jump*/
+#sej-container{
+    padding-left: 0;
+    margin-left: 0;
+    text-align: center;
+}
+.s_form_wrapper {
+    justify-content: center;
+    display: flex;
+}
+
+.result-molecule.new-pmd {
+    margin: 0 auto;
+    min-width: 800px;
+    width: 40% !important;
+    padding-left: 20px;
+
+    #page >div{
+        width: unset;
+        padding-left: unset;
+    }
+
+    #rs_new {
+        background-color: white;
+        width: calc(100% - 20px);
+        padding: 10px 0 10px 20px;
+
+        table{
+            width: 100%;
+            margin-top: 12px;
+        }
+    }
+}
+#wrapper .head_nums_cont_outer .search_tool_conter,
+#wrapper .head_nums_cont_outer .nums {
+    width: 80%;
+}
+@media screen and (max-width: 1500px) {
+    form.fm .s_ipt_wr.bg{
+        min-width: 450px
+    }
+    .wrapper_new .head_wrapper #result_logo{
+        margin-left: -170px;
+    }
+}
+@media screen and (min-width: 1921px) {
+    #s_tab.s_tab .s_tab_inner {
+        width: 900px;
+    }
+    form.fm .s_ipt_wr.bg{
+        min-width: 900px
+    }
+}

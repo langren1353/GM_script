@@ -1,0 +1,124 @@
+/**Store HuYanStyle**/
+/*****Baidu-HuYanStyle*****/
+body[baidu],
+#wrapper #head,
+#wrapper #s_tab,
+form.fm .s_ipt_wr.bg{
+    background-color: #FFFFFF;
+}
+#wrapper #content_left .result-op,
+#wrapper #content_left .result,
+#wrapper #content_left article,
+#wrapper #content_left>.c-container,
+#wrapper #rs,
+#wrapper #content_right{
+    background-color: #AAAAAA ;
+    border: 1px double #A2D7D4 ;
+    border-radius: 0px;
+}
+#wrapper #content_left .result-op:hover,
+#wrapper #content_left .result:hover,
+#wrapper #content_left .result-op:hover article{
+    background-color: #CCCCCC !important;
+}
+#wrapper #content_left .result h3,
+#wrapper #content_left .result-op h3,
+#wrapper #content_left .c-container h3,
+#wrapper #rs .tt{
+    background-color: #BBBBBB ;
+}
+/***Bing-HuYanStyle****/
+.na_cnt .nws_itm,
+.nws_itmb,
+#b_content #b_results>li:not(#mfa_root),
+body #b_header{
+    background-color: #AAAAAA ;
+    border: 1px double #A2D7D4 ;
+    border-radius: 0px;
+}
+#b_content #b_results li:hover {
+    background-color: #CCCCCC !important;
+}
+#b_content #b_results li h2{
+    background-color: #BBBBBB ;
+}
+/***Google-HuYanStyle****/
+body[google]{
+    background-color: #fDfDfD;
+}
+#rso .g, .bkWMgd>.g,
+.bkWMgd g-inner-card,
+#rhscol #rhs,
+#rhscol #rhs .g>div,
+.c2xzTb .g,
+.ruTcId .g,
+.fm06If .g,
+.cUnQKe .g,
+.HanQmf .g,
+#rso .g,
+#rso .kp-blk,
+#rso .MGqjK,
+#rso>div:not(.g)>*{
+    background-color: #AAAAAA ;
+    border: 1px solid #9cd2cfAA;
+    border-radius: 0px;
+}
+#rso .g:hover,
+.bkWMgd>.g:hover {
+    background-color: #CCCCCC !important;
+    border: 1px double #9cd2cf;
+}
+.bkWMgd .g div.r,
+#rso .g h3{
+    background-color: #BBBBBB ;
+}
+/***Sogou-HuYanStyle****/
+body[sogou], #pagebar_container a{
+    background-color: #fDfDfD;
+}
+#main .results>div{
+    background-color: #AAAAAA ;
+    border: 1px solid #9cd2cfAA;
+    border-radius: 0px;
+}
+#main .results>div:hover {
+    background-color: #CCCCCC !important;
+    border: 1px double #9cd2cf;
+}
+#main .results>div h3{
+    background-color: #BBBBBB ;
+}
+/***Duck_Doge-HuYanStyle****/
+body[duck],body[doge]{
+    background-color: #fDfDfD;
+}
+#links_wrapper #links .results_links_deep{
+    background-color: #AAAAAA ;
+    border: 1px solid #9cd2cfAA;
+    border-radius: 0px;
+}
+#links_wrapper #links .results_links_deep:hover {
+    background-color: #CCCCCC !important;
+    border: 1px double #9cd2cf;
+}
+#links_wrapper #links .results_links_deep h2{
+    background-color: #BBBBBB ;
+}
+/*****************Auto Dark Mode*******************/
+:root {
+    --back-ground-color-1: #111;
+    --back-ground-color-2: #222;
+    --back-ground-color-3: #333;
+    --back-ground-color-4: #444;
+    --text-color-nomal: #fff;
+    --text-color-em:#f66;
+}
+/***  ****/
+@media (prefers-color-scheme: dark) {
+    #rso .g, .vk_c{
+        background-color: var(--back-ground-color-4);
+    }
+    img{
+        filter: brightness(0.8);
+    }
+}

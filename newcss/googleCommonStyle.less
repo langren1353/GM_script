@@ -1,0 +1,399 @@
+/******************* Store GoogleCommonStyle *******************/
+/* regular items, warring: iframes could be videos*/
+div.res_top_banner,
+#page .fk,
+#head .headBlock,
+#rs_top_new,
+#content_right,
+#rso > table,
+#rso > div[id*="30"],
+#rso .c-recommend,
+#rso .leftBlock,
+#rso .oUAcPd,
+#search #z9PoV,
+#rso .hit_top_new,
+#rso #fld,
+#rso div.rrecom-btn-parent,
+#content_right,
+#center_col > #taw,
+#fld,
+#demo {
+  display: none !important;
+}
+
+/******************* init *******************/
+body[google] {
+  background-color: #fDfDfD;
+}
+
+#top_nav #hdtb {
+  background: unset;
+}
+
+#cnt #hdtbSum, #cnt > #appbar {
+  background: rgba(0, 0, 0, 0);
+}
+
+#form .bdsug {
+  width: 76%;
+}
+
+#ala_img_results {
+  overflow: hidden;
+}
+
+a,
+a em,
+#u a {
+  text-decoration: none;
+}
+
+a:hover,
+a:hover h3 {
+  text-decoration: none !important;
+}
+
+/******************* rewrite header *******************/
+#head {
+  background-color: #f8f8f8;
+  border-bottom: none;
+}
+
+#form {
+  background-color: unset;
+
+  .bdsug li {
+    width: auto;
+    color: #000;
+    font: 15px arial;
+    line-height: 26px;
+  }
+
+  .s_ipt_wr.bg {
+    background: #fff;
+    width: 76%;
+  }
+
+  .s_btn {
+    background: #3476d2;
+    border-bottom: 1px solid #3476d2;
+
+    &:hover {
+      background: #3476d2;
+      border-bottom: 1px solid #3476d2;
+    }
+  }
+}
+
+#s_tab {
+  background-color: #f8f8f8;
+  border-bottom: #e0e0e0 1px solid;
+
+  b {
+    color: #3476d2;
+    border-bottom: 3px #3476d2 solid;
+  }
+}
+
+/******************* rewrite - searchBox *******************/
+/* SearchTools */
+#container .head_nums_cont_outer .search_tool_conter,
+#container .head_nums_cont_outer .nums {
+  width: 630px;
+}
+
+/* SearchItmes Bottom to Top ani */
+#search #rso {
+  animation-name: ani_topTobuttom;
+  animation-duration: .3s;
+  animation-timing-function: ease;
+  width: 800px;
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+/* SearchBar Left to Right ani */
+.srp form {
+  animation-name: ani_leftToright;
+  animation-duration: .3s;
+  animation-timing-function: ease-out;
+}
+
+#rso .jUmkFb:hover {
+  margin: 0 auto;
+  border-left: unset;
+  padding: 0px 20px 15px;
+  margin-bottom: 40px;
+}
+
+#rs, #rso .g {
+  width: 100% !important;
+  padding: 0px 20px 15px;
+  margin-top: 0px;
+  margin-bottom: 40px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
+}
+
+#rso > .g ~ div:not(.g) {
+  width: 100%;
+  overflow: hidden;
+}
+
+#rs, #rso .g div.rc .s {
+  max-width: unset;
+}
+
+#rso .g:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 1px grey;
+  -webkit-box-shadow: 0 0 1px grey;
+  -moz-box-shadow: 0 0 1px gray;
+}
+
+#rso .g[tpl='soft'] .op-soft-title,
+#rso .g div.r {
+  margin: 0px -20px 10px -20px;
+  padding: 8px 20px 5px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+/* Items - Color */
+#rso .f13 a,
+#rso .f13 em,
+#rso .c-span18 a,
+#rso .subLink_factory a,
+#rso .c-tabs-content a,
+#rso .op_offical_weibo_content a,
+#rso .op_offical_weibo_pz a,
+#rso .op_tieba2_tablinks_container a,
+#rso .op-tieba-general-right,
+#rso .op_dq01_title,
+#rso .op_dq01_table a,
+#rso .op_dq01_morelink a,
+#rso .op-tieba-general-mainpl a,
+#rso .op-se-listen-recommend,
+#rso .c-offset > div a {
+  text-decoration: none;
+  color: #3476d2;
+
+  &:hover{
+    text-decoration: underline !important;
+  }
+}
+
+#rso .f13 a {
+  color: #008000;
+}
+
+/* Items - Adj */
+
+#rso .c-span18, #rso .c-span24 {
+  width: 100%;
+  min-width: unset;
+}
+
+#rso .c-border {
+  width: auto;
+  border: none;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  box-shadow: 0px 0px 0px transparent;
+  -webkit-box-shadow: 0px 0px 0px transparent;
+  -moz-box-shadow: 0px 0px 0px transparent;
+  -o-box-shadow: 0px 0px 0px transparent;
+}
+
+/* Img */
+
+#rso .se_com_irregular_gallery ul li,
+#rso .op_jingyan_list,
+#rso .g .op-img-address-link-type {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+#rso .g a{
+  color: #3476d2;
+
+  h3 {
+    font-weight: bold;
+
+    &:after {
+      content: "";
+      position: absolute;
+      border-bottom: 2px solid #3476d2;
+      bottom: -4px;
+      left: 100%;
+      width: 0;
+      transition: width 350ms, left 350ms;
+    }
+
+    &:hover:after {
+      left: 0;
+      width: 100%;
+      transition: width 350ms;
+    }
+  }
+
+  &:visited{
+    color: #660099;
+  }
+}
+
+#rso .op-soft-title a,
+#rso .g div.r > a {
+  position: relative;
+
+  em{
+    text-decoration: none;
+  }
+}
+/* page nums */
+#rso div.g:not([class]) {
+  margin-left: 18px;
+  margin-right: 18px;
+}
+
+#rso .g .exp-outline {
+  display: none;
+}
+
+#res .g .ts {
+  max-width: unset;
+}
+
+#main #rcnt{
+  flex-wrap: nowrap;
+}
+
+#main #rcnt #rhs {
+  display: none;
+}
+
+.showRight #main #rcnt #rhs {
+  display: unset;
+}
+
+cite {
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+/**Mooncan -START**/
+/**Aja LineHeight*/
+div.res_top_banner #foot, #pag
+#res .r {
+  line-height: 1.3;
+}
+
+#res {
+  padding: 0;
+}
+
+/**Google ConnectionBox*/
+#rs, #rso .g {
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+#rso .g div.r {
+  border-radius: 10px 10px 0px 0px;
+}
+
+#rso .g .card-section, #center_col .kp-blk {
+  width: 100% !important;
+}
+
+/**Rewrite main page -> web summary*/
+.c2xzTb .g, .ruTcId .g, .fm06If .g, .cUnQKe .g, .HanQmf .g {
+  width: 758px;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  box-shadow: 0 0 0px 0px rgb(0, 0, 0); /*remove the shadow*/
+}
+
+div .xfxx5d {
+  margin-bottom: -18px !important;
+  margin-top: -25px !important;
+}
+
+div .xaqJzf.xfxx5d .kno-ftr {
+  margin-top: 10px !important;
+}
+
+div .kno-ftr a {
+  position: sticky;
+}
+
+/**Thanks to Mooncan -END**/
+#rcnt #res h3, #rcnt #extrares h3 {
+  /**reset font size**/
+  font-size: medium;
+}
+
+#rcnt #res h3 div, #rcnt #extrares h3 div {
+  display: inline-block;
+}
+
+/*deal with cite too long and title too short*/
+#rso .g .r > a > div {
+  width: 35rem;
+}
+
+div.rc[ac-needhide] {
+  margin-top: 5px;
+  margin-bottom: -15px;
+}
+
+/*reset logo position at drop */
+.logo.baidu {
+  top: -5px;
+}
+
+body[google] .big .baidu {
+  transform: unset !important;
+  margin-top: -10px;
+  margin-left: -2rem;
+}
+
+body[google] .big .baidu #logo img {
+  margin-top: -15px;
+}
+
+body[google] .big.minidiv .baidu #logo img {
+  height: 59px;
+  width: unset;
+  margin-top: -18px;
+}
+
+body[google] .A8SBwf {
+  max-width: 692px;
+  width: unset;
+  margin-left: 25%;
+}
+
+.AC.sp-separator {
+  margin-top: -20px;
+}
+
+div[jscontroller] a, div[jsname] a {
+  position: relative;
+}
+
+//@media screen and (min-width: 1366px) {
+//  #main #rcnt #rhs {
+//    padding-left: 40px;
+//    margin-left: 800px;
+//  }
+//}
+//
+//@media screen and (min-width: 1920px) {
+//  #main #rcnt #rhs {
+//    margin-left: 1300px;
+//    padding-left: 40px;
+//  }
+//}

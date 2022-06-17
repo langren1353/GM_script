@@ -102,34 +102,3 @@ body #pagebar_container a{
     animation-duration: .3s;
     animation-timing-function: ease-out;
 }
-@keyframes ani_leftToright {
-    0% {
-        transform: translateX(-32px);
-        opacity: 0.2;
-    }
-    20% {
-        opacity: 0.5;
-    }
-    30% {
-        opacity: 0.8;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-/* ani */
-@keyframes ani_bottomTotop {
-    0% {
-        transform: translateY(32px);
-        opacity: 0.2;
-    }
-    20% {
-        opacity: 0.5;
-    }
-    30% {
-        opacity: 0.8;
-    }
-    100% {
-        opacity: 1;
-    }
-}
