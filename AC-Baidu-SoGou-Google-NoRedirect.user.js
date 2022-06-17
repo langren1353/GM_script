@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    25.07
+// @version    25.08
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -42,9 +42,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2022, AC
-// @lastmodified  2022-06-16
+// @lastmodified  2022-06-17
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2022.06-17-V25.07 修复可能出现的脚本参数读取失败导致的脚本不执行的异常
+// @note    2022.06-17-V25.08 修复可能出现的脚本参数读取失败导致的脚本不执行的异常 & 修复 拦截规则特殊参数的问题
 // @note    2022.06-16-V25.06 优化重定向逻辑，部分网站只需要稍作处理，不用做接口请求了，感谢众多搜索引擎的版本迭代更新
 // @note    2022.04-08-V25.05 主要修复Block功能；其次优化样式加载速度-减少撕裂感
 // @note    2022.03-07-V25.04 修复谷歌、必应样式问题；修复并优化拦截功能
@@ -149,6 +149,14 @@
         }
       };
     }
+    GM_registerMenuCommand('AC-重定向脚本设置', function() {
+      document.querySelector("#sp-ac-content").style.display = 'block';
+    });
+    GM_registerMenuCommand('脚本重置 - 修复脚本', function() {
+      GM_setValue('Config', '{}');
+      localStorage.setItem('ACConfig', '{}');
+      location.reload();
+    });
     // let RedirectMap = new Map();
     let ACConfig = {};
     let DBConfig = {}; // 仅作为普通ACConfig的原始备份，在其他非关键位置时进行保存使用
@@ -721,7 +729,7 @@ body[google] {
     /**初始化所有的设置**/
     Promise.all([GM.getValue("Config")]).then(function (data) {
       let res = data[0]
-      if (res || (res !== 'undefined' || res !== 'null')) {
+      if (res && (res !== 'undefined' && res !== 'null')) {
         try {
           ACConfig = JSON.parse(res);
         } catch (e) {
@@ -1331,16 +1339,20 @@ body[google] {
                 console.log(this.ACConfig.defaultHuYanColor);
                 CONST.StyleManger.loadHuYanStyle(this.ACConfig.defaultHuYanColor);
               },
-              getUserBlockListRegex() {
-                var list = [];
-                this.ACConfig.UserBlockList.forEach(one => {
-                  one !== null && list.push(new RegExp(one.replace("*", ".*")));
-                })
-                if (typeof (this.other.addBlockItem) !== "undefined" && this.other.addBlockItem !== "") {
-                  list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
-                }
-                return list;
-              }
+              // getUserBlockListRegex() {
+              //   var list = [];
+              //   this.ACConfig.UserBlockList.forEach(one => {
+              //     safeFunction(() => {
+              //       one !== null && list.push(new RegExp(one.replace("*", ".*")));
+              //     })
+              //   })
+              //   if (typeof (this.other.addBlockItem) !== "undefined" && this.other.addBlockItem !== "") {
+              //     safeFunction(() => {
+              //       list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
+              //     })
+              //   }
+              //   return list;
+              // }
             },
             computed: {
               getBlockList() { // 会自动的render到html上去，不用手动去渲染一遍
@@ -1352,7 +1364,7 @@ body[google] {
                       let [curHost, curUrl] = m.split("###");
                       return UserBlockRegList[i].test(curHost) || UserBlockRegList[i].test(curUrl);
                     } catch (e) {
-                      return m === this.ACConfig.UserBlockList[i];
+                      return (m || '').includes(this.ACConfig.UserBlockList[i])
                     }
                   }) >= 0 ? " ac-block-high" : ""; // 如果当前页面存在，则高亮
                   insHTML += `<li><label class="ac-block-item${ insClass }" data-host="${ this.ACConfig.UserBlockList[i] }">${ this.ACConfig.UserBlockList[i] }</label><label class="ac-block-item ac-block-itemdel" data-host="${ this.ACConfig.UserBlockList[i] }">x</label></li>\n`;
@@ -1369,10 +1381,18 @@ body[google] {
               cal_UserBlockListRegex() {
                 var list = [];
                 this.ACConfig.UserBlockList.forEach(one => {
-                  one !== null && list.push(new RegExp(one.replace("*", ".*")));
+                  safeFunction(() => {
+                    one !== null && list.push(new RegExp(one.replace("*", ".*")));
+                  }, () => {
+                    list.push(one);
+                  })
                 })
                 if (typeof (this.other.addBlockItem) !== "undefined" && this.other.addBlockItem !== "") {
-                  list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
+                  safeFunction(() => {
+                    list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
+                  }, () => {
+                    list.push(this.other.addBlockItem);
+                  })
                 }
                 this.calc_block_data = {
                   md5: hex_md5(JSON.stringify(list)),
@@ -1950,12 +1970,6 @@ body[google] {
         }
 
         AddCustomStyle();
-        try {
-          GM_registerMenuCommand('AC-重定向脚本设置', function() {
-            document.querySelector("#sp-ac-content").style.display = 'block';
-          });
-        } catch (e) {
-        }
 
         /**这东西以后会用上**/
         function getSearchValue() {
@@ -2956,10 +2970,11 @@ body[google] {
         }, period)
       }
 
-      function safeFunction(func) {
+      function safeFunction(func, failCb) {
         try {
           func();
         } catch (e) {
+          failCb()
         }
       }
 
