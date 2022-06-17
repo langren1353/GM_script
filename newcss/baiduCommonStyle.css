@@ -131,14 +131,11 @@ form.fm .s_btn:hover {
 
 #wrapper #content_left>.c-container h3 {
     background-color: #f8f8f8;
-    margin: 0px -23px 10px -20px;
+    margin: 0px -8px 10px -20px;
     padding: 8px 20px 5px;
     border-radius: 5px 5px 0px 0px;
 }
 
-#wrapper #content_left>.result-op h3{
-    margin: 0px -8px 10px -20px;
-}
 #wrapper #content_left .f13 a,
 #wrapper #content_left .f13 em,
 #wrapper #content_left .c-span18 a,
@@ -279,7 +276,7 @@ form.fm .s_btn:hover {
     margin: 0 0 20px 0;
     min-width: 610px;
 }
-#wrapper #content_left .c-group-wrapper .c-container{
+#wrapper #content_left .c-group-wrapper>.c-container{
     min-width: unset;
 }
 #wrapper #content_left .c-group-wrapper .c-group{
@@ -412,7 +409,7 @@ body #wrapper #content_left a[href*='official'] {
 .c-container .c-result-content{
     padding-top: 20px;
 }
-#wrapper #content_left  .c-container article{
+#wrapper #content_left > .c-container article{
     padding-top: 15px;
     border: unset !important;
     box-shadow: unset !important;
@@ -433,7 +430,7 @@ body.showRight #wrapper #content_right{
 .result-molecule #page >div{
     width: unset;
 }
-#wrapper #content_left .c-container[tpl='recommend_list']{
+#wrapper #content_left>.c-container[tpl='recommend_list']{
     padding-top: 10px;
     display: flex;
     align-items: center;

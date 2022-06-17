@@ -47,7 +47,7 @@
     grid-template-columns: 50% 50%;
     grid-template-areas: "xmain xmain";
 }
-#links_wrapper .results--main #links .results_links_deep{
+#links_wrapper .results--main #links .nrn-react-div{
     width: unset;
     margin-right: 15px;
 }

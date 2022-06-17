@@ -42,9 +42,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2022, AC
-// @lastmodified  2022-06-07
+// @lastmodified  2022-06-16
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2022.06-07-V25.06 优化重定向逻辑，部分网站只需要稍作处理，不做接口请求了
+// @note    2022.06-16-V25.06 优化重定向逻辑，部分网站只需要稍作处理，不用做接口请求了，感谢众多搜索引擎的版本迭代更新
 // @note    2022.04-08-V25.05 主要修复Block功能；其次优化样式加载速度-减少撕裂感
 // @note    2022.03-07-V25.04 修复谷歌、必应样式问题；修复并优化拦截功能
 // @note    2022.01-29-V25.02 修复谷歌、百度、必应的部分样式错位的问题
@@ -72,24 +72,24 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=25.05
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=25.05
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=25.05
-// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=25.05
-// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=25.05
-// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=25.05
-// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=25.05
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=25.05
-// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=25.05
-// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=25.05
-// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=25.05
-// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=25.05
-// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=25.05
-// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=25.05
-// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=25.05
-// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=25.05
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=25.05
-// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=25.05
+// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.css?t=25.06
+// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.css?t=25.06
+// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.css?t=25.06
+// @resource  baiduLiteStyle     http://ibaidu.tujidu.com/newcss/baiduLiteStyle.css?t=25.06
+// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.css?t=25.06
+// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.css?t=25.06
+// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.css?t=25.06
+// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.css?t=25.06
+// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.css?t=25.06
+// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.css?t=25.06
+// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.css?t=25.06
+// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.css?t=25.06
+// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.css?t=25.06
+// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.css?t=25.06
+// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.css?t=25.06
+// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.css?t=25.06
+// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.css?t=25.06
+// @resource  SiteConfigRules    http://ibaidu.tujidu.com/newcss/SiteConfigRules.conf?t=25.06
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
 // @require https://lib.baomitu.com/vue/2.6.14/vue.min.js
@@ -393,10 +393,10 @@ body[google] {
       },
       duck: {
         SiteTypeID: 10,
-        MainType: "#links_wrapper #links .results_links_deep",
-        FaviconType: ".results_links_deep .result__url__domain",
+        MainType: "#links_wrapper #links .nrn-react-div",
+        FaviconType: ".nrn-react-div .result__url__domain",
         FaviconAddTo: "h2",
-        CounterType: "#links_wrapper #links .results_links_deep h2",
+        CounterType: "#links_wrapper #links .nrn-react-div h2",
         BlockType: "h2 a",
         pager: {
           nextLink: "//a[contains(@class,\"sb_pagN\")]",
@@ -1079,7 +1079,7 @@ body[google] {
                 if (curNode.querySelector("button[ac-user-alter]") != null) continue; // 用户手动点过显示的，那么跳过check
 
                 // 减少数据计算
-                if (curNode.dataset.md5 && curNode.dataset.md5 === md5_tag) break
+                if (curNode.dataset.md5 && curNode.dataset.md5 === md5_tag) continue
                 if (curUrl && regList.findIndex(one => {
                   try {
                     return one.test(curHost) || one.test(curUrl); // 耗时操作
@@ -1226,7 +1226,6 @@ body[google] {
             }, 800);
             setInterval(() => {
               if (CONST.isEventFire) {
-                rapidDeal();
                 InsertSettingMenu();
                 ShowSetting();
                 CONST.isEventFire = false
@@ -1977,7 +1976,7 @@ body[google] {
             if (insertLocked === false && curSite.SiteTypeID !== SiteType.OTHERS) {
               try {
                 insertLocked = true;
-                ACHandle(); // 处理主重定向
+                RedirectHandle(); // 处理主重定向
                 if (ACConfig.isFaviconEnable && typeof (curSite.FaviconType) !== 'undefined') { // 显示favicon图标
                   AC_addStyle("h3::before, h2::before {content: ' ';display:inline-block}", "AC-Style-Favicon", "head");
                   // 延迟2秒加载，减少可能出现的问题
@@ -2099,7 +2098,7 @@ body[google] {
           }
         }
 
-        function ACHandle() {
+        function RedirectHandle() {
           // 处理主重定向
           if (curSite.SiteTypeID === SiteType.OTHERS || curSite.SiteTypeID === SiteType.SOGOU) return;
           if (ACConfig.isRedirectEnable) {
@@ -2895,7 +2894,7 @@ body[google] {
               }
             }
           } else {
-            var checkNodes = document.querySelectorAll("#links_wrapper #links .results_links_deep");
+            var checkNodes = document.querySelectorAll("#links_wrapper #links .nrn-react-div");
             for (let faNode of checkNodes) {
               let faviconNode = faNode.querySelector(".result__icon img");
               let beforeNode = faNode.querySelector(".result__title a");
@@ -2979,7 +2978,7 @@ body[google] {
       }
 
       function AC_addStyle(css, className, addToTarget, isReload = false, initType = "text/css") { // 添加CSS代码，不考虑文本载入时间，只执行一次-无论成功与否，带有className
-        RAFInterval(function () {
+        RAFInterval(async () => {
           /**
            * addToTarget这里不要使用head标签,head标签的css会在html载入时加载，
            * html加载后似乎不会再次加载，body会自动加载
@@ -2998,12 +2997,19 @@ body[google] {
               // 节点存在 && 不准备覆盖
               return true;
             }
-            // parseHTML 耗时 没必要
+
             let cssNode = document.createElement("style");
             if (className != null) cssNode.className = className;
-            cssNode.setAttribute("type", initType);
-            // cssNode.innerHTML = css;
 
+            // 针对less进行单独处理
+            if(initType.includes('less')) {
+              // parseHTML 耗时 没必要
+              const { css: renderCSS = '' } = await less.render(css);
+              css = renderCSS
+              initType = "text/css"
+            }
+
+            cssNode.setAttribute("type", initType);
             cssNode.appendChild(document.createTextNode(css))
 
             try {
@@ -3075,7 +3081,7 @@ body[google] {
            * @param data css内容
            * @param toClassName 预期的类名
            */
-          importStyle: function (data, toClassName, useNormalCSS = false, mustLoad = false) {
+          importStyle: async (data, toClassName, useNormalCSS = false, mustLoad = false) => {
             if (typeof (data) === "undefined" || data === null) {
               // 这个居然在VM上出问题了，很奇怪
               console.error("GM_getResourceText获取内容数据异常");
@@ -3085,6 +3091,8 @@ body[google] {
             if (!useNormalCSS && curSite.SiteTypeID !== SiteType.DUCK) { // Duck拒绝了外部样式插入
               // 通过must参数来判定style是否加载
               // data = data.replace(/baidu.com#\$#/igm, '');
+              const { css: renderCSS = '' } = await less.render(data);
+              data = renderCSS || data
               if (data.indexOf("http") !== 0) data = "data:text/css;utf-8," + encodeURIComponent(data);
               var {res,} = checkDocmentHasNode(toClassName);
               if (!res) {
@@ -3097,7 +3105,7 @@ body[google] {
               }
             } else {
               /* **********多重样式-兼容edge && 黑夜脚本************ */
-              AC_addStyle(data, toClassName, "head", false, "text/css");
+              AC_addStyle(data, toClassName, "head", false, "less");
               /* **********多重样式-兼容edge && 黑夜脚本************ */
             }
           },
