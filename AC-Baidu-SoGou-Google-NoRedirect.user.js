@@ -82,13 +82,13 @@
 // @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=25.06
 // @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=25.06
 // @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=25.06
-// @resource  duckCommonStyle    http://sync.ntaow.com/newcss/duckCommonStyle.less?t=25.06
-// @resource  duckOnePageStyle   http://sync.ntaow.com/newcss/duckOnePageStyle.less?t=25.06
-// @resource  duckTwoPageStyle   http://sync.ntaow.com/newcss/duckTwoPageStyle.less?t=25.06
-// @resource  dogeCommonStyle    http://sync.ntaow.com/newcss/dogeCommonStyle.less?t=25.06
-// @resource  dogeOnePageStyle   http://sync.ntaow.com/newcss/dogeOnePageStyle.less?t=25.06
-// @resource  dogeTwoPageStyle   http://sync.ntaow.com/newcss/dogeTwoPageStyle.less?t=25.06
-// @resource  MainHuYanStyle     http://sync.ntaow.com/newcss/HuYanStyle.less?t=25.06
+// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=25.06
+// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=25.06
+// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=25.06
+// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=25.06
+// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=25.06
+// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=25.06
+// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=25.06
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
