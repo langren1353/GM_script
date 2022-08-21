@@ -105,8 +105,8 @@ form.fm {
 
 #head .head_wrapper {
   animation-name: ani_leftToright;
-  animation-duration: 0.5s;
-  animation-timing-function: ease-out;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in;
 }
 
 #wrapper #rs,
@@ -122,6 +122,10 @@ form.fm {
   background-color: #fff;
   box-sizing: border-box;
   border: 1px solid rgba(0, 0, 0, 0.1);
+  
+  div[class*='single-card-wrapper'] {
+    width: 98%;
+  }
 }
 
 #wrapper #content_left > .c-container:hover,
@@ -219,7 +223,6 @@ form.fm {
     a {
       color: #3476d2;
       position: relative;
-
 
       em {
         color: #f73131;
@@ -325,9 +328,9 @@ form.fm {
 
   .n:hover,
   a:hover .pc {
-    border: 1px solid transparent;
     background: #d8d8d8;
     color: #0057da;
+    filter: brightness(1.1);
   }
 
   strong .pc {
@@ -366,6 +369,10 @@ body #wrapper #content_left a[href*='official'] {
   min-width: unset;
 }
 
+#container.sam_newgrid #content_right .right-ceiling {
+  position: unset; // 避免重叠在一起
+}
+
 .c-container .c-result-content {
   padding-top: 20px;
 }
@@ -386,11 +393,15 @@ body .wrapper_new #head.fix-head .s_form {
 }
 
 #wrapper #content_right {
-  display: none !important;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
-
+// 只能采用这种方案来对其进行隐藏，否则会导致百度页面加载非常缓慢
 body.showRight #wrapper #content_right {
-  display: unset !important;
+  width: unset;
+  height: unset;
+  overflow: unset;
 }
 
 .result-molecule #page > div {
@@ -417,7 +428,7 @@ body.showRight #wrapper #content_right {
 @media screen and (min-width: 1921px) {
   /*Baidu in 2K screen default in : center*/
   #head .head_wrapper {
-    transform: translate3d(-120px, 0, 1px);
+    transform: translateX(120px);
     justify-content: center;
     display: flex;
   }

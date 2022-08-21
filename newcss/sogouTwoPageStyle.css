@@ -1,35 +1,42 @@
 /*Store: SogouTwoPageStyle*/
-.wrap .wrapper .right{
-    display: none;
+.wrap .wrapper .right {
+  display: none;
 }
-.wrap .wrapper{
-    padding-left: unset;
-    width: 75vw;
+
+.wrap .wrapper {
+  padding-left: unset;
+  width: 75vw;
 }
-.wrap>.wrapper #main, .wrap>.hintBox, .wrap>.p{
-    max-width: unset;
-    width: 100%;
+
+.wrap > .wrapper #main, .wrap > .hintBox, .wrap > .p {
+  max-width: unset;
+  width: 100%;
 }
-#main .results{
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(50%,1fr));
-    grid-template-areas: "xmain xmain";
+
+#main .results {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+  grid-template-areas: "xmain xmain";
 }
-#main .results>div{
-    margin-left: 5px;
-    margin-right: 15px;
-    width: unset !important;
+
+#main .results > div {
+  margin-left: 5px;
+  margin-right: 15px;
+  width: unset !important;
 }
-.wrap .header .header-box{
-    min-width: 850px;
-    width: 50vw;
-    margin: 0 auto;
+
+.wrap .header .header-box {
+  min-width: 850px;
+  width: 50vw;
+  margin: 0 auto;
 }
-.wrap .header .header-box a.logo{
-    left: unset;
+
+.wrap .header .header-box a.logo {
+  left: unset;
 }
+
 /*search engine jump*/
-body #sej-container{
-    padding-left: calc(12% - 113px) !important;
+body #sej-container {
+  padding-left: calc(12% - 113px) !important;
 }

@@ -37,6 +37,7 @@
 // @exclude    https://zhidao.baidu.com/*
 // @exclude    https://*.zhidao.baidu.com/*
 // @exclude    https://www.baidu.com/img/*
+// @exclude    https://lens.google.com/*
 // @supportURL  https://ac.tujidu.com/
 // @home-url   https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2  https://github.com/langren1353/GM_script
@@ -110,8 +111,8 @@
 // ==/UserScript==
 // calc(X1(vw) + X2(px)) -> B(px) 使用 http://www.yunsuan.info/matrixcomputations/solvelinearsystems.html 进行计算
 !function () {
-  let isdebug = false;
-  let isLocalDebug = isdebug || false;
+  let isdebug = true;
+  let isLocalDebug = true;
   let debug = isdebug ? console.log.bind(console) : ()=>{}
   let acCssLoadFlag = false;
 
@@ -173,16 +174,22 @@
         name: 'baidu',  // CSS load 的前缀标志
         AdsStyleMode: '1', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-百度
+        defaultBgUrl: '', // 默认背景图
+        BgFit: true,
       },
       google: {
         name: 'google',
         AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-谷歌
+        defaultBgUrl: '', // 默认背景图
+        BgFit: true,
       },
       bing: {
         name: 'bing',
         AdsStyleMode: '3', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-必应
+        defaultBgUrl: '', // 默认背景图
+        BgFit: true,
       },
       duck: {
         name: 'duck',
@@ -237,15 +244,14 @@ body[baidu] {
   
   /**右侧栏的样式-其实不开启更好看一些*/
   #content_right{
-    padding: 20px 15px 15px;
+    padding: 20px 15px 15px !important;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: #FFFFFF66;
     box-sizing: border-box;
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
   }
-
   &:before{
     position: fixed;
     width: 100%;
@@ -261,6 +267,10 @@ body[baidu] {
   /**隐藏首页的大图标-修复可能导致外援样式异常**/
   #s_lg_img_new{
     display:none !important;
+  }
+  
+  #wrapper #s_tab {
+    background-color: rgba(248, 248, 248, 0.4);
   }
   
   #content_left>.c-container{
@@ -310,8 +320,7 @@ body[google] {
       isGoogleImageUrl: false,
       isGoogleSpecial: false, // 判断是否存在#rso>.g; true=存在
       useItem: {},
-      StyleManger: function () {
-      },
+      fsBaidu: null,
     };
 
     var curSite = {
@@ -568,6 +577,9 @@ body[google] {
               userStyle_doge_3line: "三列",
               userStyle_doge_4line: "四列",
 
+              backgroundImage_text: "背景图：",
+              backgroundImageAutoFit_text: "自动优化",
+
               huyanMode_text: "附加4-护眼颜色配置-自定义3中需对应开启",
               huyanMode_title: "！需要在自定义样式中启用护眼模式",
               huyanColor_text: "默认护眼颜色：",
@@ -685,6 +697,9 @@ body[google] {
               userStyle_doge_2line: "Two",
               userStyle_doge_3line: "Three",
               userStyle_doge_4line: "Four",
+
+              backgroundImage_text: "background Image：",
+              backgroundImageAutoFit_text: "Auto Fit：",
 
               huyanMode_text: "Add4-EyeSave Color Setting-Need opened in Add3",
               huyanMode_title: "！Open EyeSave Mode in CustomStyle is Must",
@@ -875,6 +890,65 @@ body[google] {
       }
     }
 
+    class FlushDomFragment {
+      constructor() {
+        this.init()
+      }
+
+      init() {
+        this.fragmentHead = document.createDocumentFragment();
+        this.fragmentBody = document.createDocumentFragment();
+        this.fragmentDOM = document.createDocumentFragment();
+        
+        this.reloadList = []
+      }
+      
+      removeReload() {
+        this.reloadList.map(one => {
+          document.querySelector(one).remove()
+        })
+      }
+
+      flush() {
+        
+        this.removeReload()
+        
+        document.body.appendChild(this.fragmentBody)
+        document.head.appendChild(this.fragmentHead)
+        document.appendChild(this.fragmentDOM)
+
+        setTimeout(() => {
+          this.init()
+        }, 10)
+      }
+
+      appendChild(node, to = 'head', config = {
+        isReload: false
+      }) {
+        return this.insert(node, to, config)
+      }
+
+      insert(node, to = 'head', config= {
+        isReload: false
+      }) {
+        if (to === 'body') {
+          this.fragmentBody.appendChild(node)
+        } else if(to === 'head') {
+          this.fragmentHead.appendChild(node)
+        } else if(to === 'DOM') {
+          this.fragmentDOM.appendChild(node)
+        } else{
+          console.error('不支持的节点操作')
+        }
+        
+        const { isReload } = config
+        if(isReload) {
+          this.reloadList.push('.' + node.classList.join('.'))
+        }
+        return this
+      }
+    }
+
     function callback() {
       if (ACConfig.oldVersion === GM_info.script.version) {
         CONST.hasNewFuncNeedDisplay = false;
@@ -911,8 +985,6 @@ body[google] {
         Object.defineProperty(otherData.other.curHosts, 'acpush', {value: acpush})
         Object.defineProperty(otherData.other.curHosts, 'acremove', {value: acremove})
       }();
-
-
 
       !async function() {
         let insertLocked = false;
@@ -981,9 +1053,17 @@ body[google] {
 
         // 预加载GMResource的CSS等
         preLoadGMStyle()
-
+        
+        CONST.fsBaidu = FSBaidu();
+        
         if (ACConfig.AdsStyleEnable) {
-          CONST.StyleManger = FSBaidu(); // 添加设置项-单双列显示
+          CONST.fsBaidu.init() // 添加设置项-单双列显示
+        }
+        
+        if(+CONST.useItem.AdsStyleMode > 0) { // 非原始模式，那么可以加载图片
+          if(CONST.useItem.defaultBgUrl && CONST.useItem.defaultBgUrl.trim()) {
+            changeSiteBackground(CONST.useItem.defaultBgUrl)
+          }
         }
 
         console.log("%c[AC-Redirect] %cLet Me Introduce you a Very Good Search Engine：%c %s %cSearch Engine.", "font-weight:bold;color:cornflowerblue", "color:0", "font-weight:bold;color:darkorange", CONST.useItem.name.replace(CONST.useItem.name[0], CONST.useItem.name[0].toUpperCase()), "font-weight:normal;color:0");
@@ -1206,7 +1286,7 @@ body[google] {
               !document.body.hasAttribute(CONST.useItem.name) && document.body.setAttribute(CONST.useItem.name, "1");
               !document.body.classList.contains(CONST.useItem.name) && document.body.classList.add(CONST.useItem.name);
               if (ACConfig.AdsStyleEnable) { // 单独不需要定时器-頻繁触发-载入css
-                FSBaidu();
+                CONST.fsBaidu.init();
                 AddCustomStyle();
               }
             })
@@ -1322,27 +1402,14 @@ body[google] {
                 if (this.resetCSS_text.includes('确认重置')) {
                   this.ACConfig.UserStyleText = DefaultConfig.UserStyleText
                   this.resetCSS_text = '重置CSS'
+                  this.loadCustomStyle()
                 }
               },
               useThisHuyanColor(env) {
                 this.ACConfig.defaultHuYanColor = env.target.value || env.target.dataset.value;
                 console.log(this.ACConfig.defaultHuYanColor);
-                CONST.StyleManger.loadHuYanStyle(this.ACConfig.defaultHuYanColor);
-              },
-              // getUserBlockListRegex() {
-              //   var list = [];
-              //   this.ACConfig.UserBlockList.forEach(one => {
-              //     safeFunction(() => {
-              //       one !== null && list.push(new RegExp(one.replace("*", ".*")));
-              //     })
-              //   })
-              //   if (typeof (this.other.addBlockItem) !== "undefined" && this.other.addBlockItem !== "") {
-              //     safeFunction(() => {
-              //       list.push(new RegExp(this.other.addBlockItem.replace("*", ".*")));
-              //     })
-              //   }
-              //   return list;
-              // }
+                CONST.fsBaidu.loadHuYanStyle(this.ACConfig.defaultHuYanColor);
+              }
             },
             computed: {
               getBlockList() { // 会自动的render到html上去，不用手动去渲染一遍
@@ -1397,7 +1464,8 @@ body[google] {
                   v3: ACConfig.Style_BaiduLite,
                   v4: ACConfig.isFaviconEnable,
                   v5: CONST.isGoogleSpecial,
-                  v6: ACConfig.isRightDisplayEnable
+                  v6: ACConfig.isRightDisplayEnable,
+                  v7: CONST.useItem.BgFit,
                 };
               },
               UserStyleEnableChange() {
@@ -1419,12 +1487,17 @@ body[google] {
                 immediate: true,
                 deep: true,
                 handler(val) {
+                  if(!ACConfig.isFaviconEnable) return
                   // 遍历所有的数据，然后生成新的数据内容
                   const baseCSS = '*[data-favicon-t]:before{width: 16px; height: 16px; margin-right: 4px; background-size: 100% 100%; vertical-align: text-top;}'
                   const css = Object.entries(val).reduce((preCSS, cur) => {
                     const [, { tagName = '', url = '' }] = cur
                     let nowCSS = ''
                     if (url) {
+                      // https://www.xtwind.com/api/index.php?url=???? 挂了。。。
+                      // https://statics.dnspod.cn/proxy_favicon/_/favicon?domain=sina.cn
+                      // www.google.com/s2/favicons?domain=764350177.lofter.com
+                      //如果地址不正确，那么丢弃
                       const imgUrl = "https://favicon.yandex.net/favicon/v2/" + url + "?size=32"
                       nowCSS = tagName + `[data-favicon-t='${ url }']:before{background-image: url('${ imgUrl }');}`
                     }
@@ -1433,10 +1506,17 @@ body[google] {
                   AC_addStyle(css, 'AC-faviconTStyle', 'head', true)
                 }
               },
+              // 当前站点的护眼模式变更
               'CONST.useItem.HuYanMode': {
                 immediate: true,
                 handler(val) {
-                  if (val) CONST.StyleManger.loadHuYanStyle()
+                  if (val) CONST.fsBaidu.loadHuYanStyle()
+                }
+              },
+              // 当前站点的背景图片地址更换
+              'CONST.useItem.defaultBgUrl': {
+                handler(imageUrl) {
+                  changeSiteBackground(imageUrl)
                 }
               },
               calc_block_data: {
@@ -1445,16 +1525,24 @@ body[google] {
                 }
               },
               AdsStyleModeChange: {
-                handler() {
+                handler(curVal, preVal) {
+                  // 如果数据真的变了，那么调用后续更新，如果没变，那么跳过
+                  try{
+                    const curStr = JSON.stringify(curVal)
+                    const preStr = JSON.stringify(preVal)
+                    if(curStr === preStr) return
+                  }catch (e){}
+                  
                   // 需要先删除原有的节点数据
                   while (true) {
                     const { res, node } = checkDocmentHasNode("AC-")
                     if (res) node.remove();
                     else break;
                   }
+                  
                   safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle'],style[class*='HuYanStyle-File']");
                   acCssLoadFlag = false;
-                  CONST.StyleManger.init();
+                  CONST.fsBaidu.init();
                 }
               },
               UserStyleEnableChange() {
@@ -1955,7 +2043,7 @@ body[google] {
             '  body[doge] #sp-ac-container .container-label[class*="doge"]>.label_hide\n' + // 注意尾部逗号
             '{' +
             'display:none;\n' +
-            '}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{user-select: none;border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
+            '}#sp-ac-container .display-block{display:block;}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{user-select: none;border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
             "AC-MENU_Page");
 
           // 添加 自定义的动画
@@ -2111,7 +2199,7 @@ body[google] {
                 if (document.body) {
                   if (!ACConfig.isRightDisplayEnable) { // 右侧栏显示
                     document.body.classList.remove("showRight")
-                  } else {
+                  } else if(!document.body.classList.contains('showRight')) {
                     document.body.classList.add("showRight")
                   }
                 }
@@ -2210,7 +2298,7 @@ body[google] {
           }
 
           try { // 放入异常捕获，防止由于html插入过慢导致的js终止
-            if (!document.querySelector("#sp-ac-style").checked) {
+            if (!ACConfig.AdsStyleEnable) {
               document.querySelectorAll("input[name*='sp-ac-a_force_style_']").forEach(per => {
                 per.setAttribute("disabled", "disabled");
                 per.parentNode.setAttribute("title", "请开启自定义样式")
@@ -2221,10 +2309,10 @@ body[google] {
                 per.parentNode.setAttribute("title", "AC-自定义样式内容")
               });
             }
-            if (!document.querySelector("#sp-ac-block").checked) {
+            if (!ACConfig.isBlockEnable) {
               document.querySelectorAll("#sp-ac-removeBlock, #sp-ac-blockBtnDisplay").forEach(per => {
                 per.setAttribute("disabled", "disabled");
-                per.parentNode.setAttribute("title", "请开启自定义样式")
+                per.parentNode.setAttribute("title", "请开启拦截功能")
               });
             } else {
               document.querySelectorAll("#sp-ac-removeBlock, #sp-ac-blockBtnDisplay").forEach(per => {
@@ -2343,6 +2431,14 @@ body[google] {
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_4line }}
                           </label>
                           <br>
+                          <label class="display-block" style="margin: 3px 0 3px 25px;">
+                            {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
+                            <input id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.baidu.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
+                            <label>
+                              <input type="checkbox" name="sp-ac-a_force_style_autoFitSStyle" v-model="ACConfig.baidu.BgFit">
+                              {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
+                            </label>
+                          </label>
                         </label>
                         <!------------百度样式-------------->
                         <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
@@ -2376,6 +2472,14 @@ body[google] {
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_google_4line }}
                           </label>
                           <br>
+                          <label class="display-block" style="margin: 3px 0 3px 25px;">
+                            {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
+                            <input id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.google.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
+                            <label>
+                              <input type="checkbox" name="sp-ac-a_force_style_autoFitSStyle" v-model="ACConfig.google.BgFit">
+                              {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}      
+                            </label>
+                          </label>
                         </label>
                         <!------------谷歌样式-------------->
                         <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
@@ -2404,6 +2508,15 @@ body[google] {
                           <label><input name="sp-ac-a_force_style_bing" value="5" v-model="ACConfig.bing.AdsStyleMode" type="radio">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_4line }}
                           </label>
+                          <br>
+                          <label class="display-block" style="margin: 3px 0 3px 25px;">
+                            {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
+                            <input id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.bing.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
+                            <label>
+                              <input type="checkbox" name="sp-ac-a_force_style_autoFitSStyle" v-model="ACConfig.bing.BgFit">
+                              {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}         
+                            </label>
+                          </label>                          
                         </label>
                         <!------------必应样式-------------->
 <!--                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>-->
@@ -2465,6 +2578,7 @@ body[google] {
                           <label><input name="sp-ac-a_force_style_duck" value="5" v-model="ACConfig.duck.AdsStyleMode" type="radio">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_4line }}
                           </label>
+                          <br>
                         </label>
                         <!------------鸭鸭搜样式-------------->
                         <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
@@ -2497,6 +2611,7 @@ body[google] {
                           <label><input name="sp-ac-a_force_style_doge" value="5" v-model="ACConfig.doge.AdsStyleMode" type="radio">
                           {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_4line }}
                           </label>
+                          <br>
                         </label>
                       <!------------多吉样式-------------->
                       </li>
@@ -2725,7 +2840,7 @@ body[google] {
               const dealAttrLink = () => {
                 // 如果当前节点存在mu参数，或者link节点存在data-mdurl，那么就算成功
                 let trueLink = curNode.getAttribute('mu') || linkNode.getAttribute('data-mdurl')
-                if(trueLink) {
+                if(trueLink && !trueLink.includes('nourl')) {
                   DealRedirect(null, linkHref, trueLink);
                   return true
                 }
@@ -2957,14 +3072,6 @@ body[google] {
                     continue;
                   }
                   targetNode = targetNode.querySelector(curSite.FaviconAddTo);
-                  // 特殊处理BING
-                  // if (curSite.SiteTypeID === SiteType.BING) curNode = curNode.querySelector("h2");
-                  //https://api.byi.pw/favicon/?url=???? 不稳定
-                  //http://"+faviconUrl+"/cdn.ico?defaulticon=http://soz.im/favicon.ico 不稳定
-                  //https://www.xtwind.com/api/index.php?url=???? 挂了。。。
-                  //https://statics.dnspod.cn/proxy_favicon/_/favicon?domain=sina.cn
-                  //www.google.com/s2/favicons?domain=764350177.lofter.com
-                  //如果地址不正确，那么丢弃
                   let host = faviconUrl.replace(/[^.]+\.([^.]+)\.([^.]+)/, "$1.$2");
 
                   if (!targetNode.hasAttribute("data-favicon-t") && host.length >= 3) {
@@ -3066,7 +3173,25 @@ body[google] {
           }
         }, time, true);
       }
+      
+      async function create_CSS_Node(css, className = '', initType = "text/css") {
+        let cssNode = document.createElement("style");
+        if (className) cssNode.className = className;
 
+        // 针对less进行单独处理
+        if(initType.includes('less')) {
+          // parseHTML 耗时 没必要
+          const { css: renderCSS = '' } = await less.render(css);
+          css = renderCSS
+          initType = "text/css"
+        }
+
+        cssNode.setAttribute("type", initType);
+        cssNode.appendChild(document.createTextNode(css))
+        
+        return cssNode
+      }
+      
       function AC_addStyle(css, className, addToTarget, isReload = false, initType = "text/css") { // 添加CSS代码，不考虑文本载入时间，只执行一次-无论成功与否，带有className
         RAFInterval(async () => {
           /**
@@ -3174,10 +3299,32 @@ body[google] {
         return {res: false, node: null};
       }
 
+      function changeSiteBackground(imageUrl) { // 这个图片地址可能为：动态图片返回、静态跨域图片
+        const css = `body:before{position: fixed;width: 100%;height: 100%;top: 0;left: 0;content: '';background-image: url('${imageUrl}');background-size: 100% auto;opacity: 0.6;`
+        AC_addStyle(css, 'AC-BackGroundImage', 'head', true)
+      }
+      
+      async function asyncGMHttpRequestGet(url) {
+        return new Promise((resolve, reject) => {
+          GM_xmlhttpRequest({
+            url: url,
+            method: "GET",
+            timeout: 5000,
+            onload: function(response) {
+              const { responseText = '' } = response
+              resolve(responseText)
+            },
+            onerror: function(err) {
+              reject(err)
+            }
+          })
+        }) 
+      }
+      
       function FSBaidu() { // thanks for code from 浮生@未歇 @page https://greasyfork.org/zh-TW/scripts/31642
         // debug("初始化FSBAIDU");
 
-        CONST.StyleManger = {
+        const StyleManger = {
           /**
            * 导入css内容为【文本格式】！！！
            * @param data css内容
@@ -3188,6 +3335,10 @@ body[google] {
               // 这个居然在VM上出问题了，很奇怪
               console.error("GM_getResourceText获取内容数据异常");
               return
+            }
+            if(data.startsWith('http')) {
+              // 网址开头的，那么尝试去加载数据去
+              data = await asyncGMHttpRequestGet(data)
             }
             // 普通浏览器模式--但是似乎样式加载的优先级低于head中的style优先级
             if (!useNormalCSS && curSite.SiteTypeID !== SiteType.DUCK) { // Duck拒绝了外部样式插入
@@ -3203,39 +3354,33 @@ body[google] {
                   `type="text/css" must="${mustLoad}" class="${toClassName}" href="${data}"`
                 ); // 注意必须要双引号
                 debug('import执行添加样式 doing', toClassName)
-                document.insertBefore(pi, document.documentElement);
+                return pi
+                // document.appendChild(pi);
               }
             } else {
               /* **********多重样式-兼容edge && 黑夜脚本************ */
-              AC_addStyle(data, toClassName, "head", false, "less");
+              return await create_CSS_Node(data, toClassName, "less")
+              // AC_addStyle(data, toClassName, "head", false, "less");
               /* **********多重样式-兼容edge && 黑夜脚本************ */
             }
-          },
-          //加载普通样式
-          loadCommonStyle: function () {
-            this.loadStyle(CONST.useItem.name + "CommonStyle", CONST.useItem.name + "CommonStyle");
-          },
-          loadBaiduLiteStyle: function () {
-            CONST.StyleManger.loadStyle("baiduLiteStyle", "baiduLiteStyle", null, false, true);
-            CONST.StyleManger.loadPlainToCSS("baiduLiteStyle");
           },
           loadStyle: async function (styleName, insClassName, setUrl, useNormalCSS = false, mustLoad = false) {
             // 全部采用text/css的内容来载入
             // 如果是debug模式。或者是gm模式
             if (isLocalDebug) {
               debug("本地-加载样式：" + insClassName);
-              setUrl = setUrl || "http://127.0.0.1/" + styleName + ".css";
-              this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
+              setUrl = setUrl || "http://debug.baidu.com/" + styleName + ".less";
+              return await this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
             } else if (isNewGM === true) {
               // 仅用于GreaseMonkey4.0+
               debug("特殊模式-加载样式：" + insClassName);
-              setUrl = setUrl || "https://sync.tujidu.com/newcss/" + styleName + ".css";
-              this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
+              setUrl = setUrl || "https://sync.tujidu.com/newcss/" + styleName + ".less";
+              return await this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
             } else {
               debug("加载样式：" + insClassName);
               // TamperMonkey + GreaseMonkey < 4.0 + ViolentMonkey (4.0GreaseMonkey不支持GetResource方法)
               const style = curSite.GMStyleList[styleName] || await GM_getResourceText(styleName)
-              this.importStyle(style, "AC-" + insClassName, useNormalCSS, mustLoad);
+              return await this.importStyle(style, "AC-" + insClassName, useNormalCSS, mustLoad);
             }
           },
           //加载护眼模式样式
@@ -3279,13 +3424,34 @@ body[google] {
             B = this.clip255((298 * (Y - 16) + 516 * (U - 128) + 128) >> 8);
             return "#" + ((R << 16) + (G << 8) + B).toString(16);
           },
+          loadBaiduLiteStyle: async function () {
+            const node = await this.loadStyle("baiduLiteStyle", "baiduLiteStyle");
+            this.flushDom.insert(node, 'head', { isReload: true })
+          },
+          loadBgImage: async function() {
+            if(CONST.useItem.defaultBgUrl && CONST.useItem.defaultBgUrl.trim()) {
+              changeSiteBackground(CONST.useItem.defaultBgUrl)
+            }
+          },
+          loadBgAutoFit: async function() {
+            const node = await this.loadStyle("BgAutoFit", "BgAutoFit");
+            this.flushDom.insert(node, 'DOM')
+          },
+          //加载普通样式
+          loadCommonStyle: async function () {
+            const node = await this.loadStyle(CONST.useItem.name + "CommonStyle", CONST.useItem.name + "CommonStyle");
+            this.flushDom.insert(node, 'DOM')
+          },
           //加载单页样式
-          loadOnePageStyle: function () {
-            this.loadStyle(CONST.useItem.name + "OnePageStyle", CONST.useItem.name + "OnePageStyle");
+          loadOnePageStyle: async function () {
+            const node = await this.loadStyle(CONST.useItem.name + "OnePageStyle", CONST.useItem.name + "OnePageStyle");
+            this.flushDom.insert(node, 'DOM')
           },
           //加载双页样式
-          loadTwoPageStyle: function () {
-            this.loadStyle(CONST.useItem.name + "TwoPageStyle", CONST.useItem.name + "TwoPageStyle");
+          loadTwoPageStyle: async function () {
+            const node = await this.loadStyle(CONST.useItem.name + "TwoPageStyle", CONST.useItem.name + "TwoPageStyle");
+            console.log(node)
+            this.flushDom.insert(node, 'DOM')
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
             if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, #rso>div:not(.g), #kp-wp-tab-overview";
@@ -3293,11 +3459,12 @@ body[google] {
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
-            AC_addStyle(cssHead + "{grid-template-columns: repeat(2, minmax(50%,1fr));grid-template-areas:'xmain xmain';}.AC.sp-separator{grid-column-start: 1;grid-column-end: xmain-end;}",
-              "AC-TwoPageExStyle", "head");
+            const node2 = await create_CSS_Node(cssHead + "{grid-template-columns: repeat(2, minmax(50%,1fr));grid-template-areas:'xmain xmain';}.AC.sp-separator{grid-column-start: 1;grid-column-end: xmain-end;}",
+              "AC-TwoPageExStyle");
+            this.flushDom.insert(node2, 'head')
           },
           // 加载三列样式
-          loadThreePageStyle: function () {
+          loadThreePageStyle: async function () {
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
             if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, #rso>div:not(.g), #kp-wp-tab-overview";
@@ -3305,11 +3472,13 @@ body[google] {
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
-            AC_addStyle(cssHead + "{grid-template-columns: repeat(3, minmax(33.3%,1fr));grid-template-areas:'xmain xmain xmain';}",
-              "AC-ThreePageExStyle", "head");
+            const node2 = await create_CSS_Node(cssHead + "{grid-template-columns: repeat(3, minmax(33.3%,1fr));grid-template-areas:'xmain xmain xmain';}",
+              "AC-ThreePageExStyle");
+            debugger
+            this.flushDom.insert(node2, 'head')
           },
           // 加载四列样式
-          loadFourPageStyle: function () {
+          loadFourPageStyle: async function () {
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
             if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, #rso>div:not(.g), #kp-wp-tab-overview";
@@ -3317,8 +3486,9 @@ body[google] {
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
-            AC_addStyle(cssHead + "{grid-template-columns: repeat(4, minmax(25%,1fr));grid-template-areas:'xmain xmain xmain xmain';}",
+            const node2 = await create_CSS_Node(cssHead + "{grid-template-columns: repeat(4, minmax(25%,1fr));grid-template-areas:'xmain xmain xmain xmain';}",
               "AC-FourPageExStyle", "head");
+            this.flushDom.insert(node2, 'head')
           },
           loadPlainToCSS: function () {
             for (let i = 0; i < document.childNodes.length; i++) {
@@ -3342,71 +3512,79 @@ body[google] {
                 }
               }
             }
-          },
-          init() {
-            ControlManager.init();
           }
         };
-        var ControlManager = {
+        const ControlManager = {
+          ...StyleManger,
           //居中显示 --- 必须是百度和谷歌的搜索结果页面，其他页面不能加载的--已经通过脚本include标签限制了一部分
-          centerDisplay: function () {
+          centerDisplay: async function () {
             // 如果是百度 && ((地址替换->包含wd关键词[替换之后不等-是百度结果页面]) || 有右边栏-肯定是百度搜索结果页 || value中存在搜索内容) return;
             if (!checkISBaiduMain()) {
               console.log('not good At Baidu')
-              CONST.StyleManger.loadCSSToPlain();
+              this.loadCSSToPlain();
               return;
             }
-            AC_addStyle(".minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;}", "AC-style-logo", "head");
+            if(this.locked) return
+            this.locked = true
+            this.flushDom.insert(await create_CSS_Node(".minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;} body.purecss-mode:before{display: none;}", "AC-style-logo"))
             let result = parseInt(CONST.useItem.AdsStyleMode || -1);
             if (acCssLoadFlag === false && document.querySelector(".ACExtension") === null) {
               debug("in样式即将加载:" + result);
               let expandStyle = "#wrapper #rs, #wrapper #content_left .result, #wrapper #content_left > .c-container{min-width:670px;}.c-span18{width:78%!important;min-width:550px;}.c-span24{width: auto!important;}";
-              if (result === 1) {
-                AC_addStyle(expandStyle, "AC-Style-expand", "head");
-                CONST.StyleManger.loadCommonStyle();
+              if (result === 1) { // 单列模式
+                this.flushDom.insert(await create_CSS_Node(expandStyle, "AC-Style-expand"))
+                await this.loadCommonStyle();
               } else if (result === 2) {//单页居中
-                AC_addStyle(expandStyle, "AC-Style-expand", "head");
-                CONST.StyleManger.loadCommonStyle();
-                CONST.StyleManger.loadOnePageStyle();
+                this.flushDom.insert(await create_CSS_Node(expandStyle, "AC-Style-expand"))
+                await this.loadCommonStyle();
+                await this.loadOnePageStyle();
               } else if (result === 3) { //双页居中
-                CONST.StyleManger.loadCommonStyle();
-                CONST.StyleManger.loadTwoPageStyle();
+                await this.loadCommonStyle();
+                await this.loadTwoPageStyle();
               } else if (result === 4) { // 三列
-                CONST.StyleManger.loadCommonStyle();
-                CONST.StyleManger.loadTwoPageStyle();
-                CONST.StyleManger.loadThreePageStyle();
+                await this.loadCommonStyle();
+                await this.loadTwoPageStyle();
+                await this.loadThreePageStyle();
               } else if (result === 5) { // 四列
-                CONST.StyleManger.loadCommonStyle();
-                CONST.StyleManger.loadTwoPageStyle();
-                CONST.StyleManger.loadFourPageStyle();
+                await this.loadCommonStyle();
+                await this.loadTwoPageStyle();
+                await this.loadFourPageStyle();
               }
+              if(result > 0) { // 非原始模式下
+                await this.loadBgImage()
+                CONST.useItem.BgFit && await this.loadBgAutoFit()
+                document.body.classList.remove('purecss-mode')
+              } else {
+                document.body.classList.add('purecss-mode')
+              }
+              this.flushDom.flush()
               acCssLoadFlag = true;
               debug("in样式运行结束");
               if (curSite.SiteTypeID === SiteType.BAIDU && ACConfig.Style_BaiduLite === true) {
                 AC_addStyle(GM_getResourceText("baiduLiteStyle"), "AC-baiduLiteStyle", "head")
-                CONST.StyleManger.loadBaiduLiteStyle();
+                await this.loadBaiduLiteStyle();
               }
             }
+            this.locked = false
+            this.loadPlainToCSS();
             if (curSite.SiteTypeID !== SiteType.BAIDU && curSite.SiteTypeID !== SiteType.BAIDU_XUESHU && curSite.SiteTypeID !== SiteType.GOOGLE && curSite.SiteTypeID !== SiteType.BING && curSite.SiteTypeID !== SiteType.SOGOU && curSite.SiteTypeID !== SiteType.DUCK && curSite.SiteTypeID !== SiteType.DOGE) return;
 
             // 如果是谷歌 && (地址替换->是谷歌图像页面 || 是地图页面)[替换要变] return;
             if (curSite.SiteTypeID === SiteType.GOOGLE && location.href.replace(/tbm=(isch|lcl|shop|flm)/, "") !== location.href) {
-              CONST.StyleManger.loadCSSToPlain();
+              this.loadCSSToPlain();
               return;
             }
             /**护眼Style最后载入**/
-            if (CONST.useItem.HuYanMode === true || document.querySelector("style[class*='darkreader']") != null) CONST.StyleManger.loadHuYanStyle();
-
-            CONST.StyleManger.loadPlainToCSS();
+            if (CONST.useItem.HuYanMode === true || document.querySelector("style[class*='darkreader']") != null) this.loadHuYanStyle();
           },
+          flushDom: new FlushDomFragment(),
+          locked: false,
           init: function () {
             if (CONST.isGoogleImageUrl) return;
             this.centerDisplay();
           }
         };
-        // debug("调用加载自定义css");
-        ControlManager.init();
-        return CONST.StyleManger;
+        return ControlManager
       }
     }
   })();

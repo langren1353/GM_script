@@ -29,16 +29,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="简单更新-不知道是啥">
+      <change afterPath="$PROJECT_DIR$/newcss/.user.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/BgAutoFit.less" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/SiteConfigRules.conf" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/SiteConfigRules.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test2.js" beforeDir="false" afterPath="$PROJECT_DIR$/test2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/HuYanStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/HuYanStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/dogeCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/dogeCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/dogeOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/dogeOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/dogeTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/dogeTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/sogouCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/sogouOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouOnePageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/sogouTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouTwoPageStyle.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,16 +94,13 @@
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="2" />
   </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
   <component name="JsBowerSettings">
     <node-interpreter value="project" />
     <bower-package value="" />
     <bower.json value="" />
-  </component>
-  <component name="JsFlowSettings">
-    <service-enabled>true</service-enabled>
-    <exe-path />
-    <other-services-enabled>true</other-services-enabled>
-    <auto-save>true</auto-save>
   </component>
   <component name="JupyterTrust" id="77b3502b-93e1-44af-a416-ffd5e54b34d3" />
   <component name="MacroExpansionManager">
@@ -108,49 +118,24 @@
     <option name="abbreviatePackageNames" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="go.import.settings.migrated" value="true" />
-    <property name="ignore_missing_gitignore" value="true" />
-    <property name="jsx.switch.disabled" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Git360Home/less.js" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.jscs" value="true" />
-    <property name="node.js.detected.package.standard" value="true" />
-    <property name="node.js.detected.package.stylelint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="project" />
-    <property name="node.js.path.for.package.jscs" value="project" />
-    <property name="node.js.path.for.package.standard" value="project" />
-    <property name="node.js.path.for.package.stylelint" value="project" />
-    <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.jscs" value="" />
-    <property name="node.js.selected.package.standard" value="" />
-    <property name="node.js.selected.package.stylelint" value="" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="SDKs" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "go.import.settings.migrated": "true",
+    "last_opened_file_path": "D:/GitHome/GM_script/newcss",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.Stylus",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHome\GM_script\newcss" />
       <recent name="C:\GitHome\NormalGit\GM_script" />
       <recent name="D:\GitHome\GM_script" />
-      <recent name="D:\GitHome\GM_script\newcss" />
       <recent name="D:\GitHome\GM_script\images" />
       <recent name="D:\GitPath\GM_script\shell" />
     </key>
@@ -435,6 +420,10 @@
     <MESSAGE value="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题" />
     <MESSAGE value="简单更新-不知道是啥" />
     <option name="LAST_COMMIT_MESSAGE" value="简单更新-不知道是啥" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand>

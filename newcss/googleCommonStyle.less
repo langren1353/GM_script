@@ -135,7 +135,11 @@ a:hover h3 {
   background-color: #fff;
   box-sizing: border-box;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.25s cubic-bezier(.23,1,.32,1) 0s;
+  transition: all 0.25s cubic-bezier(.23, 1, .32, 1) 0s;
+
+  > div{
+    margin-top: 10px;
+  }
 }
 
 #rso > .g ~ div:not(.g) {
@@ -180,7 +184,7 @@ a:hover h3 {
   text-decoration: none;
   color: #3476d2;
 
-  &:hover{
+  &:hover {
     text-decoration: underline !important;
   }
 }
@@ -216,17 +220,18 @@ a:hover h3 {
   margin-left: 10px;
 }
 
-#rso .g a{
+#rso .g a {
   color: #3476d2;
 
   h3 {
+    position: relative;
     font-weight: bold;
 
     &:after {
       content: "";
       position: absolute;
       border-bottom: 2px solid #3476d2;
-      bottom: -4px;
+      bottom: -3px;
       left: 100%;
       width: 0;
       transition: width 350ms, left 350ms;
@@ -239,7 +244,7 @@ a:hover h3 {
     }
   }
 
-  &:visited{
+  &:visited {
     color: #660099;
   }
 }
@@ -248,10 +253,11 @@ a:hover h3 {
 #rso .g div.r > a {
   position: relative;
 
-  em{
+  em {
     text-decoration: none;
   }
 }
+
 /* page nums */
 #rso div.g:not([class]) {
   margin-left: 18px;
@@ -266,7 +272,7 @@ a:hover h3 {
   max-width: unset;
 }
 
-#main #rcnt{
+#main #rcnt {
   flex-wrap: nowrap;
 }
 
