@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    25.09
+// @version    26.01
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -43,8 +43,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2022, AC
-// @lastmodified  2022-06-17
+// @lastmodified  2022-08-22
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2022.08-22-V26.01 因甲癌手术和公司事务停更了2个月，目前补上，推荐更新。 1.修复百度加载缓慢的问题；2.修复谷歌样式加载顺序异常的问题；3.整体优化样式加载时间，更流畅了
 // @note    2022.06-18-V25.09 修复可能出现的脚本参数读取失败导致的脚本不执行的异常 & 修复 拦截规则特殊参数的问题 & 更换CDN地址
 // @note    2022.06-16-V25.06 优化重定向逻辑，部分网站只需要稍作处理，不用做接口请求了，感谢众多搜索引擎的版本迭代更新
 // @note    2022.04-08-V25.05 主要修复Block功能；其次优化样式加载速度-减少撕裂感
@@ -111,8 +112,8 @@
 // ==/UserScript==
 // calc(X1(vw) + X2(px)) -> B(px) 使用 http://www.yunsuan.info/matrixcomputations/solvelinearsystems.html 进行计算
 !function () {
-  let isdebug = true;
-  let isLocalDebug = true;
+  let isdebug = false; // 调试日志用
+  let isLocalDebug = false; // 加载本地资源用
   let debug = isdebug ? console.log.bind(console) : ()=>{}
   let acCssLoadFlag = false;
 
@@ -137,6 +138,137 @@
     GM = {};
     GM.setValue = GM_setValue;
     GM.getValue = GM_getValue;
+  }
+  // 增加了一个css的缓冲层，保证多次CSS操作不导致页面卡顿，减少重排的次数
+  class FlushDomFragment {
+    constructor() {
+      this.init()
+    }
+
+    init() {
+      this.length = 0
+
+      this.fragmentHead = document.createDocumentFragment();
+      this.fragmentBody = document.createDocumentFragment();
+      this.fragmentDOM = document.createDocumentFragment();
+
+      this.reloadList = [] // 所有需要动态刷新的都在这里面
+    }
+
+    _removeReload() {
+      this.reloadList.map(selector => {
+        safeRemove(selector)
+      })
+    }
+
+    _singleInsert(node, toDom, checkDom) {
+      if(node) {
+        const { dataset: { xclass: selector = '' } = {}, tagName = '' } = node
+        if(tagName.toUpperCase() === 'STYLE') {
+          if(selector) {
+            if(checkDom.querySelector(selector)) return
+          } else {
+            console.error('出现没有样式的节点', node)
+          }
+        }
+
+        toDom.appendChild(node)
+
+        this.length += 1
+        debug('增加节点', node)
+        debug('长度变化', this.length)
+      }
+    }
+    
+    // 如果CSS已经存在了，那么就不再添加了
+    _dropMultiCSS(fragment) {
+      const newFrag = document.createDocumentFragment();
+      [...fragment.childNodes].map(node => {
+        this._singleInsert(node, newFrag, document)
+      })
+      return newFrag
+    }
+
+    flush() {
+      if(this.length > 0) { // 有数据，才进行flush，否则没有必要
+        this._removeReload()
+        
+        // MARK 保证线程安全，将现有数据暂存，然后生成新的节点，避免其他js插入后丢失
+        const curBodyFrag = this.fragmentBody
+        const curHeadFrag = this.fragmentHead
+        const curDomFrag = this.fragmentDOM
+        
+        this.init()
+
+        // 数据清除
+        const newBodyFrag = this._dropMultiCSS(curBodyFrag)
+        const newHeadFrag = this._dropMultiCSS(curHeadFrag)
+        const newDomFrag = this._dropMultiCSS(curDomFrag)
+
+        debug('数据flush1', newBodyFrag.children.length)
+        debug('数据flush2', newHeadFrag.children.length)
+        debug('数据flush3', newDomFrag.children.length)
+        
+        document.body.appendChild(newBodyFrag)
+        document.head.appendChild(newHeadFrag)
+        document.insertBefore(newDomFrag, document.documentElement)
+
+      }
+    }
+
+    appendChild(node, to = 'head', config = {
+      isReload: false
+    }) {
+      return this.insert(node, to, config)
+    }
+
+    insert(node, to = 'head', config= {
+      isReload: false
+    }) {
+      
+      if (to === 'body') {
+        this._singleInsert(node, this.fragmentBody, this.fragmentBody)
+      } else if(to === 'head') {
+        this._singleInsert(node, this.fragmentHead, this.fragmentHead)
+      } else if(to === 'DOM') {
+        this._singleInsert(node, this.fragmentDOM, this.fragmentDOM)
+      } else{
+        console.error('不支持的节点操作')
+        return
+      }
+
+      const { isReload } = config
+      if(isReload) {
+        this.reloadList.push('.' + [...node.classList].join('.'))
+      }
+      return this
+    }
+  }
+
+  function safeRemove(cssSelector, withAni = false) {
+    safeFunction(() => {
+      let removeNodes = document.querySelectorAll(cssSelector);
+      for (let i = 0; i < removeNodes.length; i++) {
+        aniRemove(removeNodes[i], withAni)
+      }
+    })
+  }
+  function aniRemove(node, withAni) {
+    if(withAni) {
+      node.classList.add('aniDelete')
+      setTimeout(() => {
+        node.remove();
+      }, 400)
+    } else {
+      node.remove();
+    }
+  }
+  function safeFunction(func, failCb) {
+    try {
+      func();
+    } catch (e) {
+      failCb && failCb()
+    }
   }
   (function () {
     debug("程序执行");
@@ -321,6 +453,7 @@ body[google] {
       isGoogleSpecial: false, // 判断是否存在#rso>.g; true=存在
       useItem: {},
       fsBaidu: null,
+      flushNode: new FlushDomFragment(),
     };
 
     var curSite = {
@@ -578,7 +711,9 @@ body[google] {
               userStyle_doge_4line: "四列",
 
               backgroundImage_text: "背景图：",
+              backgroundImage_text_hint: "图片需要允许跨域，建议使用图床",
               backgroundImageAutoFit_text: "自动优化",
+              backgroundImageAutoFit_text_hint: "有背景图时，自动优化页面效果",
 
               huyanMode_text: "附加4-护眼颜色配置-自定义3中需对应开启",
               huyanMode_title: "！需要在自定义样式中启用护眼模式",
@@ -699,7 +834,9 @@ body[google] {
               userStyle_doge_4line: "Four",
 
               backgroundImage_text: "background Image：",
+              backgroundImage_text_hint: "only CORS Image is allowed",
               backgroundImageAutoFit_text: "Auto Fit：",
+              backgroundImageAutoFit_text_hint: "page auto fit when Bg is not null",
 
               huyanMode_text: "Add4-EyeSave Color Setting-Need opened in Add3",
               huyanMode_title: "！Open EyeSave Mode in CustomStyle is Must",
@@ -753,7 +890,7 @@ body[google] {
         ACConfig = DefaultConfig;
       }
       const localData = localStorage.ACConfig; // 小心隐私模式
-      if(localData && localData.length > 0) {
+      if(localData && localData.length > 10) { // 避免重置为 '{}' 导致的误判
         try{
           ACConfig = JSON.parse(localData);
         }catch (e){}
@@ -890,65 +1027,6 @@ body[google] {
       }
     }
 
-    class FlushDomFragment {
-      constructor() {
-        this.init()
-      }
-
-      init() {
-        this.fragmentHead = document.createDocumentFragment();
-        this.fragmentBody = document.createDocumentFragment();
-        this.fragmentDOM = document.createDocumentFragment();
-        
-        this.reloadList = []
-      }
-      
-      removeReload() {
-        this.reloadList.map(one => {
-          document.querySelector(one).remove()
-        })
-      }
-
-      flush() {
-        
-        this.removeReload()
-        
-        document.body.appendChild(this.fragmentBody)
-        document.head.appendChild(this.fragmentHead)
-        document.appendChild(this.fragmentDOM)
-
-        setTimeout(() => {
-          this.init()
-        }, 10)
-      }
-
-      appendChild(node, to = 'head', config = {
-        isReload: false
-      }) {
-        return this.insert(node, to, config)
-      }
-
-      insert(node, to = 'head', config= {
-        isReload: false
-      }) {
-        if (to === 'body') {
-          this.fragmentBody.appendChild(node)
-        } else if(to === 'head') {
-          this.fragmentHead.appendChild(node)
-        } else if(to === 'DOM') {
-          this.fragmentDOM.appendChild(node)
-        } else{
-          console.error('不支持的节点操作')
-        }
-        
-        const { isReload } = config
-        if(isReload) {
-          this.reloadList.push('.' + node.classList.join('.'))
-        }
-        return this
-      }
-    }
-
     function callback() {
       if (ACConfig.oldVersion === GM_info.script.version) {
         CONST.hasNewFuncNeedDisplay = false;
@@ -1072,9 +1150,9 @@ body[google] {
           /**
            * 初始化Block样式
            */
-          initStyle: function() {
-            AC_addStyle("button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}button.ghhider{font-size:12px}button.ghhider:hover{color:#006aff;background:#fff}",
-              "AC-BlockStyle");
+          initStyle: async function() {
+            CONST.flushNode.insert(await create_CSS_Node("button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}button.ghhider{font-size:12px}button.ghhider:hover{color:#006aff;background:#fff}",
+              "AC-BlockStyle"))
           },
           /**
            * 初始化屏蔽按钮加载
@@ -1228,7 +1306,13 @@ body[google] {
 
         if (ACConfig.isAdsEnable) {
           // display已经无法隐藏他们了，需要用绝对的隐藏
-          addStyle("#bottomads{display:none;} #content_left>div:not([id])>div[cmatchid], #content_left>div[id*='300']:not([class*='result']),#content_right td>div:not([id]),#content_right>br{position:absolute;top:-6666px;}");
+          CONST.flushNode.insert(await create_CSS_Node("#bottomads{display:none;} #content_left>div:not([id])>div[cmatchid], #content_left>div[id*='300']:not([class*='result']),#content_right td>div:not([id]),#content_right>br{position:absolute;top:-6666px;}", 'AC-AdsStyle'))
+        }
+        if(ACConfig.isFaviconEnable) {
+          CONST.flushNode.insert(await create_CSS_Node("h3::before, h2::before {content: ' ';display:inline-block}", "AC-Style-Favicon"))
+        }
+        if (ACConfig.isBlockEnable) {
+          SiteBlock.initStyle() // 初始化拦截样式
         }
         if (curSite.SiteTypeID === SiteType.GOOGLE && ACConfig.isGooleInBaiduModeEnable) {
           safeWaitFunc("#logo img, #logocont img", function(node) {
@@ -1293,6 +1377,10 @@ body[google] {
             if (ACConfig.isAdsEnable) { // 先来移除多余的广告内容
               removeAD_baidu_sogou();
             }
+            CONST.flushNode.flush()
+            setInterval(() => {
+              CONST.flushNode.flush()
+            }, 200)
             setInterval(function() {
               if (document.body) {
                 rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
@@ -1328,11 +1416,11 @@ body[google] {
               }
             },
             methods: {
-              labelShowHideEnv(e) {
+              async labelShowHideEnv(e) {
                 let cur = e.srcElement || e.target;
                 let className = cur.parentNode.className.replace("container-label ", "");
-                AC_addStyle(".XX>label,.XX>br{display:unset !important;}.XX>.label_hide{display:none !important;}".replace(/XX/gm, className),
-                  "AC-ShowHideItem-" + className, "body");
+                CONST.flushNode.insert(await create_CSS_Node(".XX>label,.XX>br{display:unset !important;}.XX>.label_hide{display:none !important;}".replace(/XX/gm, className),
+                  "AC-ShowHideItem-" + className), 'body')
                 e.stopPropagation();
               },
               syncToBlockList(env) {
@@ -1352,13 +1440,15 @@ body[google] {
                 this.other.addBlockItem = "";
               },
               loadCustomStyle() {
-                less.render(ACConfig.UserStyleText, (e, css) => {
+                less.render(ACConfig.UserStyleText, async (e, css) => {
                   if (e) {
                     this.LiveConfig.css_has_error = true
                   } else {
                     this.LiveConfig.css_has_error = false
                     css = css.css || ''
-                    AC_addStyle(css, "AC-userStyle", "head", true); // 用户自定义的样式表
+                    CONST.flushNode.insert(await create_CSS_Node(css, "AC-userStyle"), 'head', {
+                      isReload: true
+                    })
                   }
                 });
               },
@@ -1486,7 +1576,7 @@ body[google] {
               'other.faviconListMap': {
                 immediate: true,
                 deep: true,
-                handler(val) {
+                async handler(val) {
                   if(!ACConfig.isFaviconEnable) return
                   // 遍历所有的数据，然后生成新的数据内容
                   const baseCSS = '*[data-favicon-t]:before{width: 16px; height: 16px; margin-right: 4px; background-size: 100% 100%; vertical-align: text-top;}'
@@ -1503,7 +1593,20 @@ body[google] {
                     }
                     return preCSS + nowCSS
                   }, baseCSS)
-                  AC_addStyle(css, 'AC-faviconTStyle', 'head', true)
+                  CONST.flushNode.insert(await create_CSS_Node(css, 'AC-faviconTStyle'), 'head', {
+                    isReload: true
+                  })
+                }
+              },
+              'ACConfig.isALineEnable': {
+                immediate: true,
+                async handler(isEnable) {
+                  // 动态下划线
+                  if (!isEnable) {
+                    CONST.flushNode.insert(await create_CSS_Node("a,a em{text-decoration:none !important}", "AC-NoLine"))
+                  } else {
+                    safeRemove("style[class='AC-NoLine']")
+                  }
                 }
               },
               // 当前站点的护眼模式变更
@@ -1789,7 +1892,7 @@ body[google] {
 
         // 2秒后才绑定滚动事件
         setTimeout(() => {
-          windowscroll(function(direction, e) {
+          windowscroll(async function(direction, e) {
             if (direction === "down") { // 下滑才准备翻页
               let spl = document.querySelector("#sp-fw-a_enable");
               // 开启后，且在非（suprepreloader启用）时均可
@@ -1809,7 +1912,7 @@ body[google] {
                   } else {
                     ShowPager.loadMorePage();
                     if (curSite.pager && curSite.pager.stylish) {
-                      AC_addStyle(curSite.pager.stylish, "AC-pager-stylish")
+                      CONST.flushNode.insert(await create_CSS_Node(curSite.pager.stylish, "AC-pager-stylish"))
                     }
                   }
                 }
@@ -1884,7 +1987,7 @@ body[google] {
 
             return doc;
           },
-          loadMorePage: function() {
+          loadMorePage: async function() {
             if (curSite.pager) {
               let curPageEle = getElementByXpath(curSite.pager.nextLink);
               var url = this.getFullHref(curPageEle);
@@ -1903,14 +2006,14 @@ body[google] {
                 next_gray: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAtxJREFUeNrclc9L2mEcx7/6NbVZqRVj7pIOlIUuZ1HMgv0BDcqT7JrskH13ELPBF7eTvz10HznWQBlBRIfBXIfBLmqXscvYZWPKrMNIU9Apmrr34/w6i0ovMZjw+H0+z/N8Xt+Pn/fn80hR/+WHYRhBIpFwRKPRz/F4/KnD4RB28xH0Ah4cHHyoUCjsIpFIIZPJHkml0m9Yfn2ZD78XcL1eH6rValIMCmMUtqKbD7/HbNQxaq15oxcH/lXpcmXgtnh2u/2mXC6/DqE+sSxLlUqlniE0TVPBYJAqFot6+GV9Pt+PJthms80sLS2xEonkhlgs/jgwMOBcXV3N5fP5rlCcp9bX1yWLi4uecrk8U6lUshDY3wRbLJYFGKZsNksq4N78/LwY9hOn05k5Ojqi+PzTGePxeFwZUl6vd8hkMvkPDg6sZJ2M5eXlr1wqUu2kA5JOpy2IAO+oO9fW1n5mMpk2nDjmcjkKNU25XC652Wx2pVIp65mXJ2nyjUPpqakpNZxuA8Y5T87OzsobjcYHpVKpGhsbe1CtVkXYqxQKhTdqtfqL1Wr1JpPJxxyU5Lq/vz8aCoX8TTDatYiFhF6vxx5tAJwm8OPj48m5ubmKSqUaAWwSa9eQw6JGo/luNBoNh4eHbAe0JhAINsLh8LNAIJCiudhxB+Qh2ludTifDAQLvI3AIch+Rkl8jJlrhCbOqgfoLmDepOF/BfGNra2sFFZFtvqgzMbFYjAiyp9Vqh4VC4cTJyYmQ90epIQJtHRO1bA5aRhAvdnZ2GI/H87cEz5YPgeOS2RsfHx9B7u+gOi68yQAtYX9zd3eXgZCna/s8By5ypGUUzhOISHgO9BfWXwG6chZ6IbiVc6LwnsFgGIVAepLzjk4rYW1ze3ubcbvd53fjZV2FaqGQ63fT09PDMO9i9BEoon0J9Rm/339xm3dr2f39fVLX7wFvoMVvoYWfRyIRFndD/Z/8nf0WYAA8EC1Z/ZNm4gAAAABJRU5ErkJggg==",
                 pre_gray: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAslJREFUeNrclTtMWmEUxz/uvTzlIUhpNMR0aGNjrNHSmHTqRJyadujQDbSGRwJUaYCmDizqUEw6ODVNGgbpYCfSpFINCQzFR9oyMXRsXFCsAXkIKNL/R7gGWxOsSdPEk5zc3O+e87vn+59zv0vIpbSJiQmyubn5LBKJpNbX11+4XC5Buxy2XYDNZiMOh2OW4ziPTCbTi8XikeHh4SsSieQTXnIxsN1uJ1ardVYgEDgPDw+V9Xqd1Go1Mcuyg7AuuVy+sra29ndgVEnGx8dnhEKhs1qtKgE/eXZ8fCzC+q3+/n6tSqVaSSQS5wM7nU5iMplmsF1XpVI5BeXt6OhIBFkGAe9SKpV/wNmzKjWbzRT6tFwuK86CUqPrkIVWPjQwMKBWKBSn4Ozv0LGxsRmRSDSFSjua0Do8TRWAS+B5+B68g/IhixCNvQPN1WjuieZsS/f1aNQ0wzBuaCqlUCQRtVr9Es1K4kVDWJNhrQjAIiqMlkqle804FnkjBoOhEzv4vrGxkW2ALRaLFrq+QoAV2nE8tLe3dzEYDE5vb2939vX1PcBkiKVSaQ1jForFYq+NRqMum83ebsYzmJq7sGu4xhkKxsDfB/AxnO860ev1oeXlZU8gEMgmk0kFqmw8o9dUKiWfn58vhMPh54h7S+OpQXNSLBYfejyeR1yzw9dbRon09PS8W11dnfL5fJl8Pk+0Wi3hk5vyCNBY4vV6f0Im9+joKJNOp818o8G70ah4aWnpIzSKYCa/dXd3B+PxuHNycjKzs7NzAms1+qFQy+VydDRz0WjUpdPp3tB8TFM0FAqFGxXPzc19plJrNJqraMoXt9tNt3Suc+Tg4ICeJfmFhQVLoVAwoKG7fr//B8cHAL6Fy9ZFDinaG/r5w77ya8y/OhEvKRhjtIup2YMTeBb3mXY53HnAmNkP+/v7NzHTTwAO4f79f/ud/RJgAOLcRNZqLojMAAAAAElFTkSuQmCC",
               };
-              AC_addStyle(".sp-separator{line-height:1.8 !important;opacity:1 !important;position:relative !important;float:none !important;top:0 !important;left:0 !important;min-width:366px;width:auto;text-align:center !important;font-size:14px !important;display:block !important;padding:3px 0 !important;margin:5px 10px 8px;clear:both !important;border-style:solid !important;border-color:#cccccc !important;border-width:1px !important;-moz-border-radius:30px !important;border-radius:30px !important;background-color:#ffffff !important;}.sp-separator:hover{box-shadow:0 0 11px rgba(33,33,33,0.2);}#sp-separator-hover{display:none;}.sp-separator:hover #sp-separator-hover{display:block;}.sp-separator .sp-someinfo{position:absolute !important;right:10px !important;font-size:12px !important;font-style:italic !important;background:none !important;}.sp-separator span{vertical-align: middle;cursor: pointer;padding: 0;margin: 0 5px;display: inline-block; width:22px;height:22px;}.sp-separator a{margin:0 20px 0 -6px !important;display:inline !important;text-shadow:#fff 0 1px 0 !important;background:none !important;color:#595959 !important;}.sp-separator input{padding:0 !important;line-height:23px !important;}.sp-separator .sp-md-span{font-weight:bold !important;margin:0 20px !important;}#sp-sp-md-number{width:6ch !important;vertical-align:middle !important;display:inline-block !important;text-align:left !important;}" +
+              CONST.flushNode.insert(await create_CSS_Node(".sp-separator{line-height:1.8 !important;opacity:1 !important;position:relative !important;float:none !important;top:0 !important;left:0 !important;min-width:366px;width:auto;text-align:center !important;font-size:14px !important;display:block !important;padding:3px 0 !important;margin:5px 10px 8px;clear:both !important;border-style:solid !important;border-color:#cccccc !important;border-width:1px !important;-moz-border-radius:30px !important;border-radius:30px !important;background-color:#ffffff !important;}.sp-separator:hover{box-shadow:0 0 11px rgba(33,33,33,0.2);}#sp-separator-hover{display:none;}.sp-separator:hover #sp-separator-hover{display:block;}.sp-separator .sp-someinfo{position:absolute !important;right:10px !important;font-size:12px !important;font-style:italic !important;background:none !important;}.sp-separator span{vertical-align: middle;cursor: pointer;padding: 0;margin: 0 5px;display: inline-block; width:22px;height:22px;}.sp-separator a{margin:0 20px 0 -6px !important;display:inline !important;text-shadow:#fff 0 1px 0 !important;background:none !important;color:#595959 !important;}.sp-separator input{padding:0 !important;line-height:23px !important;}.sp-separator .sp-md-span{font-weight:bold !important;margin:0 20px !important;}#sp-sp-md-number{width:6ch !important;vertical-align:middle !important;display:inline-block !important;text-align:left !important;}" +
                 `.ac_sp_top{background-image:url('${ sepImgs.top }')}` +
                 `.ac_sp_pre{background-image:url('${ sepImgs.pre }')}` +
                 `.ac_sp_next{background-image:url('${ sepImgs.next }')}` +
                 `.ac_sp_bottom{background-image:url('${ sepImgs.bottom }')}` +
                 `.ac_sp_next_gray{background-image:url('${ sepImgs.next_gray }')}` +
                 `.ac_sp_pre_gray{background-image:url('${ sepImgs.pre_gray }')}`,
-                "AC-Preload")
+                "AC-Preload"))
               if (curSite.pageUrl === url) {
                 console.error("[AC-Script]", "翻页到达底部了 - 或者异常 - 出现异常请直接反馈作者修改");
                 return;
@@ -2001,29 +2104,29 @@ body[google] {
           },
         };
 
-        function AddCustomStyle() {
+        async function AddCustomStyle() {
           if (ACConfig.isUserStyleEnable) {
-            less.render(ACConfig.UserStyleText, (e, css) => {
+            less.render(ACConfig.UserStyleText, async(e, css) => {
               if (!e) {
                 css = css.css || ''
-                AC_addStyle(css, "AC-userStyle", "head", true); // 用户自定义的样式表
+                CONST.flushNode.insert(await create_CSS_Node(css, "AC-userStyle"), 'head', {
+                  isReload: true
+                })
               }
             });
           } else {
             // 为了方便调整样式和查看效果，暂时不移除
             // safeRemove("style[class='AC-userStyle']")
           }
-          AC_addStyle(
-            ".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
+          CONST.flushNode.insert(await create_CSS_Node(".opr-recommends-merge-imgtext{display:none!important;}" + // 移除百度浏览器推广
             ".res_top_banner{display:none!important;}" + // 移除可能的百度HTTPS劫持显示问题
             ".headBlock, body>div.result-op{display:none;}" // 移除百度的搜索结果顶部一条的建议文字 & 移除可能出现的白屏现象
-            , "AC-special-BAIDU"
-          );
+            , "AC-special-BAIDU"))
           /*"自定义"按钮效果*/
-          AC_addStyle(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}body[doge] #header{max-width: unset;}body[doge] #myuser{position: absolute;right: 40px;}",
-            "AC-MENU_Btn");
+          CONST.flushNode.insert(await create_CSS_Node(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}body[doge] #header{max-width: unset;}body[doge] #myuser{position: absolute;right: 40px;}",
+            "AC-MENU_Btn"))
           /*自定义页面内容效果*/
-          AC_addStyle('body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>label:not([class="label_hide"]),\n' +
+          CONST.flushNode.insert(await create_CSS_Node('body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>label:not([class="label_hide"]),\n' +
             '  body[google] #sp-ac-container .container-label:not([class*="google"])>label:not([class="label_hide"]),\n' +
             '  body[bing] #sp-ac-container .container-label:not([class*="bing"])>label:not([class="label_hide"]),\n' +
             '  body[sogou] #sp-ac-container .container-label:not([class*="sogou"])>label:not([class="label_hide"]),\n' +
@@ -2044,7 +2147,7 @@ body[google] {
             '{' +
             'display:none;\n' +
             '}#sp-ac-container .display-block{display:block;}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{user-select: none;border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
-            "AC-MENU_Page");
+            "AC-MENU_Page"))
 
           // 添加 自定义的动画
           const aniStyle = `@keyframes ani_leftToright {
@@ -2122,10 +2225,10 @@ body[google] {
     100% {
         opacity: 0.3;
     }
-}`;
-          AC_addStyle(aniStyle, "AC-AnimationStyle", "head", false); // 需要修改的，所以为true
-          // 添加删除效果的动画
-          AC_addStyle('.aniDelete{transition: all 0.38s cubic-bezier(0.4, 0, 1, 1);opacity: 0.1}')
+}
+.aniDelete{transition: all 0.38s cubic-bezier(0.4, 0, 1, 1);opacity: 0.1}
+`;
+          CONST.flushNode.insert(await create_CSS_Node(aniStyle, "AC-AnimationStyle"))
         }
 
         AddCustomStyle();
@@ -2145,7 +2248,7 @@ body[google] {
           return searchV;
         }
 
-        function rapidDeal() {
+        async function rapidDeal() {
           try {
             if (insertLocked === false && curSite.SiteTypeID !== SiteType.OTHERS) {
               try {
@@ -2155,7 +2258,6 @@ body[google] {
                 insertLocked = true;
                 RedirectHandle(); // 处理主重定向
                 if (ACConfig.isFaviconEnable && typeof (curSite.FaviconType) !== 'undefined') { // 显示favicon图标
-                  AC_addStyle("h3::before, h2::before {content: ' ';display:inline-block}", "AC-Style-Favicon", "head");
                   // 延迟2秒加载，减少可能出现的问题
                   addFavicon(document.querySelectorAll(curSite.FaviconType)); // 添加Favicon显示
                 } else {
@@ -2163,12 +2265,6 @@ body[google] {
                   document.querySelectorAll(curSite.FaviconType).forEach((one) => {
                     one.removeAttribute("ac_faviconstatus");
                   })
-                }
-                // 动态下划线
-                if (!ACConfig.isALineEnable) {
-                  AC_addStyle("a,a em{text-decoration:none !important}", "AC-NoLine", "body");// 移除这些个下划线
-                } else {
-                  safeRemove("style[class='AC-NoLine']")
                 }
                 if (ACConfig.isCounterEnable) {
                   // 延迟加载，避免页面出现js问题
@@ -2192,14 +2288,13 @@ body[google] {
                 if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
                   // 延迟执行，减少页面损耗
                   setTimeout(() => {
-                    SiteBlock.initStyle();
                     SiteBlock.init();
                   }, 1000)
                 }
                 if (document.body) {
                   if (!ACConfig.isRightDisplayEnable) { // 右侧栏显示
                     document.body.classList.remove("showRight")
-                  } else if(!document.body.classList.contains('showRight')) {
+                  } else if (!document.body.classList.contains('showRight')) {
                     document.body.classList.add("showRight")
                   }
                 }
@@ -2227,8 +2322,7 @@ body[google] {
                   document.querySelectorAll("#rso>div:not(.g)>div[jsmodel]").forEach(one => {
                     one.parentNode.style.display = "unset"
                   })
-
-                  AC_addStyle('#rso>div{display: grid;}', "AC-GoogleGridDelta-Style", "head", false); // 需要修改的，所以为true
+                  CONST.flushNode.insert(await create_CSS_Node('#rso>div{display: grid;}', "AC-GoogleGridDelta-Style"))
                 }
               } catch (e) {
                 console.error(e)
@@ -2433,9 +2527,9 @@ body[google] {
                           <br>
                           <label class="display-block" style="margin: 3px 0 3px 25px;">
                             {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
-                            <input id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.baidu.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
-                            <label>
-                              <input type="checkbox" name="sp-ac-a_force_style_autoFitSStyle" v-model="ACConfig.baidu.BgFit">
+                            <input :placeholder="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint" :title="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint" id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.baidu.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
+                            <label :title="lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text_hint">
+                              <input type="checkbox" name="sp-ac-a_autoFitSStyle" v-model="ACConfig.baidu.BgFit" :disabled="!ACConfig.baidu.defaultBgUrl || !ACConfig.AdsStyleEnable">
                               {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
                             </label>
                           </label>
@@ -2474,9 +2568,9 @@ body[google] {
                           <br>
                           <label class="display-block" style="margin: 3px 0 3px 25px;">
                             {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
-                            <input id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.google.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
-                            <label>
-                              <input type="checkbox" name="sp-ac-a_force_style_autoFitSStyle" v-model="ACConfig.google.BgFit">
+                            <input :placeholder="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint" id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.google.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
+                            <label :title="lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text_hint">
+                              <input type="checkbox" name="sp-ac-a_autoFitSStyle" v-model="ACConfig.google.BgFit" :disabled="!ACConfig.google.defaultBgUrl || !ACConfig.AdsStyleEnable">
                               {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}      
                             </label>
                           </label>
@@ -2511,9 +2605,9 @@ body[google] {
                           <br>
                           <label class="display-block" style="margin: 3px 0 3px 25px;">
                             {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
-                            <input id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.bing.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
-                            <label>
-                              <input type="checkbox" name="sp-ac-a_force_style_autoFitSStyle" v-model="ACConfig.bing.BgFit">
+                            <input :placeholder="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint" id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.bing.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
+                            <label :title="lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text_hint">
+                              <input type="checkbox" name="sp-ac-a_autoFitSStyle" v-model="ACConfig.bing.BgFit" :disabled="!ACConfig.bing.defaultBgUrl || !ACConfig.AdsStyleEnable">
                               {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}         
                             </label>
                           </label>                          
@@ -3176,8 +3270,12 @@ body[google] {
       
       async function create_CSS_Node(css, className = '', initType = "text/css") {
         let cssNode = document.createElement("style");
-        if (className) cssNode.className = className;
-
+        if (className) {
+          cssNode.className = className
+          const xclass = '.' + className.split(' ').join('.')
+          cssNode.dataset.xclass = xclass
+        }
+        
         // 针对less进行单独处理
         if(initType.includes('less')) {
           // parseHTML 耗时 没必要
@@ -3238,15 +3336,6 @@ body[google] {
         }, 20, true);
       }
 
-      function safeRemove(cssSelector, withAni = false) {
-        safeFunction(() => {
-          let removeNodes = document.querySelectorAll(cssSelector);
-          for (let i = 0; i < removeNodes.length; i++) {
-            aniRemove(removeNodes[i], withAni)
-          }
-        })
-      }
-
       function aniRemove(node, withAni) {
         if(withAni) {
           node.classList.add('aniDelete')
@@ -3299,9 +3388,11 @@ body[google] {
         return {res: false, node: null};
       }
 
-      function changeSiteBackground(imageUrl) { // 这个图片地址可能为：动态图片返回、静态跨域图片
+      async function changeSiteBackground(imageUrl) { // 这个图片地址可能为：动态图片返回、静态跨域图片
         const css = `body:before{position: fixed;width: 100%;height: 100%;top: 0;left: 0;content: '';background-image: url('${imageUrl}');background-size: 100% auto;opacity: 0.6;`
-        AC_addStyle(css, 'AC-BackGroundImage', 'head', true)
+        CONST.flushNode.insert(await create_CSS_Node(css, 'AC-BackGroundImage'), 'head', {
+          isReload: true
+        })
       }
       
       async function asyncGMHttpRequestGet(url) {
@@ -3333,7 +3424,7 @@ body[google] {
           importStyle: async (data, toClassName, useNormalCSS = false, mustLoad = false) => {
             if (typeof (data) === "undefined" || data === null) {
               // 这个居然在VM上出问题了，很奇怪
-              console.error("GM_getResourceText获取内容数据异常");
+              console.error("GM_getResourceText获取内容数据异常：", toClassName);
               return
             }
             if(data.startsWith('http')) {
@@ -3399,7 +3490,9 @@ body[google] {
             .replace(/#aaa(a*)/igm, color)
             .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
             .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
-            AC_addStyle(style, "AC-" + CONST.useItem.name + "HuYanStyle" + (isNewGM ? "" : "-File"), "head", true); // 需要修改的，所以为true
+            CONST.flushNode.insert(create_CSS_Node(style, "AC-" + CONST.useItem.name + "HuYanStyle" + (isNewGM ? "" : "-File")), 'head', {
+              isReload: true
+            })
           },
           clip255: function (value) {
             if (value > 255) return 255;
@@ -3450,7 +3543,6 @@ body[google] {
           //加载双页样式
           loadTwoPageStyle: async function () {
             const node = await this.loadStyle(CONST.useItem.name + "TwoPageStyle", CONST.useItem.name + "TwoPageStyle");
-            console.log(node)
             this.flushDom.insert(node, 'DOM')
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
@@ -3474,7 +3566,6 @@ body[google] {
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             const node2 = await create_CSS_Node(cssHead + "{grid-template-columns: repeat(3, minmax(33.3%,1fr));grid-template-areas:'xmain xmain xmain';}",
               "AC-ThreePageExStyle");
-            debugger
             this.flushDom.insert(node2, 'head')
           },
           // 加载四列样式

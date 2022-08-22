@@ -99,13 +99,13 @@ form.fm {
 
 #wrapper #content_left {
   animation-name: ani_topTobuttom;
-  animation-duration: .2s;
+  animation-duration: .1s;
   animation-timing-function: ease;
 }
 
 #head .head_wrapper {
   animation-name: ani_leftToright;
-  animation-duration: 0.3s;
+  animation-duration: 0.2s;
   animation-timing-function: ease-in;
 }
 
@@ -145,8 +145,8 @@ form.fm {
 }
 
 #wrapper #content_left > .result[tpl='soft'] .op-soft-title,
-#wrapper #content_left > .result h3,
-#wrapper #content_left > .c-container h3 {
+#wrapper #content_left > .result h3[class*='title'],
+#wrapper #content_left > .c-container h3[class*='title'] {
   background-color: #f8f8f8;
   margin: 0px -8px 10px -20px;
   padding: 8px 20px 5px;
@@ -215,7 +215,7 @@ form.fm {
   .result-op,
   & > .c-container {
 
-    h3 {
+    h3[class*='title'] {
       font-weight: bold;
       font-size: medium;
     }
@@ -396,12 +396,14 @@ body .wrapper_new #head.fix-head .s_form {
   width: 0;
   height: 0;
   overflow: hidden;
+  opacity: 0;
 }
 // 只能采用这种方案来对其进行隐藏，否则会导致百度页面加载非常缓慢
 body.showRight #wrapper #content_right {
   width: unset;
   height: unset;
   overflow: unset;
+  opacity: 1;
 }
 
 .result-molecule #page > div {
