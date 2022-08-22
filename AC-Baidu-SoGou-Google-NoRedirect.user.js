@@ -90,7 +90,8 @@
 // @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.01
 // @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.01
 // @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.01
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.01
+// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.011
+// @resource  BgAutoFit          http://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.01
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
@@ -3475,7 +3476,7 @@ body[google] {
             }
           },
           //加载护眼模式样式
-          loadHuYanStyle: function (color) {
+          loadHuYanStyle: async function (color) {
             let style = "body[baidu],#wrapper #head,#wrapper #s_tab,form.fm .s_ipt_wr.bg{background-color:#fff}#container #content_left .result-op,#container #content_left .result,#container #rs,#container #content_right{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#container #content_left .result-op:hover,#container #content_left .result:hover{background-color:#ccc!important}#container #content_left .result-op h3,#container #content_left .c-container h3,#container #rs .tt{background-color:#bbb}.na_cnt .nws_itm,.nws_itmb,#b_content #b_results li,body #b_header{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#b_content #b_results li:hover{background-color:#ccc!important}#b_content #b_results li h2{background-color:#bbb}#rso .g,.bkWMgd>.g,.bkWMgd g-inner-card,#rhscol #rhs,#rhscol #rhs .g>div,.c2xzTb .g,.ruTcId .g,.fm06If .g,.cUnQKe .g,.HanQmf .g{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#rso .g:hover,.bkWMgd>.g:hover{background-color:#ccc!important}.bkWMgd .g div.r,#rso .g h3{background-color:#bbb}";
             if (ACConfig.isUserColorEnable) {
               color = color || ACConfig.defaultHuYanColor || "#FFFFFF";
@@ -3490,7 +3491,7 @@ body[google] {
             .replace(/#aaa(a*)/igm, color)
             .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
             .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
-            CONST.flushNode.insert(create_CSS_Node(style, "AC-" + CONST.useItem.name + "HuYanStyle" + (isNewGM ? "" : "-File")), 'head', {
+            CONST.flushNode.insert(await create_CSS_Node(style, "AC-" + CONST.useItem.name + "HuYanStyle" + (isNewGM ? "" : "-File")), 'head', {
               isReload: true
             })
           },
@@ -3643,7 +3644,7 @@ body[google] {
               }
               if(result > 0) { // 非原始模式下
                 await this.loadBgImage()
-                CONST.useItem.BgFit && await this.loadBgAutoFit()
+                CONST.useItem.defaultBgUrl && CONST.useItem.BgFit && await this.loadBgAutoFit()
                 document.body.classList.remove('purecss-mode')
               } else {
                 document.body.classList.add('purecss-mode')
