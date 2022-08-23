@@ -129,11 +129,11 @@
   // false  true =仅GM代码 执行
   // false  false=异常 但是还是要执行代码
   debug("程序开始");
-  if (inExtMode === true && inGMMode === true || typeof(window.AC666Init) !== 'undefined') {
-    console.log("扩展模式-脚本不启用");
+  if (inExtMode === true && inGMMode === true || document.head.hasAttribute('AC666Init')) {
+    console.log("扩展模式或脚本重复了-脚本不启用");
     return;
   }
-  window.AC666Init = true
+  document.head.setAttribute('AC666Init', 1) // 保证脚本不重复执行，直接操作window对象无效果
   if (typeof (GM) === "undefined") {
     // 这个是ViolentMonkey的支持选项
     GM = {};
@@ -3584,7 +3584,7 @@ body[google] {
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             const node2 = await create_CSS_Node(cssHead + "{grid-template-columns: repeat(4, minmax(25%,1fr));grid-template-areas:'xmain xmain xmain xmain';}",
-              "AC-FourPageExStyle", "head");
+              "AC-FourPageExStyle");
             this.flushDom.insert(node2, 'head')
           },
           loadPlainToCSS: function () {
