@@ -146,8 +146,8 @@ form.fm {
 }
 
 #wrapper #content_left > .result[tpl='soft'] .op-soft-title,
-#wrapper #content_left > .result h3[class*='title'],
-#wrapper #content_left > .c-container h3[class*='title'] {
+#wrapper #content_left > .result h3[class~='t'],
+#wrapper #content_left > .c-container h3[class~='t'] {
   background-color: #f8f8f8;
   margin: 0px -8px 10px -20px;
   padding: 8px 20px 5px;
@@ -216,7 +216,7 @@ form.fm {
   .result-op,
   & > .c-container {
 
-    h3[class*='title'] {
+    h3[class~='t'] {
       font-weight: bold;
       font-size: medium;
     }
@@ -399,12 +399,16 @@ body .wrapper_new #head.fix-head .s_form {
   overflow: hidden;
   opacity: 0;
 }
-// 只能采用这种方案来对其进行隐藏，否则会导致百度页面加载非常缓慢
-body.showRight #wrapper #content_right {
-  width: unset;
-  height: unset;
-  overflow: unset;
-  opacity: 1;
+
+body.showRight {
+  
+  // 只能采用这种方案来对其进行隐藏，否则会导致百度页面加载非常缓慢
+  #wrapper #content_right {
+    width: unset;
+    height: unset;
+    overflow: unset;
+    opacity: 1;
+  }
 }
 
 .result-molecule #page > div {
@@ -428,11 +432,44 @@ body.showRight #wrapper #content_right {
   }
 }
 
+.wrapper_new #s_tab.s_tab .s_tab_inner{
+  align-items: center;
+
+  & > *:after {
+    display: none; // 下划线 none掉
+  }
+}
+
 @media screen and (min-width: 1921px) {
   /*Baidu in 2K screen default in : center*/
   #head .head_wrapper {
-    transform: translateX(120px);
+    transform: translateX(-100px);
     justify-content: center;
     display: flex;
+  }
+  
+  body[baidu] {
+    .wrapper_new #s_tab.s_tab .s_tab_inner{
+      padding-left: 180px;
+      align-items: center;
+      
+      & > *:after {
+        display: none; // 下划线 none掉
+      }
+    }
+    
+    #container.sam_newgrid {
+      padding-left: 316px;
+    }
+  }
+
+  form.fm .s_ipt_wr.bg {
+    min-width: 480px;
+  }
+
+  body.showRight {
+    #head .head_wrapper {
+      transform: translateX(120px);
+    }
   }
 }

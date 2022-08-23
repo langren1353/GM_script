@@ -10,8 +10,8 @@
 // @author    AC
 // @license    GPL-3.0-only
 // @create     2015-11-25
-// @run-at     document-body
-// @version    26.01
+// @run-at     document-start
+// @version    26.02
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -45,6 +45,7 @@
 // @copyright  2015-2022, AC
 // @lastmodified  2022-08-22
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2022.08-23-V26.02 加快代码执行速度；减少动画撕裂；替换CDN的md5库
 // @note    2022.08-22-V26.01 因甲癌手术和公司事务停更了2个月，目前补上，推荐更新。 1.修复百度加载缓慢的问题；2.修复谷歌样式加载顺序异常的问题；3.整体优化样式加载时间，更流畅了
 // @note    2022.06-18-V25.09 修复可能出现的脚本参数读取失败导致的脚本不执行的异常 & 修复 拦截规则特殊参数的问题 & 更换CDN地址
 // @note    2022.06-16-V25.06 优化重定向逻辑，部分网站只需要稍作处理，不用做接口请求了，感谢众多搜索引擎的版本迭代更新
@@ -75,9 +76,9 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.01
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.01
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.01
+// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.02
+// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.02
+// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.02
 // @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.01
 // @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.01
 // @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.01
@@ -90,14 +91,14 @@
 // @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.01
 // @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.01
 // @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.01
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.011
-// @resource  BgAutoFit          http://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.01
+// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.02
+// @resource  BgAutoFit          http://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.02
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
 // @require https://lib.baomitu.com/vue/2.6.14/vue.min.js
 // @require https://lib.baomitu.com/less.js/4.1.2/less.min.js
-// @require https://greasyfork.org/scripts/130-portable-md5-function/code/Portable%20MD5%20Function.js?version=10066
+// @require https://lib.baomitu.com/md5-wasm/1.2.0/md5-wasm.min.js
 // @grant    GM_getValue
 // @grant    GM.getValue
 // @grant    GM_setValue
@@ -209,11 +210,14 @@
         debug('数据flush1', newBodyFrag.children.length)
         debug('数据flush2', newHeadFrag.children.length)
         debug('数据flush3', newDomFrag.children.length)
-        
-        document.body.appendChild(newBodyFrag)
-        document.head.appendChild(newHeadFrag)
-        document.insertBefore(newDomFrag, document.documentElement)
 
+        safeWaitFunc("body", body => {
+          document.body.appendChild(newBodyFrag)
+        })
+        safeWaitFunc("head", body => {
+          document.head.appendChild(newHeadFrag)
+        })
+        document.insertBefore(newDomFrag, document.documentElement)
       }
     }
 
@@ -259,16 +263,18 @@
       }
     })
   }
+  
   function aniRemove(node, withAni) {
     if(withAni) {
       node.classList.add('aniDelete')
       setTimeout(() => {
         node.remove();
-      }, 400)
+      }, 200)
     } else {
       node.remove();
     }
   }
+  
   function safeFunction(func, failCb) {
     try {
       func();
@@ -276,6 +282,44 @@
       failCb && failCb()
     }
   }
+
+  /**
+   * @param callback 回调函数，需要返回是否结束True、False、否则相当于定时器
+   * callback return:
+   *  true = 倒计时
+   *  false = 计时器
+   *  none = 计时器
+   * @param period 周期，如:200ms
+   * @param runNow 立即执行
+   */
+  function RAFInterval(callback, period = 50, runNow = false) {
+    var shouldFinish = false
+    var int_id = null
+    if(runNow) {
+      shouldFinish = callback()
+      if (shouldFinish) return
+    }
+    int_id = setInterval(() => {
+      shouldFinish = callback()
+      shouldFinish && clearInterval(int_id)
+    }, period)
+  }
+
+  function safeWaitFunc(selector, callbackFunc, time, notClear) {
+    time = time || 60;
+    notClear = notClear || false;
+    let doClear = !notClear;
+    RAFInterval(function () {
+      if ((typeof (selector) === "string" && document.querySelector(selector) != null)) {
+        callbackFunc(document.querySelector(selector));
+        if (doClear) return true;
+      } else if (typeof (selector) === "function" && (selector() != null || (selector() || []).length > 0)) {
+        callbackFunc(selector()[0]);
+        if (doClear) return true;
+      }
+    }, time, true);
+  }
+  
   (function () {
     debug("程序执行");
     let needDisplayNewFun = true; // 本次更新是否有新功能需要展示
@@ -1070,7 +1114,6 @@ body[google] {
       }();
 
       !async function() {
-        let insertLocked = false;
         if (typeof GM_getResourceText === 'undefined') {
           GM.getResourceText = GM_getResourceText = async function(aResourceName) {
             let res = await (await fetch(await GM.getResourceUrl(aResourceName))).text();
@@ -1396,8 +1439,10 @@ body[google] {
                 }
               }
             }, 800);
-            InsertSettingMenu();
-            ShowSetting();
+            setTimeout(() => {
+              InsertSettingMenu(); // 等待menu样式加载，延迟插入menu
+              ShowSetting();
+            }, 200)
           }
         } catch (e) {
           console.log(e);
@@ -1525,7 +1570,7 @@ body[google] {
                   return this.lan.use.fieldset_panel.setting_panel.setting_panel_second.blockEditBtn_text;
                 }
               },
-              cal_UserBlockListRegex() {
+              async cal_UserBlockListRegex() {
                 var list = [];
                 this.ACConfig.UserBlockList.forEach(one => {
                   safeFunction(() => {
@@ -1542,9 +1587,9 @@ body[google] {
                   })
                 }
                 this.calc_block_data = {
-                  md5: hex_md5(JSON.stringify(list)),
+                  md5: await md5WASM(new TextEncoder().encode(list.join('=='))), // 编码虽然有问题，但是计算md5足够用了
                   list
-                };
+                }
                 return this.calc_block_data
               },
               AdsStyleModeChange() {
@@ -1889,35 +1934,37 @@ body[google] {
         }
 
         // 2秒后才绑定滚动事件
-        setTimeout(() => {
-          windowscroll(async function(direction, e) {
-            if (direction === "down") { // 下滑才准备翻页
-              let spl = document.querySelector("#sp-fw-a_enable");
-              // 开启后，且在非（suprepreloader启用）时均可
-              if (ACConfig.isAutopage === true && !(spl && spl.checked === true)) {
-                var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-                let scrollDelta = 666;
-                if (curSite.SiteTypeID === SiteType.GOOGLE) scrollDelta = 1024; // 毕竟谷歌加载缓慢的问题
-                if (document.documentElement.scrollHeight <= document.documentElement.clientHeight + scrollTop + scrollDelta && curSite.pageLoading === false) {
-                  curSite.pageLoading = true;
-                  if (curSite.SiteTypeID === SiteType.DUCK) { // 可以用已有的方法来实现了
-                    if (!ACConfig.normalizeDuck || +ACConfig.duck.AdsStyleMode >= 3) {  // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
-                      document.querySelector("#links .result--more a").click();
-                      setTimeout(function() {
-                        curSite.pageLoading = false;
-                      }, 5000);
-                    }
-                  } else {
-                    ShowPager.loadMorePage();
-                    if (curSite.pager && curSite.pager.stylish) {
-                      CONST.flushNode.insert(await create_CSS_Node(curSite.pager.stylish, "AC-pager-stylish"))
+        safeWaitFunc('body', () => {
+          setTimeout(() => {
+            windowscroll(async function(direction, e) {
+              if (direction === "down") { // 下滑才准备翻页
+                let spl = document.querySelector("#sp-fw-a_enable");
+                // 开启后，且在非（suprepreloader启用）时均可
+                if (ACConfig.isAutopage === true && !(spl && spl.checked === true)) {
+                  var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+                  let scrollDelta = 666;
+                  if (curSite.SiteTypeID === SiteType.GOOGLE) scrollDelta = 1024; // 毕竟谷歌加载缓慢的问题
+                  if (document.documentElement.scrollHeight <= document.documentElement.clientHeight + scrollTop + scrollDelta && curSite.pageLoading === false) {
+                    curSite.pageLoading = true;
+                    if (curSite.SiteTypeID === SiteType.DUCK) { // 可以用已有的方法来实现了
+                      if (!ACConfig.normalizeDuck || +ACConfig.duck.AdsStyleMode >= 3) {  // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
+                        document.querySelector("#links .result--more a").click();
+                        setTimeout(function() {
+                          curSite.pageLoading = false;
+                        }, 5000);
+                      }
+                    } else {
+                      ShowPager.loadMorePage();
+                      if (curSite.pager && curSite.pager.stylish) {
+                        CONST.flushNode.insert(await create_CSS_Node(curSite.pager.stylish, "AC-pager-stylish"))
+                      }
                     }
                   }
                 }
               }
-            }
-          });
-        }, 2000)
+            });
+          }, 2000)
+        })
         var ShowPager = {
           getFullHref: function(e) {
             if (e === null) return '';
@@ -2224,7 +2271,7 @@ body[google] {
         opacity: 0.3;
     }
 }
-.aniDelete{transition: all 0.38s cubic-bezier(0.4, 0, 1, 1);opacity: 0.1}
+.aniDelete{transition: all 0.15s cubic-bezier(0.4, 0, 1, 1);opacity: 0.1}
 `;
           CONST.flushNode.insert(await create_CSS_Node(aniStyle, "AC-AnimationStyle"))
         }
@@ -2246,12 +2293,11 @@ body[google] {
 
         async function rapidDeal() {
           try {
-            if (insertLocked === false && curSite.SiteTypeID !== SiteType.OTHERS) {
+            if (curSite.SiteTypeID !== SiteType.OTHERS) {
               try {
                 if (ACConfig.isAdsEnable) { // 移除多余的广告内容
                   removeAD_baidu_sogou();
                 }
-                insertLocked = true;
                 RedirectHandle(); // 处理主重定向
                 if (ACConfig.isFaviconEnable && typeof (curSite.FaviconType) !== 'undefined') { // 显示favicon图标
                   // 延迟2秒加载，减少可能出现的问题
@@ -2321,9 +2367,6 @@ body[google] {
               } catch (e) {
                 console.error(e)
               }
-              setTimeout(function() {
-                insertLocked = false;
-              }, 200);
             }
           } catch (e) {
             console.log(e);
@@ -3023,8 +3066,8 @@ body[google] {
         };
 
         function removeAD_baidu_sogou() { // 移除网站自有广告
-          if (curSite.SiteTypeID === SiteType.BAIDU) {
-
+          if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) {
+            /****移除PC模式上的部分广告****/
             // 移除shadowDOM广告；搜索关键字：淘宝；然后点击搜索框，广告会多次重现shadowdom
             safeFunction(function() {
               $('.c-container >>> .c-container').has('.f13>span:starts-with("广告")').remove();
@@ -3042,8 +3085,7 @@ body[google] {
             // 移除顶部可能出现的 "为您推荐"
             safeRemove_xpath("id('content_left')//div[contains(@class, '_rs')]", false, true);
 
-          } else if (curSite.SiteTypeID === SiteType.MBAIDU) {
-            /****移除手机模式上的部分广告****/
+            /****移除Mobile模式上的部分广告****/
             safeRemove_xpath("id('page-bd')/div[not(contains(@class, 'result'))]", false, true);
             safeRemove_xpath("id('page-bd')/div[not(@class)]", false, true);
             safeRemove_xpath("//div[@class='na-like-container']", false, true);
@@ -3217,50 +3259,6 @@ body[google] {
           }
         }
       }(); // 读取个人设置信息
-      /**
-       * @param callback 回调函数，需要返回是否结束True、False、否则相当于定时器
-       * callback return:
-       *  true = 倒计时
-       *  false = 计时器
-       *  none = 计时器
-       * @param period 周期，如:200ms
-       * @param runNow 立即执行
-       */
-      function RAFInterval(callback, period = 50, runNow = false) {
-        var shouldFinish = false
-        var int_id = null
-        if(runNow) {
-          shouldFinish = callback()
-          if (shouldFinish) return
-        }
-        int_id = setInterval(() => {
-          shouldFinish = callback()
-          shouldFinish && clearInterval(int_id)
-        }, period)
-      }
-
-      function safeFunction(func, failCb) {
-        try {
-          func();
-        } catch (e) {
-          failCb && failCb()
-        }
-      }
-
-      function safeWaitFunc(selector, callbackFunc, time, notClear) {
-        time = time || 60;
-        notClear = notClear || false;
-        let doClear = !notClear;
-        RAFInterval(function () {
-          if ((typeof (selector) === "string" && document.querySelector(selector) != null)) {
-            callbackFunc(document.querySelector(selector));
-            if (doClear) return true;
-          } else if (typeof (selector) === "function" && (selector() != null || (selector() || []).length > 0)) {
-            callbackFunc(selector()[0]);
-            if (doClear) return true;
-          }
-        }, time, true);
-      }
       
       async function create_CSS_Node(css, className = '', initType = "text/css") {
         let cssNode = document.createElement("style");
@@ -3330,15 +3328,16 @@ body[google] {
         }, 20, true);
       }
 
+      // 不要动画了，免得显示卡顿
       function aniRemove(node, withAni) {
-        if(withAni) {
-          node.classList.add('aniDelete')
-          setTimeout(() => {
-            node.remove();
-          }, 400)
-        } else {
+        // if(withAni) {
+        //   node.classList.add('aniDelete')
+        //   setTimeout(() => {
+        //     node.remove();
+        //   }, 400)
+        // } else {
           node.remove();
-        }
+        // }
       }
 
       function hideNode(node) {
@@ -3640,13 +3639,15 @@ body[google] {
                 await this.loadBaiduLiteStyle();
               }
 
-              if(result > 0) { // 非原始模式下
-                await this.loadBgImage()
-                CONST.useItem.defaultBgUrl && CONST.useItem.BgFit && await this.loadBgAutoFit()
-                document.body.classList.remove('purecss-mode')
-              } else {
-                document.body.classList.add('purecss-mode')
-              }
+              safeWaitFunc('body', async () => {
+                if(result > 0) { // 非原始模式下
+                  await this.loadBgImage()
+                  CONST.useItem.defaultBgUrl && CONST.useItem.BgFit && await this.loadBgAutoFit()
+                  document.body.classList.remove('purecss-mode')
+                } else {
+                  document.body.classList.add('purecss-mode')
+                }
+              })
               this.flushDom.flush()
             }
             this.loadPlainToCSS();

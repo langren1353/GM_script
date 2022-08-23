@@ -33,6 +33,10 @@ body[baidu] .pagefoot.gj {
   padding-left: unset !important;
 }
 
+#wrapper_wrapper #container #header_top_bar {
+  margin: 0 auto;
+}
+
 #wrapper #content_left, #wrapper #container.sam_newgrid #rs, #wrapper #page {
   position: relative;
   padding-left: 0px;
@@ -109,10 +113,6 @@ body.showRight #wrapper #content_right {
   padding-left: 22px;
   display: flex;
   justify-content: center;
-}
-
-.s_tab_inner {
-  display: block !important;
 }
 
 #container .hint_common_restop {
@@ -201,22 +201,34 @@ form.fm .s_ipt_wr.bg {
 
 @media screen and (min-width: 1921px) {
   #head .head_wrapper {
-    transform: translateX(140px);
+    transform: translateX(120px);
 
     #u {
       right: 200px;
     }
   }
 
-  #wrapper_wrapper #container {
-    padding-left: 80px;
-  }
+  body[baidu] {
+    #wrapper #s_tab {
+      margin-left: 96px;
+      
+      .s_tab_inner{
+        display: flex;
+        justify-content: space-evenly;
+        padding-left: unset;
+        
+        > * {
+          margin-right: 0;
+          text-align: center;
+        }
+      }
+    }
 
-  .wrapper_new #s_tab.s_tab .s_tab_inner {
-    width: 900px;
-    padding-left: 296px;
+    #container.sam_newgrid {
+      padding-left:  80px;
+    }
   }
-
+  
   form.fm .s_ipt_wr.bg {
     min-width: calc(37.5vw - 150px);
   }
@@ -224,7 +236,7 @@ form.fm .s_ipt_wr.bg {
 
 @media screen and (min-width: 1366px) and (max-width: 1920px) {
   .wrapper_new .head_wrapper #result_logo {
-    margin-left: 0px;
+    margin-left: 0;
   }
 }
 
