@@ -240,7 +240,12 @@
 
       const { isReload } = config
       if(isReload) {
-        this.reloadList.push('.' + [...node.classList].join('.'))
+        const { classList = [] } = node
+        if(classList.length) {
+          this.reloadList.push('.' + [...(node.classList || [])].join('.'))
+        } else {
+          console.error('异常的reload参数，没有classList', node)
+        }
       }
       return this
     }
@@ -3520,7 +3525,7 @@ body[google] {
           },
           loadBaiduLiteStyle: async function () {
             const node = await this.loadStyle("baiduLiteStyle", "baiduLiteStyle");
-            this.flushDom.insert(node, 'head', { isReload: true })
+            this.flushDom.insert(node, 'DOM')
           },
           loadBgImage: async function() {
             if(CONST.useItem.defaultBgUrl && CONST.useItem.defaultBgUrl.trim()) {
@@ -3616,8 +3621,6 @@ body[google] {
               this.loadCSSToPlain();
               return;
             }
-            if(this.locked) return
-            this.locked = true
             this.flushDom.insert(await create_CSS_Node(".minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;} body.purecss-mode:before{display: none;}", "AC-style-logo"))
             let result = parseInt(CONST.useItem.AdsStyleMode || -1);
             if (acCssLoadFlag === false && document.querySelector(".ACExtension") === null) {
@@ -3642,6 +3645,13 @@ body[google] {
                 await this.loadTwoPageStyle();
                 await this.loadFourPageStyle();
               }
+              acCssLoadFlag = true;
+              debug("in样式运行结束");
+              if (curSite.SiteTypeID === SiteType.BAIDU && ACConfig.Style_BaiduLite === true) {
+                // AC_addStyle(GM_getResourceText("baiduLiteStyle"), "AC-baiduLiteStyle", "head")
+                await this.loadBaiduLiteStyle();
+              }
+
               if(result > 0) { // 非原始模式下
                 await this.loadBgImage()
                 CONST.useItem.defaultBgUrl && CONST.useItem.BgFit && await this.loadBgAutoFit()
@@ -3650,14 +3660,7 @@ body[google] {
                 document.body.classList.add('purecss-mode')
               }
               this.flushDom.flush()
-              acCssLoadFlag = true;
-              debug("in样式运行结束");
-              if (curSite.SiteTypeID === SiteType.BAIDU && ACConfig.Style_BaiduLite === true) {
-                AC_addStyle(GM_getResourceText("baiduLiteStyle"), "AC-baiduLiteStyle", "head")
-                await this.loadBaiduLiteStyle();
-              }
             }
-            this.locked = false
             this.loadPlainToCSS();
             if (curSite.SiteTypeID !== SiteType.BAIDU && curSite.SiteTypeID !== SiteType.BAIDU_XUESHU && curSite.SiteTypeID !== SiteType.GOOGLE && curSite.SiteTypeID !== SiteType.BING && curSite.SiteTypeID !== SiteType.SOGOU && curSite.SiteTypeID !== SiteType.DUCK && curSite.SiteTypeID !== SiteType.DOGE) return;
 
@@ -3670,7 +3673,6 @@ body[google] {
             if (CONST.useItem.HuYanMode === true || document.querySelector("style[class*='darkreader']") != null) this.loadHuYanStyle();
           },
           flushDom: new FlushDomFragment(),
-          locked: false,
           init: function () {
             if (CONST.isGoogleImageUrl) return;
             this.centerDisplay();
