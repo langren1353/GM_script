@@ -454,7 +454,6 @@ body[google] {
     let CONST = {
       hasNewFuncNeedDisplay: true,
       sortIndex: 1,
-      isEventFire: false,
       isGoogleImageUrl: false,
       isGoogleSpecial: false, // 判断是否存在#rso>.g; true=存在
       useItem: {},
@@ -1397,13 +1396,8 @@ body[google] {
                 }
               }
             }, 800);
-            setInterval(() => {
-              if (CONST.isEventFire) {
-                InsertSettingMenu();
-                ShowSetting();
-                CONST.isEventFire = false
-              }
-            }, 2000)
+            InsertSettingMenu();
+            ShowSetting();
           }
         } catch (e) {
           console.log(e);
@@ -1682,8 +1676,6 @@ body[google] {
           if (e.target != null && typeof (e.target.className) === "string" && e.target.className.toUpperCase().indexOf("AC-") === 0) {
             return;
           } //屏蔽掉因为增加css导致的触发insert动作
-
-          CONST.isEventFire = true
         }
 
         /*以下代码大部分来源于SuprePreloader 感谢 swdyh && ywzhaiqi && NLF 以及 mach6 大佬*/
@@ -2237,8 +2229,6 @@ body[google] {
           CONST.flushNode.insert(await create_CSS_Node(aniStyle, "AC-AnimationStyle"))
         }
 
-        AddCustomStyle();
-
         /**这东西以后会用上**/
         function getSearchValue() {
           let kvl = location.search.substr(1).split("&");
@@ -2293,9 +2283,7 @@ body[google] {
                 // }
                 if (ACConfig.isBlockEnable && curSite.SiteTypeID !== SiteType.SOGOU) { // 启用屏蔽功能- 对每一个新增的地址都要处理
                   // 延迟执行，减少页面损耗
-                  setTimeout(() => {
-                    SiteBlock.init();
-                  }, 1000)
+                  SiteBlock.init();
                 }
                 if (document.body) {
                   if (!ACConfig.isRightDisplayEnable) { // 右侧栏显示
@@ -3669,10 +3657,26 @@ body[google] {
               this.loadCSSToPlain();
               return;
             }
-            /**护眼Style最后载入**/
-            if (CONST.useItem.HuYanMode === true || document.querySelector("style[class*='darkreader']") != null) this.loadHuYanStyle();
+            
+            this.huyanCheckAndLoad()
           },
           flushDom: new FlushDomFragment(),
+          huyanTimer: 0,
+          huyanCheckAndLoad: function() {
+            /**护眼Style最后载入**/
+            if (CONST.useItem.HuYanMode === true){
+              this.loadHuYanStyle()
+            }
+            if(!this.huyanTimer) {
+              this.huyanTimer = setInterval(() => {
+                if (document.querySelector("style[class*='darkreader']") != null) {
+                  this.loadHuYanStyle()
+                  clearInterval(this.huyanTimer)
+                  this.huyanTimer = 0
+                }
+              }, 100)
+            }
+          },
           init: function () {
             if (CONST.isGoogleImageUrl) return;
             this.centerDisplay();
