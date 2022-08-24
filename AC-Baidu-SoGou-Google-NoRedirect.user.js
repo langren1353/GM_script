@@ -10,7 +10,7 @@
 // @author    AC
 // @license    GPL-3.0-only
 // @create     2015-11-25
-// @run-at     document-start
+// @run-at     document-body
 // @version    26.02
 // @connect    baidu.com
 // @connect    google.com
