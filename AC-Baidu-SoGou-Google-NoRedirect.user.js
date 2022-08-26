@@ -121,20 +121,17 @@
 
   let inExtMode = typeof (isExtension) !== "undefined";
   let inGMMode = typeof (GM_info.scriptHandler) !== "undefined"; // = "Greasemonkey" || "Tampermonkey" || "ViolentMonkey"
-  // 新版本的GreaseMonkey是带有scriptHandler，但是没有GM_getResourceText；旧版本不带scriptHandler，但是有GM_getResourceText
-  // let isNewGM = typeof(GM_info.scriptHandler) !== "undefined" && GM_info.scriptHandler.toLowerCase() === "greasemonkey";
-  let isNewGM = false;
   // inExtMode & inGMMode
   // true    true =扩展下的GM代码 不执行
   // true    false=扩展下代码 执行
   // false  true =仅GM代码 执行
   // false  false=异常 但是还是要执行代码
   debug("程序开始");
-  if (inExtMode === true && inGMMode === true || document.head.hasAttribute('AC666Init')) {
-    console.log("扩展模式或脚本重复了-脚本不启用");
+  if (inExtMode === true && inGMMode === true || typeof(window.AC666Init) !== 'undefined') {
+    console.log("扩展模式-脚本不启用");
     return;
   }
-  document.head.setAttribute('AC666Init', 1) // 保证脚本不重复执行，直接操作window对象无效果
+  window.AC666Init = true
   if (typeof (GM) === "undefined") {
     // 这个是ViolentMonkey的支持选项
     GM = {};
@@ -1421,6 +1418,8 @@ body[google] {
                 CONST.fsBaidu.init();
                 AddCustomStyle();
               }
+              InsertSettingMenuCSS()
+              rapidDeal() // 预先执行一次，保证该函数不延迟，避免样式插入有延迟
             })
             if (ACConfig.isAdsEnable) { // 先来移除多余的广告内容
               removeAD_baidu_sogou();
@@ -1432,11 +1431,6 @@ body[google] {
             setInterval(function() {
               if (document.body) {
                 rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
-                if (curSite.SiteTypeID === SiteType.BAIDU && location.href.includes("tn=news")) {
-                  document.body.setAttribute("news", "1");
-                } else {
-                  document.body.removeAttribute("news");
-                }
               }
             }, 800);
             setTimeout(() => {
@@ -1601,6 +1595,7 @@ body[google] {
                   v5: CONST.isGoogleSpecial,
                   v6: ACConfig.isRightDisplayEnable,
                   v7: CONST.useItem.BgFit,
+                  v8: ACConfig.AdsStyleEnable,
                 };
               },
               UserStyleEnableChange() {
@@ -1690,7 +1685,9 @@ body[google] {
                   
                   safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle'],style[class*='HuYanStyle-File']");
                   acCssLoadFlag = false;
-                  CONST.fsBaidu.init();
+                  if(ACConfig.AdsStyleEnable) {
+                    CONST.fsBaidu.init()
+                  }
                 }
               },
               UserStyleEnableChange() {
@@ -2167,32 +2164,6 @@ body[google] {
             ".res_top_banner{display:none!important;}" + // 移除可能的百度HTTPS劫持显示问题
             ".headBlock, body>div.result-op{display:none;}" // 移除百度的搜索结果顶部一条的建议文字 & 移除可能出现的白屏现象
             , "AC-special-BAIDU"))
-          /*"自定义"按钮效果*/
-          CONST.flushNode.insert(await create_CSS_Node(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}body[doge] #header{max-width: unset;}body[doge] #myuser{position: absolute;right: 40px;}",
-            "AC-MENU_Btn"))
-          /*自定义页面内容效果*/
-          CONST.flushNode.insert(await create_CSS_Node('body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>label:not([class="label_hide"]),\n' +
-            '  body[google] #sp-ac-container .container-label:not([class*="google"])>label:not([class="label_hide"]),\n' +
-            '  body[bing] #sp-ac-container .container-label:not([class*="bing"])>label:not([class="label_hide"]),\n' +
-            '  body[sogou] #sp-ac-container .container-label:not([class*="sogou"])>label:not([class="label_hide"]),\n' +
-            '  body[duck] #sp-ac-container .container-label:not([class*="duck"])>label:not([class="label_hide"]),\n' +
-            '  body[doge] #sp-ac-container .container-label:not([class*="doge"])>label:not([class="label_hide"]),\n' +
-            '  body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>br,\n' +
-            '  body[google] #sp-ac-container .container-label:not([class*="google"])>br,\n' +
-            '  body[bing] #sp-ac-container .container-label:not([class*="bing"])>br,\n' +
-            '  body[duck] #sp-ac-container .container-label:not([class*="duck"])>br,\n' +
-            '  body[doge] #sp-ac-container .container-label:not([class*="doge"])>br,\n' +
-            '  body[sogou] #sp-ac-container .container-label:not([class*="sogou"])>br,\n' +
-            '  body[baidu] #sp-ac-container .container-label[class*="baidu"]>.label_hide,\n' +
-            '  body[google] #sp-ac-container .container-label[class*="google"]>.label_hide,\n' +
-            '  body[bing] #sp-ac-container .container-label[class*="bing"]>.label_hide,\n' +
-            '  body[sogou] #sp-ac-container .container-label[class*="sogou"]>.label_hide,\n' +
-            '  body[duck] #sp-ac-container .container-label[class*="duck"]>.label_hide,\n' +
-            '  body[doge] #sp-ac-container .container-label[class*="doge"]>.label_hide\n' + // 注意尾部逗号
-            '{' +
-            'display:none;\n' +
-            '}#sp-ac-container .display-block{display:block;}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{user-select: none;border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
-            "AC-MENU_Page"))
 
           // 添加 自定义的动画
           const aniStyle = `@keyframes ani_leftToright {
@@ -2337,6 +2308,11 @@ body[google] {
                   } else if (!document.body.classList.contains('showRight')) {
                     document.body.classList.add("showRight")
                   }
+                  if (curSite.SiteTypeID === SiteType.BAIDU && location.href.includes("tn=news")) {
+                    if(!document.body.hasAttribute('news')) document.body.setAttribute("news", "1");
+                  } else {
+                    document.body.removeAttribute("news");
+                  }
                 }
                 // 谷歌 + 多列模式
                 if (curSite.SiteTypeID === SiteType.GOOGLE && CONST.useItem.AdsStyleMode >= 3) {
@@ -2368,6 +2344,7 @@ body[google] {
                 console.error(e)
               }
             }
+            
           } catch (e) {
             console.log(e);
           }
@@ -3241,6 +3218,35 @@ body[google] {
             })
           }
         }
+        
+        async function InsertSettingMenuCSS() {
+          /*"自定义"按钮效果*/
+          CONST.flushNode.insert(await create_CSS_Node(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}body[doge] #header{max-width: unset;}body[doge] #myuser{position: absolute;right: 40px;}",
+            "AC-MENU_Btn"))
+          /*自定义页面内容效果*/
+          CONST.flushNode.insert(await create_CSS_Node('body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>label:not([class="label_hide"]),\n' +
+            '  body[google] #sp-ac-container .container-label:not([class*="google"])>label:not([class="label_hide"]),\n' +
+            '  body[bing] #sp-ac-container .container-label:not([class*="bing"])>label:not([class="label_hide"]),\n' +
+            '  body[sogou] #sp-ac-container .container-label:not([class*="sogou"])>label:not([class="label_hide"]),\n' +
+            '  body[duck] #sp-ac-container .container-label:not([class*="duck"])>label:not([class="label_hide"]),\n' +
+            '  body[doge] #sp-ac-container .container-label:not([class*="doge"])>label:not([class="label_hide"]),\n' +
+            '  body[baidu] #sp-ac-container .container-label:not([class*="baidu"])>br,\n' +
+            '  body[google] #sp-ac-container .container-label:not([class*="google"])>br,\n' +
+            '  body[bing] #sp-ac-container .container-label:not([class*="bing"])>br,\n' +
+            '  body[duck] #sp-ac-container .container-label:not([class*="duck"])>br,\n' +
+            '  body[doge] #sp-ac-container .container-label:not([class*="doge"])>br,\n' +
+            '  body[sogou] #sp-ac-container .container-label:not([class*="sogou"])>br,\n' +
+            '  body[baidu] #sp-ac-container .container-label[class*="baidu"]>.label_hide,\n' +
+            '  body[google] #sp-ac-container .container-label[class*="google"]>.label_hide,\n' +
+            '  body[bing] #sp-ac-container .container-label[class*="bing"]>.label_hide,\n' +
+            '  body[sogou] #sp-ac-container .container-label[class*="sogou"]>.label_hide,\n' +
+            '  body[duck] #sp-ac-container .container-label[class*="duck"]>.label_hide,\n' +
+            '  body[doge] #sp-ac-container .container-label[class*="doge"]>.label_hide\n' + // 注意尾部逗号
+            '{' +
+            'display:none;\n' +
+            '}#sp-ac-container .display-block{display:block;}#sp-ac-container .label_hide{cursor:pointer;margin-left:8%;color:blue}#sp-ac-container .linkhref,#sp-ac-container .label_hide:hover{color:red}#sp-ac-container .linkhref:hover{font-weight:bold}#sp-ac-container label.menu-box-small{max-width:16px;max-height:16px;cursor:pointer;display:inline-block}.AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}#sp-ac-container{z-index:999999;text-align:left;background-color:white}#sp-ac-container *{font-size:13px;color:black;float:none}#sp-ac-main-head{position:relative;top:0;left:0}#sp-ac-span-info{position:absolute;right:1px;top:0;font-size:10px;line-height:10px;background:none;font-style:italic;color:#5a5a5a;text-shadow:white 0px 1px 1px}#sp-ac-container input{vertical-align:middle;display:inline-block;outline:none;height:auto;padding:0px;margin-bottom:0px;margin-top:0px}#sp-ac-container input[type="number"]{width:50px;text-align:left}#sp-ac-container input[type="checkbox"]{border:1px solid #B4B4B4;padding:1px;margin:3px;width:13px;height:13px;background:none;cursor:pointer;visibility:visible;position:static}#sp-ac-container input[type="button"]{border:1px solid #ccc;cursor:pointer;background:none;width:auto;height:auto}#sp-ac-container li{list-style:none;margin:3px 0;border:none;float:none;cursor:default;}#sp-ac-container fieldset{border:2px groove #ccc;-moz-border-radius:3px;border-radius:3px;padding:4px 9px 6px 9px;margin:2px;display:block;width:auto;height:auto}#sp-ac-container legend{line-height:20px;margin-bottom:0px}#sp-ac-container fieldset > ul{padding:0;margin:0}#sp-ac-container ul#sp-ac-a_useiframe-extend{padding-left:40px}#sp-ac-rect{position:relative;top:0;left:0;float:right;height:10px;width:10px;padding:0;margin:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;-webkit-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);-moz-box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);box-shadow:inset 0 5px 0 rgba(255,255,255,0.3),0 0 3px rgba(0,0,0,0.8);opacity:0.8}#sp-ac-dot,#sp-ac-cur-mode{position:absolute;z-index:9999;width:5px;height:5px;padding:0;-moz-border-radius:3px;border-radius:3px;border:1px solid white;opacity:1;-webkit-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);-moz-box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9);box-shadow:inset 0 -2px 1px rgba(0,0,0,0.3),inset 0 2px 1px rgba(255,255,255,0.3),0px 1px 2px rgba(0,0,0,0.9)}#sp-ac-dot{right:-3px;top:-3px}#sp-ac-cur-mode{left:-3px;top:-3px;width:6px;height:6px}#sp-ac-content{padding:0;margin:0px;-moz-border-radius:3px;border-radius:3px;border:1px solid #A0A0A0;-webkit-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);-moz-box-shadow:-2px 2px 5px rgba(0,0,0,0.3);box-shadow:-2px 2px 5px rgba(0,0,0,0.3)}#sp-ac-main{padding:5px;border:1px solid white;-moz-border-radius:3px;border-radius:3px;background-color:#F2F2F7;background:-moz-linear-gradient(top,#FCFCFC,#F2F2F7 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#FCFCFC),to(#F2F2F7))}#sp-ac-foot{position:relative;left:0;right:0;min-height:20px}#sp-ac-savebutton{position:absolute;top:0;right:2px}#sp-ac-container .endbutton{margin-top:8px}#sp-ac-container .sp-ac-spanbutton{user-select: none;border:1px solid #ccc;-moz-border-radius:3px;border-radius:3px;padding:2px 3px;cursor:pointer;background-color:#F9F9F9;-webkit-box-shadow:inset 0 10px 5px white;-moz-box-shadow:inset 0 10px 5px white;box-shadow:inset 0 10px 5px white}#sp-ac-container .sp-ac-spanbutton:hover{background-color:#DDD}label[class="newFunc"]{color:blue}',
+            "AC-MENU_Page"))
+        }
 
         function InsertSettingMenu() {
           if ((curSite.SiteTypeID !== SiteType.OTHERS) && document.querySelector("#myuser") === null) {
@@ -3376,9 +3382,9 @@ body[google] {
       function checkDocmentHasNode(nodeClass) {
         for (let i = 0; i < document.childNodes.length; i++) {
           if (document.childNodes[i].data && document.childNodes[i].data.indexOf(nodeClass) > 0)
-            return {res: true, node: document.childNodes[i]};
+            return { res: true, node: document.childNodes[i], index: i };
         }
-        return {res: false, node: null};
+        return { res: false, node: null, index: -1 };
       }
 
       async function changeSiteBackground(imageUrl) { // 这个图片地址可能为：动态图片返回、静态跨域图片
@@ -3443,7 +3449,7 @@ body[google] {
               }
             } else {
               /* **********多重样式-兼容edge && 黑夜脚本************ */
-              return await create_CSS_Node(data, toClassName, "less")
+              return await create_CSS_Node(data, toClassName)
               // AC_addStyle(data, toClassName, "head", false, "less");
               /* **********多重样式-兼容edge && 黑夜脚本************ */
             }
@@ -3455,11 +3461,6 @@ body[google] {
               debug("本地-加载样式：" + insClassName);
               setUrl = setUrl || "http://debug.baidu.com/" + styleName + ".less";
               return await this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
-            } else if (isNewGM === true) {
-              // 仅用于GreaseMonkey4.0+
-              debug("特殊模式-加载样式：" + insClassName);
-              setUrl = setUrl || "https://sync.tujidu.com/newcss/" + styleName + ".less";
-              return await this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
             } else {
               debug("加载样式：" + insClassName);
               // TamperMonkey + GreaseMonkey < 4.0 + ViolentMonkey (4.0GreaseMonkey不支持GetResource方法)
@@ -3469,21 +3470,17 @@ body[google] {
           },
           //加载护眼模式样式
           loadHuYanStyle: async function (color) {
-            let style = "body[baidu],#wrapper #head,#wrapper #s_tab,form.fm .s_ipt_wr.bg{background-color:#fff}#container #content_left .result-op,#container #content_left .result,#container #rs,#container #content_right{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#container #content_left .result-op:hover,#container #content_left .result:hover{background-color:#ccc!important}#container #content_left .result-op h3,#container #content_left .c-container h3,#container #rs .tt{background-color:#bbb}.na_cnt .nws_itm,.nws_itmb,#b_content #b_results li,body #b_header{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#b_content #b_results li:hover{background-color:#ccc!important}#b_content #b_results li h2{background-color:#bbb}#rso .g,.bkWMgd>.g,.bkWMgd g-inner-card,#rhscol #rhs,#rhscol #rhs .g>div,.c2xzTb .g,.ruTcId .g,.fm06If .g,.cUnQKe .g,.HanQmf .g{background-color:#aaa;border:1px double #a2d7d4;border-radius:0}#rso .g:hover,.bkWMgd>.g:hover{background-color:#ccc!important}.bkWMgd .g div.r,#rso .g h3{background-color:#bbb}";
             if (ACConfig.isUserColorEnable) {
               color = color || ACConfig.defaultHuYanColor || "#FFFFFF";
             } else {
               color = color || "#FFFFFF";
             }
             if (color.indexOf("#") !== 0 || color.length < 7) return;
-            if (isNewGM === false) {
-              style = GM_getResourceText("MainHuYanStyle");
-            }
-            style = style
+            const style = GM_getResourceText("MainHuYanStyle")
             .replace(/#aaa(a*)/igm, color)
             .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
             .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
-            CONST.flushNode.insert(await create_CSS_Node(style, "AC-" + CONST.useItem.name + "HuYanStyle" + (isNewGM ? "" : "-File")), 'head', {
+            CONST.flushNode.insert(await create_CSS_Node(style, "AC-" + CONST.useItem.name + "HuYanStyle-File"), 'head', {
               isReload: true
             })
           },
