@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.02
+// @version    26.03
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -45,6 +45,7 @@
 // @copyright  2015-2022, AC
 // @lastmodified  2022-08-22
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2022.08-23-V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见
 // @note    2022.08-23-V26.02 加快代码执行速度；减少动画撕裂；替换CDN的md5库
 // @note    2022.08-22-V26.01 因甲癌手术和公司事务停更了2个月，目前补上，推荐更新。 1.修复百度加载缓慢的问题；2.修复谷歌样式加载顺序异常的问题；3.整体优化样式加载时间，更流畅了
 // @note    2022.06-18-V25.09 修复可能出现的脚本参数读取失败导致的脚本不执行的异常 & 修复 拦截规则特殊参数的问题 & 更换CDN地址
@@ -76,13 +77,13 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.02
+// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.03
 // @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.02
 // @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.02
 // @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.01
 // @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.01
 // @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.01
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.01
+// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.03
 // @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.01
 // @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.01
 // @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.01
@@ -92,7 +93,7 @@
 // @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.01
 // @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.01
 // @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.02
-// @resource  BgAutoFit          http://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.02
+// @resource  BgAutoFit          http://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.03
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
@@ -3250,8 +3251,8 @@ body[google] {
 
         function InsertSettingMenu() {
           if ((curSite.SiteTypeID !== SiteType.OTHERS) && document.querySelector("#myuser") === null) {
-            try {
-              let parent = document.querySelector("#u, #gb>div>div>div, #b_header>#id_h, .top-bar .sogou-set-box, #header_wrapper .js-hl-button, body[doge] #header_wrapper #header"); //baidu; google; bing; 搜狗
+            //baidu; google; bing; 搜狗
+            safeWaitFunc("#u, #gb>div>div>div, #b_header>#id_h, .top-bar .sogou-set-box, #header_wrapper .js-hl-button, body[doge] #header_wrapper #header", parent => {
               parent.style = "width: auto;";
               let userAdiv = document.createElement("div");
               userAdiv.id = "myuser";
@@ -3260,8 +3261,7 @@ body[google] {
               document.querySelector("#myuser .myuserconfig").addEventListener("click", function(e) {
                 return ACtoggleSettingDisplay(e);
               }, true);
-            } catch (e) {
-            }
+            }, 300)
           }
         }
       }(); // 读取个人设置信息
@@ -3657,9 +3657,11 @@ body[google] {
             }
             
             this.huyanCheckAndLoad()
+            this.flushCheckAndLoad()
           },
           flushDom: new FlushDomFragment(),
           huyanTimer: 0,
+          flushTimer: 0,
           huyanCheckAndLoad: function() {
             /**护眼Style最后载入**/
             if (CONST.useItem.HuYanMode === true){
@@ -3673,6 +3675,13 @@ body[google] {
                   this.huyanTimer = 0
                 }
               }, 100)
+            }
+          },
+          flushCheckAndLoad: function() {
+            if(!this.flushTimer) {
+              this.flushTimer = setInterval(() => {
+                this.flushDom.flush()
+              }, 600)
             }
           },
           init: function () {
