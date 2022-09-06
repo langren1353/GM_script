@@ -28,13 +28,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1dcabaa-315b-4740-85eb-0f7e40d83668" name="Default Changelist" comment="简单更新-不知道是啥">
-      <change afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.less" afterDir="false" />
+    <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="更新 - V26.03">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/HuYanStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/HuYanStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +71,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitToolBoxStore">
-    <option name="projectConfigVersion" value="2" />
+    <option name="projectConfigVersion" value="5" />
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="true" />
@@ -402,7 +398,9 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="修复保存无效的问题-暂时不推送，研究中；修复百度学术的居中错位问题" />
     <MESSAGE value="简单更新-不知道是啥" />
-    <option name="LAST_COMMIT_MESSAGE" value="简单更新-不知道是啥" />
+    <MESSAGE value="更新 - 保证脚本支持ViolentMonkey，切换为document-body运行时期" />
+    <MESSAGE value="更新 - V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新 - V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>

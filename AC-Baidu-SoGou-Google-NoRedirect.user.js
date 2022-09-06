@@ -681,7 +681,7 @@ body[google] {
           fieldset_panel: {
             panel_title: "AC-重定向设置 " + GM_info.script.version + (inExtMode? 'Ext':''),
             setting_panel: {
-              redirect_text: "主功能-重定向功能",
+              redirect_text: "主功能-处理重定向",
               redirect_title: "重定向功能的开启与否",
               useEn_text: "En-Language",
               useEn_title: "Using English language to display",
@@ -804,7 +804,7 @@ body[google] {
           fieldset_panel: {
             panel_title: "AC Redirect Settings " + GM_info.script.version + (inExtMode? 'Ext':''),
             setting_panel: {
-              redirect_text: "Main-RedirectFunc",
+              redirect_text: "Main-Deal Redirect",
               redirect_title: "Turn on or off redirect",
               useEn_text: "En-Language",
               useEn_title: "使用英文显示页面",
@@ -2950,9 +2950,18 @@ body[google] {
                 // 如果当前节点存在mu参数，或者link节点存在data-mdurl，那么就算成功
                 let trueLink = curNode.getAttribute('mu') || linkNode.getAttribute('data-mdurl')
                 if(trueLink && !trueLink.includes('nourl')) {
+                  trueLink = getBaiduEncodingHandle(trueLink)
                   DealRedirect(null, linkHref, trueLink);
                   return true
                 }
+              }
+              const getBaiduEncodingHandle = (linkUrl) => {
+                let resLink = linkUrl
+                if(curSite.SiteTypeID === SiteType.BAIDU && linkUrl.includes('baidu.com')) {
+                  const [, first = ''] = /(ie=[^&]+)/.exec(location.search) || []
+                  resLink = linkUrl.replace(/(ie=[^&]+)/, first)
+                }
+                return resLink
               }
               if(dealAttrLink()) {
                 continue
