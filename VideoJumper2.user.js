@@ -3,6 +3,7 @@
 // @version      0.1
 // @description  超快的广告加速器
 // @author       You
+// @icon    https://favicon.yandex.net/favicon/youtube.com
 // @run-at       document-end
 // @include      *
 // @grant        unsafeWindow
@@ -13,6 +14,14 @@ function checkIS_H5Page() {
 
 function changeVideoSpeed(speed = 1) {
   unsafeWindow._h5Player.setPlaybackRate(speed, true)
+}
+
+function addStyle(css) { //添加CSS的代码--copy的--注意里面必须是双引号
+  var pi = document.createProcessingInstruction(
+    'xml-stylesheet',
+    'type="text/css" href="data:text/css;utf-8,' + encodeURIComponent(css) + '"'
+  );
+  return document.insertBefore(pi, document.documentElement);
 }
 
 function bindEvent(event) {
@@ -66,6 +75,7 @@ function removeYoutubeAds() {
     removeTipAds()
     clickSkipAds()
   }, 800)
+  addStyle('.video-ads{display: none;}')
 }
 
 if(checkIS_H5Page) {
