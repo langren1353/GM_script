@@ -59,23 +59,72 @@ function safeFunction(func) {
   }catch (e){}
 }
 
-function removeYoutubeAds() {
-  function removeTipAds() {
-    safeFunction(() => {
-      document.querySelector('.ytp-ad-skip-button-text').click()
-    })
+function RAFInterval(callback, period = 50, runNow = false) {
+  var shouldFinish = false
+  var int_id = null
+  if(runNow) {
+    shouldFinish = callback()
+    if (shouldFinish) return
   }
-  function clickSkipAds() {
-    safeFunction(() => {
-      document.querySelector('.ytp-ad-skip-button-text').click()
-    })
-  }
+  int_id = setInterval(() => {
+    shouldFinish = callback()
+    shouldFinish && clearInterval(int_id)
+  }, period)
+}
 
-  setInterval(() => {
-    removeTipAds()
+function safeWaitFunc(selector, callbackFunc, time, notClear) {
+  time = time || 60;
+  notClear = notClear || false;
+  let doClear = !notClear;
+  RAFInterval(function () {
+    if ((typeof (selector) === "string" && document.querySelector(selector) != null)) {
+      callbackFunc(document.querySelector(selector));
+      if (doClear) return true;
+    } else if (typeof (selector) === "function" && (selector() != null || (selector() || []).length > 0)) {
+      callbackFunc(selector()[0]);
+      if (doClear) return true;
+    }
+  }, time, true);
+}
+
+function checkHasNode(selector) {
+  return !!document.querySelector(selector)
+}
+async function timeout(time) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve()
+    }, time)
+  })
+}
+
+function removeYoutubeAds() {
+  let firstAdCount = 2
+  let waitTime = 300
+
+  function clickSkipAds() {
+    const adUI = document.querySelector('.ytp-ad-text')
+    if(adUI) {
+      firstAdCount--
+      if(firstAdCount >= 0) return // 跳过前几次的判定逻辑
+      changeVideoSpeed(8)
+      setTimeout(() => {
+        changeVideoSpeed(1)
+      }, 600)
+    }
+  }
+  
+  async function rapidDeal() {
     clickSkipAds()
-  }, 800)
-  addStyle('.video-ads{display: none;}')
+    const hasAd = checkHasNode('.ytp-ad-text')
+    if(!hasAd) {
+      firstAdCount = 2
+    }
+    setTimeout(rapidDeal, waitTime)
+  }
+  
+  setTimeout(rapidDeal, 300)
+  // addStyle('.video-ads{display: none;}')
 }
 
 if(checkIS_H5Page) {
