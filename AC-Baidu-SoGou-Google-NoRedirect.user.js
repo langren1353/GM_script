@@ -2941,6 +2941,11 @@ body[google] {
                 continue
               }
 
+              // 跳过特殊链接的处理
+              if(linkNode.href && (linkNode.href.startsWith('javascript') || linkNode.href.startsWith('#'))) {
+                continue
+              }
+              
               let linkHref = linkNode.href;
               let len1 = hasDealHrefSet.size;
               hasDealHrefSet.add(linkHref);
