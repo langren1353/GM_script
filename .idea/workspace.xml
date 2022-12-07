@@ -29,8 +29,83 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="更新 - V26.03">
+      <change beforePath="$PROJECT_DIR$/.idea/GM_script.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GM_script.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/AC.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/AC.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/luozhangbiao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/luozhangbiao.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vagrant.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vagrant.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-DBHighLight.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-DBHighLight.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Pan-Baidu-AutoSave.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Pan-Baidu-AutoSave.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Taobao-Coupon.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Taobao-Coupon.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Translate-Youdao.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-UpDown-Copy.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-UpDown-Copy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AutoHighLight.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AutoHighLight.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSDN-AutoReply-AutoPager.js" beforeDir="false" afterPath="$PROJECT_DIR$/CSDN-AutoReply-AutoPager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GreenCloud.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/GreenCloud.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Less4_1_2_fixed.js" beforeDir="false" afterPath="$PROJECT_DIR$/Less4_1_2_fixed.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Movie.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/Movie.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PT.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/PT.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResultCounter.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/ResultCounter.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VideoJumper.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/VideoJumper.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VideoJumper2.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/VideoJumper2.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/YoudaoGW/gwd-AC.js" beforeDir="false" afterPath="$PROJECT_DIR$/YoudaoGW/gwd-AC.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/YoudaoGW/gwd-add.js" beforeDir="false" afterPath="$PROJECT_DIR$/YoudaoGW/gwd-add.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/YoudaoGW/gwd.js" beforeDir="false" afterPath="$PROJECT_DIR$/YoudaoGW/gwd.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/YoudaoGW/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/YoudaoGW/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/YoudaoGW/test2.js" beforeDir="false" afterPath="$PROJECT_DIR$/YoudaoGW/test2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/help.md" beforeDir="false" afterPath="$PROJECT_DIR$/help.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jslib/MVVM.js" beforeDir="false" afterPath="$PROJECT_DIR$/jslib/MVVM.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jslib/TimerCorn.js" beforeDir="false" afterPath="$PROJECT_DIR$/jslib/TimerCorn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/BgAutoFit.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/BgAutoFit.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/HuYanStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/HuYanStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduLiteStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/dogeCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/dogeCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/dogeOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/dogeOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/dogeTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/dogeTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/sogouCommonStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouCommonStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/sogouOnePageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouOnePageStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/sogoukey.html" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogoukey.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/sogoukey.php" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogoukey.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notepad/Notepad.php" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/Notepad.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notepad/morton2XYZ.html" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/morton2XYZ.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notepad/notepad.css" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/notepad.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notepad/notepad2.css" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/notepad2.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/select2_pinyin.js" beforeDir="false" afterPath="$PROJECT_DIR$/select2_pinyin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shell/acssl.png" beforeDir="false" afterPath="$PROJECT_DIR$/shell/acssl.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shell/actcp.sh" beforeDir="false" afterPath="$PROJECT_DIR$/shell/actcp.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shell/qb_auto_rclone.sh" beforeDir="false" afterPath="$PROJECT_DIR$/shell/qb_auto_rclone.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shell/tmp.sh" beforeDir="false" afterPath="$PROJECT_DIR$/shell/tmp.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/AC-UpDown-Copy.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/temp/AC-UpDown-Copy.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/SearchBlock.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/temp/SearchBlock.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/win0168.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/temp/win0168.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test2.js" beforeDir="false" afterPath="$PROJECT_DIR$/test2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/youdaoGWZS.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/youdaoGWZS.user.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

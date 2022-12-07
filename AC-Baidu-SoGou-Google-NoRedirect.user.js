@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.03
+// @version    26.04
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -43,8 +43,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2022, AC
-// @lastmodified  2022-08-22
+// @lastmodified  2022-12-07
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2022.12-07-V26.04 修复必应错位问题；优化谷歌双列动画问题
 // @note    2022.08-23-V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见
 // @note    2022.08-23-V26.02 加快代码执行速度；减少动画撕裂；替换CDN的md5库
 // @note    2022.08-22-V26.01 因甲癌手术和公司事务停更了2个月，目前补上，推荐更新。 1.修复百度加载缓慢的问题；2.修复谷歌样式加载顺序异常的问题；3.整体优化样式加载时间，更流畅了
@@ -77,15 +78,15 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.03
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.02
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.02
-// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.01
-// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.01
-// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.01
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.03
-// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.01
-// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.01
+// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.04
+// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.04
+// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.04
+// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.04
+// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.04
+// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.04
+// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.04
+// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.04
+// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.04
 // @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.01
 // @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=26.01
 // @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=26.01
@@ -2315,32 +2316,7 @@ body[google] {
                     document.body.removeAttribute("news");
                   }
                 }
-                // 谷歌 + 多列模式
-                if (curSite.SiteTypeID === SiteType.GOOGLE && CONST.useItem.AdsStyleMode >= 3) {
-                  let nodeList = document.querySelectorAll(".srg, #rso, #rso>div")
-
-                  // 对于这些块，都判定一下结构，如果子节点中div数量不足2个的，那么丢弃grid布局
-                  if (nodeList.length > 0) {
-                    nodeList.forEach((node) => {
-                      const children = node.childNodes
-                      let childDivCount = 0
-                      for (const child of children) {
-                        if (child.tagName.toUpperCase() === 'DIV') childDivCount++
-                      }
-                      if (childDivCount >= 2) {
-                        node.style.display !== 'grid' ? node.style.display = 'grid' : ''
-                      } else {
-                        node.style.display !== 'unset' ? node.style.display = 'unset' : ''
-                      }
-                    })
-                  }
-
-                  // 特殊元素一行处理
-                  document.querySelectorAll("#rso>div:not(.g)>div[jsmodel]").forEach(one => {
-                    one.parentNode.style.display = "unset"
-                  })
-                  CONST.flushNode.insert(await create_CSS_Node('#rso>div{display: grid;}', "AC-GoogleGridDelta-Style"))
-                }
+                
               } catch (e) {
                 console.error(e)
               }
@@ -2358,7 +2334,7 @@ body[google] {
             domain = (domain ? "domain=" + domain : "") + ";";
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
             let expires = "expires=" + d.toUTCString();
-            document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/";
+            document.cookie = cname + "=" + cvalue + "; " + domain + expires + ";path=/;SameSite=None;Secure";
           } catch (e) {
           }
         }
@@ -3585,6 +3561,34 @@ body[google] {
               "AC-FourPageExStyle");
             this.flushDom.insert(node2, 'head')
           },
+          // 谷歌 + 多列模式：MARK 这个需要更高的运行频率
+          googleTwoLineChange: async function() {
+            if (curSite.SiteTypeID === SiteType.GOOGLE && CONST.useItem.AdsStyleMode >= 3) {
+              let nodeList = document.querySelectorAll(".srg, #rso, #rso>div")
+
+              // 对于这些块，都判定一下结构，如果子节点中div数量不足2个的，那么丢弃grid布局
+              if (nodeList.length > 0) {
+                nodeList.forEach((node) => {
+                  const children = node.childNodes
+                  let childDivCount = 0
+                  for (const child of children) {
+                    if (child.tagName.toUpperCase() === 'DIV') childDivCount++
+                  }
+                  if (childDivCount >= 2) {
+                    node.style.display !== 'grid' ? node.style.display = 'grid' : ''
+                  } else {
+                    node.style.display !== 'unset' ? node.style.display = 'unset' : ''
+                  }
+                })
+              }
+
+              // 特殊元素一行处理
+              document.querySelectorAll("#rso>div:not(.g)>div[jsmodel]").forEach(one => {
+                one.parentNode.style.display = "unset"
+              })
+              CONST.flushNode.insert(await create_CSS_Node('#rso>div{display: grid;}', "AC-GoogleGridDelta-Style"))
+            }
+          },
           loadPlainToCSS: function () {
             for (let i = 0; i < document.childNodes.length; i++) {
               let curNode = document.childNodes[i];
@@ -3660,6 +3664,10 @@ body[google] {
                 }
               })
               this.flushDom.flush()
+              // flush完成之后，等一等变更，渲染差不多之后再刷新
+              setTimeout(async () => {
+                await this.googleTwoLineChange()
+              }, 600)
             }
             this.loadPlainToCSS();
             if (curSite.SiteTypeID !== SiteType.BAIDU && curSite.SiteTypeID !== SiteType.BAIDU_XUESHU && curSite.SiteTypeID !== SiteType.GOOGLE && curSite.SiteTypeID !== SiteType.BING && curSite.SiteTypeID !== SiteType.SOGOU && curSite.SiteTypeID !== SiteType.DUCK && curSite.SiteTypeID !== SiteType.DOGE) return;
