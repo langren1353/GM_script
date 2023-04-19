@@ -121,6 +121,10 @@
   let debug = isdebug ? console.log.bind(console) : ()=>{}
   let acCssLoadFlag = false;
 
+  // 判断火狐浏览器
+  let isFirefox = navigator.userAgent.indexOf("Firefox") > 0;
+  let googleBlockType = isFirefox ? "#rso a[href]" : "#rso a[ping]";
+
   let inExtMode = typeof (isExtension) !== "undefined";
   let inGMMode = typeof (GM_info.scriptHandler) !== "undefined"; // = "Greasemonkey" || "Tampermonkey" || "ViolentMonkey"
   // inExtMode & inGMMode
@@ -567,7 +571,7 @@ body[google] {
         FaviconType: ".iUh30",
         FaviconAddTo: "h3",
         CounterType: "#rso .g h3,._yE>div[class~=_kk] h3",
-        BlockType: "#rso a[ping]",
+        BlockType: googleBlockType,
         pager: {
           nextLink: "id('pnnext')|id('navbar navcnt nav')//td[span]/following-sibling::td[1]/a|id('nn')/parent::a",
           pageElement: "id('rso')|id('center_col')/style[contains(.,'relative')][id('rso')]",
