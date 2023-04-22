@@ -2868,6 +2868,7 @@ body[google] {
               let one = resultNodes[i];
               one.setAttribute("onmousedown", ""); // 谷歌去重定向干扰
               one.setAttribute("target", "_blank"); // 谷歌链接新标签打开
+              one.setAttribute("data-jsarwt", "0"); // Firefox谷歌去重定向干扰
             }
           } catch (e) {
             console.log(e);
