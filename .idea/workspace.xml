@@ -28,7 +28,27 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="更新 - V26.03" />
+    <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="更新 - V26.03">
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023_6_2_17_12_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023_6_2_17_12_[Changes]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023_6_2_17_12__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023_6_2_17_12__Changes_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/.htaccess" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/404.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/HuYanStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/HuYanStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduLiteStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notepad/Notepad2.js" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/Notepad2.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,6 +93,10 @@
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="true" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/newcss/baiduCommonStyle.less" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="JsBowerSettings">
     <node-interpreter value="project" />
     <bower-package value="" />
@@ -101,9 +125,9 @@
     &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/GitHome/GM_script/newcss&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/osk/Desktop/mcg-helper-master&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Stylus&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -120,15 +144,19 @@
       <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
     </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.test.html">
+  <component name="RunManager" selected="Node.js.Notepad2.js">
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/newcss/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
     <configuration name="test.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/test.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
+    <configuration name="Notepad2.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/notepad/Notepad2.js" working-dir="$PROJECT_DIR$/notepad">
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Node.js.Notepad2.js" />
         <item itemvalue="JavaScript Debug.test.html" />
         <item itemvalue="JavaScript Debug.index.html" />
       </list>

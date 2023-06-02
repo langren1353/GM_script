@@ -3,7 +3,7 @@
 
 ## 当前版本
 
-> V26.01 推荐更新，优化百度、谷歌等页面样式效果；优化页面载入速度减少卡顿
+> V26.04 推荐更新，优化百度、谷歌等页面样式效果；优化页面载入速度减少卡顿
 
 ### 使用必读
 
@@ -12,7 +12,7 @@
 ### 安装地址
 [安装地址1](https://greasyfork.org/zh-CN/scripts/14178)
 
-[安装地址2](https://openuserjs.org/scripts/inDarkness/AC-baidu%E9%87%8D%E5%AE%9A%E5%90%91%E4%BC%98%E5%8C%96%E7%99%BE%E5%BA%A6%E6%90%9C%E7%8B%97%E8%B0%B7%E6%AD%8C%E6%90%9C%E7%B4%A2_%E5%8E%BB%E5%B9%BF%E5%91%8A_favicon_%E5%8F%8C%E5%88%97)
+[安装地址2](https://openuserjs.org/scripts/inDarkness/AC-baidu-%E9%87%8D%E5%AE%9A%E5%90%91%E4%BC%98%E5%8C%96%E7%99%BE%E5%BA%A6%E6%90%9C%E7%8B%97%E8%B0%B7%E6%AD%8C%E5%BF%85%E5%BA%94%E6%90%9C%E7%B4%A2_favicon_%E5%8F%8C%E5%88%97)
 
 ### 插件功能
 

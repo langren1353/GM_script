@@ -1,0 +1,804 @@
+Index: newcss/googleTwoPageStyle.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/newcss/googleTwoPageStyle.less b/newcss/googleTwoPageStyle.less
+--- a/newcss/googleTwoPageStyle.less	
++++ b/newcss/googleTwoPageStyle.less	
+@@ -1,16 +1,12 @@
+ /**Store GoogleTwoPageStyle**/
+-#search #rso {
++div[two-father] {
+   position: relative;
+   float: unset;
+   width: unset;
+   min-width: 800px;
+ }
+ 
+-#rso .jUmkFb:hover {
+-  margin-bottom: 30px;
+-}
+-
+-#rso .g, .vk_c {
++div[two-child] {
+   width: 100% !important;
+   height: 100%;
+   overflow: hidden;
+@@ -60,7 +56,7 @@
+   margin-left: unset !important;
+ }
+ 
+-.srg, #rso, #kp-wp-tab-overview {
++div[two-father], #kp-wp-tab-overview {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+   grid-template-areas: "xmain xmain";
+@@ -70,7 +66,8 @@
+   width: 100%;
+ }
+ 
+-#rso > .g ~ div:not(.g) {
++#rso > .g ~ div:not(.g),
++#rcnt #botstuff > .g ~ div:not(.g) {
+   margin-bottom: 10px;
+ }
+ 
+Index: newcss/googleOnePageStyle.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/newcss/googleOnePageStyle.less b/newcss/googleOnePageStyle.less
+--- a/newcss/googleOnePageStyle.less	
++++ b/newcss/googleOnePageStyle.less	
+@@ -1,5 +1,5 @@
+ /**Store GoogleTwoPageStyle**/
+-#search #rso {
++div[two-father] {
+   position: relative;
+   float: unset;
+   width: 800px;
+@@ -14,7 +14,7 @@
+   margin-left: 20px;
+ }
+ 
+-#rso .g {
++div[two-child] {
+   width: 100% !important;
+   height: 100%;
+   overflow: hidden;
+@@ -105,7 +105,7 @@
+   width: calc(36.3vw + 525px);
+   transition: all 1.2s ease-in-out;
+   animation-name: ani_hideToShow;
+-  animation-duration: 0.6s;
++  animation-duration: 0.2s;
+   animation-timing-function: ease;
+ }
+ 
+Index: newcss/googleCommonStyle.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/newcss/googleCommonStyle.less b/newcss/googleCommonStyle.less
+--- a/newcss/googleCommonStyle.less	
++++ b/newcss/googleCommonStyle.less	
+@@ -103,170 +103,174 @@
+ }
+ 
+ /* SearchItmes Bottom to Top ani */
+-#search #rso {
++div[two-father] {
+   animation-name: ani_topTobuttom;
+   animation-duration: .3s;
+   animation-timing-function: ease;
+   width: 800px;
+   align-items: stretch;
+   justify-items: stretch;
+-}
+ 
+-/* SearchBar Left to Right ani */
+-.srp form {
+-  animation-name: ani_leftToright;
+-  animation-duration: .3s;
+-  animation-timing-function: ease-out;
+-}
+-
+-#rso .jUmkFb:hover {
+-  margin: 0 auto;
+-  border-left: unset;
+-  padding: 0px 20px 15px;
+-  margin-bottom: 40px;
+-}
++  .jUmkFb:hover {
++    margin: 0 auto;
++    border-left: unset;
++    padding: 0px 20px 15px;
++    margin-bottom: 40px;
++  }
+ 
+-#rs, #rso .g {
+-  width: 100% !important;
+-  padding: 0px 20px 15px;
+-  margin-top: 0px;
+-  margin-bottom: 40px;
+-  border-radius: 5px;
+-  background-color: #fff;
+-  box-sizing: border-box;
+-  border: 1px solid rgba(0, 0, 0, 0.1);
+-  transition: all 0.25s cubic-bezier(.23, 1, .32, 1) 0s;
++  div[two-child]{
++    width: 100% !important;
++    padding: 0px 20px 15px;
++    margin-top: 0px;
++    margin-bottom: 40px;
++    border-radius: 5px;
++    background-color: #fff;
++    box-sizing: border-box;
++    border: 1px solid rgba(0, 0, 0, 0.1);
++    transition: all 0.25s cubic-bezier(.23, 1, .32, 1) 0s;
+ 
+-  > div{
+-    margin-top: 10px;
+-  }
+-}
++    a{
++      color: #3476d2;
++
++      h3 {
++        position: relative;
++        font-weight: bold;
++
++        &:after {
++          content: "";
++          position: absolute;
++          border-bottom: 2px solid #3476d2;
++          bottom: -3px;
++          left: 100%;
++          width: 0;
++          transition: width 350ms, left 350ms;
++        }
+ 
+-#rso > .g ~ div:not(.g) {
+-  width: 100%;
+-  overflow: hidden;
+-}
++        &:hover:after {
++          left: 0;
++          width: 100%;
++          transition: width 350ms;
++        }
++      }
++
++      &:visited {
++        color: #660099;
++      }
++    }
++    
++    & > div{
++      margin-top: 10px;
++    }
+ 
+-#rs, #rso .g div.rc .s {
+-  max-width: unset;
+-}
++    div.rc .s {
++      max-width: unset;
++    }
+ 
+-#rso .g:hover {
+-  border: 1px solid rgba(0, 0, 0, 0.3);
+-  box-shadow: 0 0 1px grey;
+-  -webkit-box-shadow: 0 0 1px grey;
+-  -moz-box-shadow: 0 0 1px gray;
+-}
+-
+-#rso .g[tpl='soft'] .op-soft-title,
+-#rso .g div.r {
+-  margin: 0px -20px 10px -20px;
+-  padding: 8px 20px 5px;
+-  border-radius: 5px 5px 0px 0px;
+-}
++    div.r {
++      margin: 0px -20px 10px -20px;
++      padding: 8px 20px 5px;
++      border-radius: 5px 5px 0px 0px;
++    }
++    
++    &[tpl='soft'] .op-soft-title{
++      margin: 0px -20px 10px -20px;
++      padding: 8px 20px 5px;
++      border-radius: 5px 5px 0px 0px;
++    }
++    
++    &:hover {
++      border: 1px solid rgba(0, 0, 0, 0.3);
++      box-shadow: 0 0 1px grey;
++      -webkit-box-shadow: 0 0 1px grey;
++      -moz-box-shadow: 0 0 1px gray;
++    }
++    
++  }
+ 
+-/* Items - Color */
+-#rso .f13 a,
+-#rso .f13 em,
+-#rso .c-span18 a,
+-#rso .subLink_factory a,
+-#rso .c-tabs-content a,
+-#rso .op_offical_weibo_content a,
+-#rso .op_offical_weibo_pz a,
+-#rso .op_tieba2_tablinks_container a,
+-#rso .op-tieba-general-right,
+-#rso .op_dq01_title,
+-#rso .op_dq01_table a,
+-#rso .op_dq01_morelink a,
+-#rso .op-tieba-general-mainpl a,
+-#rso .op-se-listen-recommend,
+-#rso .c-offset > div a {
+-  text-decoration: none;
+-  color: #3476d2;
++  .f13 a,
++  .f13 em,
++  .c-span18 a,
++  .subLink_factory a,
++  .c-tabs-content a,
++  .op_offical_weibo_content a,
++  .op_offical_weibo_pz a,
++  .op_tieba2_tablinks_container a,
++  .op-tieba-general-right,
++  .op_dq01_title,
++  .op_dq01_table a,
++  .op_dq01_morelink a,
++  .op-tieba-general-mainpl a,
++  .op-se-listen-recommend,
++  .c-offset > div a {
++    text-decoration: none;
++    color: #3476d2;
+ 
+-  &:hover {
+-    text-decoration: underline !important;
+-  }
+-}
++    &:hover {
++      text-decoration: underline !important;
++    }
++  }
+ 
+-#rso .f13 a {
+-  color: #008000;
+-}
++  .f13 a {
++    color: #008000;
++  }
+ 
+-/* Items - Adj */
+-
+-#rso .c-span18, #rso .c-span24 {
+-  width: 100%;
+-  min-width: unset;
+-}
+-
+-#rso .c-border {
+-  width: auto;
+-  border: none;
+-  border-bottom-color: transparent;
+-  border-right-color: transparent;
+-  box-shadow: 0px 0px 0px transparent;
+-  -webkit-box-shadow: 0px 0px 0px transparent;
+-  -moz-box-shadow: 0px 0px 0px transparent;
+-  -o-box-shadow: 0px 0px 0px transparent;
+-}
++  .c-span18,
++  .c-span24 {
++    width: 100%;
++    min-width: unset;
++  }
++  
++  .c-border {
++    width: auto;
++    border: none;
++    border-bottom-color: transparent;
++    border-right-color: transparent;
++    box-shadow: 0px 0px 0px transparent;
++    -webkit-box-shadow: 0px 0px 0px transparent;
++    -moz-box-shadow: 0px 0px 0px transparent;
++    -o-box-shadow: 0px 0px 0px transparent;
++  }
+ 
+-/* Img */
++  /* Img */
+ 
+-#rso .se_com_irregular_gallery ul li,
+-#rso .op_jingyan_list,
+-#rso .g .op-img-address-link-type {
+-  display: inline-block;
+-  margin-left: 10px;
+-}
++  .se_com_irregular_gallery ul li,
++  .op_jingyan_list,
++  .g .op-img-address-link-type {
++    display: inline-block;
++    margin-left: 10px;
++  }
+ 
+-#rso .g a {
+-  color: #3476d2;
+-
+-  h3 {
++  .op-soft-title a,
++  .g div.r > a {
+     position: relative;
+-    font-weight: bold;
+ 
+-    &:after {
+-      content: "";
+-      position: absolute;
+-      border-bottom: 2px solid #3476d2;
+-      bottom: -3px;
+-      left: 100%;
+-      width: 0;
+-      transition: width 350ms, left 350ms;
++    em {
++      text-decoration: none;
+     }
+-
+-    &:hover:after {
+-      left: 0;
+-      width: 100%;
+-      transition: width 350ms;
+-    }
++  }
++  
++  & > .g ~ div:not(.g) {
++    width: 100%;
++    overflow: hidden;
+   }
+-
+-  &:visited {
+-    color: #660099;
+-  }
+-}
+-
+-#rso .op-soft-title a,
+-#rso .g div.r > a {
+-  position: relative;
+-
+-  em {
+-    text-decoration: none;
+-  }
+-}
+ 
+-/* page nums */
+-#rso div.g:not([class]) {
+-  margin-left: 18px;
+-  margin-right: 18px;
+-}
++  /* page nums */
++  div.g:not([class]) {
++    margin-left: 18px;
++    margin-right: 18px;
++  }
+ 
+-#rso .g .exp-outline {
+-  display: none;
++  .g .exp-outline {
++    display: none;
++  }
+ }
++
++/* SearchBar Left to Right ani */
++.srp form {
++  animation-name: ani_leftToright;
++  animation-duration: .3s;
++  animation-timing-function: ease-out;
++}
+ 
+ #res .g .ts {
+   max-width: unset;
+@@ -310,6 +314,11 @@
+   border-radius: 10px 10px 0px 0px;
+ }
+ 
++/*deal with cite too long and title too short*/
++#rso .g .r > a > div {
++  width: 35rem;
++}
++
+ #rso .g .card-section, #center_col .kp-blk {
+   width: 100% !important;
+ }
+@@ -345,10 +354,6 @@
+   display: inline-block;
+ }
+ 
+-/*deal with cite too long and title too short*/
+-#rso .g .r > a > div {
+-  width: 35rem;
+-}
+ 
+ div.rc[ac-needhide] {
+   margin-top: 5px;
+@@ -376,6 +381,10 @@
+   margin-top: -18px;
+ }
+ 
++.minidiv .logo{
++  top: 0px;
++}
++
+ body[google] .A8SBwf {
+   max-width: 692px;
+   width: unset;
+Index: newcss/HuYanStyle.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/newcss/HuYanStyle.less b/newcss/HuYanStyle.less
+--- a/newcss/HuYanStyle.less	
++++ b/newcss/HuYanStyle.less	
+@@ -24,9 +24,9 @@
+   background-color: #CCCCCC !important;
+ }
+ 
+-#wrapper #content_left .result h3[class~='t'],
+-#wrapper #content_left .result-op h3[class~='t'],
+-#wrapper #content_left .c-container h3[class~='t'],
++#wrapper #content_left .result h3[class~='c-title'],
++#wrapper #content_left .result-op h3[class~='c-title'],
++#wrapper #content_left .c-container h3[class~='c-title'],
+ #wrapper #rs .tt {
+   background-color: #BBBBBB;
+ }
+Index: newcss/baiduOnePageStyle.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/newcss/baiduOnePageStyle.less b/newcss/baiduOnePageStyle.less
+--- a/newcss/baiduOnePageStyle.less	
++++ b/newcss/baiduOnePageStyle.less	
+@@ -216,7 +216,8 @@
+       .s_tab_inner{
+         display: flex;
+         justify-content: space-evenly;
+-        padding-left: unset;
++        width: 130%;
++        margin-left: -200px;
+         
+         > * {
+           margin-right: 0;
+Index: newcss/baiduLiteStyle.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/newcss/baiduLiteStyle.less b/newcss/baiduLiteStyle.less
+--- a/newcss/baiduLiteStyle.less	
++++ b/newcss/baiduLiteStyle.less	
+@@ -92,6 +92,10 @@
+ .wrapper_new.wrapper_s #form .bdsug-new{width: 93%;}
+ #u .pf{background-repeat:no-repeat;background-position:center;font-size:0;padding:14px;opacity:.8;-moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease;padding-top:18px;padding-bottom:10px;}
+ #u .pf:hover{opacity:1; -moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease}
++body .wrapper_new #u>a{
++    line-height: 16px;
++    margin-top: 6px !important;
++}
+ .wrapper_new #u>a.pf{color:rgba(0,0,0,0); margin: 4px 0 0 24px;}
+ .wrapper_new #u>a.pf:hover{color:rgba(0,0,0,0)}
+ .pf .c-icon{display:none!important}
+@@ -139,12 +143,22 @@
+ .s-user-set-menu{padding-top:0;margin-top:36px;border-radius:2px!important}
+ .s-user-set-menu a{padding-left:25px;-moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease}
+ .s-user-set-menu a:hover{-moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease}
+-#user{text-decoration:none!important;margin-top:30px;margin-left:5px;border:none;padding-left:10px;padding-right:10px;border-radius:16px;margin-right:-3px;height:23px;padding-top:8px;-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;animation-fill-mode:both;animation-name:bounceInRight;-webkit-animation-name:bounceInRight}
++#user{text-decoration:none!important;margin-top:30px;margin-left:5px;border:none;padding-left:10px;padding-right:10px;margin-right:-3px;height:23px;-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;animation-fill-mode:both;animation-name:bounceInRight;-webkit-animation-name:bounceInRight}
+ .usermenu{border:none!important;box-shadow:rgba(0,0,0,.156863) 0 3px 10px,rgba(0,0,0,.227451) 0 3px 10px!important;-webkit-box-shadow:rgba(0,0,0,.156863) 0 3px 10px,rgba(0,0,0,.227451) 0 3px 10px!important;width:83px;border-radius:2px!important;top:35px!important;margin: 0 auto;}
+ .username a{-moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease;border-radius:2px}
+ .username a:hover{background:#3476d2!important;-moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease}
+ .username a:active{background:#3476d2!important;-moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease}
+ #user .c-icon{display:none}
++body .wrapper_new #u .username{
++    height: 35px;
++    margin-top: 10px;
++    padding-top: 6px;
++    border-radius: 20px;
++    
++    .s-top-username{
++        margin-top: 3px;
++    }
++}
+ #imsg{background-repeat:no-repeat;background-position:center;font-size:0;padding:14px;opacity:.8;-moz-transition:all .3s ease;-webkit-transition:all .3s ease;-o-transition:all .3s ease;z-index:0;padding-top:25px;padding-bottom:21px}
+ #imsg:hover{opacity:1}
+ .head_wrapper #bds-message-wrapper{top:64px}
+Index: newcss/bingCommonStyle.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/newcss/bingCommonStyle.less b/newcss/bingCommonStyle.less
+--- a/newcss/bingCommonStyle.less	
++++ b/newcss/bingCommonStyle.less	
+@@ -172,3 +172,7 @@
+ .AC.sp-separator {
+   margin-top: -15px;
+ }
++
++body {
++  --bminwidth: 600px !important;
++}
+Index: newcss/baiduTwoPageStyle.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/newcss/baiduTwoPageStyle.less b/newcss/baiduTwoPageStyle.less
+--- a/newcss/baiduTwoPageStyle.less	
++++ b/newcss/baiduTwoPageStyle.less	
+@@ -176,10 +176,6 @@
+       right: 95px;
+     }
+   }
+-  
+-  #s_tab.s_tab .s_tab_inner {
+-    width: 900px;
+-  }
+ 
+   form.fm .s_ipt_wr.bg {
+     min-width: 900px
+@@ -190,5 +186,13 @@
+     #container.sam_newgrid {
+       padding-left: 158px;
+     }
++
++    #wrapper #s_tab.s_tab {
++      
++      .s_tab_inner {
++        width: 900px;
++        padding-left: 100px;
++      }
++    }
+   }
+ }
+Index: notepad/Notepad2.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/notepad/Notepad2.js b/notepad/Notepad2.js
+--- a/notepad/Notepad2.js	
++++ b/notepad/Notepad2.js	
+@@ -1,0 +1,38 @@
++function findPosibleTwoLine() {
++  function checkOne(element) {
++    if(!element.getAttribute('two-check')) {
++      element.setAttribute('two-check', 1)
++    } else {
++      return false
++    }
++    
++    if(element.childNodes.length <= 2) return false
++    const childNodeClassNameList = [...element.childNodes].map(one => one.className).filter(one => one && one !== '')
++    const childNodeClassNameSet = new Set(childNodeClassNameList)
++    tf = childNodeClassNameSet.size !== childNodeClassNameList.length
++    if(tf) {
++      // debugger
++    }
++    return tf
++  }
++  
++  const gList = document.querySelectorAll(".g")
++  const possibleList = []
++  for(const perG of gList) {
++    let curIndex = 5
++    let curNode = perG.parentNode
++    let res
++    
++    while(curIndex-- > 0) {
++      res = checkOne(curNode)
++      if(res) {
++        possibleList.push(curNode)
++        break
++      }
++      curNode = curNode.parentNode
++    }
++  }
++  console.log(possibleList)
++  return possibleList
++}
++findPosibleTwoLine()
+Index: newcss/baiduCommonStyle.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/newcss/baiduCommonStyle.less b/newcss/baiduCommonStyle.less
+--- a/newcss/baiduCommonStyle.less	
++++ b/newcss/baiduCommonStyle.less	
+@@ -39,7 +39,7 @@
+ 
+ #wrapper #s_tab {
+   border-bottom: #e0e0e0 1px solid;
+-  background-color: #f8f8f8;
++  background-color: unset;
+ }
+ 
+ body #head {
+@@ -146,8 +146,8 @@
+ }
+ 
+ #wrapper #content_left > .result[tpl='soft'] .op-soft-title,
+-#wrapper #content_left > .result h3[class~='t'],
+-#wrapper #content_left > .c-container h3[class~='t'] {
++#wrapper #content_left > .result h3[class~='c-title'],
++#wrapper #content_left > .c-container h3[class~='c-title'] {
+   background-color: #f8f8f8;
+   margin: 0px -8px 10px -20px;
+   padding: 8px 20px 5px;
+@@ -214,7 +214,7 @@
+   .result-op,
+   & > .c-container {
+ 
+-    h3[class~='t'] {
++    h3[class~='c-title'] {
+       font-weight: bold;
+       font-size: medium;
+     }
+@@ -351,8 +351,13 @@
+   width: 94%;
+ }
+ 
+-#container.sam_newgrid .c-container .t .AC-faviconT ~ a, #container.sam_newgrid .c-container .t .c-icon ~ a {
+-  display: inline
++#container.sam_newgrid .c-container .t:not([class*='doc-title']) {
++  margin-top: 18px;
++
++  .AC-faviconT ~ a,
++  .c-icon ~ a{
++    display: inline
++  }
+ }
+ 
+ body #wrapper #content_left a[href*='official'] {
+@@ -373,7 +378,7 @@
+ }
+ 
+ .c-container .c-result-content {
+-  padding-top: 20px;
++  //padding-top: 20px;
+ }
+ 
+ #wrapper #content_left > .c-container article {
+@@ -408,9 +413,18 @@
+     opacity: 1;
+   }
+ }
++.result-molecule {
++  #searchTag{
++    background: unset;
+ 
+-.result-molecule #page > div {
+-  width: unset;
++    &.tag-fixed{
++      left: 0;
++    }
++  }
++  
++  #page > div {
++    width: unset;
++  }
+ }
+ 
+ #wrapper #content_left > .c-container[tpl='recommend_list'] {
+@@ -449,6 +463,7 @@
+   body[baidu] {
+     .wrapper_new #s_tab.s_tab .s_tab_inner{
+       align-items: center;
++      padding-left: 200px;
+       
+       & > *:after {
+         display: none; // 下划线 none掉
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+--- a/README.md	
++++ b/README.md	
+@@ -3,7 +3,7 @@
+ 
+ ## 当前版本
+ 
+-> V26.01 推荐更新，优化百度、谷歌等页面样式效果；优化页面载入速度减少卡顿
++> V26.04 推荐更新，优化百度、谷歌等页面样式效果；优化页面载入速度减少卡顿
+ 
+ ### 使用必读
+ 
+@@ -12,7 +12,7 @@
+ ### 安装地址
+ [安装地址1](https://greasyfork.org/zh-CN/scripts/14178)
+ 
+-[安装地址2](https://openuserjs.org/scripts/inDarkness/AC-baidu%E9%87%8D%E5%AE%9A%E5%90%91%E4%BC%98%E5%8C%96%E7%99%BE%E5%BA%A6%E6%90%9C%E7%8B%97%E8%B0%B7%E6%AD%8C%E6%90%9C%E7%B4%A2_%E5%8E%BB%E5%B9%BF%E5%91%8A_favicon_%E5%8F%8C%E5%88%97)
++[安装地址2](https://openuserjs.org/scripts/inDarkness/AC-baidu-%E9%87%8D%E5%AE%9A%E5%90%91%E4%BC%98%E5%8C%96%E7%99%BE%E5%BA%A6%E6%90%9C%E7%8B%97%E8%B0%B7%E6%AD%8C%E5%BF%85%E5%BA%94%E6%90%9C%E7%B4%A2_favicon_%E5%8F%8C%E5%88%97)
+ 
+ ### 插件功能
+ 
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -28,7 +28,21 @@
+     </select>
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="更新 - V26.03" />
++    <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="更新 - V26.03">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/newcss/HuYanStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/HuYanStyle.less" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/newcss/baiduLiteStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduLiteStyle.less" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.less" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.less" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/notepad/Notepad2.js" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/Notepad2.js" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -72,6 +86,10 @@
+   </component>
+   <component name="GoLibraries">
+     <option name="indexEntireGoPath" value="true" />
++  </component>
++  <component name="HighlightingSettingsPerFile">
++    <setting file="file://$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/newcss/baiduCommonStyle.less" root0="FORCE_HIGHLIGHTING" />
+   </component>
+   <component name="JsBowerSettings">
+     <node-interpreter value="project" />
+@@ -101,9 +119,9 @@
+     &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;D:/GitHome/GM_script/newcss&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/osk/Desktop/mcg-helper-master&quot;,
+     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Stylus&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
+     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+ }</component>
+@@ -120,15 +138,19 @@
+       <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
+     </key>
+   </component>
+-  <component name="RunManager" selected="JavaScript Debug.test.html">
++  <component name="RunManager" selected="Node.js.Notepad2.js">
+     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/newcss/index.html" useBuiltInWebServerPort="true">
+       <method v="2" />
+     </configuration>
+     <configuration name="test.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/test.html" useBuiltInWebServerPort="true">
++      <method v="2" />
++    </configuration>
++    <configuration name="Notepad2.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/notepad/Notepad2.js" working-dir="$PROJECT_DIR$/notepad">
+       <method v="2" />
+     </configuration>
+     <recent_temporary>
+       <list>
++        <item itemvalue="Node.js.Notepad2.js" />
+         <item itemvalue="JavaScript Debug.test.html" />
+         <item itemvalue="JavaScript Debug.index.html" />
+       </list>

@@ -1,16 +1,12 @@
 /**Store GoogleTwoPageStyle**/
-#search #rso {
+div[two-father] {
   position: relative;
   float: unset;
   width: unset;
   min-width: 800px;
 }
 
-#rso .jUmkFb:hover {
-  margin-bottom: 30px;
-}
-
-#rso .g, .vk_c {
+div[two-child] {
   width: 100% !important;
   height: 100%;
   overflow: hidden;
@@ -60,17 +56,19 @@ body #appbar, body .rhscol, body #top_nav, body #fbar {
   margin-left: unset !important;
 }
 
-.srg, #rso, #kp-wp-tab-overview {
+div[two-father], #kp-wp-tab-overview {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
   grid-template-areas: "xmain xmain";
   grid-gap: 20px !important;
+  margin-bottom: 20px;
   justify-items: stretch;
   align-items: stretch;
   width: 100%;
 }
 
-#rso > .g ~ div:not(.g) {
+#rso > .g ~ div:not(.g),
+#rcnt #botstuff > .g ~ div:not(.g) {
   margin-bottom: 10px;
 }
 

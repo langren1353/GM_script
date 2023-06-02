@@ -78,23 +78,23 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   http://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.04
-// @resource  baiduOnePageStyle  http://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.04
-// @resource  baiduTwoPageStyle  http://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.04
-// @resource  googleCommonStyle  http://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.04
-// @resource  googleOnePageStyle http://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.04
-// @resource  googleTwoPageStyle http://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.04
-// @resource  bingCommonStyle    http://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.04
-// @resource  bingOnePageStyle   http://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.04
-// @resource  bingTwoPageStyle   http://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.04
-// @resource  duckCommonStyle    http://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.01
-// @resource  duckOnePageStyle   http://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=26.01
-// @resource  duckTwoPageStyle   http://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=26.01
-// @resource  dogeCommonStyle    http://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.01
-// @resource  dogeOnePageStyle   http://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.01
-// @resource  dogeTwoPageStyle   http://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.01
-// @resource  MainHuYanStyle     http://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.02
-// @resource  BgAutoFit          http://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.03
+// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.04
+// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.04
+// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.04
+// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.04
+// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.04
+// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.04
+// @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.04
+// @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.04
+// @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.04
+// @resource  duckCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.01
+// @resource  duckOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=26.01
+// @resource  duckTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=26.01
+// @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.01
+// @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.01
+// @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.01
+// @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.02
+// @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.03
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
@@ -117,7 +117,7 @@
 // calc(X1(vw) + X2(px)) -> B(px) 使用 http://www.yunsuan.info/matrixcomputations/solvelinearsystems.html 进行计算
 !function () {
   let isdebug = false; // 调试日志用
-  let isLocalDebug = false; // 加载本地资源用
+  let isLocalDebug = true; // 加载本地资源用，调试的时候小心GM的缓存机制
   let debug = isdebug ? console.log.bind(console) : ()=>{}
   let acCssLoadFlag = false;
 
@@ -184,7 +184,7 @@
         debug('长度变化', this.length)
       }
     }
-    
+
     // 如果CSS已经存在了，那么就不再添加了
     _dropMultiCSS(fragment) {
       const newFrag = document.createDocumentFragment();
@@ -197,12 +197,12 @@
     flush() {
       if(this.length > 0) { // 有数据，才进行flush，否则没有必要
         this._removeReload()
-        
+
         // MARK 保证线程安全，将现有数据暂存，然后生成新的节点，避免其他js插入后丢失
         const curBodyFrag = this.fragmentBody
         const curHeadFrag = this.fragmentHead
         const curDomFrag = this.fragmentDOM
-        
+
         this.init()
 
         // 数据清除
@@ -233,7 +233,7 @@
     insert(node, to = 'head', config= {
       isReload: false
     }) {
-      
+
       if (to === 'body') {
         this._singleInsert(node, this.fragmentBody, this.fragmentBody)
       } else if(to === 'head') {
@@ -266,7 +266,7 @@
       }
     })
   }
-  
+
   function aniRemove(node, withAni) {
     if(withAni) {
       node.classList.add('aniDelete')
@@ -277,7 +277,7 @@
       node.remove();
     }
   }
-  
+
   function safeFunction(func, failCb) {
     try {
       func();
@@ -322,7 +322,7 @@
       }
     }, time, true);
   }
-  
+
   (function () {
     debug("程序执行");
     let needDisplayNewFun = true; // 本次更新是否有新功能需要展示
@@ -1182,13 +1182,13 @@ body[google] {
 
         // 预加载GMResource的CSS等
         preLoadGMStyle()
-        
+
         CONST.fsBaidu = FSBaidu();
-        
+
         if (ACConfig.AdsStyleEnable) {
           CONST.fsBaidu.init() // 添加设置项-单双列显示
         }
-        
+
         if(+CONST.useItem.AdsStyleMode > 0) { // 非原始模式，那么可以加载图片
           if(CONST.useItem.defaultBgUrl && CONST.useItem.defaultBgUrl.trim()) {
             changeSiteBackground(CONST.useItem.defaultBgUrl)
@@ -1681,14 +1681,14 @@ body[google] {
                     const preStr = JSON.stringify(preVal)
                     if(curStr === preStr) return
                   }catch (e){}
-                  
+
                   // 需要先删除原有的节点数据
                   while (true) {
                     const { res, node } = checkDocmentHasNode("AC-")
                     if (res) node.remove();
                     else break;
                   }
-                  
+
                   safeRemove("style[class='AC-Style-expand'],style[class='AC-TwoPageExStyle'],style[class='AC-ThreePageExStyle'],style[class='AC-FourPageExStyle'],style[class='AC-style-logo'],style[class='AC-baiduLiteStyle'],style[class*='HuYanStyle-File']");
                   acCssLoadFlag = false;
                   if(ACConfig.AdsStyleEnable) {
@@ -1710,11 +1710,11 @@ body[google] {
             }
           };
           if (typeof (Vue) != "undefined") {
-              if (+Vue.version.charAt(0) === 2) {
-                vueVM = new Vue(options);
-              } else {
-                vueVM = Vue.createApp(options).mount(checkNode);
-              }
+            if (+Vue.version.charAt(0) === 2) {
+              vueVM = new Vue(options);
+            } else {
+              vueVM = Vue.createApp(options).mount(checkNode);
+            }
           } else {
             console.error("Vue 未完成初始化--程序无法有效执行");
           }
@@ -1743,126 +1743,126 @@ body[google] {
           e.stopPropagation();
           var t, r = e.currentTarget;
           const Tween = {
-              Linear: function Linear(e, t, r, n) {
-                return r * e / n + t;
+            Linear: function Linear(e, t, r, n) {
+              return r * e / n + t;
+            },
+            Quad: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r * (e /= n) * e + t;
               },
-              Quad: {
-                easeIn: function easeIn(e, t, r, n) {
-                  return r * (e /= n) * e + t;
-                },
-                easeOut: function easeOut(e, t, r, n) {
-                  return -r * (e /= n) * (e - 2) + t;
-                },
-                easeInOut: function easeInOut(e, t, r, n) {
-                  return (e /= n / 2) < 1 ? r / 2 * e * e + t : -r / 2 * (--e * (e - 2) - 1) + t;
-                }
+              easeOut: function easeOut(e, t, r, n) {
+                return -r * (e /= n) * (e - 2) + t;
               },
-              Cubic: {
-                easeIn: function easeIn(e, t, r, n) {
-                  return r * (e /= n) * e * e + t;
-                },
-                easeOut: function easeOut(e, t, r, n) {
-                  return r * ((e = e / n - 1) * e * e + 1) + t;
-                },
-                easeInOut: function easeInOut(e, t, r, n) {
-                  return (e /= n / 2) < 1 ? r / 2 * e * e * e + t : r / 2 * ((e -= 2) * e * e + 2) + t;
-                }
-              },
-              Quart: {
-                easeIn: function easeIn(e, t, r, n) {
-                  return r * (e /= n) * e * e * e + t;
-                },
-                easeOut: function easeOut(e, t, r, n) {
-                  return -r * ((e = e / n - 1) * e * e * e - 1) + t;
-                },
-                easeInOut: function easeInOut(e, t, r, n) {
-                  return (e /= n / 2) < 1 ? r / 2 * e * e * e * e + t : -r / 2 * ((e -= 2) * e * e * e - 2) + t;
-                }
-              },
-              Quint: {
-                easeIn: function easeIn(e, t, r, n) {
-                  return r * (e /= n) * e * e * e * e + t;
-                },
-                easeOut: function easeOut(e, t, r, n) {
-                  return r * ((e = e / n - 1) * e * e * e * e + 1) + t;
-                },
-                easeInOut: function easeInOut(e, t, r, n) {
-                  return (e /= n / 2) < 1 ? r / 2 * e * e * e * e * e + t : r / 2 * ((e -= 2) * e * e * e * e + 2) + t;
-                }
-              },
-              Sine: {
-                easeIn: function easeIn(e, t, r, n) {
-                  return -r * Math.cos(e / n * (Math.PI / 2)) + r + t;
-                },
-                easeOut: function easeOut(e, t, r, n) {
-                  return r * Math.sin(e / n * (Math.PI / 2)) + t;
-                },
-                easeInOut: function easeInOut(e, t, r, n) {
-                  return -r / 2 * (Math.cos(Math.PI * e / n) - 1) + t;
-                }
-              },
-              Expo: {
-                easeIn: function easeIn(e, t, r, n) {
-                  return 0 == e ? t : r * Math.pow(2, 10 * (e / n - 1)) + t;
-                },
-                easeOut: function easeOut(e, t, r, n) {
-                  return e == n ? t + r : r * (1 - Math.pow(2, -10 * e / n)) + t;
-                },
-                easeInOut: function easeInOut(e, t, r, n) {
-                  return 0 == e ? t : e == n ? t + r : (e /= n / 2) < 1 ? r / 2 * Math.pow(2, 10 * (e - 1)) + t : r / 2 * (2 - Math.pow(2, -10 * --e)) + t;
-                }
-              },
-              Circ: {
-                easeIn: function easeIn(e, t, r, n) {
-                  return -r * (Math.sqrt(1 - (e /= n) * e) - 1) + t;
-                },
-                easeOut: function easeOut(e, t, r, n) {
-                  return r * Math.sqrt(1 - (e = e / n - 1) * e) + t;
-                },
-                easeInOut: function easeInOut(e, t, r, n) {
-                  return (e /= n / 2) < 1 ? -r / 2 * (Math.sqrt(1 - e * e) - 1) + t : r / 2 * (Math.sqrt(1 - (e -= 2) * e) + 1) + t;
-                }
-              },
-              Elastic: {
-                easeIn: function easeIn(e, t, r, n, a, o) {
-                  return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
-                    i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), -a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) + t);
-                  var i;
-                },
-                easeOut: function easeOut(e, t, r, n, a, o) {
-                  return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
-                    i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), a * Math.pow(2, -10 * e) * Math.sin((e * n - i) * (2 * Math.PI) / o) + r + t);
-                  var i;
-                },
-                easeInOut: function easeInOut(e, t, r, n, a, o) {
-                  return 0 == e ? t : 2 == (e /= n / 2) ? t + r : (o || (o = n * (.3 * 1.5)), !a || a < Math.abs(r) ? (a = r,
-                    i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), e < 1 ? a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * -.5 + t : a * Math.pow(2, -10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * .5 + r + t);
-                  var i;
-                }
-              },
-              Back: {
-                easeIn: function easeIn(e, t, r, n, a) {
-                  return null == a && (a = 1.70158), r * (e /= n) * e * ((a + 1) * e - a) + t;
-                },
-                easeOut: function easeOut(e, t, r, n, a) {
-                  return null == a && (a = 1.70158), r * ((e = e / n - 1) * e * ((a + 1) * e + a) + 1) + t;
-                },
-                easeInOut: function easeInOut(e, t, r, n, a) {
-                  return null == a && (a = 1.70158), (e /= n / 2) < 1 ? r / 2 * (e * e * ((1 + (a *= 1.525)) * e - a)) + t : r / 2 * ((e -= 2) * e * ((1 + (a *= 1.525)) * e + a) + 2) + t;
-                }
-              },
-              Bounce: {
-                easeIn: function easeIn(e, t, r, n) {
-                  return r - Tween.Bounce.easeOut(n - e, 0, r, n) + t;
-                },
-                easeOut: function easeOut(e, t, r, n) {
-                  return (e /= n) < 1 / 2.75 ? r * (7.5625 * e * e) + t : e < 2 / 2.75 ? r * (7.5625 * (e -= 1.5 / 2.75) * e + .75) + t : e < 2.5 / 2.75 ? r * (7.5625 * (e -= 2.25 / 2.75) * e + .9375) + t : r * (7.5625 * (e -= 2.625 / 2.75) * e + .984375) + t;
-                },
-                easeInOut: function easeInOut(e, t, r, n) {
-                  return e < n / 2 ? .5 * Tween.Bounce.easeIn(2 * e, 0, r, n) + t : .5 * Tween.Bounce.easeOut(2 * e - n, 0, r, n) + .5 * r + t;
-                }
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? r / 2 * e * e + t : -r / 2 * (--e * (e - 2) - 1) + t;
               }
-            };
+            },
+            Cubic: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r * (e /= n) * e * e + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return r * ((e = e / n - 1) * e * e + 1) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? r / 2 * e * e * e + t : r / 2 * ((e -= 2) * e * e + 2) + t;
+              }
+            },
+            Quart: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r * (e /= n) * e * e * e + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return -r * ((e = e / n - 1) * e * e * e - 1) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? r / 2 * e * e * e * e + t : -r / 2 * ((e -= 2) * e * e * e - 2) + t;
+              }
+            },
+            Quint: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r * (e /= n) * e * e * e * e + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return r * ((e = e / n - 1) * e * e * e * e + 1) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? r / 2 * e * e * e * e * e + t : r / 2 * ((e -= 2) * e * e * e * e + 2) + t;
+              }
+            },
+            Sine: {
+              easeIn: function easeIn(e, t, r, n) {
+                return -r * Math.cos(e / n * (Math.PI / 2)) + r + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return r * Math.sin(e / n * (Math.PI / 2)) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return -r / 2 * (Math.cos(Math.PI * e / n) - 1) + t;
+              }
+            },
+            Expo: {
+              easeIn: function easeIn(e, t, r, n) {
+                return 0 == e ? t : r * Math.pow(2, 10 * (e / n - 1)) + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return e == n ? t + r : r * (1 - Math.pow(2, -10 * e / n)) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return 0 == e ? t : e == n ? t + r : (e /= n / 2) < 1 ? r / 2 * Math.pow(2, 10 * (e - 1)) + t : r / 2 * (2 - Math.pow(2, -10 * --e)) + t;
+              }
+            },
+            Circ: {
+              easeIn: function easeIn(e, t, r, n) {
+                return -r * (Math.sqrt(1 - (e /= n) * e) - 1) + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return r * Math.sqrt(1 - (e = e / n - 1) * e) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return (e /= n / 2) < 1 ? -r / 2 * (Math.sqrt(1 - e * e) - 1) + t : r / 2 * (Math.sqrt(1 - (e -= 2) * e) + 1) + t;
+              }
+            },
+            Elastic: {
+              easeIn: function easeIn(e, t, r, n, a, o) {
+                return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
+                  i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), -a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) + t);
+                var i;
+              },
+              easeOut: function easeOut(e, t, r, n, a, o) {
+                return 0 == e ? t : 1 == (e /= n) ? t + r : (o || (o = .3 * n), !a || a < Math.abs(r) ? (a = r,
+                  i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), a * Math.pow(2, -10 * e) * Math.sin((e * n - i) * (2 * Math.PI) / o) + r + t);
+                var i;
+              },
+              easeInOut: function easeInOut(e, t, r, n, a, o) {
+                return 0 == e ? t : 2 == (e /= n / 2) ? t + r : (o || (o = n * (.3 * 1.5)), !a || a < Math.abs(r) ? (a = r,
+                  i = o / 4) : i = o / (2 * Math.PI) * Math.asin(r / a), e < 1 ? a * Math.pow(2, 10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * -.5 + t : a * Math.pow(2, -10 * (e -= 1)) * Math.sin((e * n - i) * (2 * Math.PI) / o) * .5 + r + t);
+                var i;
+              }
+            },
+            Back: {
+              easeIn: function easeIn(e, t, r, n, a) {
+                return null == a && (a = 1.70158), r * (e /= n) * e * ((a + 1) * e - a) + t;
+              },
+              easeOut: function easeOut(e, t, r, n, a) {
+                return null == a && (a = 1.70158), r * ((e = e / n - 1) * e * ((a + 1) * e + a) + 1) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n, a) {
+                return null == a && (a = 1.70158), (e /= n / 2) < 1 ? r / 2 * (e * e * ((1 + (a *= 1.525)) * e - a)) + t : r / 2 * ((e -= 2) * e * ((1 + (a *= 1.525)) * e + a) + 2) + t;
+              }
+            },
+            Bounce: {
+              easeIn: function easeIn(e, t, r, n) {
+                return r - Tween.Bounce.easeOut(n - e, 0, r, n) + t;
+              },
+              easeOut: function easeOut(e, t, r, n) {
+                return (e /= n) < 1 / 2.75 ? r * (7.5625 * e * e) + t : e < 2 / 2.75 ? r * (7.5625 * (e -= 1.5 / 2.75) * e + .75) + t : e < 2.5 / 2.75 ? r * (7.5625 * (e -= 2.25 / 2.75) * e + .9375) + t : r * (7.5625 * (e -= 2.625 / 2.75) * e + .984375) + t;
+              },
+              easeInOut: function easeInOut(e, t, r, n) {
+                return e < n / 2 ? .5 * Tween.Bounce.easeIn(2 * e, 0, r, n) + t : .5 * Tween.Bounce.easeOut(2 * e - n, 0, r, n) + .5 * r + t;
+              }
+            }
+          };
           const TweenM = ["Linear", "Quad", "Cubic", "Quart", "Quint", "Sine", "Expo", "Circ", "Elastic", "Back", "Bounce"];
           const TweenEase = ["easeIn", "easeOut", "easeInOut"];
           var prefs = {
@@ -2320,12 +2320,12 @@ body[google] {
                     document.body.removeAttribute("news");
                   }
                 }
-                
+
               } catch (e) {
                 console.error(e)
               }
             }
-            
+
           } catch (e) {
             console.log(e);
           }
@@ -2926,7 +2926,7 @@ body[google] {
               if(linkNode.href && (linkNode.href.startsWith('javascript') || linkNode.href.startsWith('#'))) {
                 continue
               }
-              
+
               let linkHref = linkNode.href;
               let len1 = hasDealHrefSet.size;
               hasDealHrefSet.add(linkHref);
@@ -3214,7 +3214,7 @@ body[google] {
             })
           }
         }
-        
+
         async function InsertSettingMenuCSS() {
           /*"自定义"按钮效果*/
           CONST.flushNode.insert(await create_CSS_Node(".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}body[doge] #header{max-width: unset;}body[doge] #myuser{position: absolute;right: 40px;}",
@@ -3260,7 +3260,7 @@ body[google] {
           }
         }
       }(); // 读取个人设置信息
-      
+
       async function create_CSS_Node(css, className = '', initType = "text/css") {
         let cssNode = document.createElement("style");
         if (className) {
@@ -3268,7 +3268,7 @@ body[google] {
           const xclass = '.' + className.split(' ').join('.')
           cssNode.dataset.xclass = xclass
         }
-        
+
         // 针对less进行单独处理
         if(initType.includes('less')) {
           // parseHTML 耗时 没必要
@@ -3279,10 +3279,10 @@ body[google] {
 
         cssNode.setAttribute("type", initType);
         cssNode.appendChild(document.createTextNode(css))
-        
+
         return cssNode
       }
-      
+
       function AC_addStyle(css, className, addToTarget, isReload = false, initType = "text/css") { // 添加CSS代码，不考虑文本载入时间，只执行一次-无论成功与否，带有className
         RAFInterval(async () => {
           /**
@@ -3337,7 +3337,7 @@ body[google] {
         //     node.remove();
         //   }, 400)
         // } else {
-          node.remove();
+        node.remove();
         // }
       }
 
@@ -3388,7 +3388,7 @@ body[google] {
           isReload: true
         })
       }
-      
+
       async function asyncGMHttpRequestGet(url) {
         return new Promise((resolve, reject) => {
           GM_xmlhttpRequest({
@@ -3403,9 +3403,9 @@ body[google] {
               reject(err)
             }
           })
-        }) 
+        })
       }
-      
+
       function FSBaidu() { // thanks for code from 浮生@未歇 @page https://greasyfork.org/zh-TW/scripts/31642
         // debug("初始化FSBAIDU");
 
@@ -3454,7 +3454,7 @@ body[google] {
             // 如果是debug模式。或者是gm模式
             if (isLocalDebug) {
               debug("本地-加载样式：" + insClassName);
-              setUrl = setUrl || "http://debug.baidu.com/" + styleName + ".less";
+              setUrl = setUrl || "http://debug.baidu.com/" + styleName + ".less?t=" + Math.random() * new Date().getTime();
               return await this.importStyle(setUrl, "AC-" + insClassName, useNormalCSS, mustLoad);
             } else {
               debug("加载样式：" + insClassName);
@@ -3472,9 +3472,9 @@ body[google] {
             }
             if (color.indexOf("#") !== 0 || color.length < 7) return;
             const style = GM_getResourceText("MainHuYanStyle")
-            .replace(/#aaa(a*)/igm, color)
-            .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
-            .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
+              .replace(/#aaa(a*)/igm, color)
+              .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
+              .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
             CONST.flushNode.insert(await create_CSS_Node(style, "AC-" + CONST.useItem.name + "HuYanStyle-File"), 'head', {
               isReload: true
             })
@@ -3531,7 +3531,7 @@ body[google] {
             this.flushDom.insert(node, 'DOM')
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-            if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, #rso>div:not(.g), #kp-wp-tab-overview";
+            if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, div[two-father], #rso>div:not(.g), #kp-wp-tab-overview";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
@@ -3544,7 +3544,7 @@ body[google] {
           loadThreePageStyle: async function () {
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-            if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, #rso>div:not(.g), #kp-wp-tab-overview";
+            if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, div[two-father], #rso>div:not(.g), #kp-wp-tab-overview";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
@@ -3557,7 +3557,7 @@ body[google] {
           loadFourPageStyle: async function () {
             let cssHead = "";
             if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) cssHead = "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])";
-            if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, #rso>div:not(.g), #kp-wp-tab-overview";
+            if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, div[two-father], #rso>div:not(.g), #kp-wp-tab-overview";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
@@ -3566,32 +3566,82 @@ body[google] {
               "AC-FourPageExStyle");
             this.flushDom.insert(node2, 'head')
           },
-          // 谷歌 + 多列模式：MARK 这个需要更高的运行频率
-          googleTwoLineChange: async function() {
-            if (curSite.SiteTypeID === SiteType.GOOGLE && CONST.useItem.AdsStyleMode >= 3) {
-              let nodeList = document.querySelectorAll(".srg, #rso, #rso>div")
+          findPosibleTwoLine() {
+            // 通过.g来往上查找
+            // 如果其拥有的子节点的className具有两个以上的相同项，那么认为是grid布局，需要遍历，增加标记位
+            function checkOne(element) {
+              if(!element.getAttribute('two-checked')) {
+                element.setAttribute('two-checked', 'true')
+              } else {
+                return false
+              }
+
+              if(element.children.length <= 2) return false
+              const childNodeClassNameList = [...element.children].map(one => one.className).filter(one => one && one !== '')
+              const childNodeClassNameSet = new Set(childNodeClassNameList)
+              tf = childNodeClassNameSet.size !== childNodeClassNameList.length
+              if(tf) {
+                // debugger
+              }
+              return tf
+            }
+
+            const gList = document.querySelectorAll(".g")
+            const possibleList = []
+            for(const perG of gList) {
+              let curIndex = 5
+              let curNode = perG.parentNode
+              let res
+
+              while(curIndex-- > 0) {
+                res = checkOne(curNode)
+                if(res) {
+                  possibleList.push(curNode)
+                  break
+                }
+                curNode = curNode.parentNode
+              }
+            }
+            // console.log(possibleList)
+            return possibleList
+          },
+          googleFatherChildTag: async function() {
+            if (curSite.SiteTypeID === SiteType.GOOGLE) {
+              let nodeList = this.findPosibleTwoLine()
+              // console.log(nodeList)
 
               // 对于这些块，都判定一下结构，如果子节点中div数量不足2个的，那么丢弃grid布局
               if (nodeList.length > 0) {
                 nodeList.forEach((node) => {
-                  const children = node.childNodes
-                  let childDivCount = 0
-                  for (const child of children) {
-                    if (child.tagName.toUpperCase() === 'DIV') childDivCount++
-                  }
-                  if (childDivCount >= 2) {
-                    node.style.display !== 'grid' ? node.style.display = 'grid' : ''
+                  const divChildren = [...node.children].filter(one => one.tagName.toUpperCase() === 'DIV')
+                  if (divChildren.length >= 2) {
+                    node.setAttribute('two-father', 1)
+                    divChildren.forEach(one => {
+                      // 不显示那些应该隐藏的元素
+                      if(one.innerText.length > 0 || one.children.length > 0) {
+                        one.setAttribute('two-child', 1)
+                      } else {
+                        one.style = 'display:none'
+                      }
+                    })
                   } else {
-                    node.style.display !== 'unset' ? node.style.display = 'unset' : ''
+                    node.removeAttribute('two-father')
+                  }
+
+                  // 两列的时候，增加对应的grid布局
+                  if(CONST.useItem.AdsStyleMode >= 3) {
+                    if (divChildren.length >= 2) {
+                      node.style.display !== 'grid' ? node.style.display = 'grid' : ''
+                    } else {
+                      node.style.display !== 'unset' ? node.style.display = 'unset' : ''
+                    }
                   }
                 })
               }
-
               // 特殊元素一行处理
               document.querySelectorAll("#rso>div:not(.g)>div[jsmodel]").forEach(one => {
                 one.parentNode.style.display = "unset"
               })
-              CONST.flushNode.insert(await create_CSS_Node('#rso>div{display: grid;}', "AC-GoogleGridDelta-Style"))
             }
           },
           loadPlainToCSS: function () {
@@ -3622,6 +3672,10 @@ body[google] {
           ...StyleManger,
           //居中显示 --- 必须是百度和谷歌的搜索结果页面，其他页面不能加载的--已经通过脚本include标签限制了一部分
           centerDisplay: async function () {
+            // flush完成之后，等一等变更，渲染差不多之后再刷新
+            setInterval(() => {
+              this.googleFatherChildTag()
+            }, 600)
             // 如果是百度 && ((地址替换->包含wd关键词[替换之后不等-是百度结果页面]) || 有右边栏-肯定是百度搜索结果页 || value中存在搜索内容) return;
             if (!checkISBaiduMain()) {
               console.log('not good At Baidu')
@@ -3669,10 +3723,6 @@ body[google] {
                 }
               })
               this.flushDom.flush()
-              // flush完成之后，等一等变更，渲染差不多之后再刷新
-              setTimeout(async () => {
-                await this.googleTwoLineChange()
-              }, 600)
             }
             this.loadPlainToCSS();
             if (curSite.SiteTypeID !== SiteType.BAIDU && curSite.SiteTypeID !== SiteType.BAIDU_XUESHU && curSite.SiteTypeID !== SiteType.GOOGLE && curSite.SiteTypeID !== SiteType.BING && curSite.SiteTypeID !== SiteType.SOGOU && curSite.SiteTypeID !== SiteType.DUCK && curSite.SiteTypeID !== SiteType.DOGE) return;
@@ -3682,7 +3732,6 @@ body[google] {
               this.loadCSSToPlain();
               return;
             }
-            
             this.huyanCheckAndLoad()
             this.flushCheckAndLoad()
           },
