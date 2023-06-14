@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.04
+// @version    26.05
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -45,6 +45,7 @@
 // @copyright  2015-2022, AC
 // @lastmodified  2022-12-07
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2023.06-12-V26.05 修复谷歌显示效果的错位问题等
 // @note    2022.12-07-V26.04 修复必应错位问题；优化谷歌双列动画问题
 // @note    2022.08-23-V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见
 // @note    2022.08-23-V26.02 加快代码执行速度；减少动画撕裂；替换CDN的md5库
@@ -78,23 +79,23 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.04
-// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.04
-// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.04
-// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.04
-// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.04
-// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.04
-// @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.04
-// @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.04
-// @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.04
-// @resource  duckCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.01
-// @resource  duckOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=26.01
-// @resource  duckTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=26.01
-// @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.01
-// @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.01
-// @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.01
-// @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.02
-// @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.03
+// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.05
+// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.05
+// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.05
+// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.05
+// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.05
+// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.05
+// @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.05
+// @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.05
+// @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.05
+// @resource  duckCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.05
+// @resource  duckOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=26.05
+// @resource  duckTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=26.05
+// @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.05
+// @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.05
+// @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.05
+// @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.05
+// @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.05
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
@@ -117,7 +118,7 @@
 // calc(X1(vw) + X2(px)) -> B(px) 使用 http://www.yunsuan.info/matrixcomputations/solvelinearsystems.html 进行计算
 !function () {
   let isdebug = false; // 调试日志用
-  let isLocalDebug = true; // 加载本地资源用，调试的时候小心GM的缓存机制
+  let isLocalDebug = false; // 加载本地资源用，调试的时候小心GM的缓存机制
   let debug = isdebug ? console.log.bind(console) : ()=>{}
   let acCssLoadFlag = false;
 
@@ -2999,7 +3000,7 @@ body[google] {
           if (hasDealHrefSet.size > 0 && mainList.length - hasDealHrefSet.size > 0) console.log("丢弃掉", mainList.length - hasDealHrefSet.size, "个重复链接");
         }
 
-        var DealRedirect = function(request, curNodeHref, respText, RegText) {
+        function DealRedirect(request, curNodeHref, respText, RegText) {
           if (respText === null || typeof (respText) === "undefined") return;
           let resultResponseUrl = "";
           if (RegText != null) {
@@ -3049,7 +3050,7 @@ body[google] {
             // 移除右侧栏广告
             safeRemove_xpath("id('content_right')/div[.//a[starts-with(text(), '广告')]]", false, true);
             // 移除标准广告
-            safeRemove_xpath("id('content_left')/div[.//span[contains(text(), '广告')]]", false, true);
+            safeRemove_xpath("id('content_left')/div[.//span[contains(@class, 'tuiguang')][contains(text(), '广告')]]", false, true);
             // 移除标准广告 - 新
             safeRemove_xpath("id('content_left')/div[.//a[text()='广告']]", false, true);
             // 移除右侧栏顶部-底部无用广告
@@ -3383,7 +3384,7 @@ body[google] {
       }
 
       async function changeSiteBackground(imageUrl) { // 这个图片地址可能为：动态图片返回、静态跨域图片
-        const css = `body:before{position: fixed;width: 100%;height: 100%;top: 0;left: 0;content: '';background-image: url('${imageUrl}');background-size: 100% auto;opacity: 0.6;`
+        const css = `body:before{pointer-events: none;position: fixed;width: 100%;height: 100%;top: 0;left: 0;content: '';background-image: url('${imageUrl}');background-size: 100% auto;opacity: 0.6;`
         CONST.flushNode.insert(await create_CSS_Node(css, 'AC-BackGroundImage'), 'head', {
           isReload: true
         })
