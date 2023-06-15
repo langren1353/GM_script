@@ -1,9 +1,11 @@
 # AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.18-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)
 
+QQ群：912951766
+
 ## 当前版本
 
-> V26.04 推荐更新，优化百度、谷歌等页面样式效果；优化页面载入速度减少卡顿
+> V26.05 推荐更新，优化百度、谷歌等页面样式效果；优化页面载入速度减少卡顿
 
 ### 使用必读
 
