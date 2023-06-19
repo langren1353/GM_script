@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.05
+// @version    26.06
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -43,9 +43,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2022, AC
-// @lastmodified  2022-12-07
+// @lastmodified  2023-06-19
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2023.06-12-V26.05 修复谷歌显示效果的错位问题等
+// @note    2023.06-19-V26.06 修复谷歌显示效果的错位问题等，修复谷歌异常白屏问题
 // @note    2022.12-07-V26.04 修复必应错位问题；优化谷歌双列动画问题
 // @note    2022.08-23-V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见
 // @note    2022.08-23-V26.02 加快代码执行速度；减少动画撕裂；替换CDN的md5库
@@ -82,7 +82,7 @@
 // @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.05
 // @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.05
 // @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.05
-// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.05
+// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.06
 // @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.05
 // @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.05
 // @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.05
@@ -94,7 +94,7 @@
 // @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.05
 // @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.05
 // @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.05
-// @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.05
+// @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.06
 // @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.05
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
@@ -3140,8 +3140,6 @@ body[google] {
           }
         }
 
-        var HostReg = new RegExp(/(https?:\/\/)?([^/\s]+)/i);
-
         function getTextHost(sbefore) {
           sbefore = (sbefore && sbefore.trim()).replace(/\s-\s\d{4}-\d{1,2}-\d{1,2}/, "") || "";
           let send;
@@ -3151,7 +3149,7 @@ body[google] {
             sbefore = result[1];
           }
           // 此时sbefore几乎是等于网址了，但是有时候会有多的空格，多的内容，多的前缀http，多余的路径
-          let res = HostReg.exec(sbefore);
+          let res = new RegExp(/(https?:\/\/)?([^/\s]+)/i).exec(sbefore);
           send = (res && res[2].trim()) || "";
           // send = sbefore.replace(/(\/[^/]*|\s*)/, "").replace(/<[^>]*>/g, "").replace(/https?:\/\//g, "").replace(/<\/?strong>/g, "").replace(/<\/?b>/g, "").replace(/<?>?/g, "").replace(/( |\/).*/g, "").replace(/\.\..*/, "");
           if (send === "") return null;
@@ -3591,32 +3589,42 @@ body[google] {
             // 通过.g来往上查找
             // 如果其拥有的子节点的className具有两个以上的相同项，那么认为是grid布局，需要遍历，增加标记位
             function checkOne(element) {
-              if(!element.getAttribute('two-checked')) {
-                element.setAttribute('two-checked', 'true')
-              } else {
-                return false
+              const res = {
+                exist: false,
+                skipFind: false
               }
 
-              if(element.children.length <= 2) return false
+              if(element.children.length <= 2) return res
+
+              // 如果已经有这个参数了，或者当前节点是右侧栏，那么跳过
+              if(element.hasAttribute('two-checked') || element.id.includes("rhs")) {
+                res.skipFind = true
+                return res
+              }
+
+              element.setAttribute('two-checked', 'true')
               const childNodeClassNameList = [...element.children].map(one => one.className).filter(one => one && one !== '')
               const childNodeClassNameSet = new Set(childNodeClassNameList)
-              tf = childNodeClassNameSet.size !== childNodeClassNameList.length
+              const tf = childNodeClassNameSet.size !== childNodeClassNameList.length
               if(tf) {
                 // debugger
+                res.exist = true
               }
-              return tf
+              return res
             }
 
             const gList = document.querySelectorAll(".g")
             const possibleList = []
             for(const perG of gList) {
-              let curIndex = 5
+              let curIndex = 2
               let curNode = perG.parentNode
-              let res
 
               while(curIndex-- > 0) {
-                res = checkOne(curNode)
-                if(res) {
+                const { exist = false, skipFind = false } = checkOne(curNode)
+                if(skipFind) {
+                  break
+                }
+                if(exist) {
                   possibleList.push(curNode)
                   break
                 }
