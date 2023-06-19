@@ -259,11 +259,32 @@
     }
   }
 
-  function safeRemove(cssSelector, withAni = false) {
+  function safeRemoveAd(cssSelectorOrNodeList) {
+    safeRemove(cssSelectorOrNodeList, {
+      withAni: false,
+      isAd: true // 标志是广告
+    })
+  }
+  
+  function safeRemove(cssSelectorOrNodeList, option = {
+    withAni: false, // 带动效的删除
+    isAd: false // true = 有日志，false = 无日志
+  }) {
     safeFunction(() => {
-      let removeNodes = document.querySelectorAll(cssSelector);
-      for (let i = 0; i < removeNodes.length; i++) {
-        aniRemove(removeNodes[i], withAni)
+      const { withAni = false, isAd = false} = option
+      
+      let removeNodes = cssSelectorOrNodeList
+      if(typeof cssSelectorOrNodeList === 'string') {
+        removeNodes = document.querySelectorAll(cssSelectorOrNodeList);
+      }
+      if(removeNodes.length) {
+        if(isAd) {
+          console.log(`删除广告节点：${removeNodes.length}个`)
+          console.table(removeNodes)
+        }
+        for (let i = 0; i < removeNodes.length; i++) {
+          aniRemove(removeNodes[i], withAni)
+        }
       }
     })
   }
@@ -3037,7 +3058,7 @@ body[google] {
               // console.log(e);
             }
           }
-        };
+        }
 
         function removeAD_baidu_sogou() { // 移除网站自有广告
           if (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.MBAIDU) {
@@ -3048,21 +3069,21 @@ body[google] {
             });
 
             // 移除右侧栏广告
-            safeRemove_xpath("id('content_right')/div[.//a[starts-with(text(), '广告')]]", false, true);
+            safeRemove_xpath("id('content_right')/div[.//a[starts-with(text(), '广告')]]");
             // 移除标准广告
-            safeRemove_xpath("id('content_left')/div[.//span[contains(@class, 'tuiguang')][contains(text(), '广告')]]", false, true);
+            safeRemove_xpath("id('content_left')/div[.//span[contains(@class, 'tuiguang') or contains(@class, 'brand')][contains(text(), '广告')]]");
             // 移除标准广告 - 新
-            safeRemove_xpath("id('content_left')/div[.//a[text()='广告']]", false, true);
+            safeRemove_xpath("id('content_left')/div[.//a[text()='广告']]");
             // 移除右侧栏顶部-底部无用广告
-            safeRemove_xpath("id('content_right')/br", false, true);
-            safeRemove_xpath("id('content_right')/div[not(@id)]", false, true);
+            safeRemove_xpath("id('content_right')/br");
+            safeRemove_xpath("id('content_right')/div[not(@id)]");
             // 移除顶部可能出现的 "为您推荐"
-            safeRemove_xpath("id('content_left')//div[contains(@class, '_rs')]", false, true);
+            safeRemove_xpath("id('content_left')//div[contains(@class, '_rs')]");
 
             /****移除Mobile模式上的部分广告****/
-            safeRemove_xpath("id('page-bd')/div[not(contains(@class, 'result'))]", false, true);
-            safeRemove_xpath("id('page-bd')/div[not(@class)]", false, true);
-            safeRemove_xpath("//div[@class='na-like-container']", false, true);
+            safeRemove_xpath("id('page-bd')/div[not(contains(@class, 'result'))]");
+            safeRemove_xpath("id('page-bd')/div[not(@class)]");
+            safeRemove_xpath("//div[@class='na-like-container']");
             // safeFunction(function () {
             //   $('#page-bd #results>div:not([class*="result"])').remove();
             // });
@@ -3070,19 +3091,26 @@ body[google] {
             //   $('#page-bd #results>div:not([class])').remove();
             // });
           } else if (curSite.SiteTypeID === SiteType.SO) {
-            safeRemove("#so_kw-ad");
-            safeRemove("#m-spread-left");
+            safeRemoveAd("#so_kw-ad");
+            safeRemoveAd("#m-spread-left");
             // 移除搜索中底部广告
-            safeRemove("#m-spread-bottom");
+            safeRemoveAd("#m-spread-bottom");
             // 移除右侧栏顶部广告
-            safeRemove_xpath("id('righttop_box')//li[.//span[contains(text(), '广告')]]", false, true);
+            safeRemove_xpath("id('righttop_box')//li[.//span[contains(text(), '广告')]]");
           } else if (curSite.SiteTypeID === SiteType.BING) {
-            safeRemove(".b_ad");
-            safeRemove_xpath("id('b_results')/li[./div[@class='ad_fls']]", true);
+            safeRemoveAd(".b_ad");
+            safeRemove_xpath("id('b_results')/li[./div[@class='ad_fls']]");
+
+
+            // 移除特殊tag，带url标记的广告类
+            const resList = [...document.querySelectorAll("ol>li")].filter(one => one.querySelector('p')) // 定位到所有包含p标签的li
+            const adList = resList.filter(one => window.getComputedStyle(one.querySelector('p'), '::before').getPropertyValue('content').includes('url')) // 检查每一个p标签，里面存在before伪元素，且伪元素中是链接的，均为广告
+            safeRemoveAd(adList);
+            
           } else if (curSite.SiteTypeID === SiteType.GOOGLE) {
-            safeRemove("#bottomads");
-            safeRemove('div[aria-label="广告"]', false, true);
-            safeRemove('div[aria-label="Ads"]', false, true);
+            safeRemoveAd("#bottomads");
+            safeRemoveAd('div[aria-label="广告"]');
+            safeRemoveAd('div[aria-label="Ads"]');
           }
         }
 
@@ -3330,25 +3358,17 @@ body[google] {
         }, 20, true);
       }
 
-      // 不要动画了，免得显示卡顿
-      function aniRemove(node, withAni) {
-        // if(withAni) {
-        //   node.classList.add('aniDelete')
-        //   setTimeout(() => {
-        //     node.remove();
-        //   }, 400)
-        // } else {
-        node.remove();
-        // }
-      }
-
       function hideNode(node) {
         if(node.hasAttribute('ac-ad-hide')) return
         node.setAttribute('ac-ad-hide', '1')
         node.style = 'display: none !important;'
       }
 
-      function safeRemove_xpath(xpathSelector, isHide=false, withAni = false) {
+      function safeRemove_xpath(xpathSelector, option = {
+        isHide : false, // 隐藏模式
+        withAni : true // 带动画效果
+      }) {
+        const { isHide = false, withAni = false } = option
         safeFunction(() => {
           let removeNodes = getAllElements(xpathSelector);
           if(isHide) {
@@ -3357,7 +3377,7 @@ body[google] {
             }
           } else {
             for (let i = 0; i < removeNodes.length; i++){
-              aniRemove(removeNodes[i], withAni)
+              removeNodes[i].remove() // 避免卡顿现象
             }
           }
         })
