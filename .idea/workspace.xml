@@ -28,8 +28,11 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="更新 - V26.03">
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" afterDir="false" />
+    <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="搜索结果中屏蔽自定义关键字脚本更新一波">
+      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,9 +108,10 @@
     &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/osk/Desktop/广告创意与设计2/第二次课/lottery-web-main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/GitHome/Hen3D&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -115,9 +119,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\newcss" />
       <recent name="C:\GitHome\NormalGit\GM_script" />
-      <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\images" />
       <recent name="D:\GitPath\GM_script\shell" />
     </key>
@@ -407,7 +411,8 @@
     <MESSAGE value="简单更新-不知道是啥" />
     <MESSAGE value="更新 - 保证脚本支持ViolentMonkey，切换为document-body运行时期" />
     <MESSAGE value="更新 - V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新 - V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见" />
+    <MESSAGE value="搜索结果中屏蔽自定义关键字脚本更新一波" />
+    <option name="LAST_COMMIT_MESSAGE" value="搜索结果中屏蔽自定义关键字脚本更新一波" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>

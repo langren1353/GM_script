@@ -3541,6 +3541,15 @@ body[google] {
           },
           //加载单页样式
           loadOnePageStyle: async function () {
+            const node2 = await create_CSS_Node("#main #cnt, #cnt #center_col, #cnt #foot{\n" +
+              "    transition: all 0.1s ease-in-out;\n" +
+              "    animation-duration: 0s !important;\n" +
+              "}\n" +
+              "div[two-father]{\n" +
+              "    animation-duration: 0s !important;\n" +
+              "}");
+            this.flushDom.insert(node2, 'head')
+
             const node = await this.loadStyle(CONST.useItem.name + "OnePageStyle", CONST.useItem.name + "OnePageStyle");
             this.flushDom.insert(node, 'DOM')
           },
@@ -3702,6 +3711,7 @@ body[google] {
           //居中显示 --- 必须是百度和谷歌的搜索结果页面，其他页面不能加载的--已经通过脚本include标签限制了一部分
           centerDisplay: async function () {
             // flush完成之后，等一等变更，渲染差不多之后再刷新
+            this.googleFatherChildTag() // 先初始化，减少抖动问题
             setInterval(() => {
               this.googleFatherChildTag()
             }, 600)
