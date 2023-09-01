@@ -7,7 +7,7 @@
 // @description:en  1.bypass the redirect link at baidu\sogou\google\haosou; 2.remove ads at baidu; 3.add Favicon for each website; 4.render your own style; 5.counter; 6.Switch to handle all 7.Auto Pager
 // @description:ja  1.迂回Baidu、Sogou、Google、Haosou検索検索結果の中の自分の遷移リンク; 2.Baiduの余分な広告を取り除く; 3.コメントを追加; 4.ページのカスタムCSP; 5.カウントを追加; 6.スイッチは以上の機能を選択します; 7.自動ページめくり.
 // @icon    https://ae01.alicdn.com/kf/Hac1a58055c5047cdb91349e91aa208d5k.jpg
-// @author    AC
+// @author     AC
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
@@ -42,7 +42,7 @@
 // @home-url   https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
-// @copyright  2015-2022, AC
+// @copyright  2015-2023, AC
 // @lastmodified  2023-06-19
 // @feedback-url  https://github.com/langren1353/GM_script
 // @note    2023.06-19-V26.06 修复谷歌显示效果的错位问题等，修复谷歌异常白屏问题
@@ -265,14 +265,14 @@
       isAd: true // 标志是广告
     })
   }
-  
+
   function safeRemove(cssSelectorOrNodeList, option = {
     withAni: false, // 带动效的删除
     isAd: false // true = 有日志，false = 无日志
   }) {
     safeFunction(() => {
       const { withAni = false, isAd = false} = option
-      
+
       let removeNodes = cssSelectorOrNodeList
       if(typeof cssSelectorOrNodeList === 'string') {
         removeNodes = document.querySelectorAll(cssSelectorOrNodeList);
@@ -369,16 +369,16 @@
     let DBConfig = {}; // 仅作为普通ACConfig的原始备份，在其他非关键位置时进行保存使用
     /*存在对未初始化变量的初始化赋值-无需担心迭代兼容问题*/
     let DefaultConfig = {
-      isRedirectEnable: false,  // 是否开启重定向功能
+      isRedirectEnable: false, // 是否开启重定向功能
       isAdsEnable: false, // 是否开启去广告模式
-      isAutopage: true,  // 是否开启自动翻页功能
+      isAutopage: true, // 是否开启自动翻页功能
       isBlockEnable: false, // 是否开启去拦截模式
       isBlockDisplay: false, // 是否删除已拦截的条目
       isBlockBtnNotDisplay: false, // 是否显示block按钮
       AdsStyleEnable: true, // 是否开启自定义样式模式
 
       baidu: {
-        name: 'baidu',  // CSS load 的前缀标志
+        name: 'baidu', // CSS load 的前缀标志
         AdsStyleMode: '1', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
         HuYanMode: false, // 护眼模式-百度
         defaultBgUrl: '', // 默认背景图
@@ -441,16 +441,17 @@
       isGooleInBaiduModeEnable: false, // 是否开启谷歌搜索结果页的百度图标显示
       UserBlockList: [],
       UserStyleText:
-        `/**计数器的颜色样式*/
-div .AC-CounterT{
+`/**计数器的颜色样式*/
+div .AC-CounterT {
   background: #FD9999;
 }
+
 /**百度样式区域**/
 body[baidu] {
   position: relative;
-  
+
   /**右侧栏的样式-其实不开启更好看一些*/
-  #content_right{
+  #content_right {
     padding: 20px 15px 15px !important;
     border-radius: 5px;
     background-color: #FFFFFF66;
@@ -459,7 +460,8 @@ body[baidu] {
     -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
     -moz-box-shadow: 0 0 20px 2px rgba(0, 0, 0, .1);
   }
-  &:before{
+
+  &:before {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -470,25 +472,26 @@ body[baidu] {
     background-size: 100% auto;
     opacity: 0.6; /*背景图透明度=0.8，最大1*/
   }
-  
+
   /**隐藏首页的大图标-修复可能导致外援样式异常**/
-  #s_lg_img_new{
-    display:none !important;
+  #s_lg_img_new {
+    display: none !important;
   }
-  
+
   #wrapper #s_tab {
     background-color: rgba(248, 248, 248, 0.4);
   }
-  
-  #content_left>.c-container{
+
+  #content_left>.c-container {
     border-radius: 5px;
-    background-color: rgba(255,255,255, 0.6) !important; /*百度搜索块体的颜色；透明度=0.1，最大1*/
-    
-    h3{
-      background-color: rgba(248,248,248, 0.6) !important; /*百度搜索块体 - 标题的颜色；透明度=0.1，最大1*/
+    background-color: rgba(255, 255, 255, 0.6) !important; /*百度搜索块体的颜色；透明度=0.1，最大1*/
+
+    h3 {
+      background-color: rgba(248, 248, 248, 0.6) !important; /*百度搜索块体 - 标题的颜色；透明度=0.1，最大1*/
     }
   }
 }
+
 body[google] {
 
   &:before {
@@ -502,21 +505,19 @@ body[google] {
     background-size: 100% auto;
     opacity: 0.8; /*背景图透明度=0.8，最大1*/
   }
-  
+
   #rso .g, .sfbg, .f6F9Be, .k8XOCe {
-    background-color: rgba(248,248,248, 0.6) !important; 
+    background-color: rgba(248, 248, 248, 0.6) !important;
   }
-  
-  .sfbg{
+
+  .sfbg {
     margin-top: -10px;
   }
-  
-  .yg51vc{
-    background-color: transparent !important; 
-  }
-}
 
-`,
+  .yg51vc {
+    background-color: transparent !important;
+  }
+}`,
       oldVersion: "",
       lastSaveTime: new Date().getTime(),
     };
@@ -531,13 +532,13 @@ body[google] {
     };
 
     var curSite = {
-      SiteTypeID: 1,  // 当前站点的ID
-      MainType: "",    // 主体节点，很多个的父节点
+      SiteTypeID: 1, // 当前站点的ID
+      MainType: "", // 主体节点，很多个的父节点
       Stype_Normal: "", // 重定向选择器，只有百度-搜狗-好搜
-      FaviconType: "",  // favicon的域名检查器cite，用于获取host用
+      FaviconType: "", // favicon的域名检查器cite，用于获取host用
       FaviconAddTo: "", // favicon选择器，用于插入到title之前的
-      CounterType: "",  // 计数器添加的位置，一般和favicon位置一致
-      BlockType: "",  // 屏蔽按钮的位置，一般在title之后
+      CounterType: "", // 计数器添加的位置，一般和favicon位置一致
+      BlockType: "", // 屏蔽按钮的位置，一般在title之后
       GMStyleList: {},
     };
     let DBSite = {
@@ -690,12 +691,12 @@ body[google] {
       other: {
         curTab: 1, // 展示第二panel
         showBlockListArea: false, // blockList展示位textarea
-        addBlockItem: "",     // 用户手动输入的拦截规则
-        curHosts: [],         // 存放已经访问的hosts数据内容
+        addBlockItem: "", // 用户手动输入的拦截规则
+        curHosts: [], // 存放已经访问的hosts数据内容
         faviconListMap: { }, // favicon的遍历表 -> .AC-faviconTStyle
         isBlockChecking: false, // 当前Block功能是否还在执行中，避免多次执行，导致页面卡顿
       }
-    };  // 到时候挂载到other上
+    }; // 到时候挂载到other上
     let AllData = {
       ACConfig: {},
       other: otherData.other,
@@ -1422,7 +1423,7 @@ body[google] {
           if (ACConfig.normalizeDuck) {
             setTimeout(function() {
               try {
-                DDG.settings.set("kn", 1, {  // 新窗口打开页面
+                DDG.settings.set("kn", 1, { // 新窗口打开页面
                   saveToCloud: true,
                   forceTheme: true
                 });
@@ -1972,7 +1973,7 @@ body[google] {
                   if (document.documentElement.scrollHeight <= document.documentElement.clientHeight + scrollTop + scrollDelta && curSite.pageLoading === false) {
                     curSite.pageLoading = true;
                     if (curSite.SiteTypeID === SiteType.DUCK) { // 可以用已有的方法来实现了
-                      if (!ACConfig.normalizeDuck || +ACConfig.duck.AdsStyleMode >= 3) {  // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
+                      if (!ACConfig.normalizeDuck || +ACConfig.duck.AdsStyleMode >= 3) { // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
                         document.querySelector("#links .result--more a").click();
                         setTimeout(function() {
                           curSite.pageLoading = false;
@@ -2194,84 +2195,87 @@ body[google] {
             , "AC-special-BAIDU"))
 
           // 添加 自定义的动画
-          const aniStyle = `@keyframes ani_leftToright {
-    0% {
-        transform: translateX(-32px);
-        opacity: 0.2;
-    }
-    20% {
-        opacity: 0.5;
-    }
-    30% {
-        opacity: 0.8;
-    }
-    100% {
-        opacity: 1;
-    }
+          const aniStyle =
+`@keyframes ani_leftToright {
+  0% {
+    transform: translateX(-32px);
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 0.5;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 /* ani */
 @keyframes ani_bottomTotop {
-    0% {
-        transform: translateY(32px);
-        opacity: 0.2;
-    }
-    20% {
-        opacity: 0.5;
-    }
-    30% {
-        opacity: 0.8;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    transform: translateY(32px);
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 0.5;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 @-webkit-keyframes ani_topTobuttom {
-    0% {
-        transform: translateY(-32px);
-        opacity: 0.2;
-    }
-    20% {
-        opacity: 0.5;
-    }
-    30% {
-        opacity: 0.8;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    transform: translateY(-32px);
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 0.5;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 @-webkit-keyframes ani_hideToShow {
-    0% {
-        display:none;
-        opacity: 0.2;
-    }
-    20% {
-        opacity: 0.5;
-    }
-    30% {
-        opacity: 0.8;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    display: none;
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 0.5;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 @-webkit-keyframes ani_showToHide {
-    0% {
-        display:none;
-        opacity: 1;
-    }
-    20% {
-        opacity: 0.8;
-    }
-    30% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 0.3;
-    }
+  0% {
+    display: none;
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  30% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.3;
+  }
 }
-.aniDelete{transition: all 0.15s cubic-bezier(0.4, 0, 1, 1);opacity: 0.1}
-`;
+.aniDelete {
+  transition: all 0.15s cubic-bezier(0.4, 0, 1, 1);
+  opacity: 0.1
+}`;
           CONST.flushNode.insert(await create_CSS_Node(aniStyle, "AC-AnimationStyle"))
         }
 
@@ -2461,387 +2465,497 @@ body[google] {
             let Container = document.createElement('div');
             Container.id = "sp-ac-container";
             Container.innerHTML =
-              `<div id="sp-ac-content" style="display: none;" xmlns="http://www.w3.org/1999/html">
-                <div id="sp-ac-main">
-                  <fieldset id="sp-ac-autopager-field" style="display:block;">
-                    <legend class="iframe-father">
-                       <a class="linkhref" href="https://www.ntaow.com/aboutscript.html" target="_blank" v-text="lan.use.fieldset_panel.panel_title"></a>
-                    </legend>
-                    <ul class="setting-main" v-show="other.curTab === 1">
-                      <li>
-                        <label :title="lan.use.fieldset_panel.setting_panel.redirect_title">
-                          <input id="sp-ac-redirect" name="sp-ac-a_separator" type="checkbox"  v-model="ACConfig.isRedirectEnable">
-                          {{ lan.use.fieldset_panel.setting_panel.redirect_text }}
-                        </label>
-                        <label>
-                          <input id="sp-ac-isEnLang" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isEnLang">
-                          {{ lan.use.fieldset_panel.setting_panel.useEn_text }}
-                        </label>
-                        <span id="sp-ac-savebutton" @click="saveConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;margin-top: -6px;" v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
-                        <span id="sp-ac-resetbutton" @click="changeResetText" @dblclick="resetConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.resetBtn_text" style="position: relative;float: right;margin-top: -6px;" v-text="lan.use.fieldset_panel.setting_panel.resetBtn_text"></span>
-                      </li>
-                      <li>
-                        <label :title="lan.use.fieldset_panel.setting_panel.ads_title">
-                          <input id="sp-ac-ads" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isAdsEnable">
-                          {{ lan.use.fieldset_panel.setting_panel.ads_text }}
-                        </label>
-                        <label :title="lan.use.fieldset_panel.setting_panel.autopage_title" class="">
-                          <input id="sp-ac-isAutopage" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isAutopage">
-                          {{ lan.use.fieldset_panel.setting_panel.autopage_text }}
-                        </label>
-                      </li>
-                      <li>
-                        <label title="lan.use.fieldset_panel.setting_panel.blockenable_title">
-                          <input id="sp-ac-block" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isBlockEnable">
-                          {{ lan.use.fieldset_panel.setting_panel.blockenable_text }}
-                        </label>
-                        <span id="sp-ac-blockdiybutton" class="sp-ac-spanbutton" @click="other.curTab = 2" :title="lan.use.fieldset_panel.setting_panel.blockDiyBtn_title" style="margin-left: 5px;color: #888888;" v-text="lan.use.fieldset_panel.setting_panel.blockDiyBtn_text"></span>
-                        <label :title="lan.use.fieldset_panel.setting_panel.blockenable_text">
-                          <input :title="lan.use.fieldset_panel.setting_panel.blockAutoRemove_title" v-model="ACConfig.isBlockDisplay" id="sp-ac-removeBlock" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.blockAutoRemove_text }}
-                        </label>
-                        <label :title="lan.use.fieldset_panel.setting_panel.blockBtnShow_title">
-                          <input :title="lan.use.fieldset_panel.setting_panel.blockBtnShow_title"  v-model="ACConfig.isBlockBtnNotDisplay" id="sp-ac-blockBtnDisplay" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.blockBtnShow_text }}
-                        </label>
-                      </li>
-                      <li>
-                        <label :title="lan.use.fieldset_panel.setting_panel.userStyle_text">
-                          <input id="sp-ac-style" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.AdsStyleEnable">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_text }}
-                        </label>
-                      </li>
-                      <li>
-                        <!------------百度样式-------------->
-                        <label class="container-label baidu">
-                          <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_baidu_lable" @click="labelShowHideEnv"></label>
-                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_baidu" value="0" v-model="ACConfig.baidu.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_origin }}
-                          </label>
-                          <label>
-                          <input  name='sp-ac-huyan_style_baidu' type='checkbox' v-model="ACConfig.baidu.HuYanMode">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_huyan }}
-                          </label>
-                          <label class=""><input name="sp-ac-a_force_style_baidulite" type="checkbox" v-model="ACConfig.Style_BaiduLite">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_baiduLite }}
-                          </label>
-                          <br>
-                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_baidu" value="1" v-model="ACConfig.baidu.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_1line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_baidu" value="2" type="radio" v-model="ACConfig.baidu.AdsStyleMode">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_1line_enter }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_baidu" value="3" type="radio" v-model="ACConfig.baidu.AdsStyleMode">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_2line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_baidu" value="4" type="radio" v-model="ACConfig.baidu.AdsStyleMode">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_3line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_baidu" value="5" type="radio" v-model="ACConfig.baidu.AdsStyleMode">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_4line }}
-                          </label>
-                          <br>
-                          <label class="display-block" style="margin: 3px 0 3px 25px;">
-                            {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
-                            <input :placeholder="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint" :title="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint" id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.baidu.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
-                            <label :title="lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text_hint">
-                              <input type="checkbox" name="sp-ac-a_autoFitSStyle" v-model="ACConfig.baidu.BgFit" :disabled="!ACConfig.baidu.defaultBgUrl || !ACConfig.AdsStyleEnable">
-                              {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
-                            </label>
-                          </label>
-                        </label>
-                        <!------------百度样式-------------->
-                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
-                        <!------------谷歌样式-------------->
-                        <label class="container-label google">
-                          <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_google_lable" @click="labelShowHideEnv"></label>
-                          <label style="margin-left:20px">
-                          <input name="sp-ac-a_force_style_google" value="0" type="radio" v-model="ACConfig.google.AdsStyleMode">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_google_origin }}
-                          </label>
-                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_google_huyan"><input name="sp-ac-huyan_style_google" v-model="ACConfig.google.HuYanMode" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_google_huyan }}
-                          </label>
-                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_google_googleLite" style=""><input name="sp-ac-google_in_baidumode" v-model="ACConfig.isGooleInBaiduModeEnable" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_google_googleLite }}
-                          </label>
-                          <br>
-                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_google" value="1" v-model="ACConfig.google.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_google_1line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_google" value="2" v-model="ACConfig.google.AdsStyleMode" type="radio" checked="">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_google_1line_enter }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_google" value="3" v-model="ACConfig.google.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_google_2line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_google" value="4" v-model="ACConfig.google.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_google_3line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_google" value="5" v-model="ACConfig.google.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_google_4line }}
-                          </label>
-                          <br>
-                          <label class="display-block" style="margin: 3px 0 3px 25px;">
-                            {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
-                            <input :placeholder="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint" id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.google.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
-                            <label :title="lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text_hint">
-                              <input type="checkbox" name="sp-ac-a_autoFitSStyle" v-model="ACConfig.google.BgFit" :disabled="!ACConfig.google.defaultBgUrl || !ACConfig.AdsStyleEnable">
-                              {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}      
-                            </label>
-                          </label>
-                        </label>
-                        <!------------谷歌样式-------------->
-                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
-                        <!------------必应样式-------------->
-                        <label class="container-label bing">
-                          <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_bing_lable" @click="labelShowHideEnv"></label>
-                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_bing" v-model="ACConfig.bing.AdsStyleMode" value="0" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_origin }}
-                          </label>
-                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_bing_huyan"><input name="sp-ac-huyan_style_bing" v-model="ACConfig.bing.HuYanMode" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_huyan }}
-                          </label>
-                          <br>
-                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_bing" v-model="ACConfig.bing.AdsStyleMode" value="1" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_1line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_bing" value="2" v-model="ACConfig.bing.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_1line_enter }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_bing" value="3" v-model="ACConfig.bing.AdsStyleMode" type="radio" checked="">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_2line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_bing" value="4" v-model="ACConfig.bing.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_3line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_bing" value="5" v-model="ACConfig.bing.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_4line }}
-                          </label>
-                          <br>
-                          <label class="display-block" style="margin: 3px 0 3px 25px;">
-                            {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
-                            <input :placeholder="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint" id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg" v-model="ACConfig.bing.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
-                            <label :title="lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text_hint">
-                              <input type="checkbox" name="sp-ac-a_autoFitSStyle" v-model="ACConfig.bing.BgFit" :disabled="!ACConfig.bing.defaultBgUrl || !ACConfig.AdsStyleEnable">
-                              {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}         
-                            </label>
-                          </label>                          
-                        </label>
-                        <!------------必应样式-------------->
-<!--                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>-->
-<!--                        &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;搜狗样式&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
-<!--                        <label class="container-label sogou">-->
-<!--                          <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_sogou_lable" @click="labelShowHideEnv"></label>-->
-<!--                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_sogou" v-model="ACConfig.sogou.AdsStyleMode" value="0" type="radio">-->
-<!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_origin }}-->
-<!--                          </label>-->
-<!--                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_sogou_huyan"><input name="sp-ac-huyan_style_sogou" v-model="ACConfig.sogou.HuYanMode" type="checkbox">-->
-<!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_huyan }}-->
-<!--                          </label>-->
-<!--                          <br>-->
-<!--                          <label style="margin-left:20px">-->
-<!--                          <input name="sp-ac-a_force_style_sogou" value="1" v-model="ACConfig.sogou.AdsStyleMode" type="radio">-->
-<!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_1line }}-->
-<!--                          </label>-->
-<!--                          <label><input name="sp-ac-a_force_style_sogou" value="2" v-model="ACConfig.sogou.AdsStyleMode" type="radio">-->
-<!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_1line_enter }}-->
-<!--                          </label>-->
-<!--                          <label><input name="sp-ac-a_force_style_sogou" value="3" v-model="ACConfig.sogou.AdsStyleMode" type="radio" checked="">-->
-<!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_2line }}-->
-<!--                          </label>-->
-<!--                          <label><input name="sp-ac-a_force_style_sogou" value="4" v-model="ACConfig.sogou.AdsStyleMode" type="radio">-->
-<!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_3line }}-->
-<!--                          </label>-->
-<!--                          <label><input name="sp-ac-a_force_style_sogou" value="5" v-model="ACConfig.sogou.AdsStyleMode" type="radio">-->
-<!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_4line }}-->
-<!--                          </label>-->
-<!--                        </label>-->
-<!--                        &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;搜狗样式&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
-                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
-                        <!------------鸭鸭搜样式-------------->
-                        <label class="container-label duck">
-                          <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_duck_lable" @click="labelShowHideEnv"></label>
-                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_duck" v-model="ACConfig.duck.AdsStyleMode" value="0" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_origin }}
-                          </label>
-                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_duck_huyan"><input name="sp-ac-huyan_style_duck" v-model="ACConfig.duck.HuYanMode" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_huyan }}
-                          </label>
-                           <label :title="lan.use.fieldset_panel.setting_panel.userStyle_duck_normal" style=""><input v-model="ACConfig.normalizeDuck" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_normal }}
-                          </label>
-                          <br>
-                          <label style="margin-left:20px">
-                          <input name="sp-ac-a_force_style_duck" value="1" v-model="ACConfig.duck.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_1line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_duck" value="2" v-model="ACConfig.duck.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_1line_enter }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_duck" value="3" v-model="ACConfig.duck.AdsStyleMode" type="radio" checked="">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_2line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_duck" value="4" v-model="ACConfig.duck.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_3line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_duck" value="5" v-model="ACConfig.duck.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_4line }}
-                          </label>
-                          <br>
-                        </label>
-                        <!------------鸭鸭搜样式-------------->
-                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>
-                        <!------------多吉样式-------------->
-                        <label class="container-label doge">
-                          <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_doge_lable" @click="labelShowHideEnv"></label>
-                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_doge" v-model="ACConfig.doge.AdsStyleMode" value="0" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_origin }}
-                          </label>
-                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_doge_huyan"><input name="sp-ac-huyan_style_doge" v-model="ACConfig.doge.HuYanMode" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_huyan }}
-                          </label>
-                           <label :title="lan.use.fieldset_panel.setting_panel.userStyle_doge_normal" style=""><input v-model="ACConfig.normalizeDoge" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_normal }}
-                          </label>
-                          <br>
-                          <label style="margin-left:20px">
-                          <input name="sp-ac-a_force_style_doge" value="1" v-model="ACConfig.doge.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_1line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_doge" value="2" v-model="ACConfig.doge.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_1line_enter }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_doge" value="3" v-model="ACConfig.doge.AdsStyleMode" type="radio" checked="">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_2line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_doge" value="4" v-model="ACConfig.doge.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_3line }}
-                          </label>
-                          <label><input name="sp-ac-a_force_style_doge" value="5" v-model="ACConfig.doge.AdsStyleMode" type="radio">
-                          {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_4line }}
-                          </label>
-                          <br>
-                        </label>
-                      <!------------多吉样式-------------->
-                      </li>
-                      <!------------护眼模式设置-------------->
-                      <li>
-                        <label :title="lan.use.fieldset_panel.setting_panel.huyanMode_title">
-                          <input id="sp-ac-usercolor" v-model="ACConfig.isUserColorEnable" name="sp-ac-a_force" type="checkbox" checked="">
-                          {{ lan.use.fieldset_panel.setting_panel.huyanMode_text }}
-                        </label>
-                      </li>
-                      <li>
-                        <label class="menu-box-container" :title="lan.use.fieldset_panel.setting_panel.huyanMode_title">
-                          <label style="margin-left:20px;" v-text="lan.use.fieldset_panel.setting_panel.huyanColor_text"></label>
-                          <input class="sp-ac-menuhuyanColor" @input.stop="useThisHuyanColor" v-model="ACConfig.defaultHuYanColor" type="color" :title="lan.use.fieldset_panel.setting_panel.huyanColor_title" style="cursor: pointer;margin-top:-0.05rem;height:23px;">
-                          <label class="menu-box-small" data-value="#DEF1EF" @click.stop="useThisHuyanColor" style="background-color:#DEF1EF;">&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                          <label class="menu-box-small" data-value="#F3F2EE" @click.stop="useThisHuyanColor" style="background-color:#F3F2EE;">&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                          <label class="menu-box-small" data-value="#E5E5E5" @click.stop="useThisHuyanColor" style="background-color:#E5E5E5;">&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                          <label class="linkhref" data-href="https://www.ntaow.com/colorpicker.html" style="cursor:pointer;margin-right: 10px;" onclick="window.open(this.dataset.href)" v-text="lan.use.fieldset_panel.setting_panel.huyanColorMore_text"></label>
-                        </label>
-                      </li>
-                      <!------------Favicon图标设置-------------->
-                      <li>
-                        <label>
-                          <input :title="lan.use.fieldset_panel.setting_panel.favicon_title" v-model="ACConfig.isFaviconEnable" id="sp-ac-favicon" name="sp-ac-a_force" type="checkbox" checked="">
-                          {{ lan.use.fieldset_panel.setting_panel.favicon_text }}
-                        </label>
-                      </li>
-                      <li>
-                        <label>
-                          <label style="margin-left:20px;" v-text="lan.use.fieldset_panel.setting_panel.favicon_defaultIcon_text"></label>
-                          <input id="sp-ac-faviconUrl" name="sp-ac-a_force" v-model="ACConfig.defaultFaviconUrl" value="https://ae01.alicdn.com/kf/HTB1dRY0X8OD3KVjSZFFq6An9pXay.jpg" style="width:55%;margin-top:-0.3em;" type="input">
-                        </label>
-                      </li>
-                      <!------------移除百度搜索预测-------------->
-                      <li>
-                        <label>
-                          <input :title="lan.use.fieldset_panel.setting_panel.searchOrigin_title" v-model="ACConfig.doDisableSug" id="sp-ac-sug_origin" name="sp-ac-a_force" type="checkbox" checked="">
-                          {{ lan.use.fieldset_panel.setting_panel.searchOrigin_text }}
-                        </label>
-                      </li>
-                      <!------------附加7、8、9-------------->
-                      <li>
-                        <label>
-                          <input id="sp-ac-right" v-model="ACConfig.isRightDisplayEnable" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.showRight_text }}
-                        </label>
-                        <label>
-                          <input id="sp-ac-counter" v-model="ACConfig.isCounterEnable" name="sp-ac-a_force" type="checkbox">
-                          <span :title="lan.use.fieldset_panel.setting_panel.hintShowCounter_text">{{ lan.use.fieldset_panel.setting_panel.showCounter_text }}</span>
-                        </label>
-                        <label>
-                          <input id="sp-ac-aline" v-model="ACConfig.isALineEnable" name="sp-ac-a_force" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.showALine_text }}
-                        </label>
-                      </li>
-                      <!------------自定义样式内容-------------->
-                      <li>
-                        <label>
-                          <input id="sp-ac-userstyle" v-model="ACConfig.isUserStyleEnable" name="sp-ac-a_force" type="checkbox">
-                          {{ lan.use.fieldset_panel.setting_panel.showUserStyle_text }}
-                        </label>
-                        <label v-if="LiveConfig.css_has_error" style="color: red; font-weight: bold;">error</label>
-                        <span class="sp-ac-spanbutton" @click="resetCSS" title="Reset CSS" v-text="resetCSS_text"></span>
-                      </li>
-                      <li>
-                        <textarea id="sp-ac-userstyleTEXT" v-model="ACConfig.UserStyleText" @keyup="loadCustomStyle" @change="loadCustomStyle" @paste="loadCustomStyle" name="sp-ac-a_force" style="width:85%;height: 66px;margin-left:30px;" type="input" ></textarea>
-                      </li>
-                      <li>
-                        <a class="linkhref" target="_blank" :href="lan.use.fieldset_panel.setting_panel.contactMe_url" v-text="lan.use.fieldset_panel.setting_panel.contactMe_text"></a>
-                      </li>
-                    </ul>
-                    <!------------拦截域名设置panel-------------->
-                    <ul class="setting-second" v-show="other.curTab === 2">
-                      <li style='margin-bottom: 8px !important;'>
-                        <label>
-                          <span id='sp-ac-blockdiybutton-back' @click="other.curTab=1,other.showBlockListArea = false" class='sp-ac-spanbutton'>{{ lan.use.fieldset_panel.setting_panel.setting_panel_second.backBtn_text }}</span>
-                        </label>
-                        {{ lan.use.fieldset_panel.setting_panel.setting_panel_second.blockLabel_text }}}
-                      </li>
-                      <li style='margin-bottom: 8px !important;'>
-                        <span id='sp-ac-blockdiybutton-diylist' class='sp-ac-spanbutton' @click="other.showBlockListArea = !other.showBlockListArea" v-text="cal_diyBlockListBtn"></span>
-                      </li>
-                      <li class='ac-blockList' @click="removeABlockListItem" style='max-height:60vh;overflow-y: scroll;'>
-                        <ul v-show="!other.showBlockListArea" v-html="getBlockList"></ul>
-                      </li>
-                      <li class='ac-blockBoxCon' style='max-height: 60vh;text-align: center;margin-left: 26px;'>
-                        <textarea v-show="other.showBlockListArea"  @keyup="syncToBlockList" @change="syncToBlockList" @paste="syncToBlockList" rows="20" v-text="ACConfig.UserBlockList.join('\\n')"></textarea>
-                      </li>
-                      <li>
-                        {{ lan.use.fieldset_panel.setting_panel.setting_panel_second.addBlockLabel_text }}<input class="sp-ac-addRuleOne" @keyup.enter="ckAddRule" v-model="other.addBlockItem" style='width:55%;'>
-                        <span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' @click="ckAddRule" style='position: relative !important;line-height: 17px;' v-text="lan.use.fieldset_panel.setting_panel.setting_panel_second.addBtnLabel_text">新增</span>
-                      </li>
-                    </ul>
-                    <ul v-show="other.curTab === 3" style="width: 300px">
-                      <li>
-                        <div class="dialog-body">
-                          <label>
-                            <span id='sp-ac-blockdiybutton-back' @click="other.curTab=1" class='sp-ac-spanbutton'>返回</span>
-                          </label>
-                          <div>
-                            <div>使用说明：</div>
-                            <div>-</div>
-                            <p>1. 本脚本不包含任何广告内容，也无意于破坏网站现有功能的完整性，仅希望通过一些显示效果的变更能更好的留存对应网站现有的用户，一定程度上更好地保证了目标网站的日活。</p>
-                            <p>
-                              2. 同时本脚本中所有功能均为学习和研究web前端技术的发展而开发，希望为学习前端技术的研究人员提供一个更好的参考代码，促进web前端技术的发展，便于技术的学习和交流，仅用于学习研究使用，无意于损害任何网站利益，不使用任何盈利方案或参与任何盈利组织。
-                            </p>
-                            <p>
-                              3. 因使用本脚本引起的或与本脚本有关的任何争议，各方应友好协商解决，本脚本对使用本脚本所提供的软件时可能对用户自己或他人造成的任何形式的损失和伤害不承担任何责任。如用户下载、安装和使用本产品中所提供的软件，即表明用户信任本作者及其相关协议和免责声明。
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                    <!------------保存、取消按钮-------------->
-                    <span id="sp-ac-cancelbutton" class="sp-ac-spanbutton endbutton" @click="closePanel" :title="lan.use.fieldset_panel.setting_panel.cancelBtn_text" style="position: relative;float: left;" v-text="lan.use.fieldset_panel.setting_panel.cancelBtn_text"></span>
-                    <span id="sp-ac-savebutton" ref="bottomSaveButton" @click="saveConfig" class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;" v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
-                  </fieldset>
-                </div>
-              </div>`;
+`<div id="sp-ac-content" style="display: none;" xmlns="http://www.w3.org/1999/html">
+  <div id="sp-ac-main">
+    <fieldset id="sp-ac-autopager-field" style="display:block;">
+      <legend class="iframe-father">
+        <a class="linkhref" href="https://www.ntaow.com/aboutscript.html" target="_blank"
+          v-text="lan.use.fieldset_panel.panel_title"></a>
+      </legend>
+      <ul class="setting-main" v-show="other.curTab === 1">
+        <li>
+          <label :title="lan.use.fieldset_panel.setting_panel.redirect_title">
+            <input id="sp-ac-redirect" name="sp-ac-a_separator" type="checkbox"
+              v-model="ACConfig.isRedirectEnable">
+            {{ lan.use.fieldset_panel.setting_panel.redirect_text }}
+          </label>
+          <label>
+            <input id="sp-ac-isEnLang" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isEnLang">
+            {{ lan.use.fieldset_panel.setting_panel.useEn_text }}
+          </label>
+          <span id="sp-ac-savebutton" @click="saveConfig" class="sp-ac-spanbutton endbutton"
+            :title="lan.use.fieldset_panel.setting_panel.okBtn_text"
+            style="position: relative;float: right;margin-top: -6px;"
+            v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
+          <span id="sp-ac-resetbutton" @click="changeResetText" @dblclick="resetConfig"
+            class="sp-ac-spanbutton endbutton" :title="lan.use.fieldset_panel.setting_panel.resetBtn_text"
+            style="position: relative;float: right;margin-top: -6px;"
+            v-text="lan.use.fieldset_panel.setting_panel.resetBtn_text"></span>
+        </li>
+        <li>
+          <label :title="lan.use.fieldset_panel.setting_panel.ads_title">
+            <input id="sp-ac-ads" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isAdsEnable">
+            {{ lan.use.fieldset_panel.setting_panel.ads_text }}
+          </label>
+          <label :title="lan.use.fieldset_panel.setting_panel.autopage_title" class="">
+            <input id="sp-ac-isAutopage" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isAutopage">
+            {{ lan.use.fieldset_panel.setting_panel.autopage_text }}
+          </label>
+        </li>
+        <li>
+          <label title="lan.use.fieldset_panel.setting_panel.blockenable_title">
+            <input id="sp-ac-block" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.isBlockEnable">
+            {{ lan.use.fieldset_panel.setting_panel.blockenable_text }}
+          </label>
+          <span id="sp-ac-blockdiybutton" class="sp-ac-spanbutton" @click="other.curTab = 2"
+            :title="lan.use.fieldset_panel.setting_panel.blockDiyBtn_title"
+            style="margin-left: 5px;color: #888888;"
+            v-text="lan.use.fieldset_panel.setting_panel.blockDiyBtn_text"></span>
+          <label :title="lan.use.fieldset_panel.setting_panel.blockenable_text">
+            <input :title="lan.use.fieldset_panel.setting_panel.blockAutoRemove_title"
+              v-model="ACConfig.isBlockDisplay" id="sp-ac-removeBlock" type="checkbox">
+            {{ lan.use.fieldset_panel.setting_panel.blockAutoRemove_text }}
+          </label>
+          <label :title="lan.use.fieldset_panel.setting_panel.blockBtnShow_title">
+            <input :title="lan.use.fieldset_panel.setting_panel.blockBtnShow_title"
+              v-model="ACConfig.isBlockBtnNotDisplay" id="sp-ac-blockBtnDisplay" type="checkbox">
+            {{ lan.use.fieldset_panel.setting_panel.blockBtnShow_text }}
+          </label>
+        </li>
+        <li>
+          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_text">
+            <input id="sp-ac-style" name="sp-ac-a_force" type="checkbox" v-model="ACConfig.AdsStyleEnable">
+            {{ lan.use.fieldset_panel.setting_panel.userStyle_text }}
+          </label>
+        </li>
+        <li>
+          <!------------百度样式-------------->
+          <label class="container-label baidu">
+            <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_baidu_lable"
+              @click="labelShowHideEnv"></label>
+            <label style="margin-left:20px"><input name="sp-ac-a_force_style_baidu" value="0"
+                v-model="ACConfig.baidu.AdsStyleMode" type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_origin }}
+            </label>
+            <label>
+              <input name='sp-ac-huyan_style_baidu' type='checkbox' v-model="ACConfig.baidu.HuYanMode">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_huyan }}
+            </label>
+            <label class=""><input name="sp-ac-a_force_style_baidulite" type="checkbox"
+                v-model="ACConfig.Style_BaiduLite">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_baiduLite }}
+            </label>
+            <br>
+            <label style="margin-left:20px"><input name="sp-ac-a_force_style_baidu" value="1"
+                v-model="ACConfig.baidu.AdsStyleMode" type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_1line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_baidu" value="2" type="radio"
+                v-model="ACConfig.baidu.AdsStyleMode">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_1line_enter }}
+            </label>
+            <label><input name="sp-ac-a_force_style_baidu" value="3" type="radio"
+                v-model="ACConfig.baidu.AdsStyleMode">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_2line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_baidu" value="4" type="radio"
+                v-model="ACConfig.baidu.AdsStyleMode">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_3line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_baidu" value="5" type="radio"
+                v-model="ACConfig.baidu.AdsStyleMode">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_baidu_4line }}
+            </label>
+            <br>
+            <label class="display-block" style="margin: 3px 0 3px 25px;">
+              {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
+              <input :placeholder="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint"
+                :title="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint"
+                id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg"
+                v-model="ACConfig.baidu.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
+              <label :title="lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text_hint">
+                <input type="checkbox" name="sp-ac-a_autoFitSStyle" v-model="ACConfig.baidu.BgFit"
+                  :disabled="!ACConfig.baidu.defaultBgUrl || !ACConfig.AdsStyleEnable">
+                {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
+              </label>
+            </label>
+          </label>
+          <!------------百度样式-------------->
+          <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;">
+          </div>
+          <!------------谷歌样式-------------->
+          <label class="container-label google">
+            <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_google_lable"
+              @click="labelShowHideEnv"></label>
+            <label style="margin-left:20px">
+              <input name="sp-ac-a_force_style_google" value="0" type="radio"
+                v-model="ACConfig.google.AdsStyleMode">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_google_origin }}
+            </label>
+            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_google_huyan"><input
+                name="sp-ac-huyan_style_google" v-model="ACConfig.google.HuYanMode" type="checkbox">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_google_huyan }}
+            </label>
+            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_google_googleLite"><input
+                name="sp-ac-google_in_baidumode" v-model="ACConfig.isGooleInBaiduModeEnable"
+                type="checkbox">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_google_googleLite }}
+            </label>
+            <br>
+            <label style="margin-left:20px"><input name="sp-ac-a_force_style_google" value="1"
+                v-model="ACConfig.google.AdsStyleMode" type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_google_1line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_google" value="2" v-model="ACConfig.google.AdsStyleMode"
+                type="radio" checked="">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_google_1line_enter }}
+            </label>
+            <label><input name="sp-ac-a_force_style_google" value="3" v-model="ACConfig.google.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_google_2line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_google" value="4" v-model="ACConfig.google.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_google_3line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_google" value="5" v-model="ACConfig.google.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_google_4line }}
+            </label>
+            <br>
+            <label class="display-block" style="margin: 3px 0 3px 25px;">
+              {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
+              <input :placeholder="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint"
+                id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg"
+                v-model="ACConfig.google.defaultBgUrl" style="width:55%;margin-top:-0.3em;"
+                type="input">
+              <label :title="lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text_hint">
+                <input type="checkbox" name="sp-ac-a_autoFitSStyle" v-model="ACConfig.google.BgFit"
+                  :disabled="!ACConfig.google.defaultBgUrl || !ACConfig.AdsStyleEnable">
+                {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
+              </label>
+            </label>
+          </label>
+          <!------------谷歌样式-------------->
+          <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;">
+          </div>
+          <!------------必应样式-------------->
+          <label class="container-label bing">
+            <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_bing_lable"
+              @click="labelShowHideEnv"></label>
+            <label style="margin-left:20px"><input name="sp-ac-a_force_style_bing"
+                v-model="ACConfig.bing.AdsStyleMode" value="0" type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_origin }}
+            </label>
+            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_bing_huyan"><input
+                name="sp-ac-huyan_style_bing" v-model="ACConfig.bing.HuYanMode" type="checkbox">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_huyan }}
+            </label>
+            <br>
+            <label style="margin-left:20px"><input name="sp-ac-a_force_style_bing"
+                v-model="ACConfig.bing.AdsStyleMode" value="1" type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_1line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_bing" value="2" v-model="ACConfig.bing.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_1line_enter }}
+            </label>
+            <label><input name="sp-ac-a_force_style_bing" value="3" v-model="ACConfig.bing.AdsStyleMode"
+                type="radio" checked="">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_2line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_bing" value="4" v-model="ACConfig.bing.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_3line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_bing" value="5" v-model="ACConfig.bing.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_bing_4line }}
+            </label>
+            <br>
+            <label class="display-block" style="margin: 3px 0 3px 25px;">
+              {{ lan.use.fieldset_panel.setting_panel.backgroundImage_text }}
+              <input :placeholder="lan.use.fieldset_panel.setting_panel.backgroundImage_text_hint"
+                id="sp-ac-backgroundImage" name="sp-ac-a_force_style_bgImg"
+                v-model="ACConfig.bing.defaultBgUrl" style="width:55%;margin-top:-0.3em;" type="input">
+              <label :title="lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text_hint">
+                <input type="checkbox" name="sp-ac-a_autoFitSStyle" v-model="ACConfig.bing.BgFit"
+                  :disabled="!ACConfig.bing.defaultBgUrl || !ACConfig.AdsStyleEnable">
+                {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
+              </label>
+            </label>
+          </label>
+          <!------------必应样式-------------->
+          <!--                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>-->
+          <!--                        &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;搜狗样式&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+          <!--                        <label class="container-label sogou">-->
+          <!--                          <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_sogou_lable" @click="labelShowHideEnv"></label>-->
+          <!--                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_sogou" v-model="ACConfig.sogou.AdsStyleMode" value="0" type="radio">-->
+          <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_origin }}-->
+          <!--                          </label>-->
+          <!--                          <label :title="lan.use.fieldset_panel.setting_panel.userStyle_sogou_huyan"><input name="sp-ac-huyan_style_sogou" v-model="ACConfig.sogou.HuYanMode" type="checkbox">-->
+          <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_huyan }}-->
+          <!--                          </label>-->
+          <!--                          <br>-->
+          <!--                          <label style="margin-left:20px">-->
+          <!--                          <input name="sp-ac-a_force_style_sogou" value="1" v-model="ACConfig.sogou.AdsStyleMode" type="radio">-->
+          <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_1line }}-->
+          <!--                          </label>-->
+          <!--                          <label><input name="sp-ac-a_force_style_sogou" value="2" v-model="ACConfig.sogou.AdsStyleMode" type="radio">-->
+          <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_1line_enter }}-->
+          <!--                          </label>-->
+          <!--                          <label><input name="sp-ac-a_force_style_sogou" value="3" v-model="ACConfig.sogou.AdsStyleMode" type="radio" checked="">-->
+          <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_2line }}-->
+          <!--                          </label>-->
+          <!--                          <label><input name="sp-ac-a_force_style_sogou" value="4" v-model="ACConfig.sogou.AdsStyleMode" type="radio">-->
+          <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_3line }}-->
+          <!--                          </label>-->
+          <!--                          <label><input name="sp-ac-a_force_style_sogou" value="5" v-model="ACConfig.sogou.AdsStyleMode" type="radio">-->
+          <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_4line }}-->
+          <!--                          </label>-->
+          <!--                        </label>-->
+          <!-- &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;搜狗样式&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+          <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;">
+          </div>
+          <!------------鸭鸭搜样式-------------->
+          <label class="container-label duck">
+            <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_duck_lable"
+              @click="labelShowHideEnv"></label>
+            <label style="margin-left:20px"><input name="sp-ac-a_force_style_duck"
+                v-model="ACConfig.duck.AdsStyleMode" value="0" type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_origin }}
+            </label>
+            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_duck_huyan"><input
+                name="sp-ac-huyan_style_duck" v-model="ACConfig.duck.HuYanMode" type="checkbox">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_huyan }}
+            </label>
+            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_duck_normal"><input
+                v-model="ACConfig.normalizeDuck" type="checkbox">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_normal }}
+            </label>
+            <br>
+            <label style="margin-left:20px">
+              <input name="sp-ac-a_force_style_duck" value="1" v-model="ACConfig.duck.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_1line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_duck" value="2" v-model="ACConfig.duck.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_1line_enter }}
+            </label>
+            <label><input name="sp-ac-a_force_style_duck" value="3" v-model="ACConfig.duck.AdsStyleMode"
+                type="radio" checked="">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_2line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_duck" value="4" v-model="ACConfig.duck.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_3line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_duck" value="5" v-model="ACConfig.duck.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_duck_4line }}
+            </label>
+            <br>
+          </label>
+          <!------------鸭鸭搜样式-------------->
+          <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;">
+          </div>
+          <!------------多吉样式-------------->
+          <label class="container-label doge">
+            <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_doge_lable"
+              @click="labelShowHideEnv"></label>
+            <label style="margin-left:20px"><input name="sp-ac-a_force_style_doge"
+                v-model="ACConfig.doge.AdsStyleMode" value="0" type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_origin }}
+            </label>
+            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_doge_huyan"><input
+                name="sp-ac-huyan_style_doge" v-model="ACConfig.doge.HuYanMode" type="checkbox">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_huyan }}
+            </label>
+            <label :title="lan.use.fieldset_panel.setting_panel.userStyle_doge_normal"><input
+                v-model="ACConfig.normalizeDoge" type="checkbox">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_normal }}
+            </label>
+            <br>
+            <label style="margin-left:20px">
+              <input name="sp-ac-a_force_style_doge" value="1" v-model="ACConfig.doge.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_1line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_doge" value="2" v-model="ACConfig.doge.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_1line_enter }}
+            </label>
+            <label><input name="sp-ac-a_force_style_doge" value="3" v-model="ACConfig.doge.AdsStyleMode"
+                type="radio" checked="">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_2line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_doge" value="4" v-model="ACConfig.doge.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_3line }}
+            </label>
+            <label><input name="sp-ac-a_force_style_doge" value="5" v-model="ACConfig.doge.AdsStyleMode"
+                type="radio">
+              {{ lan.use.fieldset_panel.setting_panel.userStyle_doge_4line }}
+            </label>
+            <br>
+          </label>
+          <!------------多吉样式-------------->
+        </li>
+        <!------------护眼模式设置-------------->
+        <li>
+          <label :title="lan.use.fieldset_panel.setting_panel.huyanMode_title">
+            <input id="sp-ac-usercolor" v-model="ACConfig.isUserColorEnable" name="sp-ac-a_force"
+              type="checkbox" checked="">
+            {{ lan.use.fieldset_panel.setting_panel.huyanMode_text }}
+          </label>
+        </li>
+        <li>
+          <label class="menu-box-container" :title="lan.use.fieldset_panel.setting_panel.huyanMode_title">
+            <label style="margin-left:20px;"
+              v-text="lan.use.fieldset_panel.setting_panel.huyanColor_text"></label>
+            <input class="sp-ac-menuhuyanColor" @input.stop="useThisHuyanColor"
+              v-model="ACConfig.defaultHuYanColor" type="color"
+              :title="lan.use.fieldset_panel.setting_panel.huyanColor_title"
+              style="cursor: pointer;margin-top:-0.05rem;height:23px;">
+            <label class="menu-box-small" data-value="#DEF1EF" @click.stop="useThisHuyanColor"
+              style="background-color:#DEF1EF;">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label class="menu-box-small" data-value="#F3F2EE" @click.stop="useThisHuyanColor"
+              style="background-color:#F3F2EE;">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label class="menu-box-small" data-value="#E5E5E5" @click.stop="useThisHuyanColor"
+              style="background-color:#E5E5E5;">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label class="linkhref" data-href="https://www.ntaow.com/colorpicker.html"
+              style="cursor:pointer;margin-right: 10px;" onclick="window.open(this.dataset.href)"
+              v-text="lan.use.fieldset_panel.setting_panel.huyanColorMore_text"></label>
+          </label>
+        </li>
+        <!------------Favicon图标设置-------------->
+        <li>
+          <label>
+            <input :title="lan.use.fieldset_panel.setting_panel.favicon_title"
+              v-model="ACConfig.isFaviconEnable" id="sp-ac-favicon" name="sp-ac-a_force" type="checkbox"
+              checked="">
+            {{ lan.use.fieldset_panel.setting_panel.favicon_text }}
+          </label>
+        </li>
+        <li>
+          <label>
+            <label style="margin-left:20px;"
+              v-text="lan.use.fieldset_panel.setting_panel.favicon_defaultIcon_text"></label>
+            <input id="sp-ac-faviconUrl" name="sp-ac-a_force" v-model="ACConfig.defaultFaviconUrl"
+              value="https://ae01.alicdn.com/kf/HTB1dRY0X8OD3KVjSZFFq6An9pXay.jpg"
+              style="width:55%;margin-top:-0.3em;" type="input">
+          </label>
+        </li>
+        <!------------移除百度搜索预测-------------->
+        <li>
+          <label>
+            <input :title="lan.use.fieldset_panel.setting_panel.searchOrigin_title"
+              v-model="ACConfig.doDisableSug" id="sp-ac-sug_origin" name="sp-ac-a_force" type="checkbox"
+              checked="">
+            {{ lan.use.fieldset_panel.setting_panel.searchOrigin_text }}
+          </label>
+        </li>
+        <!------------附加7、8、9-------------->
+        <li>
+          <label>
+            <input id="sp-ac-right" v-model="ACConfig.isRightDisplayEnable" type="checkbox">
+            {{ lan.use.fieldset_panel.setting_panel.showRight_text }}
+          </label>
+          <label>
+            <input id="sp-ac-counter" v-model="ACConfig.isCounterEnable" name="sp-ac-a_force"
+              type="checkbox">
+            <span :title="lan.use.fieldset_panel.setting_panel.hintShowCounter_text">{{
+              lan.use.fieldset_panel.setting_panel.showCounter_text }}</span>
+          </label>
+          <label>
+            <input id="sp-ac-aline" v-model="ACConfig.isALineEnable" name="sp-ac-a_force" type="checkbox">
+            {{ lan.use.fieldset_panel.setting_panel.showALine_text }}
+          </label>
+        </li>
+        <!------------自定义样式内容-------------->
+        <li>
+          <label>
+            <input id="sp-ac-userstyle" v-model="ACConfig.isUserStyleEnable" name="sp-ac-a_force"
+              type="checkbox">
+            {{ lan.use.fieldset_panel.setting_panel.showUserStyle_text }}
+          </label>
+          <label v-if="LiveConfig.css_has_error" style="color: red; font-weight: bold;">error</label>
+          <span class="sp-ac-spanbutton" @click="resetCSS" title="Reset CSS" v-text="resetCSS_text"></span>
+        </li>
+        <li>
+          <textarea id="sp-ac-userstyleTEXT" v-model="ACConfig.UserStyleText" @keyup="loadCustomStyle"
+            @change="loadCustomStyle" @paste="loadCustomStyle" name="sp-ac-a_force"
+            style="width:85%;height: 66px;margin-left:30px;" type="input"></textarea>
+        </li>
+        <li>
+          <a class="linkhref" target="_blank" :href="lan.use.fieldset_panel.setting_panel.contactMe_url"
+            v-text="lan.use.fieldset_panel.setting_panel.contactMe_text"></a>
+        </li>
+      </ul>
+      <!------------拦截域名设置panel-------------->
+      <ul class="setting-second" v-show="other.curTab === 2">
+        <li style='margin-bottom: 8px !important;'>
+          <label>
+            <span id='sp-ac-blockdiybutton-back' @click="other.curTab=1,other.showBlockListArea = false"
+              class='sp-ac-spanbutton'>{{
+              lan.use.fieldset_panel.setting_panel.setting_panel_second.backBtn_text }}</span>
+          </label>
+          {{ lan.use.fieldset_panel.setting_panel.setting_panel_second.blockLabel_text }}}
+        </li>
+        <li style='margin-bottom: 8px !important;'>
+          <span id='sp-ac-blockdiybutton-diylist' class='sp-ac-spanbutton'
+            @click="other.showBlockListArea = !other.showBlockListArea" v-text="cal_diyBlockListBtn"></span>
+        </li>
+        <li class='ac-blockList' @click="removeABlockListItem" style='max-height:60vh;overflow-y: scroll;'>
+          <ul v-show="!other.showBlockListArea" v-html="getBlockList"></ul>
+        </li>
+        <li class='ac-blockBoxCon' style='max-height: 60vh;text-align: center;margin-left: 26px;'>
+          <textarea v-show="other.showBlockListArea" @keyup="syncToBlockList" @change="syncToBlockList"
+            @paste="syncToBlockList" rows="20" v-text="ACConfig.UserBlockList.join('\\n')"></textarea>
+        </li>
+        <li>
+          {{ lan.use.fieldset_panel.setting_panel.setting_panel_second.addBlockLabel_text }}<input
+            class="sp-ac-addRuleOne" @keyup.enter="ckAddRule" v-model="other.addBlockItem"
+            style='width:55%;'>
+          <span id='sp-ac-addRulebutton' class='sp-ac-spanbutton endbutton' @click="ckAddRule"
+            style='position: relative !important;line-height: 17px;'
+            v-text="lan.use.fieldset_panel.setting_panel.setting_panel_second.addBtnLabel_text">新增</span>
+        </li>
+      </ul>
+      <ul v-show="other.curTab === 3" style="width: 300px">
+        <li>
+          <div class="dialog-body">
+            <label>
+              <span id='sp-ac-blockdiybutton-back' @click="other.curTab=1"
+                class='sp-ac-spanbutton'>返回</span>
+            </label>
+            <div>
+              <div>使用说明：</div>
+              <div>-</div>
+              <p>1. 本脚本不包含任何广告内容，也无意于破坏网站现有功能的完整性，仅希望通过一些显示效果的变更能更好的留存对应网站现有的用户，一定程度上更好地保证了目标网站的日活。</p>
+              <p>
+                2.
+                同时本脚本中所有功能均为学习和研究web前端技术的发展而开发，希望为学习前端技术的研究人员提供一个更好的参考代码，促进web前端技术的发展，便于技术的学习和交流，仅用于学习研究使用，无意于损害任何网站利益，不使用任何盈利方案或参与任何盈利组织。
+              </p>
+              <p>
+                3.
+                因使用本脚本引起的或与本脚本有关的任何争议，各方应友好协商解决，本脚本对使用本脚本所提供的软件时可能对用户自己或他人造成的任何形式的损失和伤害不承担任何责任。如用户下载、安装和使用本产品中所提供的软件，即表明用户信任本作者及其相关协议和免责声明。
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <!------------保存、取消按钮-------------->
+      <span id="sp-ac-cancelbutton" class="sp-ac-spanbutton endbutton" @click="closePanel"
+        :title="lan.use.fieldset_panel.setting_panel.cancelBtn_text" style="position: relative;float: left;"
+        v-text="lan.use.fieldset_panel.setting_panel.cancelBtn_text"></span>
+      <span id="sp-ac-savebutton" ref="bottomSaveButton" @click="saveConfig" class="sp-ac-spanbutton endbutton"
+        :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;"
+        v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
+    </fieldset>
+  </div>
+</div>`;
             try {
               document.body.appendChild(Container);
             } catch (e) {
@@ -2859,7 +2973,6 @@ body[google] {
             }, false);
           } catch (e) {
           }
-
         }
 
         function isElementVisible(dom) {
@@ -3106,7 +3219,7 @@ body[google] {
             const resList = [...document.querySelectorAll("ol>li")].filter(one => one.querySelector('p')) // 定位到所有包含p标签的li
             const adList = resList.filter(one => window.getComputedStyle(one.querySelector('p'), '::before').getPropertyValue('content').includes('url')) // 检查每一个p标签，里面存在before伪元素，且伪元素中是链接的，均为广告
             safeRemoveAd(adList);
-            
+
           } else if (curSite.SiteTypeID === SiteType.GOOGLE) {
             safeRemoveAd("#bottomads");
             safeRemoveAd('div[aria-label="广告"]');
