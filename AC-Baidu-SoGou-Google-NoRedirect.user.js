@@ -351,7 +351,7 @@
     if (window.NodeList && !NodeList.prototype.forEach) {
       NodeList.prototype.forEach = function (callback, thisArg) {
         thisArg = thisArg || window;
-        for (var i = 0; i < this.length; i++) {
+        for (let i = 0; i < this.length; i++) {
           callback.call(thisArg, this[i], i, this);
         }
       };
@@ -671,7 +671,7 @@ body[google] {
     //
     // function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
     //
-    // function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+    // function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (let i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
     let SiteType = {
       BAIDU: DBSite.baidu.SiteTypeID,
@@ -969,7 +969,7 @@ body[google] {
           ACConfig = JSON.parse(localData);
         }catch (e){}
       }
-      for (var key in DefaultConfig) {
+      for (let key in DefaultConfig) {
         if (typeof (ACConfig[key]) === "undefined") {
           ACConfig[key] = DefaultConfig[key];
         }
@@ -1023,7 +1023,7 @@ body[google] {
       try {
         var query = doc.evaluate(xpath, contextNode, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 
-        for (var i = 0; i < query.snapshotLength; i++) {
+        for (let i = 0; i < query.snapshotLength; i++) {
           var node = query.snapshotItem(i); //if node is an element node
 
           if (node.nodeType === 1) result.push(node);
@@ -2049,7 +2049,7 @@ body[google] {
             var body = doc.body;
             var bchilds = body.childNodes;
 
-            for (var i = bchilds.length - 1; i >= 0; i--) {
+            for (let i = bchilds.length - 1; i >= 0; i--) {
               // 移除head的子元素
               child = bchilds[i];
               if (headChildNames[child.nodeName]) body.removeChild(child);
@@ -2152,7 +2152,7 @@ body[google] {
                             if (oriE.length === 0) {
                               throw "翻页-替换翻页元素 'replaceE' 失效";
                             }
-                            for (var i = 0; i < oriE.length; i++) {
+                            for (let i = 0; i < oriE.length; i++) {
                               oriE[i].outerHTML = repE[i].outerHTML;
                             }
                           }
@@ -2906,7 +2906,7 @@ body[google] {
             }
           } else if (curSite.SiteTypeID === SiteType.BAIDU_XUESHU) {
             let xnodes = document.querySelectorAll("a[href*='sc_vurl=http']");
-            for (let j = 0; i < xnodes.length; j++) {
+            for (let j = 0; j < xnodes.length; j++) {
               let xurl = getUrlAttribute(xnodes[j].href, "sc_vurl", true);
               xnodes[j].href = xurl;
             }
@@ -2931,7 +2931,7 @@ body[google] {
 
           // 注意有重复的地址，尽量对重复地址进行去重
           var hasDealHrefSet = new Set();
-          for (var i = 0; i < mainList.length; i++) {
+          for (let i = 0; i < mainList.length; i++) {
             // 此方法是异步，故在结束的时候使用i会出问题-严重!
             // 采用闭包的方法来进行数据的传递
             const curNode = mainList[i];
@@ -3624,7 +3624,7 @@ body[google] {
 
             const gList = document.querySelectorAll(".g")
             const possibleList = []
-            for(const perG of gList) {
+            for (const perG of gList) {
               let curIndex = 2
               let curNode = perG.parentNode
 
