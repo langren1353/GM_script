@@ -684,7 +684,7 @@ body[google] {
       DOGE: DBSite.doge.SiteTypeID,
       ZHIHU: DBSite.zhihu.SiteTypeID,
       BAIDU_XUESHU: DBSite.baidu_xueshu.SiteTypeID,
-      OTHERS: 8
+      OTHERS: DBSite.other.SiteTypeID
     };
     let otherData = {
       other: {
