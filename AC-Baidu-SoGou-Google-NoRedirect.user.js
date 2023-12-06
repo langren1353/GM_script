@@ -3241,7 +3241,7 @@ body[google] {
               let child = cur.firstElementChild;
               if (child && child.nodeName == 'DIV') {
                 let emNode = child.querySelector('em');
-                emNode.parentNode.insertAdjacentElement('afterBegin', ele);
+                if (emNode) emNode.parentNode.insertAdjacentElement('afterBegin', ele)
               } else {
                 cur.insertAdjacentElement('afterBegin', ele);
               }
