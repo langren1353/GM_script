@@ -661,7 +661,7 @@ body[google] {
         Stype_Normal: "h3.t>a, #results .c-container>.c-blocka",
         FaviconType: ".result-op, .c-showurl", // baidu 似乎要改版了？
         FaviconAddTo: "h3",
-        CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
+        CounterType: "#content_left>#double>div[srcid] *[class~=t]>a,[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t]>a,[class~=op_best_answer_question]",
         BlockType: "h3 a",
       },
       other: {
@@ -3228,19 +3228,27 @@ body[google] {
         }
 
         function addCounter(citeList) {
-          let cssText = "font-style:normal;position:relative;z-index:1;margin-right:4px;display:inline-block;color:white;font-family:'微软雅黑';font-size:16px;text-align:center;width:22px;line-height:22px;border-radius:50%;";
-          let div = document.createElement('div');
+          const cssText = "font-style:normal;position:relative;z-index:1;margin-right:4px;display:inline-block;color:white;font-family:'微软雅黑';font-size:16px;text-align:center;width:22px;line-height:22px;border-radius:50%;";
           for (let i = 0; i < citeList.length; i++) {
-            let cur = citeList[i]
+            let cur = citeList[i];
             const index = cur.getAttribute('SortIndex');
             if (index === null || typeof (index) === "undefined") {
               cur.setAttribute('SortIndex', CONST.sortIndex);
-              cur.inner = cur.innerHTML;
-              div.innerHTML = "<em class='AC-CounterT' style=" + cssText + ">" + CONST.sortIndex + "</em>";
-              cur.innerHTML = div.innerHTML + cur.inner;
+              let ele = document.createElement('div')
+              ele.className = 'AC-CounterT';
+              ele.style = cssText;
+              ele.innerText = CONST.sortIndex;
+              let child = cur.firstElementChild;
+              if (child && child.nodeName == 'DIV') {
+                let emNode = child.querySelector('em');
+                if (emNode) emNode.parentNode.insertAdjacentElement('afterBegin', ele)
+              } else {
+                cur.insertAdjacentElement('afterBegin', ele);
+              }
               CONST.sortIndex++;
             } else {
               const curCounter = cur.querySelector(".AC-CounterT")
+              if (!curCounter) return
               const oriIndex = curCounter.innerText
               const checkValue = (i + 1) % 100;
               // 数据值不同
