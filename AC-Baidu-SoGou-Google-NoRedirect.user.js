@@ -609,6 +609,7 @@ body[google] {
         FaviconAddTo: "h2",
         CounterType: "#b_results>li[class~=b_ans] h2,#b_results>li[class~=b_algo] h2",
         BlockType: "h2 a",
+        Stype_Normal: "h2>a",
         pager: {
           nextLink: "//a[contains(@class,\"sb_pagN\")]",
           pageElement: "id(\"b_results\")/li[not(contains(@class,\"b_pag\") or contains(@class,\"b_ans b_top\"))]",
@@ -2395,7 +2396,7 @@ body[google] {
           if (curSite.SiteTypeID === SiteType.OTHERS || curSite.SiteTypeID === SiteType.SOGOU) return;
           if (ACConfig.isRedirectEnable) {
             if (curSite.Stype_Normal) { // 如果定义了，那么就去处理重定向
-              // 百度搜狗去重定向
+              // 百度搜狗bing去重定向
               resetURLNormal();
               if (checkISBaiduMain()) {
                 document.querySelectorAll(".s_form .index-logo-src[src*='gif'], .s_form .index-logo-srcnew[src*='gif']").forEach(function(per) {
@@ -3075,6 +3076,41 @@ body[google] {
                   DealRedirect(null, linkHref, trueLink);
                   return true
                 }
+                // bing国际版数据解析
+                if(curSite.SiteTypeID === SiteType.BING && document.querySelector("#est_cn") === null) {
+                  // 链接数据
+                  const realLinkNode = curNode.querySelector(".b_attribution cite");
+                  if (realLinkNode === null || realLinkNode.textContent === "")
+                    return false;
+                  let realLink = realLinkNode.textContent;
+                  if (!realLink.startsWith("http://") && !realLink.startsWith("https://")) {
+                    realLink = "https://" + realLink;
+                  }
+
+                  DealRedirect(null, linkHref, realLink, null);
+                  // 文章结构分析界面
+                  if (curNode.classList.contains("b_algoBorder")) {
+                    // 对于章节, 后置拼接
+                    const chapterTitles = curNode.querySelectorAll(".b_rc_gb_sub_title>a");
+                    for (const chapterTitle of chapterTitles) {
+                      const link = chapterTitle.getAttribute("href");
+                      const title = chapterTitle.textContent;
+                      if (link === null || link === "" || title === null || title === "")
+                        continue;
+                      const chapterLink = realLink + "#" + title;
+                      DealRedirect(null, link, chapterLink, null, 'subtitle');
+                    }
+                    // 对于图片, 使用原始链接
+                    const chapterImages = curNode.querySelectorAll(".b_rc_gb_img_wrapper>a");
+                    for (const img of chapterImages) {
+                      const link = img.getAttribute("href");
+                      if (link === null || link === "")
+                        continue;
+                      DealRedirect(null, link, realLink, null, 'subtitle');
+                    }
+                  }
+                  return true;
+                }
               }
               const getBaiduEncodingHandle = (linkUrl) => {
                 let resLink = linkUrl
@@ -3134,7 +3170,7 @@ body[google] {
           if (hasDealHrefSet.size > 0 && mainList.length - hasDealHrefSet.size > 0) console.log("丢弃掉", mainList.length - hasDealHrefSet.size, "个重复链接");
         }
 
-        function DealRedirect(request, curNodeHref, respText, RegText) {
+        function DealRedirect(request, curNodeHref, respText, RegText, hrefType) {
           if (respText === null || typeof (respText) === "undefined") return;
           let resultResponseUrl = "";
           if (RegText != null) {
@@ -3158,10 +3194,13 @@ body[google] {
                   changeNode.setAttribute("meta", host);
                   changeNode.dataset.host = host;
                 }
-                if (changeNode.text && changeNode.text.length < 10 && !changeNode.text.includes(host)
-                  // 不能是redirect url 不能是h2\h3下直属链接
-                  && !changeNode.parentElement.tagName.toLowerCase().includes("h")) {
-                  changeNode.insertAdjacentHTML("beforeEnd", "&nbsp;-&nbsp;" + host);
+
+                if (hrefType === null || hrefType === undefined || hrefType === "title") {
+                  if (changeNode.text && changeNode.text.length < 10 && !changeNode.text.includes(host)
+                    // 不能是redirect url 不能是h2\h3下直属链接
+                    && !changeNode.parentElement.tagName.toLowerCase().includes("h")) {
+                    changeNode.insertAdjacentHTML("beforeEnd", "&nbsp;-&nbsp;" + host);
+                  }
                 }
               })
 
