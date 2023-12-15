@@ -3068,25 +3068,23 @@ body[google] {
               hasDealHrefSet.add(linkHref);
               let len2 = hasDealHrefSet.size;
               if (len1 === len2) continue; // 说明数据已经处理过，存在相同的记录
-              const dealAttrLink = () => {
-                // 如果当前节点存在mu参数，或者link节点存在data-mdurl，那么就算成功
+              const isLinkNeedDeal = () => {
+                // 如果当前节点存在mu参数，或者link节点存在data-mdurl，那么就算直接成功，不用重新请求一遍了
                 let trueLink = curNode.getAttribute('mu') || linkNode.getAttribute('data-mdurl')
                 if(trueLink && !trueLink.includes('nourl')) {
                   trueLink = getBaiduEncodingHandle(trueLink)
                   DealRedirect(null, linkHref, trueLink);
                   return true
                 }
-                // bing国际版数据解析
-                if(curSite.SiteTypeID === SiteType.BING && document.querySelector("#est_cn") === null) {
+                // bing国际版 & 国内版 数据解析
+                if(curSite.SiteTypeID === SiteType.BING) {
                   // 链接数据
                   const realLinkNode = curNode.querySelector(".b_attribution cite");
-                  if (realLinkNode === null || realLinkNode.textContent === "")
-                    return false;
+                  if (!realLinkNode || !realLinkNode.textContent) return false;
                   let realLink = realLinkNode.textContent;
-                  if (!realLink.startsWith("http://") && !realLink.startsWith("https://")) {
+                  if (!(realLink.startsWith("http://") || realLink.startsWith("https://"))) {
                     realLink = "https://" + realLink;
                   }
-
                   DealRedirect(null, linkHref, realLink, null);
                   // 文章结构分析界面
                   if (curNode.classList.contains("b_algoBorder")) {
@@ -3095,8 +3093,7 @@ body[google] {
                     for (const chapterTitle of chapterTitles) {
                       const link = chapterTitle.getAttribute("href");
                       const title = chapterTitle.textContent;
-                      if (link === null || link === "" || title === null || title === "")
-                        continue;
+                      if (!link || !title) continue;
                       const chapterLink = realLink + "#" + title;
                       DealRedirect(null, link, chapterLink, null, 'subtitle');
                     }
@@ -3104,8 +3101,7 @@ body[google] {
                     const chapterImages = curNode.querySelectorAll(".b_rc_gb_img_wrapper>a");
                     for (const img of chapterImages) {
                       const link = img.getAttribute("href");
-                      if (link === null || link === "")
-                        continue;
+                      if (!link) continue;
                       DealRedirect(null, link, realLink, null, 'subtitle');
                     }
                   }
@@ -3120,7 +3116,7 @@ body[google] {
                 }
                 return resLink
               }
-              if(dealAttrLink()) {
+              if(!isLinkNeedDeal()) {
                 continue
               }
               // 走接口重定向处理
@@ -3157,14 +3153,6 @@ body[google] {
                   });
                 })(curNode, linkHref); //传递旧的网址过去，读作c_curhref
               }
-              // curNode.addEventListener("mouseover", ()=> {
-              //   const ABKey = RedirectMap.get(curNode.href); // 原始 -> 之后的链接
-              //   if(ABKey) curNode.href = ABKey;
-              // })
-              // curNode.addEventListener("mouseout", ()=> {
-              //   const BAKey = RedirectMap.get(curNode.href); // 之后的连接 -> 原始
-              //   if(BAKey) curNode.href = BAKey;
-              // })
             }
           }
           if (hasDealHrefSet.size > 0 && mainList.length - hasDealHrefSet.size > 0) console.log("丢弃掉", mainList.length - hasDealHrefSet.size, "个重复链接");
