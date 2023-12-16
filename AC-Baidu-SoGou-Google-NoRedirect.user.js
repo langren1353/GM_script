@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.06
+// @version    26.07
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -29,6 +29,7 @@
 // @include    *://*.bing.com/*
 // @include    *://encrypted.google.*/search*
 // @include    *://*.google*/search*
+// @include    *://scholar.google.com/scholar*
 // @include    *://*.google*/webhp*
 // @include    *://*.zhihu.com/*
 // @include    *://*duckduckgo.com/*
@@ -43,8 +44,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2023, AC
-// @lastmodified  2023-06-19
+// @lastmodified  2023-12-16
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2023.12-16-V26.07 日常维护；优化各页面加载卡顿的问题，优化搜索引擎显示效果
 // @note    2023.06-19-V26.06 修复谷歌显示效果的错位问题等，修复谷歌异常白屏问题
 // @note    2022.12-07-V26.04 修复必应错位问题；优化谷歌双列动画问题
 // @note    2022.08-23-V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见
@@ -121,10 +123,6 @@
   let isLocalDebug = false; // 加载本地资源用，调试的时候小心GM的缓存机制
   let debug = isdebug ? console.log.bind(console) : ()=>{}
   let acCssLoadFlag = false;
-
-  // 判断火狐浏览器
-  let isFirefox = navigator.userAgent.indexOf("Firefox") > 0;
-  let googleBlockType = isFirefox ? "#rso a[href]" : "#rso a[ping]";
 
   let inExtMode = typeof (isExtension) !== "undefined";
   let inGMMode = typeof (GM_info.scriptHandler) !== "undefined"; // = "Greasemonkey" || "Tampermonkey" || "ViolentMonkey"
@@ -309,40 +307,82 @@
   }
 
   /**
-   * @param callback 回调函数，需要返回是否结束True、False、否则相当于定时器
-   * callback return:
-   *  true = 倒计时
-   *  false = 计时器
-   *  none = 计时器
-   * @param period 周期，如:200ms
-   * @param runNow 立即执行
+   * 
+   * @param callback interval执行的函数，【注意this指针】
+   * @param timeout 时间周期
+   * @param slowAfterTime 等待多少时间后，调整时间周期
+   * @param newTimeout 新的时间周期
+   * @returns {{cancel: intervalInstance.cancel, reNew: intervalInstance.reNew, clear: intervalInstance.clear}}
    */
-  function RAFInterval(callback, period = 50, runNow = false) {
-    var shouldFinish = false
-    var int_id = null
-    if(runNow) {
-      shouldFinish = callback()
-      if (shouldFinish) return
+  function setSlowInterval(callback = instance => {}, timeout = 50, slowAfterTime = 6000, newTimeout = 1500) {
+    const runAt = new Date().getTime()
+    let _timeout = timeout
+    let shouldPause = false
+    let shouldEnd = false
+    let intervalInstance = {
+      reNew: () => {
+        shouldPause = false
+        _timeout = new Date().getTime()
+      },
+      pause: () => {
+        shouldPause = true
+      },
+      cancel: () => {
+        shouldEnd = true
+      }
     }
-    int_id = setInterval(() => {
-      shouldFinish = callback()
-      shouldFinish && clearInterval(int_id)
-    }, period)
+    
+    function newCallBack() {
+      const deltaT = new Date().getTime() - runAt
+      if(deltaT > slowAfterTime) {
+        _timeout = newTimeout
+      }
+      
+      if(shouldEnd) {
+        return
+      }
+      
+      if(!shouldPause) {
+        callback(intervalInstance)
+        setTimeout(newCallBack, _timeout)
+      } else {
+        setTimeout(() => {}, 5000)
+      }
+    }
+    
+    newCallBack()
+    return intervalInstance
+  }
+
+  /**
+   * 每隔多少周期执行一次callback，减少调用周期
+   * 会先执行一次callback，然后开始计数
+   * 
+   * @param callback 回调函数，【注意this指针】
+   * @param countPeriod 每隔多少周期
+   */
+  function setCountFunction(callback, countPeriod) {
+    let t = 0
+    
+    if(t % countPeriod === 0) {
+      callback()
+      t ++
+    }
   }
 
   function safeWaitFunc(selector, callbackFunc, time, notClear) {
     time = time || 60;
     notClear = notClear || false;
     let doClear = !notClear;
-    RAFInterval(function () {
+    setSlowInterval(instance => {
       if ((typeof (selector) === "string" && document.querySelector(selector) != null)) {
         callbackFunc(document.querySelector(selector));
-        if (doClear) return true;
+        if (doClear) instance.pause();
       } else if (typeof (selector) === "function" && (selector() != null || (selector() || []).length > 0)) {
         callbackFunc(selector()[0]);
-        if (doClear) return true;
+        if (doClear) instance.pause();
       }
-    }, time, true);
+    }, time);
   }
 
   (function () {
@@ -468,7 +508,6 @@ body[baidu] {
     top: 0;
     left: 0;
     content: '';
-    background-image: url('https://img.tujidu.com/image/620210010b2cd.jpg');
     background-size: 100% auto;
     opacity: 0.6; /*背景图透明度=0.8，最大1*/
   }
@@ -501,9 +540,8 @@ body[google] {
     top: 0;
     left: 0;
     content: '';
-    background-image: url('https://img.tujidu.com/image/620210010b2cd.jpg');
     background-size: 100% auto;
-    opacity: 0.8; /*背景图透明度=0.8，最大1*/
+    opacity: 0.4; /*背景图透明度=0.8，最大1*/
   }
 
   #rso .g, .sfbg, .f6F9Be, .k8XOCe {
@@ -529,6 +567,12 @@ body[google] {
       useItem: {},
       fsBaidu: null,
       flushNode: new FlushDomFragment(),
+      BG_List: {
+        1: 'https://img.90dao.com/images/2023/10/02/651a347eef3f5.jpg',
+        2: 'https://img.90dao.com/images/2023/12/17/657de42cb631e.webp',
+        3: 'https://img.90dao.com/images/2023/12/16/657d34e933276.png',
+        4: 'https://img.90dao.com/images/2023/10/26/653985cf1a46d.png',
+      }
     };
 
     var curSite = {
@@ -590,15 +634,29 @@ body[google] {
       },
       google: {
         SiteTypeID: 4,
-        MainType: "#rso .g",
+        MainType: "#rso .g, div[data-micp-id='rso'] .g",
         FaviconType: ".iUh30",
         FaviconAddTo: "h3",
         CounterType: "#rso .g h3,._yE>div[class~=_kk] h3",
-        BlockType: googleBlockType,
+        BlockType: "a:not([href*='translate.google.com'])", // 修复block翻页的问题
         pager: {
           nextLink: "id('pnnext')|id('navbar navcnt nav')//td[span]/following-sibling::td[1]/a|id('nn')/parent::a",
           pageElement: "id('rso')|id('center_col')/style[contains(.,'relative')][id('rso')]",
           HT_insert: ["css;#res", 2], // 1 = beforebegin; 2 = beforeend
+          replaceE: '//div[@id="navcnt"] | //div[@id="rcnt"]//div[@role="navigation"]',
+        }
+      },
+      google_scholar: {
+        SiteTypeID: 4.1,
+        MainType: "#rso .g, div[data-micp-id='rso'] .g",
+        FaviconType: ".iUh30",
+        FaviconAddTo: "h3",
+        CounterType: "#rso .g h3,._yE>div[class~=_kk] h3",
+        BlockType: "a:not([href*='translate.google.com'])", // 修复block翻页的问题
+        pager: {
+          nextLink: '//a[./span[@class="gs_ico gs_ico_nav_next"]]',
+          pageElement: '//div[@class="gs_r gs_or gs_scl"]',
+          HT_insert: null, // 1 = beforebegin; 2 = beforeend
           replaceE: '//div[@id="navcnt"] | //div[@id="rcnt"]//div[@role="navigation"]',
         }
       },
@@ -669,11 +727,6 @@ body[google] {
         SiteTypeID: 9,
       }
     };
-    // function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-    //
-    // function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-    //
-    // function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (let i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
     let SiteType = {
       BAIDU: DBSite.baidu.SiteTypeID,
@@ -698,7 +751,7 @@ body[google] {
         isBlockChecking: false, // 当前Block功能是否还在执行中，避免多次执行，导致页面卡顿
       }
     }; // 到时候挂载到other上
-    let AllData = {
+    const AllData = {
       ACConfig: {},
       other: otherData.other,
       CONST: CONST,
@@ -1174,6 +1227,11 @@ body[google] {
         } else if (location.host.includes("google")) {
           curSite = DBSite.google;
           CONST.useItem = ACConfig.google;
+          // 针对谷歌学术，特殊处理          
+          if(location.host.includes('scholar.google.com')) {
+            curSite = DBSite.google_scholar;
+            CONST.useItem = ACConfig.other
+          }
         } else if (location.host.includes("bing")) {
           curSite = DBSite.bing;
           CONST.useItem = ACConfig.bing;
@@ -1233,7 +1291,8 @@ body[google] {
            * 初始化屏蔽按钮加载
            */
           init: function() {
-            let checkNodes = document.querySelectorAll(curSite.MainType + ":not([bhandle])");
+            const needCheckClass = (curSite.MainType + ',').split(',').join(":not([bhandle]),")
+            let checkNodes = document.querySelectorAll(needCheckClass.substring(0, needCheckClass.length - 1));
             for (let i = 0; i < checkNodes.length; i++) {
               let curNode = checkNodes[i];
               try {
@@ -1244,13 +1303,17 @@ body[google] {
                 if (ACConfig.isBlockBtnNotDisplay) {
                   nodeStyle = "display:none;";
                 }
-                // 避免父节点出现两个block按钮
-                if (!faNode.hasAttribute('hasInsert')) {
-                  faNode.insertAdjacentHTML("afterend", `<button style='${ nodeStyle }' class='ghhider ghhb' href="${ faviconNode.href || faviconNode.innerText }" meta="${ host }" data-host="${ host }" title='${ this.getBlockBtnTitle(host) }'>block</button>`);
+                if(faNode) {
+                  // 避免父节点出现两个block按钮
+                  if (!faNode.hasAttribute('hasInsert')) {
+                    faNode.insertAdjacentHTML("afterend", `<button style='${ nodeStyle }' class='ghhider ghhb' href="${ faviconNode?.href || faviconNode?.innerText }" meta="${ host }" data-host="${ host }" title='${ this.getBlockBtnTitle(host) }'>block</button>`);
+                  }
+                  faNode.setAttribute("hasInsert", "1");
                 }
-                faNode.setAttribute("hasInsert", "1");
+                
                 curNode.setAttribute("bhandle", "1");
               } catch (e) {
+                console.error(e)
                 const failed_count = +(curNode.getAttribute('failed_count') || 1)
                 curNode.setAttribute('failed_count', failed_count + 1)
                 if (failed_count > 3) {
@@ -1259,7 +1322,7 @@ body[google] {
               }
             }
             this.initListener();
-            this.renderDisplay();
+            setCountFunction(this.renderDisplay.bind(this), 3)
           },
           getBlockBtnTitle(host) {
             return `点击即可屏蔽 ${ host } 放开，需要在自定义中手动配置放开`;
@@ -1300,9 +1363,8 @@ body[google] {
             for (let i = 0; i < checkNodes.length; i++) {
               try {
                 let curNode = checkNodes[i];
-                let { curHost, curUrl } = getNodeHost(curNode.querySelector(curSite.FaviconType));
-                curUrl = curUrl || "";
-                if (curHost === null) continue;
+                let { curHost = "", curUrl = "" } = getNodeHost(curNode.querySelector(curSite.FaviconType));
+                if (!curHost) continue
                 let BlockBtn = curNode.querySelector(".ghhider.ghhb");
                 BlockBtn.dataset.host = BlockBtn.dataset.meta = curHost;
                 BlockBtn.title = this.getBlockBtnTitle(curHost);
@@ -1454,11 +1516,10 @@ body[google] {
             if (ACConfig.isAdsEnable) { // 先来移除多余的广告内容
               removeAD_baidu_sogou();
             }
-            CONST.flushNode.flush()
-            setInterval(() => {
+            setSlowInterval(() => {
               CONST.flushNode.flush()
             }, 200)
-            setInterval(function() {
+            setSlowInterval(function() {
               if (document.body) {
                 rapidDeal(); // 定期调用，避免有时候DOM插入没有执行导致的问题
               }
@@ -1485,6 +1546,10 @@ body[google] {
               }
             },
             methods: {
+              changeBgToIndex(idx) {
+                ACConfig.baidu.defaultBgUrl = this.CONST.BG_List[idx]
+                ACConfig.baidu.BgFit = true
+              },
               async labelShowHideEnv(e) {
                 let cur = e.srcElement || e.target;
                 let className = cur.parentNode.className.replace("container-label ", "");
@@ -1969,8 +2034,7 @@ body[google] {
                 // 开启后，且在非（suprepreloader启用）时均可
                 if (ACConfig.isAutopage === true && !(spl && spl.checked === true)) {
                   var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-                  let scrollDelta = 666;
-                  if (curSite.SiteTypeID === SiteType.GOOGLE) scrollDelta = 1024; // 毕竟谷歌加载缓慢的问题
+                  let scrollDelta = 888;
                   if (document.documentElement.scrollHeight <= document.documentElement.clientHeight + scrollTop + scrollDelta && curSite.pageLoading === false) {
                     curSite.pageLoading = true;
                     if (curSite.SiteTypeID === SiteType.DUCK) { // 可以用已有的方法来实现了
@@ -1984,6 +2048,9 @@ body[google] {
                       ShowPager.loadMorePage();
                       if (curSite.pager && curSite.pager.stylish) {
                         CONST.flushNode.insert(await create_CSS_Node(curSite.pager.stylish, "AC-pager-stylish"))
+                      } else {
+                        curSite.pageLoading = false;
+                        console.info('当前站点没有配置pager')
                       }
                     }
                   }
@@ -2099,13 +2166,24 @@ body[google] {
                 method: "GET",
                 timeout: 5000,
                 onload: function(response) {
+                  
                   try {
                     var newBody = ShowPager.createDocumentByString(response.responseText);
 
+                    const [Rule_insertTo = '', Rule_insertMode = 1] = curSite.pager.HT_insert || []
                     let pageElems = getAllElements(curSite.pager.pageElement, newBody, newBody);
                     const scriptElems = getAllElements('//script', newBody, newBody);
 
-                    let toElement = getAllElements(curSite.pager.HT_insert[0])[0];
+                    let toElement;
+                    
+                    if (pageElems.length) {
+                      const curPageElems = getAllElements(curSite.pager.pageElement, document, document)
+                      const pELast = curPageElems[curPageElems.length - 1];
+                      toElement = pELast.nextSibling ? pELast.nextSibling : pELast.parentNode.appendChild(document.createTextNode(' '));
+                    }
+                    if (Rule_insertTo) {
+                      toElement = getAllElements(Rule_insertTo)[0];
+                    }
                     if (pageElems.length >= 0) {
                       // 处理最后一个翻页按钮
                       let nextEs = document.querySelectorAll("#sp-sp-gonext");
@@ -2116,18 +2194,34 @@ body[google] {
                       // 插入翻页按钮元素
                       curSite.pageNum++;
                       let addTo = "beforeend";
-                      if (curSite.pager.HT_insert[1] === 1) addTo = "beforebegin";
-                      toElement.insertAdjacentHTML(addTo, `<div class='sp-separator AC' id='sp-separator-ACX'>
+                      if (Rule_insertMode === 1) addTo = "beforebegin";
+                      
+                      const insertPager = document.createElement('div')
+                      insertPager.id = "sp-separator-ACX".replace(/ACX/gm, curSite.pageNum)
+                      insertPager.className = "sp-separator AC"
+                      insertPager.innerHTML = `
                           <a class='sp-sp-nextlink' target='_blank'><b>第 <span style='color:#595959!important;'>ACX</span> 页</b></a>
                           <span id="sp-sp-gotop" class='ac_sp_top' title='去到顶部'></span>
                           <span id="sp-sp-gopre" class='${ curSite.pageNum <= 2 ? "ac_sp_pre_gray" : "ac_sp_pre" }' title='上滚一页' ></span>
                           <span id="sp-sp-gonext" class='ac_sp_next_gray' title='下滚一页'></span>
-                          <span id="sp-sp-gobottom" class='ac_sp_bottom' title='去到底部' ></span></div>`
-                        .replace(/ACX/gm, curSite.pageNum));
-                      // 插入新页面元素
-                      pageElems.forEach(function(one) {
-                        toElement.insertAdjacentElement(addTo, one);
-                      });
+                          <span id="sp-sp-gobottom" class='ac_sp_bottom' title='去到底部' ></span>`
+                        .replace(/ACX/gm, curSite.pageNum);
+                      
+                      if(Rule_insertMode === 1) {
+                        toElement.parentNode.insertBefore(insertPager, toElement)
+                        
+                        // 插入新页面元素
+                        pageElems.forEach(function(one) {
+                          toElement.parentNode.insertBefore(one, toElement)
+                        });
+                      } else {
+                        toElement.appendChild(insertPager)
+
+                        pageElems.forEach(function(one) {
+                          toElement.appendChild(one)
+                        });
+                      }
+                      
                       document.querySelectorAll(".sp-separator.AC:not([bind])").forEach(function(per) {
                         per.setAttribute("bind", 1);
                         per.addEventListener("click", ac_spfunc);
@@ -2152,7 +2246,7 @@ body[google] {
                           let repE = getAllElements(curSite.pager.replaceE, newBody, newBody);
                           if (oriE.length === repE.length) {
                             if (oriE.length === 0) {
-                              throw "翻页-替换翻页元素 'replaceE' 失效";
+                              throw "翻页-替换翻页元素 无 'replaceE' 待替换的";
                             }
                             for (let i = 0; i < oriE.length; i++) {
                               oriE[i].outerHTML = repE[i].outerHTML;
@@ -2374,6 +2468,7 @@ body[google] {
          * isBaiduLink = 是否为未处理之前的百度链接
          * */
         function getNodeHost(sitetpNode) {
+          if (!sitetpNode) return {}
           if (curSite.SiteTypeID === SiteType.BAIDU) {
             const href = sitetpNode.getAttribute("href");
             if (href != null && !href.includes("baidu.com/link")) {
@@ -2466,8 +2561,8 @@ body[google] {
             let Container = document.createElement('div');
             Container.id = "sp-ac-container";
             Container.innerHTML =
-`<div id="sp-ac-content" style="display: none;" xmlns="http://www.w3.org/1999/html">
-  <div id="sp-ac-main">
+`<label id="sp-ac-content" style="display: none;" xmlns="http://www.w3.org/1999/html">
+  <label id="sp-ac-main">
     <fieldset id="sp-ac-autopager-field" style="display:block;">
       <legend class="iframe-father">
         <a class="linkhref" href="https://www.ntaow.com/aboutscript.html" target="_blank"
@@ -2475,6 +2570,7 @@ body[google] {
       </legend>
       <ul class="setting-main" v-show="other.curTab === 1">
         <li>
+          <input name="nothing" type="radio" style="display: none">
           <label :title="lan.use.fieldset_panel.setting_panel.redirect_title">
             <input id="sp-ac-redirect" name="sp-ac-a_separator" type="checkbox"
               v-model="ACConfig.isRedirectEnable">
@@ -2531,7 +2627,7 @@ body[google] {
         </li>
         <li>
           <!------------百度样式-------------->
-          <label class="container-label baidu">
+          <label for="nothing" class="container-label baidu">
             <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_baidu_lable"
               @click="labelShowHideEnv"></label>
             <label style="margin-left:20px"><input name="sp-ac-a_force_style_baidu" value="0"
@@ -2580,12 +2676,18 @@ body[google] {
                 {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
               </label>
             </label>
+            <label for="nothing" style="margin: 0px 0px 2px 80px">
+              <label><input name="sp-ac-radio-bg-baidu" value="1" type="radio" @click="changeBgToIndex(1)">图片1</label>
+              <label><input name="sp-ac-radio-bg-baidu" value="2" type="radio" @click="changeBgToIndex(2)">图片2</label>
+              <label><input name="sp-ac-radio-bg-baidu" value="3" type="radio" @click="changeBgToIndex(3)">图片3</label>
+              <label><input name="sp-ac-radio-bg-baidu" value="4" type="radio" @click="changeBgToIndex(4)">图片4</label>
+            </label>
           </label>
           <!------------百度样式-------------->
           <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;">
           </div>
           <!------------谷歌样式-------------->
-          <label class="container-label google">
+          <label for="nothing" class="container-label google">
             <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_google_lable"
               @click="labelShowHideEnv"></label>
             <label style="margin-left:20px">
@@ -2636,12 +2738,19 @@ body[google] {
                 {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
               </label>
             </label>
+            <br>
+            <label for="nothing" style="margin: 0px 0px 2px 80px">
+              <label><input name="sp-ac-radio-bg-baidu" value="1" type="radio" @click="changeBgToIndex(1)">图片1</label>
+              <label><input name="sp-ac-radio-bg-baidu" value="2" type="radio" @click="changeBgToIndex(2)">图片2</label>
+              <label><input name="sp-ac-radio-bg-baidu" value="3" type="radio" @click="changeBgToIndex(3)">图片3</label>
+              <label><input name="sp-ac-radio-bg-baidu" value="4" type="radio" @click="changeBgToIndex(4)">图片4</label>
+            </label>
           </label>
           <!------------谷歌样式-------------->
           <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;">
           </div>
           <!------------必应样式-------------->
-          <label class="container-label bing">
+          <label for="nothing" class="container-label bing">
             <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_bing_lable"
               @click="labelShowHideEnv"></label>
             <label style="margin-left:20px"><input name="sp-ac-a_force_style_bing"
@@ -2685,11 +2794,18 @@ body[google] {
                 {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
               </label>
             </label>
+            <br>
+            <label for="nothing" style="margin: 0px 0px 2px 80px">
+              <label><input name="sp-ac-radio-bg-baidu" value="1" type="radio" @click="changeBgToIndex(1)">图片1</label>
+              <label><input name="sp-ac-radio-bg-baidu" value="2" type="radio" @click="changeBgToIndex(2)">图片2</label>
+              <label><input name="sp-ac-radio-bg-baidu" value="3" type="radio" @click="changeBgToIndex(3)">图片3</label>
+              <label><input name="sp-ac-radio-bg-baidu" value="4" type="radio" @click="changeBgToIndex(4)">图片4</label>
+            </label>
           </label>
           <!------------必应样式-------------->
           <!--                        <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;"></div>-->
           <!--                        &lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;搜狗样式&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
-          <!--                        <label class="container-label sogou">-->
+          <!--                        <label for="nothing" class="container-label sogou">-->
           <!--                          <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_sogou_lable" @click="labelShowHideEnv"></label>-->
           <!--                          <label style="margin-left:20px"><input name="sp-ac-a_force_style_sogou" v-model="ACConfig.sogou.AdsStyleMode" value="0" type="radio">-->
           <!--                          {{ lan.use.fieldset_panel.setting_panel.userStyle_sogou_origin }}-->
@@ -2719,7 +2835,7 @@ body[google] {
           <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;">
           </div>
           <!------------鸭鸭搜样式-------------->
-          <label class="container-label duck">
+          <label for="nothing" class="container-label duck">
             <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_duck_lable"
               @click="labelShowHideEnv"></label>
             <label style="margin-left:20px"><input name="sp-ac-a_force_style_duck"
@@ -2762,7 +2878,7 @@ body[google] {
           <div style="height: 1px;width:267px;margin-left:25px;background-color:#d8d8d8;margin-top:1px;">
           </div>
           <!------------多吉样式-------------->
-          <label class="container-label doge">
+          <label for="nothing" class="container-label doge">
             <label class="label_hide" v-text="lan.use.fieldset_panel.setting_panel.userStyle_doge_lable"
               @click="labelShowHideEnv"></label>
             <label style="margin-left:20px"><input name="sp-ac-a_force_style_doge"
@@ -3295,6 +3411,11 @@ body[google] {
           // --搜狗百度专用；如果第一个是中文的话，地址就是第二个
           if ((result.length > 1 && new RegExp("[\\u4E00-\\u9FFF]+", "g").test(sbefore)) && (curSite.SiteTypeID === SiteType.BAIDU || curSite.SiteTypeID === SiteType.SOGOU)) {
             sbefore = result[1];
+          } else {
+            result = sbefore.split('\n');
+            if (result.length > 1 && curSite.SiteTypeID === SiteType.GOOGLE) {
+              sbefore = result[1];
+            }
           }
           // 此时sbefore几乎是等于网址了，但是有时候会有多的空格，多的内容，多的前缀http，多余的路径
           let res = new RegExp(/(https?:\/\/)?([^/\s]+)/i).exec(sbefore);
@@ -3342,7 +3463,8 @@ body[google] {
                     & tmpHTML.indexOf("img_fav rms_img")
                     & tmpHTML.indexOf("c-tool-")
                     & tmpHTML.indexOf("span class=\"c-icon c-icon-")
-                    & tmpHTML.indexOf("img class=\"xA33Gc");
+                    & tmpHTML.indexOf("img class=\"xA33Gc")
+                    & tmpHTML.indexOf("img class=\"XNo5Ab\""); // 谷歌图标
                   //他自己已经做了favicon了
                   if (pos > -1) {
                     // console.log("已有图片：");
@@ -3459,7 +3581,7 @@ body[google] {
       }
 
       function AC_addStyle(css, className, addToTarget, isReload = false, initType = "text/css") { // 添加CSS代码，不考虑文本载入时间，只执行一次-无论成功与否，带有className
-        RAFInterval(async () => {
+        setSlowInterval(async instance => {
           /**
            * addToTarget这里不要使用head标签,head标签的css会在html载入时加载，
            * html加载后似乎不会再次加载，body会自动加载
@@ -3476,14 +3598,14 @@ body[google] {
               safeRemove("." + className);
             } else if (isReload === false && document.querySelector("." + className) != null) {
               // 节点存在 && 不准备覆盖
-              return true;
+              instance.pause()
             }
 
             let cssNode = document.createElement("style");
             if (className != null) cssNode.className = className;
 
             // 针对less进行单独处理
-            if(initType.includes('less')) {
+            if (initType.includes('less')) {
               // parseHTML 耗时 没必要
               const { css: renderCSS = '' } = await less.render(css);
               css = renderCSS
@@ -3499,9 +3621,9 @@ body[google] {
             } catch (e) {
               console.log(e.message);
             }
-            return true;
+            instance.pause()
           }
-        }, 20, true);
+        }, 20);
       }
 
       function hideNode(node) {
@@ -3695,7 +3817,7 @@ body[google] {
               "}\n" +
               "div[two-father]{\n" +
               "    animation-duration: 0s !important;\n" +
-              "}");
+              "}", 'AC-PageNoAni');
             this.flushDom.insert(node2, 'head')
 
             const node = await this.loadStyle(CONST.useItem.name + "OnePageStyle", CONST.useItem.name + "OnePageStyle");
@@ -3742,7 +3864,7 @@ body[google] {
               "AC-FourPageExStyle");
             this.flushDom.insert(node2, 'head')
           },
-          findPosibleTwoLine() {
+          findPossibleTwoLines() {
             // 通过.g来往上查找
             // 如果其拥有的子节点的className具有两个以上的相同项，那么认为是grid布局，需要遍历，增加标记位
             function checkOne(element) {
@@ -3773,7 +3895,7 @@ body[google] {
             const gList = document.querySelectorAll(".g")
             const possibleList = []
             for (const perG of gList) {
-              let curIndex = 2
+              let curIndex = 10 // 最多查10层
               let curNode = perG.parentNode
 
               while(curIndex-- > 0) {
@@ -3793,7 +3915,7 @@ body[google] {
           },
           googleFatherChildTag: async function() {
             if (curSite.SiteTypeID === SiteType.GOOGLE) {
-              let nodeList = this.findPosibleTwoLine()
+              let nodeList = this.findPossibleTwoLines()
               // console.log(nodeList)
 
               // 对于这些块，都判定一下结构，如果子节点中div数量不足2个的，那么丢弃grid布局
@@ -3860,7 +3982,7 @@ body[google] {
           centerDisplay: async function () {
             // flush完成之后，等一等变更，渲染差不多之后再刷新
             this.googleFatherChildTag() // 先初始化，减少抖动问题
-            setInterval(() => {
+            setSlowInterval(() => {
               this.googleFatherChildTag()
             }, 600)
             // 如果是百度 && ((地址替换->包含wd关键词[替换之后不等-是百度结果页面]) || 有右边栏-肯定是百度搜索结果页 || value中存在搜索内容) return;
@@ -3923,26 +4045,25 @@ body[google] {
             this.flushCheckAndLoad()
           },
           flushDom: new FlushDomFragment(),
-          huyanTimer: 0,
-          flushTimer: 0,
+          huyanTimer: null,
+          flushTimer: null,
           huyanCheckAndLoad: function() {
             /**护眼Style最后载入**/
             if (CONST.useItem.HuYanMode === true){
               this.loadHuYanStyle()
             }
             if(!this.huyanTimer) {
-              this.huyanTimer = setInterval(() => {
+              this.huyanTimer = setSlowInterval(() => {
                 if (document.querySelector("style[class*='darkreader']") != null) {
                   this.loadHuYanStyle()
-                  clearInterval(this.huyanTimer)
-                  this.huyanTimer = 0
+                  this.huyanTimer.cancel()
                 }
               }, 100)
             }
           },
           flushCheckAndLoad: function() {
             if(!this.flushTimer) {
-              this.flushTimer = setInterval(() => {
+              this.flushTimer = setSlowInterval(() => {
                 this.flushDom.flush()
               }, 600)
             }

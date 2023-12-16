@@ -40,7 +40,7 @@ body[baidu] .pagefoot.gj {
 #wrapper #content_left, #wrapper #container.sam_newgrid #rs, #wrapper #page {
   position: relative;
   padding-left: 0px;
-  width: 40% !important;
+  width: 50% !important;
   min-width: 670px;
   float: unset;
   margin-left: unset;
@@ -216,8 +216,7 @@ form.fm .s_ipt_wr.bg {
       .s_tab_inner{
         display: flex;
         justify-content: space-evenly;
-        width: 130%;
-        margin-left: -200px;
+        padding-left: 0;
         
         > * {
           margin-right: 0;
@@ -248,3 +247,21 @@ form.fm .s_ipt_wr.bg {
   }
 }
 
+@media screen and (max-width: 1920px) {
+  body[baidu] {
+    #wrapper #s_tab {
+      margin-left: 96px;
+
+      .s_tab_inner{
+        display: flex;
+        justify-content: space-evenly;
+        padding-left: 0;
+
+        > * {
+          margin-right: 0;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

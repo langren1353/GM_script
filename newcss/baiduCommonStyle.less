@@ -147,8 +147,8 @@ form.fm {
 }
 
 #wrapper #content_left > .result[tpl='soft'] .op-soft-title,
-#wrapper #content_left > .result h3[class~='c-title'],
-#wrapper #content_left > .c-container h3[class~='c-title'] {
+#wrapper #content_left > .result h3[class*='title'],
+#wrapper #content_left > .c-container h3[class*='title'] {
   background-color: #f8f8f8;
   margin: 0px -8px 10px -20px;
   padding: 8px 20px 5px;
@@ -215,7 +215,7 @@ form.fm {
   .result-op,
   & > .c-container {
 
-    h3[class~='c-title'] {
+    h3[class*='t'] {
       font-weight: bold;
       font-size: medium;
     }
@@ -251,6 +251,10 @@ form.fm {
         transition: width 350ms;
       }
     }
+  }
+  
+  .xpath-log{
+    
   }
 }
 
@@ -420,6 +424,18 @@ body.showRight {
 
     &.tag-fixed{
       left: 0;
+    }
+    
+    &:not(.tag-fixed) {
+      overflow: hidden;
+      
+      div[class*='tag-wrapper']{
+        margin-left: unset;
+
+        div[class*='tag-scroll'] {
+          text-align: center;
+        }
+      }
     }
   }
   
