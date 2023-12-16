@@ -1,7 +1,7 @@
 # AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.18-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)
 
-QQ群-加群链接：[xxxx交流群](https://ac.tujidu.com)
+QQ群-加群链接：[AC脚本交流群](https://ac.tujidu.com)
 
 ## 当前版本
 
@@ -29,6 +29,16 @@ QQ群-加群链接：[xxxx交流群](https://ac.tujidu.com)
 
 ### 更新日志
 
+***2023.12-16*** : V26.07 日常维护~
+
+***2023.06-19*** : V26.06 修复谷歌显示效果的错位问题等，修复谷歌异常白屏问题
+
+***2022.12-07*** : V26.04 修复必应错位问题；优化谷歌双列动画问题
+
+***2022.08-23*** : V26.03 修复因背景图引起的看不清字的问题;修复百度单列错位问题;修复google自定义按钮不可见
+
+***2022.08-23*** : V26.02 加快代码执行速度；减少动画撕裂；替换CDN的md5库
+
 ***2022.08-22*** : V26.01 因甲癌手术和公司事务停更了2个月，目前补上，推荐更新。 1.修复百度加载缓慢的问题；2.修复谷歌样式加载顺序异常的问题；3.整体优化样式加载时间，更流畅了
 
 ***2022.06.18*** : V25.09 更新使用less方案来对样式表进行精简
@@ -50,29 +60,29 @@ QQ群-加群链接：[xxxx交流群](https://ac.tujidu.com)
 ### 展示效果-运行成功后
 - 旧版本的：
 
-![刚开始](https://ae01.alicdn.com/kf/HTB1GouwX21G3KVjSZFkq6yK4XXaU.jpg)
+![刚开始](https://img.90dao.com/images/2023/12/16/657d869b5fe80.jpg)
 - Baidu搜索结果
 
-![Baidu搜索结果](https://ae01.alicdn.com/kf/HTB15FyzX8SD3KVjSZFqq6A4bpXat.jpg)
+![Baidu搜索结果](https://img.90dao.com/images/2023/12/16/657d863bcbb50.jpg)
 - google搜索结果
 
-![google搜索结果](https://ae01.alicdn.com/kf/HTB1lOyxX.GF3KVjSZFoq6zmpFXaL.jpg)
+![google搜索结果](https://img.90dao.com/images/2023/12/16/657d863c17920.jpg)
+
+自定义设置效果
+![google搜索结果](https://img.90dao.com/images/2023/12/16/657d863b31ad1.jpg)
 
 ### 如果在Opera下使用
 如果脚本需要在Opera下使用的话，需要这样设置TamperMokey扩展
-![Opera的特殊处理](https://ae01.alicdn.com/kf/HTB1erSwX21G3KVjSZFkq6yK4XXaT.jpg)
-
-
-### 如果遇到![这种](https://ae01.alicdn.com/kf/HTB1BReGXW1s3KVjSZFtq6yLOpXat.jpg)
-如果遇到了上图这种情况，下面这样设置就可以了
-![Opera的特殊处理](https://ae01.alicdn.com/kf/HTB1YHCzX8WD3KVjSZKPq6yp7FXao.jpg)
-
+![Opera的特殊处理](https://img.90dao.com/images/2023/12/16/657d86ffcba3f.png)
 
 ### 关于捐赠
-由于脚本属于非盈利内容，全靠用爱发电，什么时候没有这份精力继续了，可能就再也不会更新了，因此之后不在考虑捐赠，也不会有其他任何捐赠链接
+由于脚本属于非盈利内容，全靠用爱发电，什么时候没有这份精力继续了，可能就再也不会更新了，如果有兴趣捐赠的话，可以点击一下捐赠
 因此觉得脚本还行的话，不嫌麻烦可以帮忙点一下右上角的Star小星星
 
-如果有任何问题的话，请提交一个issue
+捐赠地址：支付宝、微信
+![捐赠-淘宝-微信](https://img.90dao.com/images/2023/12/16/657d87676d363.png)
+
+如果有任何问题的话，请提交一个issue，同时欢迎大家PR
 
 If you have any problems on using the script, please submit an issue
 

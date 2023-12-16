@@ -92,12 +92,12 @@ const openUrl = function(node){
   })
 }
 function initSite() {
+  
   MyConfig.id = MyApi.getUrlAttribute('id')
   MyConfig.name = document.querySelector('.tb-main-title, h1[class*="ItemHeader--mainTitle"]').innerText.trim()
   
   resetUrls(getUrls())
   checkCoupon()
-
 
 
   function getUrls() {
@@ -132,7 +132,9 @@ function initSite() {
         MyConfig.name = title
         MyConfig.couponPrice = couponPrice
         if(couponPrice > 0) {
-          resetFindTitle(`${couponPrice}元优惠券！`)
+          resetFindTitle(`!${couponPrice}元优惠券!`)
+        } else {
+          resetFindTitle(`无优惠券`)
         }
         resetUrls(getUrls())
       }
