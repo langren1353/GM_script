@@ -592,7 +592,7 @@ body[google] {
         Stype_Normal: "h3.t>a, .c-container article a",
         FaviconType: ".c-showurl, .c-title a",
         FaviconAddTo: "h3",
-        CounterType: "#content_left>#double>div[srcid] *[class~=t],[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t],[class~=op_best_answer_question]",
+        CounterType: "#content_left>#double>div[srcid] *[class~=t]>a:first-child,[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t]>a:first-child,[class~=op_best_answer_question]",
         BlockType: "h3 a",
         pager: {
           nextLink: '//div[@id="page"]//a[contains(text(),"下一页")][@href]',
@@ -637,7 +637,7 @@ body[google] {
         MainType: "#rso .g, div[data-micp-id='rso'] .g",
         FaviconType: ".iUh30",
         FaviconAddTo: "h3",
-        CounterType: "#rso .g h3,._yE>div[class~=_kk] h3",
+        CounterType: "#rso .g h3:not(table h3),._yE>div[class~=_kk] h3",
         BlockType: "a:not([href*='translate.google.com'])", // 修复block翻页的问题
         pager: {
           nextLink: "id('pnnext')|id('navbar navcnt nav')//td[span]/following-sibling::td[1]/a|id('nn')/parent::a",
@@ -651,7 +651,7 @@ body[google] {
         MainType: "#rso .g, div[data-micp-id='rso'] .g",
         FaviconType: ".iUh30",
         FaviconAddTo: "h3",
-        CounterType: "#rso .g h3,._yE>div[class~=_kk] h3",
+        CounterType: "#rso .g h3:not(table h3),._yE>div[class~=_kk] h3",
         BlockType: "a:not([href*='translate.google.com'])", // 修复block翻页的问题
         pager: {
           nextLink: '//a[./span[@class="gs_ico gs_ico_nav_next"]]',
@@ -1306,7 +1306,7 @@ body[google] {
                 if(faNode) {
                   // 避免父节点出现两个block按钮
                   if (!faNode.hasAttribute('hasInsert')) {
-                    faNode.insertAdjacentHTML("afterend", `<button style='${ nodeStyle }' class='ghhider ghhb' href="${ faviconNode?.href || faviconNode?.innerText }" meta="${ host }" data-host="${ host }" title='${ this.getBlockBtnTitle(host) }'>block</button>`);
+                    faNode.parentNode.insertAdjacentHTML("beforeend", `<button style='${ nodeStyle }' class='ghhider ghhb' href="${ faviconNode?.href || faviconNode?.innerText }" meta="${ host }" data-host="${ host }" title='${ this.getBlockBtnTitle(host) }'>block</button>`);
                   }
                   faNode.setAttribute("hasInsert", "1");
                 }
@@ -3377,7 +3377,7 @@ body[google] {
             const index = cur.getAttribute('SortIndex');
             if (index === null || typeof (index) === "undefined") {
               cur.setAttribute('SortIndex', CONST.sortIndex);
-              let ele = document.createElement('div')
+              let ele = document.createElement('em');
               ele.className = 'AC-CounterT';
               ele.style = cssText;
               ele.innerText = CONST.sortIndex;
@@ -3391,7 +3391,7 @@ body[google] {
               CONST.sortIndex++;
             } else {
               const curCounter = cur.querySelector(".AC-CounterT")
-              if (!curCounter) return
+              if (!curCounter) continue
               const oriIndex = curCounter.innerText
               const checkValue = (i + 1) % 100;
               // 数据值不同
