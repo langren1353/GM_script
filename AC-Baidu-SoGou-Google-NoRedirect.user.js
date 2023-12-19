@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.07
+// @version    26.08
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -81,23 +81,23 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.05
-// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.05
-// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.05
-// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.06
-// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.05
-// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.05
-// @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.05
-// @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.05
-// @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.05
-// @resource  duckCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.05
-// @resource  duckOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=26.05
-// @resource  duckTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=26.05
-// @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.05
-// @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.05
-// @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.05
-// @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.06
-// @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.05
+// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.07
+// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.07
+// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.07
+// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.07
+// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.07
+// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.07
+// @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.07
+// @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.07
+// @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.07
+// @resource  duckCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.07
+// @resource  duckOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=26.07
+// @resource  duckTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=26.07
+// @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.07
+// @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.07
+// @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.07
+// @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.07
+// @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.07
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
@@ -2568,7 +2568,7 @@ body[google] {
         <a class="linkhref" href="https://www.ntaow.com/aboutscript.html" target="_blank"
           v-text="lan.use.fieldset_panel.panel_title"></a>
       </legend>
-      <ul class="setting-main" v-show="other.curTab === 1">
+      <ul class="setting-main" v-show="other.curTab === 1" style="max-width: 400px">
         <li>
           <input name="nothing" type="radio" style="display: none">
           <label :title="lan.use.fieldset_panel.setting_panel.redirect_title">
@@ -2738,7 +2738,6 @@ body[google] {
                 {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
               </label>
             </label>
-            <br>
             <label for="nothing" style="margin: 0px 0px 2px 80px">
               <label><input name="sp-ac-radio-bg-baidu" value="1" type="radio" @click="changeBgToIndex(1)">图片1</label>
               <label><input name="sp-ac-radio-bg-baidu" value="2" type="radio" @click="changeBgToIndex(2)">图片2</label>
@@ -2794,7 +2793,6 @@ body[google] {
                 {{ lan.use.fieldset_panel.setting_panel.backgroundImageAutoFit_text }}
               </label>
             </label>
-            <br>
             <label for="nothing" style="margin: 0px 0px 2px 80px">
               <label><input name="sp-ac-radio-bg-baidu" value="1" type="radio" @click="changeBgToIndex(1)">图片1</label>
               <label><input name="sp-ac-radio-bg-baidu" value="2" type="radio" @click="changeBgToIndex(2)">图片2</label>
@@ -3192,37 +3190,39 @@ body[google] {
                   DealRedirect(null, linkHref, trueLink);
                   return true
                 }
-                // bing国际版 & 国内版 数据解析
-                if(curSite.SiteTypeID === SiteType.BING) {
-                  // 链接数据
-                  const realLinkNode = curNode.querySelector(".b_attribution cite");
-                  if (!realLinkNode || !realLinkNode.textContent) return false;
-                  let realLink = realLinkNode.textContent;
-                  if (!(realLink.startsWith("http://") || realLink.startsWith("https://"))) {
-                    realLink = "https://" + realLink;
-                  }
-                  DealRedirect(null, linkHref, realLink, null);
-                  // 文章结构分析界面
-                  if (curNode.classList.contains("b_algoBorder")) {
-                    // 对于章节, 后置拼接
-                    const chapterTitles = curNode.querySelectorAll(".b_rc_gb_sub_title>a");
-                    for (const chapterTitle of chapterTitles) {
-                      const link = chapterTitle.getAttribute("href");
-                      const title = chapterTitle.textContent;
-                      if (!link || !title) continue;
-                      const chapterLink = realLink + "#" + title;
-                      DealRedirect(null, link, chapterLink, null, 'subtitle');
-                    }
-                    // 对于图片, 使用原始链接
-                    const chapterImages = curNode.querySelectorAll(".b_rc_gb_img_wrapper>a");
-                    for (const img of chapterImages) {
-                      const link = img.getAttribute("href");
-                      if (!link) continue;
-                      DealRedirect(null, link, realLink, null, 'subtitle');
-                    }
-                  }
-                  return true;
-                }
+                // MARK bing国际版 & 国内版 数据解析 这里目前有严重bug，暂时无法复现重定向流程，先停止重定向
+                // if(curSite.SiteTypeID === SiteType.BING) {
+                //   // 链接数据
+                //   const realLinkNode = curNode.querySelector(".b_attribution cite");
+                //   if (!realLinkNode || !realLinkNode.textContent) return false;
+                //   let realLink = realLinkNode.textContent;
+                //   console.log(realLink)
+                //   return
+                //   if (!(realLink.startsWith("http://") || realLink.startsWith("https://"))) {
+                //     realLink = "https://" + realLink;
+                //   }
+                //   DealRedirect(null, linkHref, realLink, null);
+                //   // 文章结构分析界面
+                //   if (curNode.classList.contains("b_algoBorder")) {
+                //     // 对于章节, 后置拼接
+                //     const chapterTitles = curNode.querySelectorAll(".b_rc_gb_sub_title>a");
+                //     for (const chapterTitle of chapterTitles) {
+                //       const link = chapterTitle.getAttribute("href");
+                //       const title = chapterTitle.textContent;
+                //       if (!link || !title) continue;
+                //       const chapterLink = realLink + "#" + title;
+                //       DealRedirect(null, link, chapterLink, null, 'subtitle');
+                //     }
+                //     // 对于图片, 使用原始链接
+                //     const chapterImages = curNode.querySelectorAll(".b_rc_gb_img_wrapper>a");
+                //     for (const img of chapterImages) {
+                //       const link = img.getAttribute("href");
+                //       if (!link) continue;
+                //       DealRedirect(null, link, realLink, null, 'subtitle');
+                //     }
+                //   }
+                //   return true;
+                // }
               }
               const getBaiduEncodingHandle = (linkUrl) => {
                 let resLink = linkUrl

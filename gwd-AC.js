@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         购物党比价工具【精简优化版】
 // @namespace    none
-// @version      1.9
+// @version      2.2
 // @description  【精简版】购物党，优化了页面的部分元素，减少页面弹窗和显示，保留菜单栏。购物党提供淘宝/京东/亚马逊/当当/苏宁/等百家商城的比价系统，能让你以较优惠的方式购买到你称心如意的商品，提供商品的历史价格情况，多种相似商品推荐，同款购买，降价提醒。PS：带有推广，介意勿装
-// @author       淘宝老司机
+// @author       AC
+// @antifeature referral-link 含有返利链接
 // @include      http*://item.taobao.com/*
+// @include      http*://cart.taobao.com/*
 // @include      http*://s.taobao.com/*
 // @include      http*://detail.tmall.com/item.htm*
 // @include      http*://detail.liangxinyao.com/item.htm*
@@ -13,13 +15,13 @@
 // @include      https://item.jd.hk/*
 // @include      https://detail.tmall.hk/*
 // @include      https://*.suning.com/*
-// @note	 V1.6 更换源地址为StaticFile
-// @note	 V1.4 更换源地址为75团地址
-// @note	 V1.2 修复部分多余的隐藏无效的问题 修复之前忘了【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】
+// @note	       V2.2 修复可用性 & 替换地址
+// @note	       V1.6 更换源地址为StaticFile
+// @note	       V1.4 更换源地址为75团地址
+// @note	       V1.2 修复部分多余的隐藏无效的问题 修复之前忘了【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】【新增自己的附加脚本 如果介意的可以删除本脚本】
 // @grant        GM_xmlhttpRequest
-// @connect      chenzelin.herokuapp.com
 // @connect      open.lesiclub.cn
-// @connect      gm.ntaow.com
+// @connect      api.ntaow.com
 // @connect      gwdang.com
 // @connect      alicdn.com
 // @run-at       document-start
@@ -27,15 +29,15 @@
 // @require      https://greasyfork.org/scripts/34606-ac-%E7%8B%AC%E5%AE%B6-%E6%B7%98%E5%AE%9D%E5%A4%A9%E7%8C%AB%E4%BC%98%E6%83%A0%E5%88%B8%E6%9F%A5%E8%AF%A2%E9%A2%86%E5%8F%96-%E5%A4%A7%E9%A2%9D%E4%BC%98%E6%83%A0%E5%88%B8-100%E5%85%83%E8%B4%AD%E7%89%A9%E7%A5%9E%E5%88%B8-%E7%9C%81%E9%92%B1%E8%B4%AD%E7%89%A9-%E9%A2%86%E5%88%B8%E8%B4%AD%E4%B9%B0%E6%9B%B4%E4%BC%98%E6%83%A0-%E5%B9%B3%E5%9D%87%E4%BC%98%E6%83%A020/code/AC-%E7%8B%AC%E5%AE%B6-%E6%B7%98%E5%AE%9D%E5%A4%A9%E7%8C%AB%E4%BC%98%E6%83%A0%E5%88%B8%E6%9F%A5%E8%AF%A2%E9%A2%86%E5%8F%96,%E5%A4%A7%E9%A2%9D%E4%BC%98%E6%83%A0%E5%88%B8,%E3%80%90100%E5%85%83%E8%B4%AD%E7%89%A9%E7%A5%9E%E5%88%B8%E3%80%91,%E7%9C%81%E9%92%B1%E8%B4%AD%E7%89%A9,%E9%A2%86%E5%88%B8%E8%B4%AD%E4%B9%B0%E6%9B%B4%E4%BC%98%E6%83%A0,%E5%B9%B3%E5%9D%87%E4%BC%98%E6%83%A020%25.user.js
 // ==/UserScript==
 (function () {
-	var goodId = getUrlAttribute("id");;
+	const goodId = getUrlAttribute("id")
 	// 提取url中的参数
 	function getUrlAttribute(attribute, needDecode) {
-		var searchValue = (window.location.search.substr(1) + "").split("&");
-		for (var i = 0; i < searchValue.length; i++) {
-			var key_value = searchValue[i].split("=");
-			var reg = new RegExp("^" + attribute + "$");
+		const searchValue = (window.location.search.substr(1) + "").split("&");
+		for (let i = 0; i < searchValue.length; i++) {
+			const key_value = searchValue[i].split("=");
+			const reg = new RegExp("^" + attribute + "$");
 			if (reg.test(key_value[0])) {
-				var searchWords = key_value[1];
+				const searchWords = key_value[1];
 				return needDecode ? decodeURIComponent(searchWords) : searchWords;
 			}
 		}
@@ -43,12 +45,12 @@
 	function safeWaitFunc(selector, callbackFunc, time, notClear) {
 		time = time || 200;
 		notClear = notClear || false;
-		var doClear = !notClear;
-		var id = setInterval(function () {
-			var selectRes = document.querySelectorAll(selector);
+		const doClear = !notClear;
+		const id = setInterval(function () {
+			let selectRes = document.querySelectorAll(selector);
 			if ((typeof (selector) == "string" && selectRes.length > 0)) {
 				if (doClear) clearInterval(id);
-				if(selectRes.length == 1) selectRes = selectRes[0];
+				if (selectRes.length === 1) selectRes = selectRes[0];
 				callbackFunc(selectRes);
 			} else if ((typeof (selector) == "function" && selector().length > 0)) {
 				if (doClear) clearInterval(id);
@@ -72,8 +74,8 @@
 
 	function initGWD() {
 		let extName = "gwdv1.js";
-		var hideStyle = "";
-		if (location.host == "jd.com") {
+		let hideStyle = "";
+		if (location.host === "jd.com") {
 			extName = "gwdv2.js";
 			hideStyle = ".gwd-minibar-bg, #favor_box{display:none !important;}" +
 				"#gwdang_main > a.gwd-topbar-logo, #gwdang_main > div.gwd-topbar-right{display:none !important;}";
@@ -156,15 +158,15 @@ var d = new Date(beginTime);
 d.setDate(d.getDate() + i);
 dt.push(d.toLocaleDateString());
 }
-
+ 
 // 指定图表的配置项和数据
 var option = {
-
+ 
 tooltip: {
 enterable: true,
 trigger: 'axis',
 formatter: function (params) {
-
+ 
 return params[0].axisValue + "<br/>" + params[0].data;
 },
 axisPointer: {
@@ -176,9 +178,9 @@ data: ['页面价', '到手价'],
 selected: {
 '页面价': true,
 '到手价': true
-
+ 
 }
-
+ 
 },
 xAxis: {
 data: dt,
@@ -186,13 +188,13 @@ splitArea: { show: false },
 boundaryGap: false,
 splitLine: {
 show: true,
-
+ 
 },
 axisLabel: {
-
+ 
 interval: parseInt((data.length) / 10),
 formatter: function (value) {
-
+ 
 return value.substring(5);
 }
 },
@@ -201,7 +203,7 @@ yAxis: {
 splitArea: { show: false },
 splitLine: {
 show: true,
-
+ 
 }
 },
 series: [{
@@ -212,7 +214,7 @@ showSymbol: false,
 hoverAnimation: false,
 markPoint: {
 symbol: 'pin',
-
+ 
 data: [
 { type: 'max', name: '最大值' },
 { type: 'min', name: '最小值' }
@@ -232,7 +234,7 @@ showSymbol: false,
 hoverAnimation: false,
 markPoint: {
 symbol: 'pin',
-
+ 
 data: [
 { type: 'max', name: '最大值' },
 { type: 'min', name: '最小值' }
@@ -246,8 +248,8 @@ data: [
 }
 ]
 };
-
-
+ 
+ 
 pChart.setOption(option);
 };
 </script>

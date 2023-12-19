@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         AC-独家-淘宝天猫优惠券查询领取,大额优惠券,【100元购物神券】,省钱购物,领券购买更优惠,平均优惠20%
-// @version      8.0
+// @version      8.1
 // @description  独家查询淘宝商品查询是否具有优惠券,各种大额优惠券,【3元|10元|20元|40元】优惠券领取,购物必备,特大优惠
 // @author       AC
 // @include      https://item.taobao.com/item.htm*
@@ -8,7 +8,8 @@
 // @include      https://s.taobao.com/search*
 // @include      https://cart.taobao.com/*
 // @include      *://uland.taobao.com/coupon/*
-// @note         2021.11.13-V8.0 重写架构，简单页面效果即可
+// @note         2021.12.20-V8.1 修复由于标题的问题导致的获取不到的问题
+// @note         2021.12.13-V8.0 重写架构，简单页面效果即可
 // @note         2017.11.17-V3.0 修复上一版过于流畅的bug，上一版更新导致的bug挺多的。。。
 // @note         2017.11.17-V2.9 正常更新，尽量减少由于重定向带来的影响，同时修正规则避免出事
 // @note         2017.11.17-V2.8 上个版本更新导致的bug  ...P_P...
@@ -37,7 +38,9 @@
 const MyConfig = {
   name: '',
   id: '',
+  shopTitle: '',
   couponPrice: 0,
+  originalPrice: 0,
   
   isValid: () => {
     return /\d+/.test(MyConfig.id)
@@ -82,13 +85,17 @@ const openUrl = function(node){
 `
   MyApi.addStyle(insertCSS)
   MyApi.addScript(insertJS)
-  MyApi.safeWaitFunc('div[class*="ItemHeader--root"]', node => {
+  MyApi.safeWaitFunc('[class*="ItemHeader--mainTitle"]', node => {
     node.insertAdjacentHTML('afterend', insertHTML);
-    initSite()
+    setTimeout(() => {
+      initSite()
+    }, 100)
   })
-  MyApi.safeWaitFunc('h3[class*="tb-main-title"]', node => {
+  MyApi.safeWaitFunc('[class*="tb-main-title"]', node => {
     node.insertAdjacentHTML('afterend', insertHTML);
-    initSite()
+    setTimeout(() => {
+      initSite()
+    }, 100)
   })
 }
 function initSite() {
@@ -99,6 +106,13 @@ function initSite() {
   resetUrls(getUrls())
   checkCoupon()
 
+  function reInitConfig() {
+    // 淘宝、天猫、老版淘宝
+    try{
+      MyConfig.originalPrice = document.querySelector('#J_PromoPriceNum, .tb-rmb-num, [class*="priceText"]').innerText.trim().split('-')[0]
+      MyConfig.shopTitle = document.querySelector('.tb-shop-name, .shop-name-link, [class*="ShopHeader--title"]').innerText.trim()
+    }catch (e) {}
+  }
 
   function getUrls() {
     const findUrl = 'https://www.ntaow.com/coupon.html?mQuery=' + encodeURIComponent(MyConfig.name)
@@ -125,11 +139,21 @@ function initSite() {
 
   async function checkCoupon() {
     if (MyConfig.isValid()) {
-      const [err, res] = await MyApi.http.get('https://api.ntaow.com/api/coupon/tran?id=' + MyConfig.id)
+      const [err, res] = await MyApi.http.get(`https://api.ntaow.com/api/coupon/tran?id=${MyConfig.id}&title=${MyConfig.name}`)
       if (!err) {
-        const { title = '', couponPrice = 0 } = JSON.parse(res)
 
-        MyConfig.name = title
+        reInitConfig()
+        
+        const couponList = JSON.parse(res)
+        const couponElement = findBestCoupon(couponList) || {}
+        const {
+          quan= '', // 优惠券价格
+          shop_title = '', // 店家名字
+          price= '' // 商品价格预期
+        } =  couponElement
+
+        const couponPrice = +quan
+        // MyConfig.name = title
         MyConfig.couponPrice = couponPrice
         if(couponPrice > 0) {
           resetFindTitle(`!${couponPrice}元优惠券!`)
@@ -139,6 +163,21 @@ function initSite() {
         resetUrls(getUrls())
       }
     }
+  }
+  
+  function findBestCoupon(couponList) {
+    for (const couponElement of couponList) {
+      const {
+        quan= '', // 优惠券价格
+        shop_title = '', // 店家名字
+        price= '' // 商品价格预期
+      } =  couponElement
+      
+      if(shop_title === MyConfig.shopTitle && price === MyConfig.originalPrice) {
+        return couponElement
+      }
+    }
+    return couponList.length && couponList[0]
   }
 }
 
