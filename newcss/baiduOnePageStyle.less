@@ -18,7 +18,8 @@ body[baidu] .pagefoot.gj {
   position: relative;
 }
 
-#s_tab b, #s_tab a {
+#s_tab b,
+#s_tab a {
   position: relative;
 }
 
@@ -37,14 +38,19 @@ body[baidu] .pagefoot.gj {
   margin: 0 auto;
 }
 
-#wrapper #content_left, #wrapper #container.sam_newgrid #rs, #wrapper #page {
+#wrapper #content_left,
+#wrapper #container.sam_newgrid #rs,
+#wrapper #page {
   position: relative;
   padding-left: 0px;
-  width: 50% !important;
+  width: 40% !important;
   min-width: 670px;
   float: unset;
   margin-left: unset;
   margin: 0 auto;
+  @media only screen and (min-resolution: 1.25dppx) {
+    width: 50% !important;
+  }
 }
 
 #wrapper #page {
@@ -69,7 +75,8 @@ body[baidu] .pagefoot.gj {
 }
 
 @media screen and (min-width: 1000px) {
-  #wrapper #content_left, #wrapper #rs {
+  #wrapper #content_left,
+  #wrapper #rs {
     min-width: 800px;
   }
 }
@@ -105,7 +112,8 @@ body.showRight #wrapper #content_right {
   }
 }
 
-#wrapper #page a, #wrapper #page strong {
+#wrapper #page a,
+#wrapper #page strong {
   margin-right: 22px !important;
 }
 
@@ -169,16 +177,16 @@ form.fm .s_ipt_wr.bg {
 
 .showRight {
   .result-molecule.new-pmd {
-    &[tpl="app/rs"] {
+    &[tpl='app/rs'] {
       margin-left: 44% !important;
     }
 
-    &[tpl="app/page"] {
+    &[tpl='app/page'] {
       padding-bottom: 20px;
       margin-left: 48% !important;
     }
 
-    &[tpl="app/footer"] {
+    &[tpl='app/footer'] {
       margin-left: 48% !important;
     }
   }
@@ -212,12 +220,12 @@ form.fm .s_ipt_wr.bg {
   body[baidu] {
     #wrapper #s_tab {
       margin-left: 96px;
-      
-      .s_tab_inner{
+
+      .s_tab_inner {
         display: flex;
         justify-content: space-evenly;
         padding-left: 0;
-        
+
         > * {
           margin-right: 0;
           text-align: center;
@@ -226,10 +234,10 @@ form.fm .s_ipt_wr.bg {
     }
 
     #container.sam_newgrid {
-      padding-left:  80px;
+      padding-left: 80px;
     }
   }
-  
+
   form.fm .s_ipt_wr.bg {
     min-width: calc(37.5vw - 150px);
   }
@@ -252,7 +260,7 @@ form.fm .s_ipt_wr.bg {
     #wrapper #s_tab {
       margin-left: 96px;
 
-      .s_tab_inner{
+      .s_tab_inner {
         display: flex;
         justify-content: space-evenly;
         padding-left: 0;

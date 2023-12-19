@@ -2561,9 +2561,9 @@ body[google] {
             let Container = document.createElement('div');
             Container.id = "sp-ac-container";
             Container.innerHTML =
-`<label id="sp-ac-content" style="display: none;" xmlns="http://www.w3.org/1999/html">
-  <label id="sp-ac-main">
-    <fieldset id="sp-ac-autopager-field" style="display:block;">
+`<aside id="sp-ac-content" style="display: none;" xmlns="http://www.w3.org/1999/html">
+  <form id="sp-ac-main">
+    <fieldset id="sp-ac-autopager-field">
       <legend class="iframe-father">
         <a class="linkhref" href="https://www.ntaow.com/aboutscript.html" target="_blank"
           v-text="lan.use.fieldset_panel.panel_title"></a>
@@ -3071,8 +3071,8 @@ body[google] {
         :title="lan.use.fieldset_panel.setting_panel.okBtn_text" style="position: relative;float: right;"
         v-text="lan.use.fieldset_panel.setting_panel.okBtn_text"></span>
     </fieldset>
-  </div>
-</div>`;
+  </form>
+</aside>`;
             try {
               document.body.appendChild(Container);
             } catch (e) {
