@@ -3233,19 +3233,32 @@ body[google] {
             realLink = "https://" + realLink;
           }
 
-          function replaceBingLink(linkHref, realLink) {
+          function replaceBingLink(curNode, linkHref, realLink) {
             DealRedirect(null, linkHref, realLink, null);
+            // 文章内的展开按钮
+            const expandBtn = curNode.querySelector(".b_rc_gb_sub_hero .b_paractl > a")
+            if (expandBtn) {
+                DealRedirect(null, expandBtn.href, realLink, null, 'link');
+            }
+
             // 文章结构分析界面
             if (curNode.classList.contains("b_algoBorder")) {
               // 对于章节, 后置拼接
-              const chapterTitles = curNode.querySelectorAll(".b_rc_gb_sub_title>a");
-              for (const chapterTitle of chapterTitles) {
-                const link = chapterTitle.getAttribute("href");
-                const title = chapterTitle.textContent;
+              const cells = curNode.querySelectorAll("#b_rc_gb_origin .b_rc_gb_sub_cell");
+              for (const cell of cells) {
+                const titleNode = cell.querySelector(".b_rc_gb_sub_title>a");
+                if (!titleNode) continue;
+                const link = titleNode.getAttribute("href");
+                const title = titleNode.textContent;
                 if (!link || !title) continue;
                 const chapterLink = realLink + "#" + title;
                 DealRedirect(null, link, chapterLink, null, 'subtitle');
+                const expandBtn = cell.querySelector(".b_paractl>a");
+                if (expandBtn) {
+                  DealRedirect(null, expandBtn.href, chapterLink, null, 'link');
+                }
               }
+              
               // 对于图片, 使用原始链接
               const chapterImages = curNode.querySelectorAll(".b_rc_gb_img_wrapper>a");
               for (const img of chapterImages) {
@@ -3261,10 +3274,10 @@ body[google] {
             // 链接没有显示全, 需要调用接口获取真是链接
             let url = linkHref.replace(/^http:/, "https:");
             getBingRealLinkByUrl(url).then(link => {
-              replaceBingLink(linkHref, link)
+              replaceBingLink(curNode, linkHref, link)
             })
           } else {
-            replaceBingLink(linkHref, realLink);
+            replaceBingLink(curNode, linkHref, realLink);
           }
 
           // 对于相关链接, 必须走接口请求真实链接
