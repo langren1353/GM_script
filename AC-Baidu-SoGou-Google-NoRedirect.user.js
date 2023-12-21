@@ -3222,6 +3222,10 @@ body[google] {
         }
 
         function resetBingNormal(curNode, linkHref) {
+          // 不清楚还有没有其他类型的重定向链接, 先只处理这一种
+          if (linkHref.indexOf("www.bing.com/ck/a") === -1) {
+            return ;
+          }
           const realLinkNode = curNode.querySelector(".b_attribution cite");
           if (!realLinkNode || !realLinkNode.textContent) return false;
           let realLink = realLinkNode.textContent;
