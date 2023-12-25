@@ -3270,7 +3270,10 @@ body[google] {
             return true;
           }
 
-          if (realLink.endsWith("...") || realLink.endsWith("bing.com/videos")) {
+          if (realLink.endsWith("...") ||
+              realLink.endsWith("bing.com/videos")  ||
+              realLink.indexOf("/.../") !== -1
+          ) {
             // 链接没有显示全, 需要调用接口获取真是链接
             let url = linkHref.replace(/^http:/, "https:");
             getBingRealLinkByUrl(url).then(link => {
