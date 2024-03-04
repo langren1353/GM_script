@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.08
+// @version    26.09
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -44,8 +44,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2023, AC
-// @lastmodified  2023-12-16
+// @lastmodified  2024-03-04
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2024.03-04-V26.09 fix: 谷歌白屏的问题；再次支持鸭鸭搜索引擎
 // @note    2023.12-16-V26.07 日常维护；优化各页面加载卡顿的问题，优化搜索引擎显示效果
 // @note    2023.06-19-V26.06 修复谷歌显示效果的错位问题等，修复谷歌异常白屏问题
 // @note    2022.12-07-V26.04 修复必应错位问题；优化谷歌双列动画问题
@@ -81,23 +82,23 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.07
-// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.07
-// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.07
-// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.07
-// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.07
-// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.07
-// @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.07
-// @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.07
-// @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.07
-// @resource  duckCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.07
-// @resource  duckOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=26.07
-// @resource  duckTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=26.07
-// @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.07
-// @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.07
-// @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.07
-// @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.07
-// @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.07
+// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=26.09
+// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=26.09
+// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=26.09
+// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=26.09
+// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=26.09
+// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=26.09
+// @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=26.09
+// @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=26.09
+// @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=26.09
+// @resource  duckCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=26.09
+// @resource  duckOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=26.09
+// @resource  duckTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=26.09
+// @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=26.09
+// @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=26.09
+// @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=26.09
+// @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.09
+// @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.09
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
 // @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
@@ -219,7 +220,9 @@
         safeWaitFunc("head", body => {
           document.head.appendChild(newHeadFrag)
         })
-        document.insertBefore(newDomFrag, document.documentElement)
+        while (newDomFrag.firstChild) {
+          document.head.insertBefore(newDomFrag, document.head.firstChild)
+        }
       }
     }
 
@@ -1276,7 +1279,6 @@ body[google] {
             changeSiteBackground(CONST.useItem.defaultBgUrl)
           }
         }
-
         console.log("%c[AC-Redirect] %cLet Me Introduce you a Very Good Search Engine：%c %s %cSearch Engine.", "font-weight:bold;color:cornflowerblue", "color:0", "font-weight:bold;color:darkorange", CONST.useItem.name.replace(CONST.useItem.name[0], CONST.useItem.name[0].toUpperCase()), "font-weight:normal;color:0");
 
         let SiteBlock = {
@@ -1580,7 +1582,7 @@ body[google] {
                   } else {
                     this.LiveConfig.css_has_error = false
                     css = css.css || ''
-                    CONST.flushNode.insert(await create_CSS_Node(css, "AC-userStyle"), 'head', {
+                    CONST.flushNode.insert(await create_CSS_Node(css, "AC-userStyle", 'less'), 'head', {
                       isReload: true
                     })
                   }
@@ -3733,7 +3735,7 @@ body[google] {
               }
             } else {
               /* **********多重样式-兼容edge && 黑夜脚本************ */
-              return await create_CSS_Node(data, toClassName)
+              return await create_CSS_Node(data, toClassName, 'less')
               // AC_addStyle(data, toClassName, "head", false, "less");
               /* **********多重样式-兼容edge && 黑夜脚本************ */
             }
@@ -3764,7 +3766,7 @@ body[google] {
               .replace(/#aaa(a*)/igm, color)
               .replace(/#bbb(b*)/igm, this.Lighter(color, -40))
               .replace(/#ccc(c*)/igm, this.Lighter(color, 45));
-            CONST.flushNode.insert(await create_CSS_Node(style, "AC-" + CONST.useItem.name + "HuYanStyle-File"), 'head', {
+            CONST.flushNode.insert(await create_CSS_Node(style, "AC-" + CONST.useItem.name + "HuYanStyle-File", 'less'), 'head', {
               isReload: true
             })
           },
@@ -3922,7 +3924,8 @@ body[google] {
               if (nodeList.length > 0) {
                 nodeList.forEach((node) => {
                   const divChildren = [...node.children].filter(one => one.tagName.toUpperCase() === 'DIV')
-                  if (divChildren.length >= 2) {
+                  const script_styleChildren = [...node.children].filter(one => /(SCRIPT|STYLE)/.test(one.tagName.toUpperCase()))
+                  if (divChildren.length >= 2 && script_styleChildren.length < 3) {
                     node.setAttribute('two-father', 1)
                     divChildren.forEach(one => {
                       // 不显示那些应该隐藏的元素

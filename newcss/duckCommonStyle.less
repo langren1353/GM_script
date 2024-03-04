@@ -3,15 +3,11 @@ body {
   background-color: #f5f5f5;
 }
 
-.result__icon .result__icon__img, .result__icon .result__icon img {
-  display: none;
-}
-
-#links_wrapper .results--main {
+#react-layout .react-results--main {
   max-width: 95%;
 }
 
-#links_wrapper #links .nrn-react-div {
+#react-layout li {
   width: 95%;
   overflow: hidden;
   margin-top: 0px;
@@ -23,27 +19,27 @@ body {
   transition: all 0.25s cubic-bezier(.23, 1, .32, 1) 0s;
 }
 
-.dark-bg #links_wrapper #links .nrn-react-div {
+.dark-bg #react-layout li article {
   background-color: #333;
 }
 
-.dark-bg #links_wrapper #links .nrn-react-div h2 {
+.dark-bg #react-layout li article h2 {
   background-color: #345;
 }
 
-.dark-bg #links_wrapper #links .nrn-react-div h2 a {
+.dark-bg #react-layout li article h2 a {
   color: #CCCCCC;
 }
 
-.dark-bg #links_wrapper #links .nrn-react-div h2 a:visited {
+.dark-bg #react-layout li article h2 a:visited {
   color: #b7663e;
 }
 
-#links_wrapper #links .nrn-react-div article {
+#react-layout li article article {
   padding: 18px;
 }
 
-#links_wrapper #links .nrn-react-div h2 a {
+#react-layout li article h2 a {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 640px;
@@ -51,24 +47,24 @@ body {
   font-size: smaller;
 }
 
-#links_wrapper #links .nrn-react-div .result__body {
+#react-layout li article .result__body {
   padding: 12px 20px !important;
 }
 
-#links_wrapper #links .nrn-react-div:hover {
+#react-layout li:hover {
   border: 1px solid rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 1px grey;
   -webkit-box-shadow: 0 0 1px grey;
   -moz-box-shadow: 0 0 1px gray;
 }
 
-#links_wrapper #links .nrn-react-div h2 a:hover:after {
+#react-layout li article h2 a:hover:after {
   left: 0;
   width: 100%;
   transition: width 350ms;
 }
 
-#links_wrapper #links .nrn-react-div h2 a:after {
+#react-layout li article h2 a:after {
   content: "";
   position: absolute;
   border-bottom: 2px solid #4f91de;
@@ -78,13 +74,13 @@ body {
   transition: width 350ms, left 350ms;
 }
 
-#links_wrapper #links .nrn-react-div h2 a:visited,
-#links_wrapper #links .nrn-react-div h2 a:visited strong {
+#react-layout li article h2 a:visited,
+#react-layout li article h2 a:visited strong {
   color: #660099;
 }
 
-#links_wrapper #links .nrn-react-div h2 a:visited:hover:after,
-#links_wrapper #links .nrn-react-div h2 a:visited:hover:after {
+#react-layout li article h2 a:visited:hover:after,
+#react-layout li article h2 a:visited:hover:after {
   left: 0;
   width: 100%;
   -webkit-transition: width 350ms;
@@ -93,7 +89,7 @@ body {
 }
 
 /* SearchItmes Bottom to Top ani */
-#links_wrapper #links {
+#react-layout li {
   animation-name: ani_topTobuttom;
   animation-duration: .3s;
   animation-timing-function: ease;
@@ -104,4 +100,17 @@ body {
   animation-name: ani_leftToright;
   animation-duration: .3s;
   animation-timing-function: ease-out;
+}
+body{
+  /**replace Duck font**/
+  font-family: unset;
+}
+li article {
+  h2, h3{
+    font-weight: bold;
+    
+    &::before{
+      display: none;
+    }
+  }
 }

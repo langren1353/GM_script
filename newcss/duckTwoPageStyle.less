@@ -1,6 +1,6 @@
 /*Store: DuckDuckGoTwoPageStyle*/
 .js-sidebar-ads,
-#links_wrapper .results--sidebar,
+#react-layout .results--sidebar,
 #organic-module,
 .pinned-to-bottom {
   display: none;
@@ -18,8 +18,8 @@
 }
 
 #header_wrapper #header,
-#web_content_wrapper #links_wrapper .search-filters-wrap,
-#web_content_wrapper #links_wrapper .results--message {
+#web_content_wrapper #react-layout .search-filters-wrap,
+#web_content_wrapper #react-layout .results--message {
   justify-content: center;
   display: grid;
 }
@@ -32,22 +32,22 @@
   width: 500px;
 }
 
-#links_wrapper {
+#react-layout {
   display: inline-flex;
   justify-content: center;
 }
 
-#links_wrapper .results--main {
+#react-layout .react-results--main {
   float: unset;
   max-width: unset;
 }
 
-#links_wrapper .results--sidebar {
+#react-layout .results--sidebar {
   min-width: unset;
   margin: unset;
 }
 
-#links_wrapper .results--main #links {
+#react-layout .react-results--main {
   width: 80vw;
   /* This may cause Page failed */
   display: grid;
@@ -55,21 +55,9 @@
   grid-template-areas: "xmain xmain";
 }
 
-#links_wrapper .results--main #links .nrn-react-div {
+#react-layout .react-results--main li {
   width: unset;
   margin-right: 15px;
-}
-
-#links .result--more, #links .result--sep {
-  grid-column-start: 1;
-  grid-column-end: xmain-end;
-  width: unset !important;
-  padding: 0;
-  padding-right: 15px;
-}
-
-#links .result--sep {
-  margin-bottom: 2em;
 }
 
 .body--serp .footer {
