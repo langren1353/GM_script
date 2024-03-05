@@ -4,16 +4,16 @@
 // @icon            https://gitee.com/remixAC/GM_script/raw/master/images/head.jpg
 // @author          AC
 // @create          2018-05-25
-// @version         26.12
+// @version         26.13
 // @include         *
 // @exclude         *://www.bilibili.com/*
 // @home-url        https://greasyfork.org/zh-TW/scripts/368418
 // @home-url2       https://github.com/langren1353/GM_script
 // @namespace       1353464539@qq.com
 // @copyright       2017, AC
-// @lastmodified    2024-03-05
+// @lastmodified    2024-03-06
 // @feedback-url    https://greasyfork.org/zh-TW/scripts/368418
-// @note            2024.03.05-V26.12 增加搜索引擎：DuckDuckGo；增加自动翻页的适配，优化性能问题
+// @note            2024.03.06-V26.13 增加搜索引擎：DuckDuckGo；增加自动翻页的适配，优化性能问题；function fix
 // @note            2022.04.24-V2.3 增加搜索引擎：fsou的支持
 // @note            2019.08.09-V2.2 排除bilibili的地址，避免导致bilibili无法播放
 // @note            2019.06.05-V2.1 修复样式加载刚开始的时候还是黑色的，颜色没有及时更新的问题 其次优化脚本的处理速速，减少不必要的查询和处理
@@ -278,7 +278,8 @@ function sayLength(){
 				return; // 退出1
 			}
 			let patExp = "";
-			for(let index=0, sizeCount = 0; index<keySets.keywords.length-1 && index < 8 && sizeCount < 50; index++) {
+			let index = 0
+			for(let sizeCount = 0; index<keySets.keywords.length-1 && index < 8 && sizeCount < 50; index++) {
 				patExp += keySets.keywords[index]+"|";
 				sizeCount += keySets.keywords[index].length;
 			}
