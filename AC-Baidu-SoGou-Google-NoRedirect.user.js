@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.10
+// @version    26.11
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -46,7 +46,7 @@
 // @copyright  2015-2023, AC
 // @lastmodified  2024-03-04
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2024.03-05-V26.10 fix: 谷歌白屏的问题；再次支持鸭鸭搜索引擎；baidu\Google双列功能
+// @note    2024.03-05-V26.10 fix: 谷歌白屏的问题；再次支持鸭鸭搜索引擎，鸭鸭三列支持；baidu\Google双列功能
 // @note    2023.12-16-V26.07 日常维护；优化各页面加载卡顿的问题，优化搜索引擎显示效果
 // @note    2023.06-19-V26.06 修复谷歌显示效果的错位问题等，修复谷歌异常白屏问题
 // @note    2022.12-07-V26.04 修复必应错位问题；优化谷歌双列动画问题
@@ -680,10 +680,10 @@ body[google] {
       },
       duck: {
         SiteTypeID: 10,
-        MainType: "#links_wrapper #links .nrn-react-div",
+        MainType: "#react-layout li",
         FaviconType: ".nrn-react-div .result__url__domain",
         FaviconAddTo: "h2",
-        CounterType: "#links_wrapper #links .nrn-react-div h2",
+        CounterType: "#react-layout li h2",
         BlockType: "h2 a",
         pager: {
           nextLink: "//a[contains(@class,\"sb_pagN\")]",
@@ -3818,7 +3818,7 @@ body[google] {
             if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, div[two-father], #rso>div:not(.g), #kp-wp-tab-overview";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
-            if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
+            if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#react-layout .react-results--main";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             const node2 = await create_CSS_Node(cssHead + "{grid-template-columns: repeat(2, minmax(50%,1fr));grid-template-areas:'xmain xmain';}.AC.sp-separator{grid-column-start: 1;grid-column-end: xmain-end;}",
               "AC-TwoPageExStyle");
@@ -3831,7 +3831,7 @@ body[google] {
             if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, div[two-father], #rso>div:not(.g), #kp-wp-tab-overview";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
-            if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#links_wrapper .results--main #links";
+            if (curSite.SiteTypeID === SiteType.DUCK) cssHead = "#react-layout .react-results--main";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             const node2 = await create_CSS_Node(cssHead + "{grid-template-columns: repeat(3, minmax(33.3%,1fr));grid-template-areas:'xmain xmain xmain';}",
               "AC-ThreePageExStyle");
@@ -3844,7 +3844,7 @@ body[google] {
             if (curSite.SiteTypeID === SiteType.GOOGLE) cssHead = ".srg, #rso, div[two-father], #rso>div:not(.g), #kp-wp-tab-overview";
             if (curSite.SiteTypeID === SiteType.BING) cssHead = "#b_content #b_results";
             if (curSite.SiteTypeID === SiteType.SOGOU) cssHead = "#main .results";
-            if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
+            if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#react-layout .react-results--main";
             if (curSite.SiteTypeID === SiteType.DOGE) cssHead = "#links_wrapper .results--main #links";
             const node2 = await create_CSS_Node(cssHead + "{grid-template-columns: repeat(4, minmax(25%,1fr));grid-template-areas:'xmain xmain xmain xmain';}",
               "AC-FourPageExStyle");
