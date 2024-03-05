@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.09
+// @version    26.10
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -46,7 +46,7 @@
 // @copyright  2015-2023, AC
 // @lastmodified  2024-03-04
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2024.03-04-V26.09 fix: 谷歌白屏的问题；再次支持鸭鸭搜索引擎
+// @note    2024.03-05-V26.10 fix: 谷歌白屏的问题；再次支持鸭鸭搜索引擎；baidu\Google双列功能
 // @note    2023.12-16-V26.07 日常维护；优化各页面加载卡顿的问题，优化搜索引擎显示效果
 // @note    2023.06-19-V26.06 修复谷歌显示效果的错位问题等，修复谷歌异常白屏问题
 // @note    2022.12-07-V26.04 修复必应错位问题；优化谷歌双列动画问题
@@ -3717,23 +3717,7 @@ body[google] {
               data = await asyncGMHttpRequestGet(data)
             }
             // 普通浏览器模式--但是似乎样式加载的优先级低于head中的style优先级
-            if (!useNormalCSS && curSite.SiteTypeID !== SiteType.DUCK) { // Duck拒绝了外部样式插入
-              // 通过must参数来判定style是否加载
-              // data = data.replace(/baidu.com#\$#/igm, '');
-              const { css: renderCSS = '' } = await less.render(data);
-              data = renderCSS || data
-              if (data.indexOf("http") !== 0) data = "data:text/css;utf-8," + encodeURIComponent(data);
-              var {res,} = checkDocmentHasNode(toClassName);
-              if (!res) {
-                let pi = document.createProcessingInstruction(
-                  "xml-stylesheet",
-                  `type="text/css" must="${mustLoad}" class="${toClassName}" href="${data}"`
-                ); // 注意必须要双引号
-                debug('import执行添加样式 doing', toClassName)
-                return pi
-                // document.appendChild(pi);
-              }
-            } else {
+            if (!useNormalCSS) {
               /* **********多重样式-兼容edge && 黑夜脚本************ */
               return await create_CSS_Node(data, toClassName, 'less')
               // AC_addStyle(data, toClassName, "head", false, "less");
