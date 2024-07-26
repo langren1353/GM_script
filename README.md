@@ -1,3 +1,7 @@
+### 资源推荐
+推荐一个VPN加速的，感兴趣的冲，年付24.00元，邀请别人还能送更多：
+[VPN加速地址](https://sdlasjdflasj.bujiasu.com/#/login?code=rlFUZZLI)
+
 # AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.18-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)
 
@@ -5,7 +9,7 @@ QQ群-加群链接：[AC脚本交流群](https://ac.tujidu.com)
 
 ## 当前版本
 
-> V26.05 推荐更新，优化百度、谷歌等页面样式效果；优化页面载入速度减少卡顿
+> V26.11 推荐更新，优化百度、谷歌等页面样式效果；优化页面载入速度减少卡顿
 
 ### 使用必读
 
@@ -41,7 +45,7 @@ QQ群-加群链接：[AC脚本交流群](https://ac.tujidu.com)
 
 ***2022.08-22*** : V26.01 因甲癌手术和公司事务停更了2个月，目前补上，推荐更新。 1.修复百度加载缓慢的问题；2.修复谷歌样式加载顺序异常的问题；3.整体优化样式加载时间，更流畅了
 
-***2022.06.18*** : V25.09 更新使用less方案来对样式表进行精简
+***2022.06.1*** : V25.09 更新使用less方案来对样式表进行精简
 
 *
 
@@ -99,6 +103,3 @@ If you have any problems on using the script, please submit an issue
 ### License
 
 [The MIT License (MIT)](https://github.com/langren1353/GM_script/edit/master/LICENSE)
-
-### 脚本推荐
-[TUJIDU-VIP视频解析助手](https://greasyfork.org/zh-CN/scripts/371262)
