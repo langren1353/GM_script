@@ -1,0 +1,41 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="19">
+            <item index="0" class="java.lang.String" itemvalue="scipy" />
+            <item index="1" class="java.lang.String" itemvalue="pyopengl" />
+            <item index="2" class="java.lang.String" itemvalue="open-clip-torch" />
+            <item index="3" class="java.lang.String" itemvalue="timm" />
+            <item index="4" class="java.lang.String" itemvalue="glfw" />
+            <item index="5" class="java.lang.String" itemvalue="imageio-ffmpeg" />
+            <item index="6" class="java.lang.String" itemvalue="setuptools" />
+            <item index="7" class="java.lang.String" itemvalue="dill" />
+            <item index="8" class="java.lang.String" itemvalue="numpy" />
+            <item index="9" class="java.lang.String" itemvalue="requests" />
+            <item index="10" class="java.lang.String" itemvalue="click" />
+            <item index="11" class="java.lang.String" itemvalue="psutil" />
+            <item index="12" class="java.lang.String" itemvalue="tqdm" />
+            <item index="13" class="java.lang.String" itemvalue="tensorboard" />
+            <item index="14" class="java.lang.String" itemvalue="imageio" />
+            <item index="15" class="java.lang.String" itemvalue="ninja" />
+            <item index="16" class="java.lang.String" itemvalue="matplotlib" />
+            <item index="17" class="java.lang.String" itemvalue="pillow" />
+            <item index="18" class="java.lang.String" itemvalue="webdataset" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N803" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="Stylelint" enabled="true" level="ERROR" enabled_by_default="true" />
+  </profile>
+</component>
