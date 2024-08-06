@@ -128,6 +128,11 @@ form.fm {
   div[class*='single-card-wrapper'] {
     width: 98%;
   }
+
+  div[class*='_aladdin'] {
+    width: 98.5%;
+    margin-top: 0.5%;
+  }  
 }
 
 #wrapper #content_left > .c-container:hover,
@@ -369,6 +374,11 @@ body #wrapper #content_left a[href*='official'] {
   color: white;
 }
 
+#content_left .cu-border{
+  box-shadow: unset;
+  -webkit-box-shadow: unset;  
+}
+
 #content_left .c-group-middle, #content_left .c-group-top {
   margin-bottom: 30px !important;
 }
@@ -448,6 +458,12 @@ body.showRight {
   padding-top: 10px;
   display: flex;
   align-items: center;
+}
+
+#wrapper #content_left > .c-container[tpl='wenda_generate'] {
+  height: 400px;
+  overflow-y: auto;
+  overflow-x: clip;
 }
 
 #content_left .hit-toptip {

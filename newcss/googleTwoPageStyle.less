@@ -4,6 +4,10 @@ div[two-father] {
   float: unset;
   width: unset;
   min-width: 800px;
+  
+  span:empty{
+    display: none;
+  }
 }
 
 div[two-child] {
@@ -17,6 +21,18 @@ div[two-child] {
   background-color: #fff;
   box-sizing: border-box;
   transition: all 0.1s ease-in;
+  
+  .g{
+    width: unset !important;
+  }
+
+  &:only-child {
+    grid-column: 1 / -1;
+  }
+
+  &:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
 
 .search > #ires #rso .g {
@@ -30,12 +46,15 @@ div[two-child] {
 }
 
 #main #rcnt {
+  display: grid;
   max-width: unset;
+}
+.f6F9Be{
+  position: relative;
 }
 
 #main #cnt, #cnt #center_col, #cnt #foot {
   width: calc(54vw + 360px);
-  margin: 0 auto;
 }
 
 body #appbar, body .rhscol, body #top_nav, body #fbar {
@@ -58,13 +77,18 @@ body #appbar, body .rhscol, body #top_nav, body #fbar {
 
 div[two-father], #kp-wp-tab-overview {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+  grid-template-columns: repeat(2, 50%);
   grid-template-areas: "xmain xmain";
   grid-gap: 20px !important;
   margin-bottom: 20px;
   justify-items: stretch;
   align-items: stretch;
   width: 100%;
+
+  div[two-father]{
+    min-width: unset;
+    display: unset;
+  }
 }
 
 #rso > .g ~ div:not(.g),

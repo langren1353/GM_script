@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-body
-// @version    26.11
+// @version    26.99
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -44,8 +44,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2023, AC
-// @lastmodified  2024-03-04
+// @lastmodified  2024-08-06
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2024.08-06-V26.99 feature：增加样式表的缓存功能；修复谷歌等正常样式；本版本为自有面板的最后一版，后续将转移到外部面板设置
 // @note    2024.03-05-V26.10 fix: 谷歌白屏的问题；再次支持鸭鸭搜索引擎，鸭鸭三列支持；baidu\Google双列功能
 // @note    2023.12-16-V26.07 日常维护；优化各页面加载卡顿的问题，优化搜索引擎显示效果
 // @note    2023.06-19-V26.06 修复谷歌显示效果的错位问题等，修复谷歌异常白屏问题
@@ -100,8 +101,6 @@
 // @resource  MainHuYanStyle     https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=26.09
 // @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=26.09
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
-// @require https://cdn.staticfile.org/vue/2.6.14/vue.min.js
-// @require https://cdn.staticfile.org/less.js/4.1.2/less.min.js
 // @require https://lib.baomitu.com/vue/2.6.14/vue.min.js
 // @require https://lib.baomitu.com/less.js/4.1.2/less.min.js
 // @require https://lib.baomitu.com/md5-wasm/1.2.0/md5-wasm.min.js
@@ -3571,8 +3570,9 @@ body[google] {
         // 针对less进行单独处理
         if(initType.includes('less')) {
           // parseHTML 耗时 没必要
-          const { css: renderCSS = '' } = await less.render(css);
-          css = renderCSS
+          // const { css: renderCSS = '' } = await less.render(css);
+          // css = renderCSS
+          css = await cacheStyle(className, () => Promise.resolve(css))
           initType = "text/css"
         }
 
@@ -3580,6 +3580,27 @@ body[google] {
         cssNode.appendChild(document.createTextNode(css))
 
         return cssNode
+      }
+
+      async function cacheStyle(styleName, getLessDataFunc) {
+        const renderCSSKeyName = '__AC.RenderCSS__' + styleName
+        const localData = localStorage.getItem(renderCSSKeyName)
+        if (localData) {
+          setTimeout(() => {
+            console.log('*****有缓存了，但是在刷新了：' + styleName)
+            setLocalLessData(renderCSSKeyName, getLessDataFunc)
+          }, 2000)
+          return localData
+        } else {
+          console.log('*****没有缓存' + styleName)
+          return await setLocalLessData(renderCSSKeyName, getLessDataFunc)
+        }
+      }
+
+      async function setLocalLessData(renderCSSKeyName, getLessDataFunc) {
+        const { css = '' } = await less.render(await getLessDataFunc());
+        localStorage.setItem(renderCSSKeyName, css)
+        return css
       }
 
       function AC_addStyle(css, className, addToTarget, isReload = false, initType = "text/css") { // 添加CSS代码，不考虑文本载入时间，只执行一次-无论成功与否，带有className

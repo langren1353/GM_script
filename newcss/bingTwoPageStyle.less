@@ -1,14 +1,19 @@
 /*Store BingTwoPageStyle*/
 #container #content_left .hit_top_new,
-#b_content aside, #b_results #mfa_root {
+#b_content aside, #b_results #mfa_root ,
+#b_results #adstop_gradiant_separator{
   display: none;
 }
 
 #b_content #b_results {
   width: 73vw;
-  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+  grid-template-columns: repeat(2, 50%);
   grid-template-areas: "xmain xmain";
   display: grid;
+
+  >* &:only-child {
+    grid-column: 1 / -1;
+  }
 }
 
 .carousel .items {

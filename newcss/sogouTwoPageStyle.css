@@ -16,7 +16,7 @@
 #main .results {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+  grid-template-columns: repeat(2, 50%);
   grid-template-areas: "xmain xmain";
 }
 
@@ -24,6 +24,10 @@
   margin-left: 5px;
   margin-right: 15px;
   width: unset !important;
+  
+  &:only-child {
+    grid-column: 1 / -1;
+  }
 }
 
 .wrap .header .header-box {

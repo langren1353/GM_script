@@ -50,7 +50,7 @@ body #container.sam_newgrid #content_left {
 
 #wrapper #content_left {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: repeat(2, 50%);
   grid-template-areas: "xmain xmain";
   margin: 0 auto;
   position: relative;
@@ -63,7 +63,7 @@ body #container.sam_newgrid #content_left {
 
 body[news] #wrapper #content_left > div:not([class]):not([id]) {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: repeat(2, 50%);
   grid-template-areas: "xmain xmain";
 }
 
@@ -173,12 +173,12 @@ body[news] #wrapper #content_left > div:not([class]):not([id]) {
     transform: unset;
 
     #u {
-      right: 95px;
+      right: 130px;
     }
   }
 
   form.fm .s_ipt_wr.bg {
-    min-width: 900px
+    min-width: 850px
   }
 
   body[baidu] {
@@ -190,7 +190,7 @@ body[news] #wrapper #content_left > div:not([class]):not([id]) {
     #wrapper #s_tab.s_tab {
       
       .s_tab_inner {
-        width: 900px;
+        width: 850px;
         padding-left: 100px;
       }
     }
