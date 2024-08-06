@@ -1,0 +1,49 @@
+.DS_Store
+node_modules
+/dist
+
+
+# # local env files
+.env.local
+.env.*.local
+.env.*
+
+# # Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# # 忽略目录
+examples/
+docs/
+README_GIF/
+public/
+tests/
+node_modules/
+/node_modules
+# 忽略指定文件
+auto-imports.d.ts
+vite.config.ts
+babel.config.js
+.browserslistrc
+.editorconfig
+.eslintrc.js
+.prettierignore
+.prettierrc.js
+.eslintignore
+tsconfig.node.json
+tsconfig.json
+yarn.lock
+deploy.sh
+*.map
+# Editor directories and files
+.idea
+.vscode
+.gitee
+.git
+*.suo
+*.zip
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

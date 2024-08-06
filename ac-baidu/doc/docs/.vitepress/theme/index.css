@@ -1,0 +1,131 @@
+/* :root {
+  --vp-c-brand: #646cff;
+  --vp-c-brand-light: #747bff;
+  --vp-c-brand-lighter: #9499ff;
+  --vp-c-brand-lightest: #bcc0ff;
+  --vp-c-brand-dark: #535bf2;
+  --vp-c-brand-darker: #454ce1;
+  --demoblock-border: #e7e7e7;
+  --vp-code-block-bg: #f9fafb;
+} */
+
+/* .demo-block .meta {
+  background-color: var(--vp-code-block-bg);
+} */
+/* html.dark {
+  --vp-code-block-bg: var(--vp-code-block-bg);
+} */
+
+.aside .outline-link.active {
+  color: var(--vp-c-brand);
+}
+.aside .outline-link:hover {
+  color: var(--vp-c-brand);
+}
+.vp-doc a{
+  color: var(--brand-color);
+}
+.vp-doc .t_detail th,
+.vp-doc .t_detail td {
+  border: none;
+  background-color: var(--el-bg-color);
+}
+.vp-doc .t_detail table {
+  border-collapse: separate;
+  text-indent: initial;
+  border-spacing: 2px;
+  margin: 0;
+  overflow-x: inherit;
+}
+.vp-doc .t_detail tr:nth-child(2n) {
+  background-color: var(--el-bg-color);
+}
+
+.vp-doc .t-table tr {
+  border-top: none;
+}
+.vp-doc .t-table th,
+.vp-doc .t-table td {
+  border: none;
+  background-color: var(--el-bg-color);
+}
+.vp-doc .t-table table {
+  border-collapse: separate;
+  text-indent: initial;
+  border-spacing: 2px;
+  margin: 0;
+  overflow-x: inherit;
+}
+.vp-doc .t-table tr:nth-child(2n) {
+  background-color: var(--el-bg-color);
+}
+
+.vp-doc .t-table tr {
+  border-top: none;
+}
+.VPContent .VPDoc{
+  padding-top: 0 !important;
+}
+.VPNavBar .curtain{
+  display: none;
+}
+.VPNav {
+  z-index: 41 !important;
+}
+.VPSidebar {
+  z-index: 40 !important;
+}
+.VPSidebar.open {
+  z-index: 42 !important;
+}
+.VPContent .VPDoc.has-aside .content-container {
+  max-width: 888px;
+}
+
+.vp-doc h1{
+  margin-left: -15px;  
+}
+.vp-doc h2{
+  margin-left: -10px;
+}
+.vp-doc h3{
+  margin-left: -6px;
+}
+
+.vp-doc :not(pre) > code{
+  background-color: #EFF0F3;
+  color: orange;
+}
+
+.outline-title{
+  line-height: 32px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.outline-link{
+  display: block;
+  line-height: 32px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--vp-c-text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .5s;
+  letter-spacing: 1.2px;
+}
+.outline-marker {
+  position: absolute;
+  top: 32px;
+  left: -1px;
+  z-index: 0;
+  opacity: 0;
+  width: 2px;
+  border-radius: 2px;
+  height: 18px;
+  background-color: var(--vp-c-brand-1);
+  transition: top .25s cubic-bezier(0,1,.5,1),background-color .5s,opacity .25s;
+}
+.el-switch{
+  --el-switch-on-color: #2fbd6e;
+}

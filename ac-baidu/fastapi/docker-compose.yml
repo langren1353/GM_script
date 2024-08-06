@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  fastapi:
+    image: langren1353/gm-script-api
+    container_name: fastapi
+    restart: always
+    ports:
+      - 2020:80
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - my_network
+      
+networks:
+  my_network:
+    driver: bridge
