@@ -28,8 +28,8 @@
 
     "generate-types": "vue-tsc --declaration --emitDeclarationOnly",
     
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs"
+    "docs:dev": "vitepress dev docs --mode development",
+    "docs:build": "vitepress build docs --mode production"
   },
   "devDependencies": {
     "@element-plus/icons-vue": "^2.0.10",

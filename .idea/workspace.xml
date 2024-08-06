@@ -29,234 +29,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="搜索结果中屏蔽自定义关键字脚本更新一波">
-      <change afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect_V3.user.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AC-CSSCalc.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/.idea/ac-baidu.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/.eslintignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/.eslintrc.cjs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/.npmignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/.prettierignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/.prettierrc.cjs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/LICENSE" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/README_GIF/TuiPlus__demo.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/README_GIF/error.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/deploy.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config/global.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config/plugins.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/env.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/TIcon.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/TVHtml.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/useComponents.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/utils/highlight.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/components/vp-demo/_old_index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/components/vp-demo/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/components/vp-demo/vp-example.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/components/vp-demo/vp-source-code.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/readme.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/style/code.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/style/css-vars.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/style/index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/style/mixins.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/style/vars.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/index.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/history.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/problems.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/common/base.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/common/isDebounce.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/common/tip.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/baidu/base.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/baidu/static1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/bing/base.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/bing/static1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/common/base.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/AToolTipIcon.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/AdsModeChoose.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BgChoose.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BlockConfig.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/LessCSSComp/ItemCard.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/LessCSSComp/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/SaveAlert.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/duckduckgo/base.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/duckduckgo/static1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/google/base.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/google/static1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/index.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/utils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/img_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/img_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/img_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/img_4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/index.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/start.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/use.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/public/img/error.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/public/img/hero.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/vite.config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/global.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/nginx.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/adaptive-page/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/adaptive-page/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/adaptive-page/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/adaptive-page/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/button/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/button/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/button/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/button/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/chart/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/chart/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/chart/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/chart/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/checkbox/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/checkbox/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/checkbox/src/checkbox.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/checkbox/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/checkbox/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/components.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/date-picker/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/date-picker/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/date-picker/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/date-picker/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/detail/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/detail/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/detail/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/detail/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/detail/src/renderTooltip.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/detail/src/renderTooltip.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/form/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/form/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/form/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/form/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/form/src/renderComp.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/form/src/renderComp.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/layout-page-item/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/layout-page-item/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/layout-page-item/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/layout-page-item/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/layout-page/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/layout-page/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/layout-page/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/layout-page/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/src/moduleDetail.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/src/moduleDetail.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/src/moduleForm.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/src/moduleForm.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/src/renderTooltip.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/module-form/src/renderTooltip.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/query-condition/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/query-condition/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/query-condition/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/query-condition/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/query-condition/src/renderComp.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/query-condition/src/renderComp.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/radio/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/radio/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/radio/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/radio/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/radio/src/radio.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select-table/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select-table/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select-table/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select-table/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select-table/src/renderCol.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select-table/src/renderCol.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/select/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/step-wizard/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/step-wizard/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/step-wizard/src/fixBtn.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/step-wizard/src/fixBtn.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/step-wizard/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/step-wizard/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/ColumnSet.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/ColumnSet.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/TTableColumn.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/TTableColumn.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/renderCol.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/renderCol.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/renderHeader.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/renderHeader.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/singleEditCell.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/table/src/singleEditCell.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/tabs/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/tabs/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/tabs/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/tabs/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/timer-btn/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/timer-btn/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/timer-btn/src/index.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/timer-btn/src/index.vue.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/utils/directives/click-outside/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/utils/directives/click-outside/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/utils/index.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/utils/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/withInstall.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/packages/withInstall.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/pnpm-lock.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/public/weixin.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/public/wocwin.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/rebuild.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/tsconfig.node.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/vite.config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/fastapi/.dockerignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/fastapi/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/fastapi/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/fastapi/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/fastapi/rebuild.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/fastapi/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rebuild.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Less4_1_2_fixed.js" beforeDir="false" afterPath="$PROJECT_DIR$/Less4_1_2_fixed.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/BgAutoFit.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/BgAutoFit.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect_V3.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect_V3.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/nginx.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/HuYanStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/HuYanStyle.less" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingOnePageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingTwoPageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/dogeTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/dogeTwoPageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/duckTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckTwoPageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/sogouTwoPageStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/sogouTwoPageStyle.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notepad/Notepad2.js" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/Notepad2.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notepad/notepad2.css" beforeDir="false" afterPath="$PROJECT_DIR$/notepad/notepad2.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -351,13 +138,14 @@
     "go.import.settings.migrated": "true",
     "ignore_missing_gitignore": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/GitHome/GM_script",
+    "last_opened_file_path": "D:/GitHome/GM_script/ac-baidu/doc",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.docs:build.executor": "Run",
+    "npm.docs:dev.executor": "Run",
     "npm.start.executor": "Run",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "ts.external.directory.path": "D:\\GitHome\\GM_script\\ac-baidu\\doc\\node_modules\\typescript\\lib",
@@ -366,18 +154,18 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHome\GM_script\ac-baidu\doc" />
+      <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs" />
       <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\ac-baidu\fastapi" />
-      <recent name="D:\GitHome\GM_script\ac-baidu\doc" />
       <recent name="D:\GitHome\GM_script\ac-baidu\t-ui-plus-master" />
-      <recent name="D:\GitHome\GM_script\newcss" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc" />
       <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\public" />
       <recent name="C:\Users\AC\Desktop\GIT\GM_script" />
-      <recent name="C:\Users\AC\Desktop\GIT\GM_script\notepad" />
     </key>
   </component>
   <component name="RunManager" selected="npm.docs:build">
@@ -400,11 +188,11 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/ac-baidu/server/package.json" />
+    <configuration name="docs:dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/ac-baidu/doc/package.json" />
       <command value="run" />
       <scripts>
-        <script value="start" />
+        <script value="docs:dev" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -413,10 +201,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.docs:build" />
+        <item itemvalue="npm.docs:dev" />
         <item itemvalue="JavaScript Debug.AC-CSSCalc.html" />
         <item itemvalue="JavaScript Debug.Notepad2.html" />
         <item itemvalue="Node.js.Notepad2.js" />
-        <item itemvalue="npm.start" />
       </list>
     </recent_temporary>
   </component>

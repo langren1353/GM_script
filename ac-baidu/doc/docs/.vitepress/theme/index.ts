@@ -34,5 +34,21 @@ export default {
     ctx.app.component("Demo", VPDemo)
     ctx.app.component("TVHtml", TVHtml)
     ctx.app.component("TIcon", TIcon)
+
+    ctx.app.mixin({
+      mounted() {
+        if(!window.tongjiScript) {
+          window.tongjiScript = true
+          const scriptTag = document.createElement('script');
+          scriptTag.defer = true;
+          scriptTag.dataset.domain = location.host;
+          scriptTag.src = "https://tongji.tujidu.com/js/vue.js";
+          document.body.appendChild(scriptTag);
+        }
+        if(location.host.includes('tujidu')) {
+          document.body.classList.add('tujidu')
+        }
+      },
+    });
   }
 }

@@ -34,4 +34,3 @@ features:
     margin-top: 40px;">
     <iframe src="https://ghbtns.com/github-btn.html?user=langren1353&repo=GM_script&type=star&count=true" frameborder="0" scrolling="0" style="height: 20px;max-width: 108px;padding-left:5px;box-sizing: border-box;margin-bottom: -5px;display:unset !important;"></iframe>
 </p>
-<script defer data-domain="ac-baidu.90dao.com" src="https://tongji.90dao.com/js/vue.js"></script>

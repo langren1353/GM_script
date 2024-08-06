@@ -87,7 +87,7 @@ export default defineConfig({
           text: "其它推荐",
           items: [
             { text: '漫步白月光', link: 'https://www.at8.fun/' },
-            { text: '不加速-上网加速', link: 'https://v.bujiasu.com/#/login?code=veG4L8Vo' },
+            { text: '不加速-上网加速', link: 'https://jiu.bujiasu.com/#/login?code=veG4L8Vo' },
           ]
         },
       ]

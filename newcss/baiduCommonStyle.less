@@ -454,16 +454,19 @@ body.showRight {
   }
 }
 
-#wrapper #content_left > .c-container[tpl='recommend_list'] {
-  padding-top: 10px;
-  display: flex;
-  align-items: center;
-}
-
-#wrapper #content_left > .c-container[tpl='wenda_generate'] {
-  height: 400px;
-  overflow-y: auto;
-  overflow-x: clip;
+#wrapper #content_left > .c-container {
+  
+  &[tpl='recommend_list']{
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+  }
+  &[tpl='wenda_generate'],
+  &[tpl='ai_index']{
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: clip;
+  }
 }
 
 #content_left .hit-toptip {
@@ -514,7 +517,7 @@ body.showRight {
 
   body.showRight {
     #head .head_wrapper {
-      transform: translateX(120px);
+      transform: translateX(45px);
     }
   }
 }

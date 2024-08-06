@@ -134,7 +134,7 @@ body[duck], body[doge] {
   --text-color-em: #f66;
 }
 
-/***  ****/
+/*** Dark Mode fix ****/
 @media (prefers-color-scheme: dark) {
   #rso .g, .vk_c {
     background-color: var(--back-ground-color-4);
@@ -142,5 +142,16 @@ body[duck], body[doge] {
 
   img {
     filter: brightness(0.8);
+  }
+}
+body[google][data-dt] {
+  .g {
+    background-color: #FFFFFF1F !important;
+  }
+}
+
+body[bing].b_dark {
+  #b_content #b_results > li:not(#mfa_root){
+    background-color: #FFFFFF1F !important;
   }
 }

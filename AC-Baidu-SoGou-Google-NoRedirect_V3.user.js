@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.01
+// @version    27.02
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -21,6 +21,7 @@
 // @connect    dogedoge.com
 // @connect    so.com
 // @connect    localhost
+// @connect    90dao.com
 // @connect    *
 // @include    *://ipv6.baidu.com/*
 // @include    *://www.baidu.com/*
@@ -36,6 +37,7 @@
 // @include    *://*duckduckgo.com/*
 // @include    *://*.dogedoge.com/*
 // @include    *://*.90dao.com/*
+// @include    *://*.tujidu.com/*
 // @include    *://localhost*/*
 // @exclude    *://*.google*/sorry*
 // @exclude    https://zhidao.baidu.com/*
@@ -49,7 +51,8 @@
 // @copyright  2015-2025, AC
 // @lastmodified  2024-08-06
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2024.08-02-V27.01 重构-十周年优化版，优化项：1.重构设置功能，提供更强大的设置功能；2.极大优化页面加载动画效果；3.修复现有页面显示和效果（谷歌[主]、必应）单列、多列；4.兼容ViolentMonkey，兼容Firefox浏览器
+// @note    2024.08-06-V27.02 更换域名，解决SNI拦截问题；优化右侧栏显示逻辑-双列以上隐藏
+// @note    2024.08-06-V27.01 重构-十周年优化版，优化项：1.重构设置功能，提供更强大的设置功能；2.极大优化页面加载动画效果；3.修复现有页面显示和效果（谷歌[主]、必应）单列、多列；4.兼容ViolentMonkey，兼容Firefox浏览器
 // @note    2024.03-05-V26.10 fix: 谷歌白屏的问题；再次支持鸭鸭搜索引擎，鸭鸭三列支持；baidu\Google双列功能
 // @note    2023.12-16-V26.07 日常维护；优化各页面加载卡顿的问题，优化搜索引擎显示效果
 // @note    2023.06-19-V26.06 修复谷歌显示效果的错位问题等，修复谷歌异常白屏问题
@@ -86,23 +89,23 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   https://ac-baidu.90dao.com/newcss/baiduCommonStyle.less?t=27.01
-// @resource  baiduOnePageStyle  https://ac-baidu.90dao.com/newcss/baiduOnePageStyle.less?t=27.01
-// @resource  baiduTwoPageStyle  https://ac-baidu.90dao.com/newcss/baiduTwoPageStyle.less?t=27.01
-// @resource  googleCommonStyle  https://ac-baidu.90dao.com/newcss/googleCommonStyle.less?t=27.01
-// @resource  googleOnePageStyle https://ac-baidu.90dao.com/newcss/googleOnePageStyle.less?t=27.01
-// @resource  googleTwoPageStyle https://ac-baidu.90dao.com/newcss/googleTwoPageStyle.less?t=27.01
-// @resource  bingCommonStyle    https://ac-baidu.90dao.com/newcss/bingCommonStyle.less?t=27.01
-// @resource  bingOnePageStyle   https://ac-baidu.90dao.com/newcss/bingOnePageStyle.less?t=27.01
-// @resource  bingTwoPageStyle   https://ac-baidu.90dao.com/newcss/bingTwoPageStyle.less?t=27.01
-// @resource  duckCommonStyle    https://ac-baidu.90dao.com/newcss/duckCommonStyle.less?t=27.01
-// @resource  duckOnePageStyle   https://ac-baidu.90dao.com/newcss/duckOnePageStyle.less?t=27.01
-// @resource  duckTwoPageStyle   https://ac-baidu.90dao.com/newcss/duckTwoPageStyle.less?t=27.01
-// @resource  dogeCommonStyle    https://ac-baidu.90dao.com/newcss/dogeCommonStyle.less?t=27.01
-// @resource  dogeOnePageStyle   https://ac-baidu.90dao.com/newcss/dogeOnePageStyle.less?t=27.01
-// @resource  dogeTwoPageStyle   https://ac-baidu.90dao.com/newcss/dogeTwoPageStyle.less?t=27.01
-// @resource  HuYanStyle         https://ac-baidu.90dao.com/newcss/HuYanStyle.less?t=27.01
-// @resource  BgAutoFit          https://ac-baidu.90dao.com/newcss/BgAutoFit.less?t=27.01
+// @resource  baiduCommonStyle   https://ac-baidu.tujidu.com/newcss/baiduCommonStyle.less?t=27.01
+// @resource  baiduOnePageStyle  https://ac-baidu.tujidu.com/newcss/baiduOnePageStyle.less?t=27.01
+// @resource  baiduTwoPageStyle  https://ac-baidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=27.01
+// @resource  googleCommonStyle  https://ac-baidu.tujidu.com/newcss/googleCommonStyle.less?t=27.01
+// @resource  googleOnePageStyle https://ac-baidu.tujidu.com/newcss/googleOnePageStyle.less?t=27.01
+// @resource  googleTwoPageStyle https://ac-baidu.tujidu.com/newcss/googleTwoPageStyle.less?t=27.01
+// @resource  bingCommonStyle    https://ac-baidu.tujidu.com/newcss/bingCommonStyle.less?t=27.01
+// @resource  bingOnePageStyle   https://ac-baidu.tujidu.com/newcss/bingOnePageStyle.less?t=27.01
+// @resource  bingTwoPageStyle   https://ac-baidu.tujidu.com/newcss/bingTwoPageStyle.less?t=27.01
+// @resource  duckCommonStyle    https://ac-baidu.tujidu.com/newcss/duckCommonStyle.less?t=27.01
+// @resource  duckOnePageStyle   https://ac-baidu.tujidu.com/newcss/duckOnePageStyle.less?t=27.01
+// @resource  duckTwoPageStyle   https://ac-baidu.tujidu.com/newcss/duckTwoPageStyle.less?t=27.01
+// @resource  dogeCommonStyle    https://ac-baidu.tujidu.com/newcss/dogeCommonStyle.less?t=27.01
+// @resource  dogeOnePageStyle   https://ac-baidu.tujidu.com/newcss/dogeOnePageStyle.less?t=27.01
+// @resource  dogeTwoPageStyle   https://ac-baidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=27.01
+// @resource  HuYanStyle         https://ac-baidu.tujidu.com/newcss/HuYanStyle.less?t=27.01
+// @resource  BgAutoFit          https://ac-baidu.tujidu.com/newcss/BgAutoFit.less?t=27.01
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require   https://update.greasyfork.org/scripts/433620/1422795/Less4_1_2_fixed.js
 // @require   https://lib.baomitu.com/vue/3.4.35/vue.runtime.global.prod.min.js
@@ -513,7 +516,7 @@
         CONST.acpush_acremoveInit()
       }
     })
-    if(location.host.includes('90dao.com') || location.host.includes('localhost')) {
+    if(location.host.includes('tujidu.com') || location.host.includes('90dao.com') || location.host.includes('localhost')) {
       unsafeWindow.AC_GM_Interface = {
         async get(key, dataStr) {
           if(key.includes('op_')) {
@@ -916,6 +919,8 @@
       this.options = new SiteOptions(this)
       await this.loadSiteCSS()
       this.waitBodyHead()
+      this.openSeetingsUrl = ''
+      this.check90daoConn()
     }
 
     initGM() {
@@ -942,7 +947,7 @@
 
     bindGM() {
       GM_registerMenuCommand('AC-重定向脚本设置', function() {
-        window.open('https://ac-baidu.90dao.com/pages/custom/#' + CONST.options.siteName)
+        window.open(CONST.openSeetingsUrl)
       });
       GM_registerMenuCommand('脚本重置 - 修复脚本', function() {
         GM.setValue('ACConfig', '{}');
@@ -950,6 +955,22 @@
       });
     }
 
+    check90daoConn() {
+      this.openSeetingsUrl = 'https://ac-baidu.tujidu.com/pages/custom/#' + CONST.options.siteName
+      
+      GM_xmlhttpRequest({
+        method: "HEAD",
+        timeout: 3000,
+        url: "https://ac-baidu.90dao.com/",
+        onload: ()=> {
+          this.openSeetingsUrl = 'https://ac-baidu.90dao.com/pages/custom/#' + CONST.options.siteName
+        },
+        onerror: ()=> {
+          this.openSeetingsUrl = 'https://ac-baidu.tujidu.com/pages/custom/#' + CONST.options.siteName
+        }
+      });
+    }
+    
     saveConfig() {
       const commonConfig = this.ACConfig['common']
       const siteConfig = this.ACConfig[this.options.siteName]
@@ -1310,7 +1331,7 @@
 
           parent.insertBefore(userAdiv, parent.childNodes[0]);
           document.querySelector("#myuser .myuserconfig").addEventListener("click", function(e) {
-            window.open('https://ac-baidu.90dao.com/pages/custom/#' + CONST.options.siteName)
+            window.open(CONST.openSeetingsUrl)
           }, true);
         }, 300)
       }
@@ -2469,10 +2490,13 @@
         })
       }
 
-      if (!CONST.curConfig.isRightDisplayEnable) { // 右侧栏显示
+      // 双列模式下，自动禁用右侧栏
+      if (!CONST.curConfig.isRightDisplayEnable || CONST.curConfig.adsStyleMode >= 3) {
         document.body.classList.remove("showRight")
-      } else if (!document.body.classList.contains('showRight')) {
-        document.body.classList.add("showRight")
+      } else {
+        if (!document.body.classList.contains('showRight')) {
+          document.body.classList.add("showRight")
+        }
       }
 
       if (CONST.curConfig.isBlockEnable && CONST.curConfig.isRedirectEnable) {

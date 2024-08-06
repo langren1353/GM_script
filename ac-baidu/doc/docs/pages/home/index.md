@@ -64,7 +64,7 @@
 
 ## 交流群
 反馈问题，技术交流可以加群：[AC-baidu交流群](https://ac.tujidu.com/)
-本人也不定期在tg上回复大家的问题：tg的地址：
+本人也不定期在tg上回复大家的问题：tg的地址：https://t.me/tujidu
 
 
 ## 支持网站列表

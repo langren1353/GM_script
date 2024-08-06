@@ -1,4 +1,4 @@
-FROM dio.90dao.com/library/nginx:alpine3.19-slim
+FROM dio.90dao.com/peytonyip/nginx-brotli
 ENV TZ=Asia/Shanghai
 
 COPY ./ac-baidu/doc/docs/.vitepress/dist /usr/share/nginx/html
