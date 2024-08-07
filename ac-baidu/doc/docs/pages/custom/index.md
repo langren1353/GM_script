@@ -42,6 +42,10 @@
   z-index: 10;
   width: 130px;
   height: 100px;
+
+  &:empty{
+    display: none;
+  }
 }
 .el-drawer__header{
   margin-bottom: unset;
