@@ -1,0 +1,207 @@
+/*** DarkMode Color Val ***/
+:root {
+  --huahua-bg: #1f1f1f;
+  --huahua-bg-dark: #121212;
+  --huahua-bg-light: #4f4f4f;
+  --huahua-color: #c8c8c8;
+  --huahua-color-highlight: #fcfcfc;
+  --huahua-color-secondary: #707070;
+  --huahua-red: #dc4f4f;
+  --huahua-blue: #5972d8;
+  --huahua-bg-blue: #1d3a8a;
+}
+
+/*** Google Dark Mode ****/
+body[google] {
+  &,
+  & .g {
+    background-color: transparent !important;
+  }
+}
+
+/*** Bing Dark Mode ****/
+body[bing].b_dark {
+  #b_content #b_results > li:not(#mfa_root) {
+    background-color: #ffffff1f !important;
+  }
+}
+
+/*** Baidu Dark Mode ****/
+body[baidu] {
+  background-color: var(--huahua-bg-dark) !important;
+  #head,
+  span.c-gap-left-small {
+    background-color: var(--huahua-bg) !important;
+  }
+
+  .wrapper_new {
+    // 分类(网页\图片\资讯\视频\文库\地图\百科\学术)
+    #s_tab {
+      background-color: var(--huahua-bg) !important;
+      .s-tab-item:hover {
+        color: var(--huahua-color-highlight) !important;
+      }
+      .cur-tab {
+        color: var(--huahua-color) !important;
+      }
+    }
+    // 猜你想搜下挂标签
+    #searchTag {
+      background-color: var(--huahua-bg) !important;
+      padding-bottom: 8px !important;
+      [class^="search-tag"] {
+        background: transparent !important;
+        > span {
+          background-color: var(--huahua-bg-light) !important;
+        }
+      }
+      > div > div {
+        padding-bottom: 2px !important;
+        a {
+          color: var(--huahua-color) !important;
+          background-color: transparent !important;
+          border: 1px var(--huahua-bg-light) solid;
+        }
+      }
+    }
+    // 顶部右侧设置\账号信息
+    #u > a {
+      color: var(--huahua-color) !important;
+    }
+    .bdpfmenu,
+    .usermenu {
+      &,
+      & a {
+        color: var(--huahua-color) !important;
+        background-color: var(--huahua-bg) !important;
+      }
+      & a:hover {
+        color: var(--huahua-blue) !important;
+      }
+    }
+    #form {
+      // 搜索框
+      > span {
+        background-color: transparent !important;
+        // 搜索框字体颜色
+        > input {
+          color: var(--huahua-color) !important;
+        }
+      }
+      // 搜索按钮
+      .s_btn_wr .s_btn {
+        background-color: var(--huahua-bg-blue) !important;
+      }
+      // 联想词
+      .bdsug {
+        background-color: var(--huahua-bg) !important;
+        ul {
+          // 联想词链接
+          li[data-key] {
+            color: var(--huahua-color) !important;
+            &.bdsug-s {
+              background-color: var(--huahua-bg-light) !important;
+            }
+            // 非匹配关键字
+            b {
+              color: var(--huahua-color-secondary) !important;
+            }
+          }
+        }
+      }
+    }
+    // 搜索结果---------------------------
+    div[class|="result"]:not(.result-molecule),
+    .result {
+      color: var(--huahua-color-secondary) !important;
+      a {
+        color: var(--huahua-blue) !important;
+        background-color: transparent !important;
+      }
+      em {
+        color: var(--huahua-red) !important;
+      }
+      h3[class*="title"] {
+        background-color: transparent !important;
+      }
+      background-color: var(--huahua-bg) !important;
+      padding: 8px;
+      border: 1px var(--huahua-bg-light) solid !important;
+      border-radius: 10px !important;
+      // 全网热搜分页器
+      [class^="pag-wrap"] span {
+        background-color: var(--huahua-bg-light) !important;
+        color: var(--huahua-color) !important;
+      }
+      // 百度文库/百度百科/资讯详情文本
+      .cu-color-text,
+      .c-color-text,
+      div[class|="group-sub"] {
+        color: var(--huahua-color-secondary) !important;
+      }
+      // 相关超链接
+      button[rl-node] {
+        background-color: transparent !important;
+      }
+      // 内容文本去除阴影,开启AC优化样式后,去除资讯磊阴影
+      .cu-border,
+      [class^="single-card-wrapper"] {
+        box-shadow: none !important;
+      }
+
+      // AI智能体问答
+      [class^="title-instance"] {
+        color: var(--huahua-color) !important;
+      }
+    }
+    // 自动翻页
+    .sp-separator.AC {
+      background-color: var(--huahua-bg) !important;
+      b {
+        color: var(--huahua-color) !important;
+        text-shadow: none !important;
+      }
+    }
+  }
+  // 二级标题/右侧栏
+  .c-color-t {
+    color: var(--huahua-color) !important;
+  }
+  .result-molecule {
+    // 相关搜索
+    > div {
+      background: transparent !important;
+    }
+    a[title] {
+      color: var(--huahua-color) !important;
+      background-color: var(--huahua-bg) !important;
+    }
+  }
+  // 分页器
+  #page {
+    background-color: var(--huahua-bg-dark) !important;
+    a {
+      background-color: var(--huahua-bg-light) !important;
+      color: var(--huahua-color) !important;
+    }
+  }
+  // 页脚
+  #foot {
+    background-color: var(--huahua-bg-dark) !important;
+    a:hover {
+      color: var(--huahua-color-highlight) !important;
+    }
+  }
+}
+
+/*** Dark Mode fix ****/
+@media (prefers-color-scheme: dark) {
+  #rso .g,
+  .vk_c {
+    background-color: var(--huahua-bg-light);
+  }
+
+  img {
+    filter: brightness(0.8);
+  }
+}
