@@ -17,7 +17,7 @@
           <el-input v-show="state.isLocalDevMode" v-model="state.localDebugBaseUrl" style="width: 400px; margin-left: 40px" placeholder="https://..." clearable @click.stop />
         </el-form-item>
         <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">全局项：</el-text>
-        <el-form-item for="nothing" label="是否开启重定向" label-position="left">
+        <el-form-item for="nothing" label="是否处理重定向问题" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#redirect" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -61,7 +61,7 @@
              <el-switch inline-prompt size="large" v-model="state.isFaviconEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item for="nothing" label="附加3-显示右侧栏" label-position="left">
+        <el-form-item for="nothing" label="附加4-显示右侧栏" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#remove-right" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -72,7 +72,7 @@
              <el-switch inline-prompt size="large" v-model="state.isRightDisplayEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item v-if="false" for="nothing" label="附加4-编号功能-建议关闭" label-position="left">
+        <el-form-item for="nothing" label="附加5-编号功能-建议关闭" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#number" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -83,15 +83,27 @@
              <el-switch inline-prompt size="large" v-model="state.isCounterEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item v-if="false" for="nothing" label="附加5-文字下划线-建议关闭" label-position="left">
+        <el-form-item for="nothing" label="附加6-移除文字下划线-建议开启" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#text-line" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
             effect="dark" :hide-after=20
-            content="文字下划线，建议关闭"
+            content="移除文字下划线，建议开启"
             placement="right"
           >
-             <el-switch inline-prompt size="large" v-model="state.isALineEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
+             <el-switch inline-prompt size="large" v-model="state.isALineDisable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
+          </el-tooltip>
+        </el-form-item>
+
+        <el-form-item for="nothing" label="附加7-暗黑主题色" label-position="left">
+          <a-tool-tip-icon href="/pages/home/use.html#darkmode" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
+          <el-tooltip
+            class="box-item"
+            effect="dark" :hide-after=20
+            content="启用后，将搜索结果适配为暗黑主题，按需开启"
+            placement="right"
+          >
+            <el-switch inline-prompt size="large" v-model="state.isDarkModeEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
   
@@ -149,7 +161,8 @@ const defaultOptions = {
 
   isRightDisplayEnable: true, // 是否开启右侧边栏
   isCounterEnable: false, // 是否显示计数器
-  isALineEnable: false, // 是否禁止下划线
+  isALineDisable: false, // 是否禁止下划线
+  isDarkModeEnable: false, // 是否启用暗黑模式
 
   commonStyleEnable: false, // 自定义样式-是否启用
   commonStyleLink: '', // 自定义样式链接

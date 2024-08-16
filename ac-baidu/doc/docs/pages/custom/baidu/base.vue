@@ -24,12 +24,17 @@
           <el-switch inline-prompt size="large" v-model="state.doRemoveSug" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
         </el-tooltip>
       </el-form-item>
+<!--      <el-form-item for="nothing" label="独有2-隐藏百度AI自动生成" label-position="left">-->
+<!--        <el-tooltip class="box-item" effect="dark" :hide-after=20 content="隐藏百度的AI生成，百度AI生成经常高度不固定，自动往下面越来越长 ，就很烦" placement="right">-->
+<!--          <el-switch inline-prompt size="large" v-model="state.doRemoveAIGen" active-text="开启" inactive-text="关闭"/>-->
+<!--        </el-tooltip>-->
+<!--      </el-form-item>-->
       <el-form-item for="nothing" label="独有2-百度Lite显示样式" label-position="left">
         <el-tooltip class="box-item" effect="dark" :hide-after=20 content="启用后将加载BaiduLite的样式表" placement="right">
           <el-switch inline-prompt size="large" v-model="state.baiduLiteEnable" active-text="开启" inactive-text="关闭"/>
         </el-tooltip>
       </el-form-item>
-
+      
       <el-divider />
       <el-form-item for="nothing" label="百度护眼模式" label-position="left">
         <el-tooltip class="box-item" effect="dark" :hide-after=20 content="百度护眼模式，开启将会自动进行护眼优化，开启后会自动开启全局护眼模式" placement="top">
@@ -77,6 +82,7 @@ const base = reactive({
 
 const defaultOptions = {
   doRemoveSug: true,
+  // doRemoveAIGen: false,
   baiduLiteEnable: false,
 
   adsStyleEnable: true, // 是否开启默认效果优化

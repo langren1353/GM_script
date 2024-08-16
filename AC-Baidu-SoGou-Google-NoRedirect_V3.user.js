@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.02
+// @version    27.04
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -49,8 +49,10 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2024-08-06
+// @lastmodified  2024-08-16
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2024.08-16-V27.04 修复：谷歌双列加载缓慢、双列效果优化、单列居中效果优化；bing页面bug修复；暗黑模式引入；编号、下划线功能修复；鸭鸭修复 & 勿忘国耻
+// @note    2024.08-09-V27.03 增加字节跳动的Vue地址，避免部分地区打不开lib.baomitu.com导致的脚本无效
 // @note    2024.08-06-V27.02 更换域名，解决SNI拦截问题；优化右侧栏显示逻辑-双列以上隐藏
 // @note    2024.08-06-V27.01 重构-十周年优化版，优化项：1.重构设置功能，提供更强大的设置功能；2.极大优化页面加载动画效果；3.修复现有页面显示和效果（谷歌[主]、必应）单列、多列；4.兼容ViolentMonkey，兼容Firefox浏览器
 // @note    2024.03-05-V26.10 fix: 谷歌白屏的问题；再次支持鸭鸭搜索引擎，鸭鸭三列支持；baidu\Google双列功能
@@ -89,26 +91,28 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   https://ac-baidu.tujidu.com/newcss/baiduCommonStyle.less?t=27.01
-// @resource  baiduOnePageStyle  https://ac-baidu.tujidu.com/newcss/baiduOnePageStyle.less?t=27.01
-// @resource  baiduTwoPageStyle  https://ac-baidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=27.01
-// @resource  googleCommonStyle  https://ac-baidu.tujidu.com/newcss/googleCommonStyle.less?t=27.01
-// @resource  googleOnePageStyle https://ac-baidu.tujidu.com/newcss/googleOnePageStyle.less?t=27.01
-// @resource  googleTwoPageStyle https://ac-baidu.tujidu.com/newcss/googleTwoPageStyle.less?t=27.01
-// @resource  bingCommonStyle    https://ac-baidu.tujidu.com/newcss/bingCommonStyle.less?t=27.01
-// @resource  bingOnePageStyle   https://ac-baidu.tujidu.com/newcss/bingOnePageStyle.less?t=27.01
-// @resource  bingTwoPageStyle   https://ac-baidu.tujidu.com/newcss/bingTwoPageStyle.less?t=27.01
-// @resource  duckCommonStyle    https://ac-baidu.tujidu.com/newcss/duckCommonStyle.less?t=27.01
-// @resource  duckOnePageStyle   https://ac-baidu.tujidu.com/newcss/duckOnePageStyle.less?t=27.01
-// @resource  duckTwoPageStyle   https://ac-baidu.tujidu.com/newcss/duckTwoPageStyle.less?t=27.01
-// @resource  dogeCommonStyle    https://ac-baidu.tujidu.com/newcss/dogeCommonStyle.less?t=27.01
-// @resource  dogeOnePageStyle   https://ac-baidu.tujidu.com/newcss/dogeOnePageStyle.less?t=27.01
-// @resource  dogeTwoPageStyle   https://ac-baidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=27.01
-// @resource  HuYanStyle         https://ac-baidu.tujidu.com/newcss/HuYanStyle.less?t=27.01
-// @resource  BgAutoFit          https://ac-baidu.tujidu.com/newcss/BgAutoFit.less?t=27.01
+// @resource  baiduCommonStyle   https://ac-baidu.tujidu.com/newcss/baiduCommonStyle.less?t=27.04
+// @resource  baiduOnePageStyle  https://ac-baidu.tujidu.com/newcss/baiduOnePageStyle.less?t=27.04
+// @resource  baiduTwoPageStyle  https://ac-baidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=27.04
+// @resource  googleCommonStyle  https://ac-baidu.tujidu.com/newcss/googleCommonStyle.less?t=27.04
+// @resource  googleOnePageStyle https://ac-baidu.tujidu.com/newcss/googleOnePageStyle.less?t=27.04
+// @resource  googleTwoPageStyle https://ac-baidu.tujidu.com/newcss/googleTwoPageStyle.less?t=27.04
+// @resource  bingCommonStyle    https://ac-baidu.tujidu.com/newcss/bingCommonStyle.less?t=27.04
+// @resource  bingOnePageStyle   https://ac-baidu.tujidu.com/newcss/bingOnePageStyle.less?t=27.04
+// @resource  bingTwoPageStyle   https://ac-baidu.tujidu.com/newcss/bingTwoPageStyle.less?t=27.04
+// @resource  duckduckgoCommonStyle    https://ac-baidu.tujidu.com/newcss/duckCommonStyle.less?t=27.04
+// @resource  duckduckgoOnePageStyle   https://ac-baidu.tujidu.com/newcss/duckOnePageStyle.less?t=27.04
+// @resource  duckduckgoTwoPageStyle   https://ac-baidu.tujidu.com/newcss/duckTwoPageStyle.less?t=27.04
+// @resource  dogeCommonStyle    https://ac-baidu.tujidu.com/newcss/dogeCommonStyle.less?t=27.04
+// @resource  dogeOnePageStyle   https://ac-baidu.tujidu.com/newcss/dogeOnePageStyle.less?t=27.04
+// @resource  dogeTwoPageStyle   https://ac-baidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=27.04
+// @resource  HuYanStyle         https://ac-baidu.tujidu.com/newcss/HuYanStyle.less?t=27.04
+// @resource  BgAutoFit          https://ac-baidu.tujidu.com/newcss/BgAutoFit.less?t=27.04
+// @resource  HuaHua-ACDrakMode  https://ac-baidu.tujidu.com/newcss/HuaHua-ACDrakMode.less?t=27.04
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require   https://update.greasyfork.org/scripts/433620/1422795/Less4_1_2_fixed.js
-// @require   https://lib.baomitu.com/vue/3.4.35/vue.runtime.global.prod.min.js
+// @require   https://lib.baomitu.com/vue/3.2.31/vue.runtime.global.prod.min.js
+// @require   https://lf6-cdn-tos.bytecdntp.com/cdn/expire-10-y/vue/3.2.31/vue.runtime.global.prod.min.js
 // @noframes
 // @grant    GM_getValue
 // @grant    GM.getValue
@@ -605,9 +609,11 @@
     }
 
     _s_baidu() {
-      if (this.useItem.SiteTypeID === 1 && location.href.search(/(&|\?)(wd|word)=/) < 0) {
-        console.mylog('禁用CSS的')
-        this.gmInstance.curConfig.enableCSS = false
+      if (this.useItem.SiteTypeID === 1) {
+        if(location.href.search(/(&|\?)(wd|word)=/) < 0) {
+          console.mylog('禁用CSS的')
+          this.gmInstance.curConfig.enableCSS = false
+        }
       }
 
       return {
@@ -631,9 +637,15 @@
 
     _s_bing() {
       // 图片站 、地图站、购物站
-      if (this.useItem.SiteTypeID === 5 && location.href.search(/images\/search/) > 0) {
-        console.mylog("特殊站,不加载样式，不添加menu");
-        this.gmInstance.curConfig.enableCSS = false
+      if(this.useItem.SiteTypeID === 5) {
+        if (location.href.search(/images\/search/) > 0) {
+          console.mylog("特殊站,不加载样式，不添加menu");
+          this.gmInstance.curConfig.enableCSS = false
+        } else if(location.href.search(/search/) > 0) {
+          this.gmInstance.curConfig.enableCSS = true // 仅在搜索结果页，展示背景图即可
+        } else {
+          this.gmInstance.curConfig.enableCSS = false
+        }
       }
 
       return {
@@ -656,9 +668,11 @@
 
     _s_google() {
       // 图片站 、地图站、购物站
-      if (this.useItem.SiteTypeID === 4 && location.href.replace(/tbm=(isch|lcl|shop|flm)/, "") !== location.href) {
-        console.mylog("特殊站,不加载样式，不添加menu");
-        this.gmInstance.curConfig.enableCSS = false
+      if (this.useItem.SiteTypeID === 4) {
+        if(location.href.search(/tbm=(isch|lcl|shop|flm)/) > 0) {
+          console.mylog("特殊站,不加载样式，不添加menu");
+          this.gmInstance.curConfig.enableCSS = false
+        }
       }
 
       return {
@@ -706,7 +720,7 @@
         MainType: "#react-layout li",
         FaviconType: ".nrn-react-div .result__url__domain",
         FaviconAddTo: "h2",
-        CounterType: "#react-layout li h2",
+        CounterType: "#react-layout li h2 a",
         BlockType: "h2 a",
         MultiPageType: "#react-layout .react-results--main",
         pager: {
@@ -837,12 +851,14 @@
 
           isRightDisplayEnable: true, // 是否开启右侧边栏
           isCounterEnable: false, // 是否显示计数器
-          isALineEnable: false, // 是否禁止下划线
+          isALineDisable: false, // 是否禁止下划线
+          isDarkModeEnable: false, // 是否加载暗黑模式
 
           ...new BaseConfig(false)
         },
         baidu: {
           doRemoveSug: true, // 删除移动预测
+          doRemoveAIGen: false, // 移除百度AI搜索结果
           baiduLiteEnable: false, // 启用百度Lite样式表
           ...new BaseConfig()
         },
@@ -898,6 +914,7 @@
 
         huyanStyle: '',
         bgAutoFitStyle: '',
+        darkModeStyle: '', // 暗黑护眼色
         
         faviconStyle: '', // 动态插入的favicon的数据
       }
@@ -1073,6 +1090,9 @@
       if (this.curConfig.HuYanMode) {
         this.adsCSSList.huyanStyle = await this.getHuyanStyle()
       }
+      if (this.curConfig.darkModeStyle) {
+        this.adsCSSList.darkModeStyle = await this.loadStyleByName_WithLessCache('HuaHua-ACDrakMode')
+      }
       // 加载自定义样式
       if (this.curConfig.customStyleEnable) {
         console.mylog('触发custom更新')
@@ -1139,6 +1159,7 @@
       if (!this.adsCSSList.twoPageStyle) this.adsCSSList.twoPageStyle = await this.loadStyleByName_WithLessCache(this.options.siteName + 'TwoPageStyle') // 双列效果
       if (!this.adsCSSList.baiduLiteStyle) this.adsCSSList.baiduLiteStyle = await this.loadStyleByName_WithLessCache('baiduLiteStyle')
       if (!this.adsCSSList.bgAutoFitStyle) this.adsCSSList.bgAutoFitStyle = await this.loadStyleByName_WithLessCache('BgAutoFit')
+      if (!this.adsCSSList.darkModeStyle) this.adsCSSList.darkModeStyle = await this.loadStyleByName_WithLessCache('HuaHua-ACDrakMode')
     }
 
     waitBodyHead() {
@@ -1168,7 +1189,7 @@
           return
         }
         if(count >= 0) {
-          await callback()
+          await callback(count)
         } else {
           clearInterval(intId)
         }
@@ -1724,6 +1745,9 @@
           CONST.cssAutoInsert.add("bgFitStyle", CONST.adsCSSList.bgAutoFitStyle)
         }
       }
+      if(CONST.curConfig.isDarkModeEnable) {
+        CONST.cssAutoInsert.add("darkModeStyle", CONST.adsCSSList.darkModeStyle)
+      }
       if (CONST.curConfig.isAutopage) {
         const sepImgs = {
           top: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAWtJREFUeNrclE0rRGEUx8c1GUpRJIVIZGdhZCVr38GGhaI0ZXwCkliglChZEcvJxhdgYWOjLEUpm/EyiLzze+o8dTzdO3PljoVTv7rPc8/5d+6555xYrEhWop6boda5+6l9wjWcWpF+WIbqCJJ9hFRcDr3QAIkIhKugz5PDfkSixkphz5aiAnqgE8rgWRxGoSOPyBkswQuUwyscw4HrmFCZL8Kt/JAg7mEFPEmo4FdPwk0BUcsdzIap0TQ8qMAPuICcEjLnd+VjSjcfJNgIc/DkZGSymYGsnK9EZMrxe4MFaNGiZjC2fT5zQ3p7QDK1dR2GSljziclAvRUe8nHYVA4jjvC43NfAuk/smB2QNqcsWxKcLbAKTFnS0hWD6n27Fd6FLqiDI5iQmQ9jpiVT0sNJ6aYd7dAE3QHBbinSAX5JWWaxuLo8F35jh/bBK9Y+/r/Cl6pLcnna8NvuDGMnslpbZRpXZYT/3r4EGACZL3ZL2afNFAAAAABJRU5ErkJggg==",
@@ -1748,6 +1772,14 @@
       
       if(CONST.curConfig.isFaviconEnable) {
         CONST.cssAutoInsert.add("faviconStyle", CONST.adsCSSList.faviconStyle) // 插入Favicon图标
+      }
+      
+      if(CONST.curConfig.isALineDisable) {
+        CONST.cssAutoInsert.add("alinkEnable", "a,a em{text-decoration:none !important}")
+      }
+      
+      if(CONST.curConfig.isCounterEnable) {
+        CONST.cssAutoInsert.add("counterStyle", ".AC-CounterT{background:#FD9999}body  #sp-ac-container{position:fixed;top:3.9vw;right:8.8vw}")
       }
       
       // if(CONST.options.useItem.SiteTypeID === CONST.options.google.SiteTypeID && CONST.curConfig.useBaiduLogo) {
@@ -1960,7 +1992,8 @@
               CONST.lock.pageLoadingLocked = true;
               if (CONST.options.useItem.SiteTypeID === CONST.options.duckduckgo.SiteTypeID) { // 可以用已有的方法来实现了
                 if (!CONST.curConfig.optimizeDuckDuckGo || +CONST.curConfig.adsStyleMode >= 3) { // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
-                  document.querySelector("#links .result--more a").click();
+                  const node = document.querySelector("#links .result--more a")
+                  node && node.click();
                   setTimeout(function() {
                     CONST.lock.pageLoadingLocked = false;
                   }, 5000);
@@ -2195,7 +2228,9 @@
         const toClass = one.dataset.class
         const imgSrc = one.dataset.src
         const bm = one.dataset.bm
-        one.outerHTML = `<img src="${imgSrc}" height="${height}" width="${width}" data-priority="2" role="presentation" class="${toClass}" data-bm="${bm}">`
+        if(imgSrc) {
+          one.outerHTML = `<img src="${imgSrc}" height="${height}" width="${width}" data-priority="2" role="presentation" class="${toClass}" data-bm="${bm}">`  
+        }
       })
     }
   }
@@ -2347,13 +2382,7 @@
 
   !await (async function() {
     /***Google***/
-    CONST.addIntervalTrigger('google', 'now', () => {
-      const valid = location.href.search(/(&|\?)(q|kw)=/) >= 0 ||
-        document.querySelector(".g, div[two-father]")
-      if (!valid) {
-        CONST.curConfig.enableCSS = false
-      }
-
+    CONST.addIntervalTrigger('google', 'now', (counter) => {
       function findAndMarkP2Line() {
 
         function markFatherChild(child, father) {
@@ -2400,26 +2429,37 @@
           return null
         }
 
-        const gList = document.querySelectorAll(".g")
+        const gList = document.querySelectorAll(".g:not(two-checked)")
 
         return [...gList].filter(one => MarkMine(one))
       }
 
+      const valid = location.href.search(/(&|\?)(q|kw)=/) >= 0 ||
+        document.querySelector(".g, div[two-father]")
+      if (!valid) {
+        CONST.curConfig.enableCSS = false
+        return
+      }
       findAndMarkP2Line()
-      if (CONST.curConfig.useBaiduLogo) {
-        PageFunc.GoogleInBaiduMode()
+      if(counter % 4 === 0) {
+        if (CONST.curConfig.useBaiduLogo) {
+          PageFunc.GoogleInBaiduMode()
+        }
+        if (CONST.curConfig.isAdsEnable) {
+          PageFunc.removeAds.removeGoogleAd()
+        }
       }
-      if (CONST.curConfig.isAdsEnable) {
-        PageFunc.removeAds.removeGoogleAd()
-      }
-    }, 600, Infinity)
+    }, 50, Infinity)
     /***Baidu***/
     CONST.addIntervalTrigger('baidu', 'body', () => {
       // 没有(百度搜索结果的标志-[存在]百度的内容) return;
+      
       const valid = location.href.search(/(&|\?)(wd|word)=/) >= 0 ||
         document.querySelector("#content_left") || document.querySelector('.s_form').offsetHeight < 100
       if (!valid) {
+        console.mylog('无效页面，不存在搜索结构')
         CONST.curConfig.enableCSS = false
+        return
       }
       if (CONST.curConfig.isAdsEnable) {
         PageFunc.removeAds.removeBaiduAd()
@@ -2478,10 +2518,10 @@
           one.removeAttribute("ac_faviconstatus");
         })
       }
-      if (CONST.options.useItem.isCounterEnable) {
+      if (CONST.curConfig.isCounterEnable) {
         // 延迟加载，避免页面出现js问题
         setTimeout(() => {
-          MyApi.addCounter(document.querySelectorAll(CONST.options.useItem.CounterType)); // 显示计数器
+          PageFunc.addCounter(document.querySelectorAll(CONST.options.useItem.CounterType)); // 显示计数器
         }, 800)
       } else {
         document.querySelectorAll(".AC-CounterT").forEach(one => {

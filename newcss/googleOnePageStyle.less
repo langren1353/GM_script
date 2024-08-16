@@ -34,8 +34,8 @@ div[two-child] {
   max-width: unset;
 }
 
-#rso > .g ~ div:not(.g) {
-  width: 100%;
+.g {
+  width: 100% !important;
   overflow: hidden;
   margin-bottom: 10px;
 }
@@ -112,5 +112,11 @@ g-section-with-header {
 @media screen and (max-width: 1440px) {
   .RNNXgb {
     width: 80% !important;
+  }
+}
+
+@media screen and (min-width: 1675px) {
+  .srp {
+    --center-abs-margin: 22vw;
   }
 }

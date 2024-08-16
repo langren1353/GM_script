@@ -40,7 +40,7 @@
 - **[AC-Baidu.user.js (前往安装)](https://www.greasyfork.org/scripts/14178/)**
 
 ### 不能上谷歌怎么办？
-这里推荐一个能够科学访问的加速器，具体使用方法自查：[不加速.COM](https://v.bujiasu.com/#/login?code=veG4L8Vo)
+这里推荐一个能够科学访问的加速器，具体使用方法自查：[不加速.COM](https://v.bujiasu.com/b/?code=veG4L8Vo)
 
 ## 3. 其他方式-离线安装（主要针对Chrome）
 

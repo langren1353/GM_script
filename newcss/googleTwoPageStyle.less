@@ -8,6 +8,9 @@ div[two-father] {
   span:empty{
     display: none;
   }
+  >div:not(:has(div)){
+    display: none;
+  }
 }
 
 div[two-child] {
