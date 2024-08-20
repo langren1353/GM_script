@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.04
+// @version    27.05
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -49,8 +49,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2024-08-16
+// @lastmodified  2024-08-19
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2024.08-19-V27.05 fix：拦截功能、被拦截域名问题、和其他脚本兼容的CSS植入问题、优化域名检测逻辑；
 // @note    2024.08-16-V27.04 修复：谷歌双列加载缓慢、双列效果优化、单列居中效果优化；bing页面bug修复；暗黑模式引入；编号、下划线功能修复；鸭鸭修复 & 勿忘国耻
 // @note    2024.08-09-V27.03 增加字节跳动的Vue地址，避免部分地区打不开lib.baomitu.com导致的脚本无效
 // @note    2024.08-06-V27.02 更换域名，解决SNI拦截问题；优化右侧栏显示逻辑-双列以上隐藏
@@ -91,24 +92,24 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   https://ac-baidu.tujidu.com/newcss/baiduCommonStyle.less?t=27.04
-// @resource  baiduOnePageStyle  https://ac-baidu.tujidu.com/newcss/baiduOnePageStyle.less?t=27.04
-// @resource  baiduTwoPageStyle  https://ac-baidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=27.04
-// @resource  googleCommonStyle  https://ac-baidu.tujidu.com/newcss/googleCommonStyle.less?t=27.04
-// @resource  googleOnePageStyle https://ac-baidu.tujidu.com/newcss/googleOnePageStyle.less?t=27.04
-// @resource  googleTwoPageStyle https://ac-baidu.tujidu.com/newcss/googleTwoPageStyle.less?t=27.04
-// @resource  bingCommonStyle    https://ac-baidu.tujidu.com/newcss/bingCommonStyle.less?t=27.04
-// @resource  bingOnePageStyle   https://ac-baidu.tujidu.com/newcss/bingOnePageStyle.less?t=27.04
-// @resource  bingTwoPageStyle   https://ac-baidu.tujidu.com/newcss/bingTwoPageStyle.less?t=27.04
-// @resource  duckduckgoCommonStyle    https://ac-baidu.tujidu.com/newcss/duckCommonStyle.less?t=27.04
-// @resource  duckduckgoOnePageStyle   https://ac-baidu.tujidu.com/newcss/duckOnePageStyle.less?t=27.04
-// @resource  duckduckgoTwoPageStyle   https://ac-baidu.tujidu.com/newcss/duckTwoPageStyle.less?t=27.04
-// @resource  dogeCommonStyle    https://ac-baidu.tujidu.com/newcss/dogeCommonStyle.less?t=27.04
-// @resource  dogeOnePageStyle   https://ac-baidu.tujidu.com/newcss/dogeOnePageStyle.less?t=27.04
-// @resource  dogeTwoPageStyle   https://ac-baidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=27.04
-// @resource  HuYanStyle         https://ac-baidu.tujidu.com/newcss/HuYanStyle.less?t=27.04
-// @resource  BgAutoFit          https://ac-baidu.tujidu.com/newcss/BgAutoFit.less?t=27.04
-// @resource  HuaHua-ACDrakMode  https://ac-baidu.tujidu.com/newcss/HuaHua-ACDrakMode.less?t=27.04
+// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=27.04
+// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=27.04
+// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=27.04
+// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=27.04
+// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=27.04
+// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=27.04
+// @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=27.04
+// @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=27.04
+// @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=27.04
+// @resource  duckduckgoCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=27.04
+// @resource  duckduckgoOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=27.04
+// @resource  duckduckgoTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=27.04
+// @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=27.04
+// @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=27.04
+// @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=27.04
+// @resource  HuYanStyle         https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=27.04
+// @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=27.04
+// @resource  HuaHua-ACDrakMode  https://ibaidu.tujidu.com/newcss/HuaHua-ACDrakMode.less?t=27.04
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
 // @require   https://update.greasyfork.org/scripts/433620/1422795/Less4_1_2_fixed.js
 // @require   https://lib.baomitu.com/vue/3.2.31/vue.runtime.global.prod.min.js
@@ -154,19 +155,19 @@
   const MyApi = (() => {
     /**
      * @param cssText CSS的内容，如果是less的话，需要编译后的
-     * @param className 新增的类名
+     * @param className 新增的类名，或者是一堆类名（空格隔开）
      */
     function addStyle(cssText, className = ''){ // 添加CSS代码，不考虑文本载入时间，带有className
       if(className) {
-        let oldNode = document.querySelector("."+className)
+        const selectorName = (' ' + className).split(' ').join('.')
+        
+        let oldNode = document.querySelector(selectorName)
         if(!oldNode) {
           oldNode = document.createElement("style");
-          if(className) {
-            oldNode.className = className;
-            MyApi.safeFunc(() => {
-              document.children[0].appendChild(oldNode);
-            })
-          }
+          oldNode.className = className;
+          MyApi.safeFunc(() => {
+            document.children[0].appendChild(oldNode);
+          })
         }
         oldNode.innerHTML = cssText;
       }
@@ -681,7 +682,7 @@
         FaviconType: ".iUh30",
         FaviconAddTo: "h3",
         CounterType: "#rso .g h3:not(table h3),._yE>div[class~=_kk] h3",
-        BlockType: "a:not([href*='translate.google.com'])", // 修复block翻页的问题
+        BlockType: ".g h3", // 修复block翻页的问题
         MultiPageType: ".srg, #rso, div[two-father], #rso>div:not(.g), #kp-wp-tab-overview",
         pager: {
           nextLink: "id('pnnext')|id('navbar navcnt nav')//td[span]/following-sibling::td[1]/a|id('nn')/parent::a",
@@ -806,6 +807,8 @@
     }
 
     add(uniqueName, cssText) {
+      uniqueName = 'AC-' + uniqueName // 加上特殊前缀，标志关键词
+      
       // 如果有，并且数据还一模一样，那么跳过
       if (this.cssInsertSet[uniqueName] && this.cssInsertSet[uniqueName] === cssText) {
         return
@@ -822,7 +825,7 @@
 
     doInsert() {
       const cssText = Object.values(this.cssInsertSet).join('\n')
-      MyApi.addStyle(cssText, 'CSSAutoInsert')
+      MyApi.addStyle(cssText, Object.keys(this.cssInsertSet).join(' ')) // 方便排查css插入
       console.mylog('插入CSS完成')
     }
   }
@@ -896,7 +899,7 @@
       this.ACConfig = Object.assign({}, DefaultConfig, ACConfig) // 作为临时修改用
       // this.enableCSS = true
       this.cssAutoInsert = new CSSAutoInsert()
-      this.cssPairList = reactive({
+      this.cssFavionList = reactive({
         list: []
       })
 
@@ -973,19 +976,25 @@
     }
 
     check90daoConn() {
-      this.openSeetingsUrl = 'https://ac-baidu.tujidu.com/pages/custom/#' + CONST.options.siteName
+      const storeValue = sessionStorage.getItem('access_90dao')
+      this.openSeetingsUrl = storeValue || 'https://ac-baidu.tujidu.com/pages/custom/#' + CONST.options.siteName
       
-      GM_xmlhttpRequest({
-        method: "HEAD",
-        timeout: 3000,
-        url: "https://ac-baidu.90dao.com/",
-        onload: ()=> {
-          this.openSeetingsUrl = 'https://ac-baidu.90dao.com/pages/custom/#' + CONST.options.siteName
-        },
-        onerror: ()=> {
-          this.openSeetingsUrl = 'https://ac-baidu.tujidu.com/pages/custom/#' + CONST.options.siteName
-        }
-      });
+      if (!storeValue) {
+        console.log('目前不存在')
+        GM_xmlhttpRequest({
+          method: "HEAD",
+          timeout: 3000,
+          url: "https://ac-baidu.90dao.com/",
+          onload: ()=> {
+            this.openSeetingsUrl = 'https://ac-baidu.90dao.com/pages/custom/#' + CONST.options.siteName
+            sessionStorage.setItem('access_90dao', this.openSeetingsUrl)
+          },
+          onerror: ()=> {
+            this.openSeetingsUrl = 'https://ibaidu.tujidu.com/pages/custom/#' + CONST.options.siteName
+            sessionStorage.setItem('access_90dao', this.openSeetingsUrl)
+          }
+        });
+      }
     }
     
     saveConfig() {
@@ -1206,7 +1215,7 @@
         if (data.search(/(,|：|。|\n)/) >= 0) return '格式不符合要求';
         if (this.findIndex(m => m === data) < 0) {
           this.push(data);
-          dateChangeCallback()
+          dataChangeCallback()
         } else {
           return "已存在相同项"
         }
@@ -1216,12 +1225,12 @@
         let delId = this.findIndex(m => m === data);
         if (delId >= 0) {
           this.splice(delId, 1);
-          dateChangeCallback()
+          dataChangeCallback()
           return delId
         }
         return -1
       }
-      function dateChangeCallback() {
+      function dataChangeCallback() {
         CONST.lock.afterBlockChangeChecked = false
         PageBlockFunc._updateRegListRule()
       }
@@ -1237,7 +1246,7 @@
       }
       let useRule = Object.keys(specialRule).find(one => location.host.includes(one))
       if(!useRule) {
-        useRule = location.host.replace(/.*(baidu|google|bing|duckduckgo|doge).*/, '$1')
+        useRule = location.host.replace(/.*(baidu|google|bing|duckduckgo).*/, '$1')
       } else {
         return specialRule[useRule]
       }
@@ -1344,7 +1353,7 @@
     }
     InsertSettingMenu() {
       if (document.querySelector("#myuser") === null) {
-        MyApi.safeWaitFunc("#u, #gb, #b_header>#id_h, #header_wrapper .js-hl-button, body[doge] #header_wrapper #header", parent => {
+        MyApi.safeWaitFunc("#u, #gb, #b_header>#id_h, #header_wrapper .js-hl-butto", parent => {
           parent.style = "width: auto;";
           let userAdiv = document.createElement("div");
           userAdiv.id = "myuser";
@@ -1575,7 +1584,7 @@
     }
     addFavicon(citeList) {
       const insertList = []
-      if (CONST.options.useItem.SiteTypeID !== 0) {
+      if (CONST.options.useItem.SiteTypeID !== null) {
         for (let index = 0; index < citeList.length; index++) {
           if (null === citeList[index].getAttribute("ac_faviconStatus")) {
             let curNode = citeList[index];
@@ -1633,18 +1642,8 @@
             }
           }
         }
-      } else {
-        const checkNodes = document.querySelectorAll("#links_wrapper #links .nrn-react-div");
-        for (let faNode of checkNodes) {
-          let faviconNode = faNode.querySelector(".result__icon img");
-          let beforeNode = faNode.querySelector(".result__title a");
-          if (faviconNode && beforeNode) {
-            faviconNode.style = "vertical-align:middle;margin-right:5px;";
-            beforeNode.parentNode.insertBefore(faviconNode, beforeNode);
-          }
-        }
       }
-      insertList.map(one => CONST.cssPairList.list.push(one))
+      insertList.map(one => CONST.cssFavionList.list.push(one))
     }
     addCounter(citeList) {
       const cssText = "font-style:normal;position:relative;z-index:1;margin-right:4px;display:inline-block;color:white;font-family:'微软雅黑';font-size:16px;text-align:center;width:22px;line-height:22px;border-radius:50%;";
@@ -1724,11 +1723,12 @@
       CONST.cssAutoInsert.add("styleLogo", ".minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;} body.purecss-mode:before{display: none;}")
       CONST.cssAutoInsert.add("specialBAIDU", ".opr-recommends-merge-imgtext{display:none!important;}.res_top_banner{display:none!important;}.headBlock, body>div.result-op{display:none;}")
       CONST.cssAutoInsert.add("animationStyle", "@keyframes ani_leftToright{0%{transform:translateX(-32px);opacity:0.2;}20%{opacity:0.5;}30%{opacity:0.8;}100%{opacity:1;}}@keyframes ani_bottomTotop{0%{transform:translateY(32px);opacity:0.2;}20%{opacity:0.5;}30%{opacity:0.8;}100%{opacity:1;}}@-webkit-keyframes ani_topTobuttom{0%{transform:translateY(-32px);opacity:0.2;}20%{opacity:0.5;}30%{opacity:0.8;}100%{opacity:1;}}@-webkit-keyframes ani_hideToShow{0%{display:none;opacity:0.2;}20%{opacity:0.5;}30%{opacity:0.8;}100%{opacity:1;}}@-webkit-keyframes ani_showToHide{0%{display:none;opacity:1;}20%{opacity:0.8;}30%{opacity:0.5;}100%{opacity:0.3;}}.aniDelete{transition:all 0.15s cubic-bezier(0.4,0,1,1);opacity:0.1}")
-      CONST.cssAutoInsert.add("menuBtn", ".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #gb #myuser{margin-top:7px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}body[doge] #header{max-width: unset;}body[doge] #myuser{position: absolute;right: 40px;}")
+      CONST.cssAutoInsert.add("menuBtn", ".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #gb #myuser{margin-top:7px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}")
 
       if(CONST.curConfig.baiduLiteEnable) {
         CONST.cssAutoInsert.add("baiduLiteStyle", CONST.adsCSSList.baiduLiteStyle)
       }
+      
       if(CONST.curConfig.HuYanMode) {
         CONST.cssAutoInsert.add("huYanStyle", CONST.adsCSSList.huyanStyle)
       }
@@ -1767,11 +1767,15 @@
         CONST.cssAutoInsert.add("preloadAutoPage", cssText)
       }
       if(CONST.curConfig.isBlockEnable) {
-        CONST.cssAutoInsert.add("customBlockStyle", "button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *:not([ac-needhide]) .blockShow{display: none;} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}button.ghhider{font-size:12px}button.ghhider:hover{color:#006aff;background:#fff}") // 公共自定义样式
+        CONST.cssAutoInsert.add("customBlockStyle", "button.ghhider.ghhb[ac-user-alter='1']::before{content:'取消 - ';}#sp-ac-container .ac-block-item{color:#AAA;margin-left:48px;}#sp-ac-container .ac-block-itemdel{float:right;margin-left:0;padding:0 20px;cursor:pointer;}#sp-ac-container .ac-block-itemdel:hover{color:red;}#sp-ac-container .ac-block-high{color:#000;}.ac-blockList li:hover{background-color:#a3caff;color:white !important;cursor:pointer;} *[ac-needhide] *{display:none} *:not([ac-needhide]) .blockShow{display: none;} *[ac-needhide] .blockShow{display:unset;cursor:pointer;} *[ac-needhide] .blockShow:hover{border:1px solid #DDD}button.ghhider{color:#555;background-color:#fcfcfc;font-family:sans-serif;margin:auto 2px;border:1px solid #ccc;border-radius:4px;padding:2px 3px}button.ghhider{font-size:12px}button.ghhider:hover{color:#006aff;background:#fff} body[haosou] button.ghhider{vertical-align: super;} body[google] button.ghhider{vertical-align: top;}") // 公共自定义样式
       }
       
       if(CONST.curConfig.isFaviconEnable) {
         CONST.cssAutoInsert.add("faviconStyle", CONST.adsCSSList.faviconStyle) // 插入Favicon图标
+      }
+      
+      if(CONST.curConfig.isBlockEnable || CONST.curConfig.isFaviconEnable) {
+        CONST.cssAutoInsert.add("lineTitleFix", 'body[haosou] .res-title {display: inline-flex;}') // 插入Favicon图标
       }
       
       if(CONST.curConfig.isALineDisable) {
@@ -2257,7 +2261,11 @@
           // 避免父节点出现两个block按钮
           if (faNode && !faNode.hasAttribute('hasInsert')) {
             faNode.setAttribute("hasInsert", "1");
-            faNode.parentNode.insertAdjacentHTML("beforeend", `<button style='${ nodeStyle }' class='ghhider ghhb' href="${ faviconNode?.href || faviconNode?.innerText }" meta="${ host }" data-host="${ host }" title='${ this._getBlockBtnTitle(host) }'>block</button>`);
+            let insertTo = faNode.parentNode
+            if(CONST.options.useItem.SiteTypeID === CONST.options.google.SiteTypeID) {
+              insertTo = faNode
+            }
+            insertTo.insertAdjacentHTML("beforeend", `<button style='${ nodeStyle }' class='ghhider ghhb' href="${ faviconNode?.href || faviconNode?.innerText }" meta="${ host }" data-host="${ host }" title='${ this._getBlockBtnTitle(host) }'>block</button>`);
           }
           curNode.setAttribute("bhandle", "1");
         } catch (e) {
@@ -2278,8 +2286,10 @@
       CONST.lock.isBlockChecking = true
 
       let checkNodes = document.querySelectorAll(this.curSite.MainType);
-      if([...checkNodes].every(one => one.dataset.checked) && CONST.lock.afterBlockChangeChecked) return
-
+      if([...checkNodes].every(one => one.dataset.checked) && CONST.lock.afterBlockChangeChecked) {
+        CONST.lock.isBlockChecking = false
+        return
+      }
       const regList = this.regListRule
       let flag = "ac-needhide";
       for (let i = 0; i < checkNodes.length; i++) {
@@ -2292,7 +2302,6 @@
           let BlockBtn = curNode.querySelector(".ghhider.ghhb");
           BlockBtn.dataset.host = BlockBtn.dataset.meta = curHost;
           BlockBtn.title = this._getBlockBtnTitle(curHost);
-
           // 减少数据计算
           if (curHost && regList.findIndex(one => {
             try {
@@ -2301,6 +2310,8 @@
               return one === curHost;
             }
           }) >= 0) {
+            
+            
             // 只检查在屏蔽表中的数据
             if (!curNode.hasAttribute(flag)) {
               curNode.setAttribute(flag, "1");
@@ -2325,6 +2336,7 @@
                       xcur.querySelector(".blockShow").remove();
                     });
                     env.stopPropagation();
+                    env.preventDefault()
                   });
                 }
               })(curNode);
@@ -2338,8 +2350,7 @@
       CONST.lock.isBlockChecking = false
       CONST.lock.afterBlockChangeChecked = true
     }
-    async
-    _updateRegListRule() {
+    async _updateRegListRule() {
       this.regListRule = CONST.blockRuleList.filter(one => one).map(one => {
         try{
           return new RegExp(one.replace("*", ".*"))
@@ -2513,7 +2524,6 @@
         // 延迟2秒加载，减少可能出现的问题
         PageFunc.addFavicon(document.querySelectorAll(CONST.options.useItem.FaviconType)); // 添加Favicon显示
       } else {
-        MyApi.safeRemoveAd(".AC-faviconTStyle");
         document.querySelectorAll(CONST.options.useItem.FaviconType).forEach((one) => {
           one.removeAttribute("ac_faviconstatus");
         })
@@ -2559,9 +2569,9 @@
         await CONST.loadSiteCSS()
         PageFunc.dataChangeFireCallback()
       })
-      watch(CONST.cssPairList, ()=> {
+      watch(CONST.cssFavionList, ()=> {
         const baseCSS = 'h3::before, h2::before {content: " ";display:inline-block} *[data-favicon-t]:before{width: 16px; height: 16px; margin-right: 4px; background-size: 100% 100%; vertical-align: text-top;}'
-        CONST.adsCSSList.faviconStyle = Object.entries(CONST.cssPairList.list).reduce((preCSS, cur) => {
+        CONST.adsCSSList.faviconStyle = Object.entries(CONST.cssFavionList.list).reduce((preCSS, cur) => {
           const [, { tagName = '', url = '' }] = cur
           let nowCSS = ''
           if (url) {

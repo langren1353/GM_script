@@ -25,7 +25,18 @@ div[two-father] em{
   font-weight: bold;
   color: red;
 }
-/******************* init *******************/
+
+/******************* remove Empty item *******************/
+div[two-father] {
+  
+  span:empty{
+    display: none;
+  }
+  >div:not(:has(div)){
+    display: none;
+  }
+}
+
 body[google] {
   background-color: #fDfDfD;
 }

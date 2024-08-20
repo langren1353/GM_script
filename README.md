@@ -1,6 +1,6 @@
 ### 资源推荐
 推荐一个VPN加速的，感兴趣的冲，年付24.00元，邀请别人还能送更多：
-[VPN加速地址](https://sdlasjdflasj.bujiasu.com/#/login?code=rlFUZZLI)
+[VPN加速地址](https://v.bujiasu.com/b/?code=rlFUZZLI)
 
 # AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.18-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)
@@ -9,7 +9,7 @@ QQ群-加群链接：[AC脚本交流群](https://ac.tujidu.com)
 
 ## 当前版本
 
-> V26.11 推荐更新，优化百度、谷歌等页面样式效果；优化页面载入速度减少卡顿
+> V27.04 重构整个页面效果，优化页面加载，修复各种残留问题，提供暗黑模式
 
 ### 使用必读
 

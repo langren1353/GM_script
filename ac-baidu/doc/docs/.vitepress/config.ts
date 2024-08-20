@@ -86,6 +86,7 @@ export default defineConfig({
         {
           text: "其它推荐",
           items: [
+            { text: '网站定做', link: 'https://www.at8.fun/' },
             { text: '背景壁纸美图', link: 'https://wallpaper.abcb.fun/' },
             { text: '不加速-上网加速', link: 'https://v.bujiasu.com/b/?code=veG4L8Vo' },
           ]
