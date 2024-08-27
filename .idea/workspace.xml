@@ -29,8 +29,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="搜索结果中屏蔽自定义关键字脚本更新一波">
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/temp.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect_V3.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect_V3.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/baidu/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/baidu/base.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/bing/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/bing/base.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/duckduckgo/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/duckduckgo/base.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/google/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/google/base.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/rebuild.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +147,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.vue&quot;,
     &quot;ts.external.directory.path&quot;: &quot;D:\\GitHome\\GM_script\\ac-baidu\\doc\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -205,8 +214,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.419" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.419" />
       </set>
     </attachedChunks>
   </component>

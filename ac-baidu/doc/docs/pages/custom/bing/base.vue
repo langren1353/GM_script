@@ -11,11 +11,16 @@
   
         <el-divider />
         <el-form-item for="nothing" label="必应护眼模式" label-position="left">
-          <el-tooltip class="box-item" effect="dark" :hide-after=20 content="必应护眼模式，开启将会自动进行护眼优化，开启后会自动开启全局护眼模式" placement="top">
+          <el-tooltip class="box-item" effect="dark" :hide-after=20 content="必应护眼模式，注意根据不同的主题，请自己选择" placement="top">
             <div style="display: flex">
                <el-switch inline-prompt size="large" v-model="state.HuYanMode" active-text="开启" inactive-text="关闭"/>
               <div v-show="state.HuYanMode" style="margin-left: 30px; display: flex; align-items: center">
                 <el-color-picker v-model="state.HuYanMode_Color" />
+
+                <label data-value="#3A3A3A" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label data-value="#212121" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label data-value="#000000" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
                 <label data-value="#DEF1EF" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <label data-value="#F3F2EE" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <label data-value="#E5E5E5" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>

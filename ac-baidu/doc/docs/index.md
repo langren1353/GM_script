@@ -28,9 +28,16 @@ features:
     details: 将搜索结果进行显示优化，支持多列显示效果，信息密度集中，页面整体更美观，更易阅读。
 ---
 
-<p style="display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 40px;">
-    <iframe src="https://ghbtns.com/github-btn.html?user=langren1353&repo=GM_script&type=star&count=true" frameborder="0" scrolling="0" style="height: 20px;max-width: 108px;padding-left:5px;box-sizing: border-box;margin-bottom: -5px;display:unset !important;"></iframe>
-</p>
+<div style="width: 25%; margin: 0 auto;  margin-top: 25px;">
+    <div style="display: flex;justify-content: space-around; margin-bottom: 15px;">
+        <div>
+            友情链接：
+        </div>
+        <el-link type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不支持脚本定制）、</el-link>
+        <el-link type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图、</el-link>
+        <el-link type="primary" href="https://v.bujiasu.com/b/?code=veG4L8Vo" target="_blank">不加速-上网加速</el-link>
+    </div>
+    <div style="display: flex;justify-content: space-around;">
+        Copyright © 搜索引擎优化小组
+    </div>
+</div>

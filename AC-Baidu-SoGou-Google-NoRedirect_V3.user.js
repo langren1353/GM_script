@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.05
+// @version    27.06
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -49,8 +49,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2024-08-19
+// @lastmodified  2024-08-26
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2024.08-26-V27.05 fix：暗黑模式
 // @note    2024.08-19-V27.05 fix：拦截功能、被拦截域名问题、和其他脚本兼容的CSS植入问题、优化域名检测逻辑；
 // @note    2024.08-16-V27.04 修复：谷歌双列加载缓慢、双列效果优化、单列居中效果优化；bing页面bug修复；暗黑模式引入；编号、下划线功能修复；鸭鸭修复 & 勿忘国耻
 // @note    2024.08-09-V27.03 增加字节跳动的Vue地址，避免部分地区打不开lib.baomitu.com导致的脚本无效
@@ -1025,7 +1026,7 @@
     }
 
     async loadStyleByName_WithLessCache(styleName) {
-      if(CONST.curConfig.isLocalDevMode && CONST.curConfig.localDebugBaseUrl) {
+      if(CONST.curConfig.isDevMode && CONST.curConfig.isLocalDevMode && CONST.curConfig.localDebugBaseUrl) {
         const renderCSSKeyName = '__AC.RenderCSS__' + styleName
         return await setLocalLessData(renderCSSKeyName, getDebugStyle) // 不带缓存，随时刷新了
         // return await cacheStyle(renderCSSKeyName, getDebugStyle) // 带缓存，随时刷新了
@@ -1099,7 +1100,8 @@
       if (this.curConfig.HuYanMode) {
         this.adsCSSList.huyanStyle = await this.getHuyanStyle()
       }
-      if (this.curConfig.darkModeStyle) {
+      
+      if (this.curConfig.isDarkModeEnable) {
         this.adsCSSList.darkModeStyle = await this.loadStyleByName_WithLessCache('HuaHua-ACDrakMode')
       }
       // 加载自定义样式
