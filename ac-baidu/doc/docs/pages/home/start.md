@@ -35,12 +35,12 @@
 - [Tampermonkey - Safari 应用商店](https://apps.apple.com/us/app/tampermonkey/id1482490089)
 - [Tampermonkey - Opera 应用商店](https://addons.opera.com/en/extensions/details/tampermonkey-beta/)
 
-**安装好油猴(Tampermonkey)插件后，点击下面的链接即可完成脚本的安装：
+安装好油猴(Tampermonkey)插件后，点击下面的链接即可完成脚本的安装：
 
 - **[AC-Baidu.user.js (前往安装)](https://www.greasyfork.org/scripts/14178/)**
 
 ### 不能上谷歌怎么办？
-这里推荐一个能够科学访问的加速器，具体使用方法自查：[不加速.COM](https://v.bujiasu.com/b/?code=veG4L8Vo)
+这里推荐一个能够科学访问的加速器，具体使用方法自查：[不加速.COM](https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo)
 
 ## 3. 其他方式-离线安装（主要针对Chrome）
 

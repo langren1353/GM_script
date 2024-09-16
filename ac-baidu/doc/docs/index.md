@@ -33,9 +33,10 @@ features:
         <div>
             友情链接：
         </div>
+        <el-link type="primary" href="https://www.ntaow.com/" target="_blank">N淘网-购物折扣、</el-link>
         <el-link type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不支持脚本定制）、</el-link>
         <el-link type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图、</el-link>
-        <el-link type="primary" href="https://v.bujiasu.com/b/?code=veG4L8Vo" target="_blank">不加速-上网加速</el-link>
+        <el-link type="primary" href="https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo" target="_blank">不加速-上网加速！</el-link>
     </div>
     <div style="display: flex;justify-content: space-around;">
         Copyright © 搜索引擎优化小组

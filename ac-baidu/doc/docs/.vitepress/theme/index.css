@@ -132,3 +132,13 @@
 body.tujidu .items .VPSidebarItem:has(a[href*='bujiasu']) {
   display: none;
 }
+.VPDocFooter {
+  margin-top: 32px !important;
+  
+  .edit-info {
+    justify-content: right;
+  }
+  .prev-next{
+    display: none;
+  }
+}

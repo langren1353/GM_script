@@ -30,26 +30,19 @@ export default defineConfig({
             ]
           },
           {
-            text: '反馈',
+            text: '问题反馈',
             items: [
               { text: 'GitHub Issues', link: 'https://github.com/langren1353/GM_script/issues', target: '_blank' },
               { text: 'Greasy Fork 反馈', link: 'https://greasyfork.org/zh-CN/scripts/14178/feedback', target: '_blank' },
             ]
           },
           {
-            text: '油猴插件',
+            text: '推荐链接',
             items: [
-              { text: 'Tampermonkey（推荐）', link: 'https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo', target: '_blank' },
-              { text: 'Tampermonkey（edge商店）', link: 'https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd', target: '_blank' },
-              { text: 'Tampermonkey（官网下载）', link: 'https://www.tampermonkey.net/index.php?browser=chrome&locale=zh', target: '_blank' },
-              { text: 'Tampermonkey（国内站）', link: 'https://www.extfans.com/productivity/dhdgffkkebhmkfjojejmpbldmpobfkfo/', target: '_blank' },
-            ]
-          },
-          {
-            text: '其他',
-            items: [
-              { text: 'GitHub.Dev', link: 'https://github.com/langren1353/GM_script', target: '_blank' },
-              { text: '赞赏码', link: 'https://pay.acdiao.com/', target: '_blank' },
+              { text: 'N淘网-购物折扣', link: 'https://www.ntaow.com/', target: '_blank' },
+              { text: '网站定做', link: 'https://www.at8.fun/', target: '_blank' },
+              { text: '背景壁纸美图', link: 'https://wallpaper.abcb.fun/', target: '_blank' },
+              { text: '不加速-上网加速！', link: 'https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo', target: '_blank' },
             ]
           },
         ]
@@ -86,9 +79,10 @@ export default defineConfig({
         {
           text: "其它推荐",
           items: [
+            { text: 'N淘网-购物折扣', link: 'https://www.ntaow.com/', target: '_blank' },
             { text: '网站定做', link: 'https://www.at8.fun/' },
             { text: '背景壁纸美图', link: 'https://wallpaper.abcb.fun/' },
-            { text: '不加速-上网加速', link: 'https://v.bujiasu.com/b/?code=veG4L8Vo' },
+            { text: '不加速-上网加速！', link: 'https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo' },
           ]
         },
       ]

@@ -1,6 +1,6 @@
 ### 资源推荐
 推荐一个VPN加速的，感兴趣的冲，年付24.00元，邀请别人还能送更多：
-[VPN加速地址](https://v.bujiasu.com/b/?code=rlFUZZLI)
+[VPN加速地址](https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo)
 
 # AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.18-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)

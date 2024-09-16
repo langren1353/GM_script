@@ -2403,27 +2403,35 @@
           child.setAttribute('two-checked', 1)
           father.setAttribute('two-father', 1)
           father.setAttribute('two-checked', 1)
+          return father
         }
 
+        // 检查的事preNode 和 curNode
+        // 但是需要先判断curNode和fatherNode有没有
         function getTrueFatherChild(preNode, curNode, fatherNode) {
-          if (fatherNode.offsetHeight / curNode.offsetHeight > 1.5) {
-            // 有可能，但是还需要检查所有的子项目
-            const isThisFatherFailed = [...fatherNode.children].findIndex(one => {
-              if (one.offsetHeight / curNode.offsetHeight > 5) {
-                return true
-              }
-            })
-            if (isThisFatherFailed > 0) {
-              markFatherChild(preNode, curNode)
-              return curNode
-            } else {
-              markFatherChild(curNode, fatherNode)
-              return fatherNode
-            }
+          const minItemHeight = 100
+          const father_curPossible = curNode.offsetHeight > minItemHeight && fatherNode.offsetHeight / curNode.offsetHeight > 1.5
+          const father_anotherPossible =  [...fatherNode.children].some(one => {
+            return one !== curNode && one.offsetHeight > minItemHeight && fatherNode.offsetHeight / one.offsetHeight > 5;
+          })
+          
+          // 先检查父节点是否否和要求
+          if (father_curPossible && father_anotherPossible) {
+              console.log(curNode, fatherNode)
+              return markFatherChild(curNode, fatherNode)
           } else {
+            const now_curPossible = preNode.offsetHeight > minItemHeight && curNode.offsetHeight / preNode.offsetHeight > 1.5
+            const now_anotherPossible =  [...curNode.children].some(one => {
+              return one !== preNode && one.offsetHeight > minItemHeight && curNode.offsetHeight / one.offsetHeight > 5;
+            })
+            // 父节点不行的话，那么检查子节点是否符合要求
+            if(now_curPossible && now_anotherPossible) {
+              return markFatherChild(preNode, curNode)
+            }
             return null
           }
         }
+
 
         function MarkMine(curItem) {
           let maxHeight = 6, curHeight = 1

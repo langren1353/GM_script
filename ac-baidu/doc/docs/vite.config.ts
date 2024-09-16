@@ -40,15 +40,6 @@ export default defineConfig({
         comments: false, // 去除注释
       },
     },
-    // rollupOptions: {
-    //   output: {
-    //     manualChunks(id) {
-    //       if (id.includes('node_modules')) {
-    //         return 'vendor'; // 将 node_modules 中的模块打包到一个单独的 chunk 中
-    //       }
-    //     },
-    //   },
-    // },
     assetsInlineLimit: 4096, // 小于 4KB 的资源内联为 base64
     cssCodeSplit: true, // 启用 CSS 代码分割
   },
