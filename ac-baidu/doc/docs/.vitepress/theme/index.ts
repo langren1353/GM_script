@@ -48,15 +48,16 @@ export default {
           scriptTag.src = "https://tongji.tujidu.com/js/vue.js";
           document.body.appendChild(scriptTag);
           
-          document.querySelector('.content-container').insertAdjacentHTML('beforeend', `
-<div class="bottom-href" style="width: 65%; margin-top: -42px;">
-    <div style="display: flex;justify-content: space-around; margin-bottom: 15px;">
-        <div>
+          setTimeout(() => {
+            document.querySelector('.content-container').insertAdjacentHTML('beforeend', `
+<div class="bottom-href" style="width: 76%; margin-top: -42px;">
+    <div style="display: flex;justify-content: space-around; margin-bottom: 20px;">
+        <div style="font-weight: bold; color: chocolate;">
             友情链接：
         </div>
-        <a type="primary" href="https://www.ntaow.com/" target="_blank">N淘网-购物折扣、</a>
-        <a type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不支持脚本定制）、</a>
-        <a type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图、</a>
+        <a type="primary" href="https://www.ntaow.com/" target="_blank">N淘网-购物折扣</a>、
+        <a type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不接脚本定制）</a>、
+        <a type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图</a>、
         <a type="primary" href="https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo" target="_blank">不加速-上网加速！</a>
     </div>
     <div style="display: flex;justify-content: space-around;">
@@ -74,6 +75,7 @@ export default {
 }
 </style>
 `)
+          }, 1000)
         }
         
       },

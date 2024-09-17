@@ -28,14 +28,14 @@ features:
     details: 将搜索结果进行显示优化，支持多列显示效果，信息密度集中，页面整体更美观，更易阅读。
 ---
 
-<div style="width: 25%; margin: 0 auto;  margin-top: 25px;">
+<div style="width: 40%; margin: 0 auto;  margin-top: 25px;">
     <div style="display: flex;justify-content: space-around; margin-bottom: 15px;">
         <div>
             友情链接：
         </div>
-        <el-link type="primary" href="https://www.ntaow.com/" target="_blank">N淘网-购物折扣、</el-link>
-        <el-link type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不支持脚本定制）、</el-link>
-        <el-link type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图、</el-link>
+        <el-link type="primary" href="https://www.ntaow.com/" target="_blank">N淘网-购物折扣</el-link>、
+        <el-link type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不支持脚本定制）</el-link>、
+        <el-link type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图</el-link>、
         <el-link type="primary" href="https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo" target="_blank">不加速-上网加速！</el-link>
     </div>
     <div style="display: flex;justify-content: space-around;">

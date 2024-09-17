@@ -7,6 +7,7 @@ export default defineConfig({
   base: "/",
   lastUpdated: true,
   themeConfig: {
+    lastUpdatedText: '更新',
     logo: "/favicon.ico",
     siteTitle: "AC-重定向设置",
     outline: {

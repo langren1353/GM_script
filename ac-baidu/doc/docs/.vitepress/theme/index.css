@@ -133,7 +133,7 @@ body.tujidu .items .VPSidebarItem:has(a[href*='bujiasu']) {
   display: none;
 }
 .VPDocFooter {
-  margin-top: 32px !important;
+  margin-top: 32px;
   
   .edit-info {
     justify-content: right;
