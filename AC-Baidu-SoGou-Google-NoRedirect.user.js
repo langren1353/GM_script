@@ -2505,6 +2505,7 @@ body[google] {
             }
             if (curSite.SiteTypeID === SiteType.GOOGLE) removeOnMouseDownFunc(); // 移除onMouseDown事件，谷歌去重定向
             if (curSite.SiteTypeID === SiteType.MBAIDU) removeMobileBaiduDirectLink(); // 处理百度手机版本的重定向地址
+            if (curSite.SiteTypeID === SiteType.BING) resetBingOthers();  // bing的其他重定向
             removeRedirectLinkTarget(); // 只移除知乎的重定向问题 & 百度学术重定向问题
             safeRemove(".res_top_banner"); // 移除百度可能显示的劫持
           }
@@ -3155,6 +3156,142 @@ body[google] {
           }
         }
 
+        function getBingRealLinkByUrl(linkHref) {
+          return new Promise((resolve, reject) => {
+            if (linkHref.indexOf("www.bing.com/ck/a") === -1) {
+              reject("Unsupported link")
+              return;
+            }
+            GM_xmlhttpRequest({
+              // from: "acxhr",
+              url: linkHref,
+              headers: { "Accept": "*/*", "Referer": linkHref },
+              method: "GET",
+              timeout: 8000,
+              onload: function(response) {
+                if (response.responseText || response.status === 200) {
+                  const realLink = Reg_Get(response.responseText, "u\\s?=\\s\"(.+?)\";");
+                  if (realLink !== "") {
+                    resolve(realLink);
+                  }
+                  reject('');
+                  return;
+                }
+                reject('')
+              },
+              onerror: function (err) {
+                reject(err)
+              }
+            })
+          });
+        }
+
+        function resetBingOthers() {
+          if (document.querySelector("#est_cn") != null) {
+            return;
+          }
+
+          // 右侧百科卡片重定向
+          const cardNode = document.querySelector("#b_context .b_sideBleed");
+          if (cardNode != null) {
+            // 描述和图片, 这俩链接不一样但是指向一样
+            const desA = cardNode.querySelector(".l_ecrd_imcolheader_desc a");
+            const icon = cardNode.querySelector(".l_ecrd_webicon_txtside");
+            let url = [];
+            if (desA != null && desA.getAttribute("ac_redirectStatus") !== "2") {
+              url.push(desA.href);
+            }
+            if (icon != null && icon.getAttribute("ac_redirectStatus") !== "2") {
+              url.push(icon.href);
+            }
+            if (url.length > 0) {
+              getBingRealLinkByUrl(url[0]).then(realLink => {
+                url.forEach(link => DealRedirect(null, link, realLink, null));
+              });
+            }
+
+            // 浏览更多
+            let moreSearchList = cardNode.querySelectorAll(".l_ecrd_simgset_item")
+            for (const searchItem of moreSearchList) {
+              const link = searchItem.querySelector(".as_pasf_data")
+              if (link != null) {
+                const linkHref = link.href;
+                getBingRealLinkByUrl(linkHref).then(realLink => DealRedirect(null, linkHref, realLink, null, 'subtitle'))
+              }
+            }
+          }
+        }
+
+        function resetBingNormal(curNode, linkHref) {
+          // 不清楚还有没有其他类型的重定向链接, 先只处理这一种
+          if (linkHref.indexOf("www.bing.com/ck/a") === -1) {
+            return ;
+          }
+          const realLinkNode = curNode.querySelector(".b_attribution cite");
+          if (!realLinkNode || !realLinkNode.textContent) return false;
+          let realLink = realLinkNode.textContent;
+          if (!(realLink.startsWith("http://") || realLink.startsWith("https://"))) {
+            realLink = "https://" + realLink;
+          }
+
+          function replaceBingLink(curNode, linkHref, realLink) {
+            DealRedirect(null, linkHref, realLink, null);
+            // 文章内的展开按钮
+            const expandBtn = curNode.querySelector(".b_rc_gb_sub_hero .b_paractl > a")
+            if (expandBtn) {
+                DealRedirect(null, expandBtn.href, realLink, null, 'link');
+            }
+
+            // 文章结构分析界面
+            if (curNode.classList.contains("b_algoBorder")) {
+              // 对于章节, 后置拼接
+              const cells = curNode.querySelectorAll("#b_rc_gb_origin .b_rc_gb_sub_cell");
+              for (const cell of cells) {
+                const titleNode = cell.querySelector(".b_rc_gb_sub_title>a");
+                if (!titleNode) continue;
+                const link = titleNode.getAttribute("href");
+                const title = titleNode.textContent;
+                if (!link || !title) continue;
+                const chapterLink = realLink + "#" + title;
+                DealRedirect(null, link, chapterLink, null, 'subtitle');
+                const expandBtn = cell.querySelector(".b_paractl>a");
+                if (expandBtn) {
+                  DealRedirect(null, expandBtn.href, chapterLink, null, 'link');
+                }
+              }
+              
+              // 对于图片, 使用原始链接
+              const chapterImages = curNode.querySelectorAll(".b_rc_gb_img_wrapper>a");
+              for (const img of chapterImages) {
+                const link = img.getAttribute("href");
+                if (!link) continue;
+                DealRedirect(null, link, realLink, null, 'subtitle');
+              }
+            }
+            return true;
+          }
+
+          if (realLink.endsWith("...") ||
+              realLink.endsWith("bing.com/videos")  ||
+              realLink.indexOf("/.../") !== -1
+          ) {
+            // 链接没有显示全, 需要调用接口获取真是链接
+            let url = linkHref.replace(/^http:/, "https:");
+            getBingRealLinkByUrl(url).then(link => {
+              replaceBingLink(curNode, linkHref, link)
+            })
+          } else {
+            replaceBingLink(curNode, linkHref, realLink);
+          }
+
+          // 对于相关链接, 必须走接口请求真实链接
+          let linkNodes = document.querySelectorAll(".b_algospacing_block>.b_algospacing_link")
+          for (const linkNode of linkNodes) {
+            const linkHref = linkNode.href;
+            getBingRealLinkByUrl(linkNode.href).then(realLink => DealRedirect(null, linkHref, realLink, null));
+          }
+        }
+
         function resetURLNormal() {
           const mainList = document.querySelectorAll(curSite.MainType)
 
@@ -3191,39 +3328,16 @@ body[google] {
                   DealRedirect(null, linkHref, trueLink);
                   return true
                 }
-                // MARK bing国际版 & 国内版 数据解析 这里目前有严重bug，暂时无法复现重定向流程，先停止重定向
-                // if(curSite.SiteTypeID === SiteType.BING) {
-                //   // 链接数据
-                //   const realLinkNode = curNode.querySelector(".b_attribution cite");
-                //   if (!realLinkNode || !realLinkNode.textContent) return false;
-                //   let realLink = realLinkNode.textContent;
-                //   console.log(realLink)
-                //   return
-                //   if (!(realLink.startsWith("http://") || realLink.startsWith("https://"))) {
-                //     realLink = "https://" + realLink;
-                //   }
-                //   DealRedirect(null, linkHref, realLink, null);
-                //   // 文章结构分析界面
-                //   if (curNode.classList.contains("b_algoBorder")) {
-                //     // 对于章节, 后置拼接
-                //     const chapterTitles = curNode.querySelectorAll(".b_rc_gb_sub_title>a");
-                //     for (const chapterTitle of chapterTitles) {
-                //       const link = chapterTitle.getAttribute("href");
-                //       const title = chapterTitle.textContent;
-                //       if (!link || !title) continue;
-                //       const chapterLink = realLink + "#" + title;
-                //       DealRedirect(null, link, chapterLink, null, 'subtitle');
-                //     }
-                //     // 对于图片, 使用原始链接
-                //     const chapterImages = curNode.querySelectorAll(".b_rc_gb_img_wrapper>a");
-                //     for (const img of chapterImages) {
-                //       const link = img.getAttribute("href");
-                //       if (!link) continue;
-                //       DealRedirect(null, link, realLink, null, 'subtitle');
-                //     }
-                //   }
-                //   return true;
-                // }
+                // bing国际版重定向
+                if(curSite.SiteTypeID === SiteType.BING) {
+                  // 国内版bing链接为原始链接, 不需要重定向
+                  if (document.querySelector("#est_cn") != null) {
+                    return true;
+                  }
+
+                  resetBingNormal(curNode, linkHref);
+                  return true;
+                }
               }
               const getBaiduEncodingHandle = (linkUrl) => {
                 let resLink = linkUrl
