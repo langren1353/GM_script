@@ -1,0 +1,72 @@
+{
+  "name": "tar-mini",
+  "version": "0.2.0",
+  "description": "It's an implementation based on the `ustar` format",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "scripts": {
+    "dev": "rollup --config rollup.config.mts --configPlugin swc3 --watch",
+    "build": "rollup --config rollup.config.mts --configPlugin swc3",
+    "test": "vitest"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "keywords": [
+    "archive",
+    "tar",
+    "pack",
+    "extract",
+    "ustar"
+  ],
+  "author": "Kanno",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nonzzz/tar.git"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "bugs": {
+    "url": "https://github.com/nonzzz/tar/issues"
+  },
+  "homepage": "https://github.com/nonzzz/tar#readme",
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "@vitest/coverage-v8": "^2.0.4",
+    "dprint": "^0.47.2",
+    "eslint": "^8.57.0",
+    "eslint-config-kagura": "^2.2.1",
+    "rollup": "^4.19.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-swc3": "^0.11.2",
+    "tinyexec": "^0.3.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.4"
+  },
+  "packageManager": "pnpm@9.4.0",
+  "pnpm": {
+    "overrides": {
+      "array-includes": "npm:@nolyfill/array-includes@^1",
+      "array.prototype.flat": "npm:@nolyfill/array.prototype.flat@^1",
+      "array.prototype.flatmap": "npm:@nolyfill/array.prototype.flatmap@^1",
+      "deep-equal": "npm:@nolyfill/deep-equal@^1",
+      "es-iterator-helpers": "npm:@nolyfill/es-iterator-helpers@^1",
+      "hasown": "npm:@nolyfill/hasown@^1",
+      "is-core-module": "npm:@nolyfill/is-core-module@^1",
+      "object.assign": "npm:@nolyfill/object.assign@^1",
+      "object.fromentries": "npm:@nolyfill/object.fromentries@^1",
+      "object.values": "npm:@nolyfill/object.values@^1",
+      "safe-regex-test": "npm:@nolyfill/safe-regex-test@^1",
+      "string.prototype.includes": "npm:@nolyfill/string.prototype.includes@^1"
+    }
+  }
+}

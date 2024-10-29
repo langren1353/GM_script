@@ -9,7 +9,7 @@
   <div v-show="state.BgEnable">
     <el-form-item for="nothing" label="页面背景图-图片地址" label-position="left">
       <el-input v-model="state.BgUseUrl" style="width: 400px" placeholder="https://..." clearable />
-      <el-link href="http://img.unlil.com" type="primary" style="margin-left: 20px" target="_blank">上传背景图</el-link>
+      <el-link href="https://111666.best/" type="primary" style="margin-left: 20px" target="_blank">上传背景图</el-link>
     </el-form-item>
     <el-form-item for="nothing" label="页面背景图-预设背景图" label-position="left">
       <el-tooltip class="box-item" effect="dark" :hide-after=20 content="激活后，记得【点击同步按钮】" placement="bottom">

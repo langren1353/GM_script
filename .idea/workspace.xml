@@ -29,11 +29,78 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="搜索结果中屏蔽自定义关键字脚本更新一波">
+      <change afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect_26.99.user.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/.yarn-integrity" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@rollup/pluginutils/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@rollup/pluginutils/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@rollup/pluginutils/dist/cjs/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@rollup/pluginutils/dist/es/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@rollup/pluginutils/dist/es/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@rollup/pluginutils/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@rollup/pluginutils/types/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@types/estree/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@types/estree/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@types/estree/flow.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@types/estree/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/@types/estree/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/CHANGELOG.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/dist/esm/estree-walker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/dist/esm/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/dist/umd/estree-walker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/src/async.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/src/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/src/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/src/sync.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/src/walker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/types/async.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/types/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/types/sync.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/types/tsconfig.tsbuildinfo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/estree-walker/types/walker.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/CHANGELOG.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/lib/constants.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/lib/parse.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/lib/picomatch.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/lib/scan.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/lib/utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/picomatch/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/tar-mini/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/tar-mini/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/tar-mini/dist/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/tar-mini/dist/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/tar-mini/dist/index.mjs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/tar-mini/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/vite-plugin-compression2/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/vite-plugin-compression2/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/vite-plugin-compression2/dist/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/vite-plugin-compression2/dist/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/vite-plugin-compression2/dist/index.mjs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/node_modules/vite-plugin-compression2/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect_V3.user.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/style/code.css" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/vitepress/style/code.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/common/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/common/base.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BgChoose.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BgChoose.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BlockConfig.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BlockConfig.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/rebuild.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/fastapi/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/fastapi/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/fastapi/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/fastapi/rebuild.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/rebuild.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -136,7 +203,7 @@
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;ignore_missing_gitignore&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/GitHome/GM_script/ac-baidu/doc&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/bb/TidaLab&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -148,16 +215,16 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.xxxtai.smartinput&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.vue&quot;,
     &quot;ts.external.directory.path&quot;: &quot;D:\\GitHome\\GM_script\\ac-baidu\\doc\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs" />
-      <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\ac-baidu\fastapi" />
       <recent name="D:\GitHome\GM_script\ac-baidu\t-ui-plus-master" />
     </key>
@@ -432,6 +499,11 @@
     </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="0a5f8da7-48a7-47d0-aeca-7c915cff2d28" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="RECENT_FILTERS">
       <map>
         <entry key="Branch">
@@ -454,6 +526,31 @@
     </option>
     <option name="TAB_STATES">
       <map>
+        <entry key="0a5f8da7-48a7-47d0-aeca-7c915cff2d28">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
@@ -476,22 +573,6 @@
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>
     <settings-migrated>true</settings-migrated>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js</url>
-          <line>2685</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js</url>
-          <line>3850</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand>

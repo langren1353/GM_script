@@ -1,6 +1,8 @@
 ### 资源推荐
-推荐一个VPN加速的，感兴趣的冲，年付24.00元，邀请别人还能送更多：
-[VPN加速地址](https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo)
+1、推荐一个导购网站(淘宝、京东购物有折扣)：**N淘网 - [https://www.ntaow.com/](https://www.ntaow.com/)**
+
+2、推荐一个VPN加速的，感兴趣的冲，年付24.00元，邀请别人还能送更多：
+**VPN加速地址 - [https://jiu.bujiasu.com](https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo)**
 
 # AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.18-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)
@@ -80,9 +82,11 @@ QQ群-加群链接：[AC脚本交流群](https://ac.tujidu.com)
 ![Opera的特殊处理](https://img.90dao.com/images/2023/12/16/657d86ffcba3f.png)
 
 ### 关于捐赠
-由于脚本属于非盈利内容，全靠用爱发电，什么时候没有这份精力继续了，可能就再也不会更新了，如果有兴趣捐赠的话，可以点击一下捐赠，捐赠地址：https://pay.acdiao.com
+由于脚本属于非盈利内容，全靠用爱发电
 
-因此觉得脚本还行的话，不嫌麻烦可以帮忙点一下右上角的Star小星星
+如果有兴趣捐赠的话，可以点击一下捐赠，捐赠地址（建议加上备注）：**[https://pay.acdiao.com](https://pay.acdiao.com)**
+
+或者感觉还行的，愿意支持我的话，可以使用我的导购网站，你购物能更便宜：**N淘网 - [https://www.ntaow.com/](https://www.ntaow.com/)**
 
 捐赠地址：支付宝、微信
 ![捐赠-淘宝-微信](https://img.90dao.com/images/2024/06/15/666d3f045b34c.png)

@@ -33,29 +33,31 @@ export default {
     ctx.app.component("Demo", VPDemo)
     ctx.app.component("TVHtml", TVHtml)
     ctx.app.component("TIcon", TIcon)
-
+    
     ctx.app.mixin({
       mounted() {
         if(location.host.includes('tujidu')) {
           document.body.classList.add('tujidu')
         }
-        if(!window.hasInit) {
-          window.hasInit = true
+        if(!window.tongjiScript) {
+          window.tongjiScript = true
 
           const scriptTag = document.createElement('script');
           scriptTag.defer = true;
           scriptTag.dataset.domain = location.host;
-          scriptTag.src = "https://tongji.tujidu.com/js/vue.js";
+          scriptTag.src = "https://tongji.90dao.com/js/vue.js";
           document.body.appendChild(scriptTag);
           
           setTimeout(() => {
-            document.querySelector('.content-container').insertAdjacentHTML('beforeend', `
+            const node = document.querySelector('.content-container');
+            if(node) {
+              node.insertAdjacentHTML('beforeend', `
 <div class="bottom-href" style="width: 76%; margin-top: -42px;">
     <div style="display: flex;justify-content: space-around; margin-bottom: 20px;">
         <div style="font-weight: bold; color: chocolate;">
             友情链接：
         </div>
-        <a type="primary" href="https://www.ntaow.com/" target="_blank">N淘网-购物折扣</a>、
+        <a type="primary" href="https://www.ntaow.com/index.php/jiu" target="_blank">N淘网-购物折扣</a>、
         <a type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不接脚本定制）</a>、
         <a type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图</a>、
         <a type="primary" href="https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo" target="_blank">不加速-上网加速！</a>
@@ -75,6 +77,7 @@ export default {
 }
 </style>
 `)
+            } 
           }, 1000)
         }
         

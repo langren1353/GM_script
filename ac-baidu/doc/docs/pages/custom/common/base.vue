@@ -1,6 +1,12 @@
 <template>
   <div class="mb-4">
       <el-form :model="state" label-width="auto" style="max-width: 800px">
+        <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">调试项：</el-text>
+        <el-form-item for="nothing" label="脚本版本号" label-position="left">
+          <span style="margin-left: 18px">
+            V{{ state.version }}
+          </span>
+        </el-form-item>
         <el-form-item for="nothing" label="开启调试日志输出" label-position="left">
           <el-switch inline-prompt size="large" v-model="state.isDevMode" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
         </el-form-item>
@@ -17,7 +23,7 @@
           <el-input v-show="state.isLocalDevMode" v-model="state.localDebugBaseUrl" style="width: 400px; margin-left: 40px" placeholder="https://..." clearable @click.stop />
         </el-form-item>
         <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">全局项：</el-text>
-        <el-form-item for="nothing" label="是否处理重定向问题" label-position="left">
+        <el-form-item for="nothing" label="✈附加0.是否处理重定向问题-按需开启" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#redirect" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -28,7 +34,7 @@
              <el-switch inline-prompt size="large" v-model="state.isRedirectEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item for="nothing" label="附加1-去广告功能" label-position="left">
+        <el-form-item for="nothing" label="📵附加1-去广告功能" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#ads" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -39,7 +45,7 @@
              <el-switch inline-prompt size="large" v-model="state.isAdsEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item for="nothing" label="附加2-自动翻页" label-position="left">
+        <el-form-item for="nothing" label="🙃附加2-自动翻页" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#pager" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -50,7 +56,7 @@
             <el-switch inline-prompt size="large" v-model="state.isAutopage" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item for="nothing" label="附加3-启用Favicon" label-position="left">
+        <el-form-item for="nothing" label="🐶附加3-启用Favicon" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#favicon" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -61,7 +67,7 @@
              <el-switch inline-prompt size="large" v-model="state.isFaviconEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item for="nothing" label="附加4-显示右侧栏" label-position="left">
+        <el-form-item for="nothing" label="📑附加4-显示右侧栏" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#remove-right" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -72,7 +78,7 @@
              <el-switch inline-prompt size="large" v-model="state.isRightDisplayEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item for="nothing" label="附加5-编号功能-建议关闭" label-position="left">
+        <el-form-item for="nothing" label="🔞附加5-编号功能-建议关闭" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#number" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -83,7 +89,7 @@
              <el-switch inline-prompt size="large" v-model="state.isCounterEnable" active-text="开启" inactive-text="关闭" style="margin-left: 15px;" />
           </el-tooltip>
         </el-form-item>
-        <el-form-item for="nothing" label="附加6-移除文字下划线-建议开启" label-position="left">
+        <el-form-item for="nothing" label="📉附加6-移除文字下划线-建议开启" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#text-line" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -95,7 +101,7 @@
           </el-tooltip>
         </el-form-item>
 
-        <el-form-item for="nothing" label="附加7-暗黑主题色" label-position="left">
+        <el-form-item for="nothing" label="🔳附加7-暗黑主题色-【暗色模式开启】" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#darkmode" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip
             class="box-item"
@@ -146,6 +152,7 @@ const recommendStyleList = [
 ]
 
 const defaultOptions = {
+  version: '',
   isDevMode: false,
   isLocalDevMode: false,
   localDebugBaseUrl: '',
@@ -179,6 +186,16 @@ watch(state, (newVal) => {
     AC_GM_Interface.change(baseItemKey, newOptions) // 局部更新：调用GM接口：生效 && 保存数据，并刷新原搜索引擎页面，以使设置生效
   })
 })
+
+insertVersion()
+
+function insertVersion() {
+  const version = document.querySelector('#配置项 .version-item')
+  if (version) {
+    version.remove()
+  }
+  document.querySelector('#配置项').insertAdjacentHTML('beforeend', `<span class="version-item">v${state.version}</span>`)
+}
 
 function safeFunc(callback, failed_res = '') {
   try{

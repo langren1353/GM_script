@@ -1,21 +1,19 @@
 import { defineConfig } from "vite"
 import vueJsx from "@vitejs/plugin-vue-jsx"
 import vueSetupExtend from "vite-plugin-vue-setup-extend"
-import compression from 'vite-plugin-compression';
+import compression from 'vite-plugin-compression2';
+import zlib from 'zlib'
 
 export default defineConfig({
   plugins: [
     vueJsx(), vueSetupExtend(),
-    compression({
-      algorithm: 'brotliCompress', // 生成 .br 文件
-      ext: '.br',
-      threshold: 0, // 对所有文件进行压缩
-    }),
-    compression({
-      algorithm: 'gzip', // 生成 .gz 文件
-      ext: '.gz',
-      threshold: 0, // 对所有文件进行压缩
-    }),
+    compression(),
+    compression({ 
+      algorithm: 'brotliCompress', 
+      compressionOptions: {
+        level: 9
+      }
+    })
   ],
   server: {
     host: "0.0.0.0",
@@ -31,6 +29,9 @@ export default defineConfig({
   build: {
     target: 'esnext', // 使用现代 JavaScript 特性
     minify: 'terser', // 使用 Terser 进行压缩
+    rollupOptions: {
+      treeshake: true,
+    },
     terserOptions: {
       compress: {
         drop_console: true, // 去除 console 语句

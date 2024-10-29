@@ -1,7 +1,7 @@
 <template>
   <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">
     拦截功能-按需开启
-    <el-tooltip class="box-item" effect="dark" :hide-after=20 content="开启拦截之前必须开启【重定向】功能" placement="top">
+    <el-tooltip class="box-item" effect="dark" :hide-after=20 content="开启拦截之前必须开启【附加0-重定向】功能" placement="top">
       <el-switch inline-prompt size="large" v-model="state.isBlockEnable" :disabled="!propState.isRedirectEnable.value" active-text="开启" inactive-text="关闭"/>
     </el-tooltip>
     <el-button v-show="state.isBlockEnable && propState.isRedirectEnable.value" style="margin-left: 30px" @click="base.isBlockPanelShow=true">编辑规则<el-icon class="el-icon--right"><Edit /></el-icon></el-button>

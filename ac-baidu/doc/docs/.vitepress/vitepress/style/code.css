@@ -909,3 +909,6 @@ div[class*="language-"].line-numbers-mode {
 .sticky {
   position: sticky;
 }
+.header-anchor{
+  scroll-margin-top: 50px;
+}

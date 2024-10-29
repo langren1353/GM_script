@@ -6,6 +6,10 @@ export default defineConfig({
   lang: "cn-ZH",
   base: "/",
   lastUpdated: true,
+  head: [
+    ['meta', { name: 'preconnect', content: 'https://www.ntaow.com/index.php/jiu' }],
+    ['meta', { name: 'preconnect', content: 'https://jiu.bujiasu.com/' }],
+  ],
   themeConfig: {
     lastUpdatedText: '更新',
     logo: "/favicon.ico",
@@ -40,7 +44,7 @@ export default defineConfig({
           {
             text: '推荐链接',
             items: [
-              { text: 'N淘网-购物折扣', link: 'https://www.ntaow.com/', target: '_blank' },
+              { text: 'N淘网-购物折扣', link: 'https://www.ntaow.com/index.php/jiu', target: '_blank' },
               { text: '网站定做', link: 'https://www.at8.fun/', target: '_blank' },
               { text: '背景壁纸美图', link: 'https://wallpaper.abcb.fun/', target: '_blank' },
               { text: '不加速-上网加速！', link: 'https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo', target: '_blank' },
@@ -80,7 +84,7 @@ export default defineConfig({
         {
           text: "其它推荐",
           items: [
-            { text: 'N淘网-购物折扣', link: 'https://www.ntaow.com/', target: '_blank' },
+            { text: 'N淘网-购物折扣', link: 'https://www.ntaow.com/index.php/jiu', target: '_blank' },
             { text: '网站定做', link: 'https://www.at8.fun/' },
             { text: '背景壁纸美图', link: 'https://wallpaper.abcb.fun/' },
             { text: '不加速-上网加速！', link: 'https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo' },
