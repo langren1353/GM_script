@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.06
+// @version    27.09
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -49,9 +49,11 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2024-08-26
+// @lastmodified  2024-11-17
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2024.08-26-V27.05 fix：暗黑模式
+// @note    2024.12-23-V27.08 fix：谷歌样式生效问题、必应去广告问题
+// @note    2024.11-17-V27.07 fix：谷歌排版问题、谷歌翻页后图片无效问题
+// @note    2024.08-26-V27.06 fix：暗黑模式
 // @note    2024.08-19-V27.05 fix：拦截功能、被拦截域名问题、和其他脚本兼容的CSS植入问题、优化域名检测逻辑；
 // @note    2024.08-16-V27.04 修复：谷歌双列加载缓慢、双列效果优化、单列居中效果优化；bing页面bug修复；暗黑模式引入；编号、下划线功能修复；鸭鸭修复 & 勿忘国耻
 // @note    2024.08-09-V27.03 增加字节跳动的Vue地址，避免部分地区打不开lib.baomitu.com导致的脚本无效
@@ -1340,10 +1342,10 @@
         MyApi.safeRemoveAd(".b_ad");
         MyApi.safeRemove_xpath("id('b_results')/li[./div[@class='ad_fls']]");
 
-        // 移除特殊tag，带url标记的广告类
-        const resList = [...document.querySelectorAll("ol>li")].filter(one => one.querySelector('p')) // 定位到所有包含p标签的li
-        const adList = resList.filter(one => window.getComputedStyle(one.querySelector('p'), '::before').getPropertyValue('content').includes('url')) // 检查每一个p标签，里面存在before伪元素，且伪元素中是链接的，均为广告
-        adList.forEach(one => one.remove())
+        // 移除特殊tag，带url标记的广告类 -- 新版的bing似乎比较特殊，无法判定了
+        // const resList = [...document.querySelectorAll("ol>li")].filter(one => one.querySelector('p')) // 定位到所有包含p标签的li
+        // const adList = resList.filter(one => window.getComputedStyle(one.querySelector('p'), '::before').getPropertyValue('content').includes('url')) // 检查每一个p标签，里面存在before伪元素，且伪元素中是链接的，均为广告
+        // adList.forEach(one => one.remove())
       }
       function removeHaosouAd() {
         MyApi.safeRemoveAd("#so_kw-ad");
@@ -1957,9 +1959,10 @@
                     // 插入scripts & style - 保证js加载
                     if (CONST.options.useItem.SiteTypeID === CONST.options.google.SiteTypeID) {
                       scriptElems.forEach((one) => {
-                        toElement.appendChild(one)
-                      });
-
+                        const newScript = document.createElement('script')
+                        newScript.textContent = one.textContent // 新建一个脚本，否则可能因为不执行导致失败
+                        toElement.appendChild(newScript)
+                      })
                     }
 
                     // 替换待替换元素 - 一般是替换翻页的按钮
@@ -2407,10 +2410,13 @@
       function findAndMarkP2Line() {
 
         function markFatherChild(child, father) {
+          const child_checkedAttr = child.getAttribute('two-checked') || 0
+          const father_checkedAttr = father.getAttribute('two-checked') || 0
+          
           child.setAttribute('two-child', 1)
-          child.setAttribute('two-checked', 1)
+          child.setAttribute('two-checked', +child_checkedAttr + 1)
           father.setAttribute('two-father', 1)
-          father.setAttribute('two-checked', 1)
+          father.setAttribute('two-checked', +father_checkedAttr + 1)
           return father
         }
 
@@ -2425,7 +2431,6 @@
           
           // 先检查父节点是否否和要求
           if (father_curPossible && father_anotherPossible) {
-              console.log(curNode, fatherNode)
               return markFatherChild(curNode, fatherNode)
           } else {
             const now_curPossible = preNode.offsetHeight > minItemHeight && curNode.offsetHeight / preNode.offsetHeight > 1.5
@@ -2446,11 +2451,12 @@
           let preNode = curItem
           while (curHeight < maxHeight) {
             const parentNode = curItem.parentNode
-            if (!curItem.hasAttribute('two-checked')) {
+            let attrV = curItem.getAttribute('two-checked') || 0
+            if (!curItem.hasAttribute('two-checked') || +attrV < 5) {
               const node = getTrueFatherChild(preNode, curItem, parentNode)
               if (node) return node
             }
-            curItem.setAttribute('two-checked', 1)
+            curItem.setAttribute('two-checked', +attrV + 1)
             preNode = curItem
             curItem = parentNode
             curHeight++
@@ -2458,7 +2464,7 @@
           return null
         }
 
-        const gList = document.querySelectorAll(".g:not(two-checked)")
+        const gList = document.querySelectorAll(".g:not([two-checked*='5'])")
 
         return [...gList].filter(one => MarkMine(one))
       }

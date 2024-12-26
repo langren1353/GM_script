@@ -134,6 +134,24 @@ const baseItemKey = 'op_common'
 const baseData = {}
 const scriptData = await safeFunc(() => window.AC_GM_Interface.get(baseItemKey, '{}'))
 
+setTimeout(() => {
+  const hash = window.location.hash;
+  if (hash) {
+    const targetElement = document.querySelector(hash);
+    if (targetElement) {
+      const offset = 60; // 根据实际情况调整偏移量
+      const rect = targetElement.getBoundingClientRect();
+      const scrollTop = window.scrollY + rect.top - offset;
+
+      window.scrollTo({
+        top: scrollTop,
+        behavior: 'smooth'
+      });
+    }
+  }
+}, 1000)
+
+
 const base = reactive({
   bigImgShow: false,
   bigImgSrc: '',
