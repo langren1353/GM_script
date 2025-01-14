@@ -49,9 +49,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2024-11-17
+// @lastmodified  2025-01-14
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2024.12-23-V27.08 fix：谷歌样式生效问题、必应去广告问题
+// @note    2025.01-14-V27.09 fix：谷歌样式生效问题、谷歌显示字体问题、必应去广告失效导致的所有数据丢失问题
 // @note    2024.11-17-V27.07 fix：谷歌排版问题、谷歌翻页后图片无效问题
 // @note    2024.08-26-V27.06 fix：暗黑模式
 // @note    2024.08-19-V27.05 fix：拦截功能、被拦截域名问题、和其他脚本兼容的CSS植入问题、优化域名检测逻辑；
@@ -2405,7 +2405,7 @@
   const PageBlockFunc = new PageBlockClass()
 
   !await (async function() {
-    /***Google***/
+    /***Google双列修复***/
     CONST.addIntervalTrigger('google', 'now', (counter) => {
       function findAndMarkP2Line() {
 
@@ -2423,7 +2423,7 @@
         // 检查的事preNode 和 curNode
         // 但是需要先判断curNode和fatherNode有没有
         function getTrueFatherChild(preNode, curNode, fatherNode) {
-          const minItemHeight = 100
+          const minItemHeight = 60
           const father_curPossible = curNode.offsetHeight > minItemHeight && fatherNode.offsetHeight / curNode.offsetHeight > 1.5
           const father_anotherPossible =  [...fatherNode.children].some(one => {
             return one !== curNode && one.offsetHeight > minItemHeight && fatherNode.offsetHeight / one.offsetHeight > 5;
@@ -2445,26 +2445,28 @@
           }
         }
 
-
+        // 标记自身
         function MarkMine(curItem) {
-          let maxHeight = 6, curHeight = 1
+          let maxHeight = 9, curHeight = 1
           let preNode = curItem
           while (curHeight < maxHeight) {
-            const parentNode = curItem.parentNode
+            const fatherNode = curItem.parentNode
             let attrV = curItem.getAttribute('two-checked') || 0
-            if (!curItem.hasAttribute('two-checked') || +attrV < 5) {
-              const node = getTrueFatherChild(preNode, curItem, parentNode)
-              if (node) return node
+            if (!curItem.hasAttribute('two-checked') || +attrV < 8) {
+              const node = getTrueFatherChild(preNode, curItem, fatherNode)
+              if (node) {
+                return node
+              }
             }
             curItem.setAttribute('two-checked', +attrV + 1)
             preNode = curItem
-            curItem = parentNode
+            curItem = fatherNode
             curHeight++
           }
           return null
         }
 
-        const gList = document.querySelectorAll(".g:not([two-checked*='5'])")
+        const gList = document.querySelectorAll(".g:not([two-checked*='8'])")
 
         return [...gList].filter(one => MarkMine(one))
       }
