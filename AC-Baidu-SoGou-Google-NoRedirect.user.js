@@ -1961,7 +1961,9 @@
                       scriptElems.forEach((one) => {
                         const newScript = document.createElement('script')
                         newScript.textContent = one.textContent // 新建一个脚本，否则可能因为不执行导致失败
-                        toElement.appendChild(newScript)
+                        try{
+                          toElement.appendChild(newScript)
+                        }catch (e){}
                       })
                     }
 

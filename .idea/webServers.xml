@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="d28a6192-9d9a-4a02-9242-c4e5a4cc8f91" name="甲骨文圣何塞">
+        <fileTransfer accessType="SFTP" host="152.70.121.145" port="622" sshConfigId="9b95d5cb-7cbc-4e90-b190-3d00725aa46e" sshConfig="root@152.70.121.145:622 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

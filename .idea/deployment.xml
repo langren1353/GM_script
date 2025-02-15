@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
+    <option name="confirmBeforeUploading" value="false" />
     <serverData>
       <paths name="wsl">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="甲骨文圣何塞">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/A_SyncBase/dockers/gm-script/newcss" local="$PROJECT_DIR$/newcss" web="/" />
           </mappings>
         </serverdata>
       </paths>

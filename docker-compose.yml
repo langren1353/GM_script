@@ -6,10 +6,12 @@ services:
     container_name: vitepress
     restart: always
     ports:
-      - 2019:80
+      - 8422:80
     build:
       context: ./
       dockerfile: ./ac-baidu/doc/Dockerfile
+    volumes:
+      - ./newcss:/usr/share/nginx/html/newcss
     networks:
       - my_network
 
@@ -18,13 +20,13 @@ services:
     container_name: fastapi
     restart: always
     ports:
-      - 2020:80
+      - 8423:80
     build:
       context: ./ac-baidu/fastapi/
       dockerfile: Dockerfile
     networks:
       - my_network
-      
+
 networks:
   my_network:
     driver: bridge

@@ -9,132 +9,135 @@ body {
   .wr_fav{
     left: -18px !important;
   }
-  
+
   .siteicon img{
     width: 16px !important;
     height: 16px !important;
   }
 }
 
+main #b_mcw{
+  --wideansw: unset !important;
+}
 
 #b_content #b_results > li:not(#mfa_root) {
-  z-index: 1;
-  width: 670px;
-  padding: 12px 20px !important;
-  margin-top: 0;
-  margin-bottom: 25px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-sizing: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.25s cubic-bezier(.23, 1, .32, 1) 0s;
-  overflow: hidden;
+z-index: 1;
+width: 670px;
+padding: 12px 20px !important;
+margin-top: 0;
+margin-bottom: 25px;
+border-radius: 5px;
+background-color: #fff;
+box-sizing: border-box;
+border: 1px solid rgba(0, 0, 0, 0.1);
+transition: all 0.25s cubic-bezier(.23, 1, .32, 1) 0s;
+overflow: hidden;
 
-  &:hover{
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    box-shadow: 0 0 1px grey;
-  }
+&:hover{
+border: 1px solid rgba(0, 0, 0, 0.3);
+box-shadow: 0 0 1px grey;
+}
 }
 
 #b_content #b_results a,
 #b_content #b_results h2 a {
-  position: relative;
-  color: #4f91de;
+position: relative;
+color: #4f91de;
 }
 
 #b_content #b_results h2 a, #b_results h2 strong {
-  font-weight: bold;
-  font-size: medium;
+font-weight: bold;
+font-size: medium;
 }
 
 #b_content #b_results > li:hover {
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 1px grey;
-  -webkit-box-shadow: 0 0 1px grey;
-  -moz-box-shadow: 0 0 1px gray;
+border: 1px solid rgba(0, 0, 0, 0.3);
+box-shadow: 0 0 1px grey;
+-webkit-box-shadow: 0 0 1px grey;
+-moz-box-shadow: 0 0 1px gray;
 }
 
 #b_content > #b_results li:not(#mfa_root) h2 {
-  background-color: #f8f8f8;
-  margin: -12px -20px 10px -20px;
-  padding: 8px 20px 5px;
-  border-radius: 5px 5px 0px 0px;
+background-color: #f8f8f8;
+margin: -12px -20px 10px -20px;
+padding: 8px 20px 5px;
+border-radius: 5px 5px 0px 0px;
 }
 
 a, a strong {
-  text-decoration: none;
+text-decoration: none;
 }
 
 #b_content #b_results a strong,
 #b_content #b_results h2 a strong {
-  text-decoration: none;
+text-decoration: none;
 }
 
 .b_algo:first-child:hover h2 a {
-  text-decoration: none !important;
+text-decoration: none !important;
 }
 .lgw-slide-in{
-  display: none;
+display: none;
 }
 
 #b_content #b_results a:hover:after,
 #b_content #b_results h2 a:hover:after {
-  left: 0;
-  width: 100%;
-  -webkit-transition: width 350ms;
-  -moz-transition: width 350ms;
-  transition: width 350ms;
+left: 0;
+width: 100%;
+-webkit-transition: width 350ms;
+-moz-transition: width 350ms;
+transition: width 350ms;
 }
 
 #b_content #b_results a:hover,
 #b_content #b_results h2 a:hover {
-  text-decoration: none;
+text-decoration: none;
 }
 
 #b_content #b_results a:after,
 #b_content #b_results h2 a:after {
-  content: "";
-  position: absolute;
-  border-bottom: 2px solid #4f91de;
-  bottom: -2px;
-  left: 100%;
-  width: 0;
-  -webkit-transition: width 350ms, left 350ms;
-  -moz-transition: width 350ms, left 350ms;
-  transition: width 350ms, left 350ms;
+content: "";
+position: absolute;
+border-bottom: 2px solid #4f91de;
+bottom: -2px;
+left: 100%;
+width: 0;
+-webkit-transition: width 350ms, left 350ms;
+-moz-transition: width 350ms, left 350ms;
+transition: width 350ms, left 350ms;
 }
 
 #b_content #b_results h2 a:visited,
 #b_content #b_results h2 a:visited strong,
 #b_content #b_results h2 h2 a:visited,
 #b_content #b_results h2 h2 a:visited strong {
-  color: #660099;
+color: #660099;
 }
 
 #b_content #b_results h2 a:visited:hover:after,
 #b_content #b_results h2 h2 a:visited:hover:after {
-  left: 0;
-  width: 100%;
-  -webkit-transition: width 350ms;
-  -moz-transition: width 350ms;
-  transition: width 350ms;
+left: 0;
+width: 100%;
+-webkit-transition: width 350ms;
+-moz-transition: width 350ms;
+transition: width 350ms;
 }
 
 #b_content > ol#b_context ,
 #b_content #relatedSearchesLGWContainer{
-  display: none;
+display: none;
 }
 
 body #b_header {
-  background-color: #f5f5f5;
+background-color: #f5f5f5;
 }
 
 #b_content .b_underSearchbox {
-  margin-top: 10px;
+margin-top: 10px;
 }
 
 #b_header .b_scopebar {
-  margin: unset;
+margin: unset;
 }
 
 /*search engine jump*/
@@ -157,7 +160,7 @@ body #b_header #est_switch {
   padding-right: 10%; /**TODO***/
 }
 
-body #est_cn::after, 
+body #est_cn::after,
 body #est_en::after {
   top: -4px !important;
   transform: scale(1.2, 1.3) perspective(.5em) rotateX(0deg);
@@ -165,7 +168,7 @@ body #est_en::after {
 }
 
 #est_switch {
- 
+
   .est_unselected {
     line-height: 8px;
     color: #2c2c2c;
