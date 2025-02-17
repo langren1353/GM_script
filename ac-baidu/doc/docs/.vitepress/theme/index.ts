@@ -48,17 +48,21 @@ export default {
           scriptTag.src = "https://tongji.90dao.com/js/vue.js";
           document.body.appendChild(scriptTag);
 
-          setTimeout(() => {
+          setInterval(() => {
             const node = document.querySelector('.content-container');
+
             if(node) {
+              const existInsert = node.querySelector('.bottom-href');
+              if(existInsert) return;
+
               node.insertAdjacentHTML('beforeend', `
 <div class="bottom-href" style="width: 76%; margin-top: -42px;">
     <div style="display: flex;justify-content: space-around; margin-bottom: 20px;">
         <div style="font-weight: bold; color: chocolate;">
             友情链接：
         </div>
-        <el-link type="primary" href="https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo" target="_blank">不加速-上网加速！</el-link>、        
-        <el-link type="primary" href="https://tools.acdiao.com/" target="_blank">老猫工具箱</el-link>、
+        <a type="primary" href="https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo" target="_blank">不加速-上网加速！</a>、        
+        <a type="primary" href="https://tools.acdiao.com/" target="_blank">老猫工具箱</a>、
         <a type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不接脚本定制）</a>、
         <a type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图</a>
     </div>

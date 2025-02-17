@@ -1,4 +1,4 @@
-FROM dio.90dao.com/peytonyip/nginx-brotli
+FROM docker.suzuran.icu/peytonyip/nginx-brotli
 ENV TZ=Asia/Shanghai
 
 COPY ./ac-baidu/doc/docs/.vitepress/dist /usr/share/nginx/html
