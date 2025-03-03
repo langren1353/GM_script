@@ -1,8 +1,9 @@
 /*Store BingTwoPageStyle*/
 #container #content_left .hit_top_new,
 #b_content aside, #b_results #mfa_root ,
-#b_results #adstop_gradiant_separator{
-  display: none;
+#b_results #adstop_gradiant_separator,
+.b_bza_pole{
+  display: none !important;
 }
 
 #b_content #b_results {
@@ -27,6 +28,10 @@
   margin-left: 1%;
 }
 
+#b_results li:nth-child(even)[class*="b_ans"] {
+  grid-column: 1 / -1;
+}
+
 #b_content #b_pole {
   max-width: 72vw;
   margin: 0 auto;
@@ -36,7 +41,7 @@
   width: 50%;
 }
 
-#b_msg, #b_pag {
+#b_msg, .b_pag {
   grid-column-end: xmain-end;
   grid-column-start: 1;
   background-color: #FFFFFF;

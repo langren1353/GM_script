@@ -2,6 +2,9 @@
   <div id="save_hint"></div>
 </Teleport>
 
+<component is="script" src="/inject.js">
+</component>
+
 # 配置项
 
 ### 适用于所有搜索引擎 {#main}

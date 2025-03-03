@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.09
+// @version    27.10
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -49,8 +49,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2025-01-14
+// @lastmodified  2025-03-04
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2025.03-04-V27.10 fix：谷歌百度模式显示效果；Less.js被Q的问题；谷歌第二页脚本问题；
 // @note    2025.01-14-V27.09 fix：谷歌样式生效问题、谷歌显示字体问题、必应去广告失效导致的所有数据丢失问题
 // @note    2024.11-17-V27.07 fix：谷歌排版问题、谷歌翻页后图片无效问题
 // @note    2024.08-26-V27.06 fix：暗黑模式
@@ -114,11 +115,10 @@
 // @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=27.04
 // @resource  HuaHua-ACDrakMode  https://ibaidu.tujidu.com/newcss/HuaHua-ACDrakMode.less?t=27.04
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
-// @require   https://update.greasyfork.org/scripts/433620/1422795/Less4_1_2_fixed.js
+// @require   https://cdn.jsdelivr.net/npm/less_browser_fix@4.1.2/dist/less.min.js
 // @require   https://lib.baomitu.com/vue/3.2.31/vue.runtime.global.prod.min.js
 // @require   https://lf6-cdn-tos.bytecdntp.com/cdn/expire-10-y/vue/3.2.31/vue.runtime.global.prod.min.js
 // @noframes
-// @grant    GM_info
 // @grant    GM_getValue
 // @grant    GM.getValue
 // @grant    GM_setValue
@@ -991,7 +991,7 @@
       this.openSeetingsUrl = storeValue || 'https://ac-baidu.tujidu.com/pages/custom/#' + CONST.options.siteName
       
       if (!storeValue) {
-        console.log('目前不存在')
+        console.log('不存在自定义配置')
         GM_xmlhttpRequest({
           method: "HEAD",
           timeout: 3000,
@@ -1198,7 +1198,7 @@
     addIntervalTrigger(site = '', waitAt = 'now', callback, interval_time = 0, runTimes = 1) {
       console.mylog('addIntervalTrigger', site, "------------", this.options.siteName)
       if(site !== 'all' && this.options.siteName !== site) return
-
+      
       let count = runTimes
       const intId = MyApi.setIntervalRun(async () => {
         count--
@@ -1284,22 +1284,33 @@
         node.width = "125";
         node.removeAttribute("height");
       });
-      MyApi.safeGetNodeFunc("#main .logo img[alt='Google']", function(node) {
+      MyApi.safeGetNodeFunc("a#logo", function(node) {
+        let faNode = node.parentNode.parentNode;
+        if(faNode.hasAttribute('xchanged')) return
+        faNode.classList.add("baidu");
+        faNode.setAttribute('xchanged', 1)
+        node.querySelector('svg').style.display = 'none'
+        const newImage = document.createElement('img')
+        newImage.src = "https://www.baidu.com/img/flexible/logo/pc/result.png"
+        newImage.width = "125"
+        node.appendChild(newImage)
+      });
+      MyApi.safeGetNodeFunc("img[alt='Google']", function(node) {
         if(node.hasAttribute('xchanged')) return
         node.setAttribute('xchanged', 1)
         node.removeAttribute("srcset");
         node.src = "https://www.baidu.com/img/flexible/logo/pc/result.png";
-        node.style.height = '30px'
-        node.style.marginTop = '-10px'
-      }, 300);
+        node.style.height = '72px'
+        // node.style.marginTop = '-10px'
+      });
       MyApi.safeGetNodeFunc("form[role='search'] .logo img", function(node) {
         if(node.hasAttribute('xchanged')) return
         node.setAttribute('xchanged', 1)
         node.removeAttribute("srcset");
         node.src = "https://www.baidu.com/img/flexible/logo/pc/result.png";
         node.setAttribute("height", "30");
-        node.style.marginTop = '-10px'
-      }, 300);
+        // node.style.marginTop = '-10px'
+      });
       if(!document.title.includes('百度')) {
         document.title = document.title.replace(/^Google/, "百度一下，你就知道")
           .replace(/ - Google 搜索/, "_百度搜索")
@@ -1343,9 +1354,16 @@
         MyApi.safeRemove_xpath("id('b_results')/li[./div[@class='ad_fls']]");
 
         // 移除特殊tag，带url标记的广告类 -- 新版的bing似乎比较特殊，无法判定了
-        // const resList = [...document.querySelectorAll("ol>li")].filter(one => one.querySelector('p')) // 定位到所有包含p标签的li
-        // const adList = resList.filter(one => window.getComputedStyle(one.querySelector('p'), '::before').getPropertyValue('content').includes('url')) // 检查每一个p标签，里面存在before伪元素，且伪元素中是链接的，均为广告
-        // adList.forEach(one => one.remove())
+        const resList = [...document.querySelectorAll("ol>li")].filter(one => one.querySelector('p')) // 定位到所有包含p标签的li
+        const removeWith = [
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAALCAYAAAAunZ4gAAAAAXNSR0IArs4c6QAAAl5JREFUSEvlVrtuE0EUPXdW8lqWgA8A8QHJByBBTZDShiiUSMmu3FhRSB9IPgAKd7t2T2SgjAw9rz5AD/kBQLLWtnYOuquZ1cTYMpQGV+ur2fs459wzK/hPfuLnTJJkS0ReBHOfZln2YJVw6HQ6V4uiOAPwLM/zl2Hv1aDtdvu6tfYdyUd6IPjfz/P8ZFWGXTpomqa3RGRAcjvLso/hYDo0ySHJ1wAOAXwHcE/P+cQicsfH4zj+MplMzkheANjRXCTvK4BaB4DmuRbm8cACuAngqzHmtntP634DsK4xkrskj11/teLSNH2utUTknKTWezKXUX0xSZIjEamSkHzsmQyaeK9S1nMANprN5uZ4PM70vIur9J8qCCR7InIx7zzJz5rb1VuL4zh1cnvj45pfRPYUFJKVqnS1ABxoXa3pJarPWleBsNbecO/sLhzUsxiiq0xEUfTBMbqnLDr2e8q+iPSstdU+eOZFZJ/kibXWN75ljDloNBqbRVHcdT5QqyJQzKX8xpiHZVm+8usUEhH6iH9WUJdKd94OesSNMYfW2iGAuhEAPQDbypxffAfQ0BizX5al7nU9qGei2+3+CNVD8q1jbjCbP4qieYOuzRqkk22lqqWDOsft+93zzRhjVBZ9Z1ReQkfGmA1laJF0HdO/MarnSQ5UAVpTmW61Wjuj0eg0UECVn6SXbmWQYY/eBxRMa+2nv5Kul4Yus0hlxtWyBw78U0TW/8SMZnau3q3pdHpFQXOmc0m+Qbw2o/Am8OADOA7707g3IwDnzmMWm9GiK2T26lmVq2a2z/qD4V8f9BciyTQqHtmLjAAAAABJRU5ErkJggg==',
+          // ''
+        ]
+        const adList = resList.filter(one => {
+          const url = window.getComputedStyle(one.querySelector('p'), '::before').getPropertyValue('content')
+          return removeWith.some(remove => url.includes(remove))
+        }) // 检查每一个p标签，里面存在before伪元素，且伪元素中是链接的，均为广告
+        adList.forEach(one => one.remove())
       }
       function removeHaosouAd() {
         MyApi.safeRemoveAd("#so_kw-ad");
@@ -1961,6 +1979,8 @@
                       scriptElems.forEach((one) => {
                         const newScript = document.createElement('script')
                         newScript.textContent = one.textContent // 新建一个脚本，否则可能因为不执行导致失败
+                        newScript.type = one.type
+                        newScript.nonce = one.nonce
                         try{
                           toElement.appendChild(newScript)
                         }catch (e){}
@@ -2475,11 +2495,7 @@
 
       const valid = location.href.search(/(&|\?)(q|kw)=/) >= 0 ||
         document.querySelector(".g, div[two-father]")
-      if (!valid) {
-        CONST.curConfig.enableCSS = false
-        return
-      }
-      findAndMarkP2Line()
+
       if(counter % 4 === 0) {
         if (CONST.curConfig.useBaiduLogo) {
           PageFunc.GoogleInBaiduMode()
@@ -2488,11 +2504,17 @@
           PageFunc.removeAds.removeGoogleAd()
         }
       }
-    }, 50, Infinity)
+      
+      if (!valid) {
+        CONST.curConfig.enableCSS = false
+        return
+      }
+      findAndMarkP2Line()
+      
+    }, 50, 10000000)
     /***Baidu***/
     CONST.addIntervalTrigger('baidu', 'body', () => {
       // 没有(百度搜索结果的标志-[存在]百度的内容) return;
-      
       const valid = location.href.search(/(&|\?)(wd|word)=/) >= 0 ||
         document.querySelector("#content_left") || document.querySelector('.s_form').offsetHeight < 100
       if (!valid) {
@@ -2513,13 +2535,13 @@
       } else {
         document.body.removeAttribute("news");
       }
-    }, 200, Infinity)
+    }, 200, 10000000)
     /***Haosou***/
     CONST.addIntervalTrigger('haosou', 'body', () => {
       if (CONST.curConfig.isAdsEnable) {
         PageFunc.removeAds.removeHaosouAd()
       }
-    }, 200, Infinity)
+    }, 200, 10000000)
     /***Bing***/
     CONST.addIntervalTrigger('bing', 'body', () => {
       if (CONST.curConfig.isAdsEnable) {
@@ -2527,7 +2549,7 @@
       }
       PageFunc.bingAutoScrollFix()
       PageFunc.bingFaviconPagerFix()
-    }, 200, Infinity)
+    }, 200, 10000000)
     /***DuckDuckgo***/
     CONST.addIntervalTrigger('duckduckgo', 'body', () => {
       if (CONST.curConfig.optimizeDuckDuckGo) {
@@ -2544,7 +2566,7 @@
           })
         }, 3000);
       }
-    }, 200, Infinity)
+    }, 200, 10000000)
     /***All***/
     CONST.addIntervalTrigger('all', 'body', () => {
       PageFunc.RedirectHandle()
@@ -2580,7 +2602,7 @@
       if (CONST.curConfig.isBlockEnable && CONST.curConfig.isRedirectEnable) {
         PageBlockFunc.start()
       }
-    }, 200, Infinity)
+    }, 200, 10000000)
 
     // CONST.enableCSS = 如果生效，那么插入样式表，否则跳过样式表插入
     // CONST.curConfig = 网站配置，同步过来的，以及动态被修改的

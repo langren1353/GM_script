@@ -129,7 +129,8 @@
 .el-switch{
   --el-switch-on-color: #2fbd6e;
 }
-body.tujidu .items .VPSidebarItem:has(a[href*='bujiasu']) {
+body.tujidu .ad-container,
+body.tujidu a[href*='bujiasu'] {
   display: none;
 }
 .VPDocFooter {
