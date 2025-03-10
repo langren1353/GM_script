@@ -29,19 +29,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="搜索结果中屏蔽自定义关键字脚本更新一波">
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index_BACKUP_1961.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index_BASE_1961.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index_LOCAL_1961.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index_REMOTE_1961.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/public/inject.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/haosou/base.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/haosou/static1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/haosouCommonStyle.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/haosouOnePageStyle.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newcss/haosouTwoPageStyle.less" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/baidu/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/baidu/base.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/bing/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/bing/base.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/common/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/common/base.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BgChoose.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BgChoose.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BlockConfig.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BlockConfig.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/LessCSSComp/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/LessCSSComp/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/duckduckgo/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/duckduckgo/base.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/google/base.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/google/base.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/bingTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingTwoPageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/nginx.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/bingCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/bingCommonStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/duckCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/duckCommonStyle.less" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,6 +135,7 @@
     "JavaScript Debug.AC-CSSCalc.html.executor": "Run",
     "JavaScript Debug.Notepad2.html.executor": "Run",
     "JavaScript Debug.index.html.executor": "Run",
+    "JavaScript Debug.test.html.executor": "Run",
     "Node.js.Notepad2.js.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -145,7 +154,7 @@
     "go.import.settings.migrated": "true",
     "ignore_missing_gitignore": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/GitHome/GM_script/newcss",
+    "last_opened_file_path": "D:/GitHome/GM_script/ac-baidu/doc/docs/pages/custom",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -157,18 +166,18 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "terminal",
+    "settings.editor.selected.configurable": "preferences.sourceCode.SCSS",
     "ts.external.directory.path": "D:\\GitHome\\GM_script\\ac-baidu\\doc\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs\pages\custom" />
+      <recent name="D:\GitHome\GM_script\newcss" />
       <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs\pages\home" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc" />
-      <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs" />
-      <recent name="D:\GitHome\GM_script\ac-baidu\fastapi" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs\public" />
@@ -178,17 +187,17 @@
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\public" />
     </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.index.html">
+  <component name="RunManager" selected="npm.docs:dev">
     <configuration name="404.html" type="JavascriptDebugType" nameIsGenerated="true" uri="http://localhost:63342/GM_script/newcss/404.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
     <configuration name="AC-CSSCalc.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:54069/GM_script/AC-CSSCalc.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
-    <configuration name="Notepad2.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:54069/GM_script/notepad/Notepad2.html" useBuiltInWebServerPort="true">
+    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/newcss/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
-    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/newcss/index.html" useBuiltInWebServerPort="true">
+    <configuration name="test.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GM_script/test.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
     <configuration name="docs:build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
@@ -213,19 +222,19 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JavaScript Debug.index.html" />
         <item itemvalue="npm.docs:dev" />
+        <item itemvalue="JavaScript Debug.index.html" />
+        <item itemvalue="JavaScript Debug.test.html" />
         <item itemvalue="npm.docs:build" />
         <item itemvalue="JavaScript Debug.AC-CSSCalc.html" />
-        <item itemvalue="JavaScript Debug.Notepad2.html" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
       </set>
     </attachedChunks>
   </component>

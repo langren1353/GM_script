@@ -1,26 +1,26 @@
 <template>
   <div>
     <el-form :model="state" label-width="auto" style="max-width: 800px">
-      <el-text class="mx-1" size="large" style="padding-bottom: 8px" tag="div">显示设置项：</el-text>
+<!--      <el-text class="mx-1" size="large" style="padding-bottom: 8px" tag="div">显示设置项：</el-text>-->
 
-      <el-form-item for="nothing" label="独有1-谷歌-伪装百度Logo" label-position="left">
-        <el-tooltip class="box-item" effect="dark" :hide-after=20 content="启用后会尽可能尝试将谷歌的部分LOGO替换为百度的LOGO" placement="right">
-          <el-switch inline-prompt size="large" v-model="state.useBaiduLogo" active-text="开启" inactive-text="关闭"/>
-        </el-tooltip>
-      </el-form-item>
-      
-      <el-divider />
-      <el-form-item for="nothing" label="谷歌护眼模式" label-position="left">
-        <el-tooltip class="box-item" effect="dark" :hide-after=20 content="谷歌护眼模式，注意根据不同的主题，请自己选择" placement="top">
+<!--      <el-form-item for="nothing" label="独有1-好搜-独有优化配置项" label-position="left">-->
+<!--        <el-tooltip class="box-item" effect="dark" :hide-after=20 content="启用后会优化好搜，包括超链接新标签打开" placement="right">-->
+<!--          <el-switch inline-prompt size="large" v-model="state.optimizeHaosou" active-text="开启" inactive-text="关闭"/>-->
+<!--        </el-tooltip>-->
+<!--      </el-form-item>-->
+
+<!--      <el-divider />-->
+      <el-form-item for="nothing" label="好搜护眼模式" label-position="left">
+        <el-tooltip class="box-item" effect="dark" :hide-after=20 content="好搜护眼模式，注意根据不同的主题，请自己选择" placement="top">
           <div style="display: flex">
              <el-switch inline-prompt size="large" v-model="state.HuYanMode" active-text="开启" inactive-text="关闭"/>
             <div v-show="state.HuYanMode" style="margin-left: 30px; display: flex; align-items: center">
               <el-color-picker v-model="state.HuYanMode_Color" />
-              
+
               <label data-value="#3A3A3A" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
               <label data-value="#212121" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
               <label data-value="#000000" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              
+
               <label data-value="#DEF1EF" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
               <label data-value="#F3F2EE" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
               <label data-value="#E5E5E5" class="item-color-select-choose" @click="changeColor">&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -28,15 +28,15 @@
           </div>
         </el-tooltip>
       </el-form-item>
-
+      
       <el-divider />
       <ads-mode-choose :state="state" :baseItemKey="baseItemKey" @update_state="updateState" />
       <bg-choose :state="state" :baseItemKey="baseItemKey" @update_state="updateState" />
       
       <el-divider />
-      <less-c-s-s-comp siteName="谷歌" :baseItemKey="baseItemKey" :state="state" :recommendStyleList="recommendStyleList" @update_state="updateState"/>
+      <less-c-s-s-comp siteName="好搜" :baseItemKey="baseItemKey" :state="state" :recommendStyleList="recommendStyleList" @update_state="updateState"/>
     </el-form>
-    <save-alert siteName="谷歌" :saveKey="baseItemKey" :saveData="state" />
+    <save-alert siteName="好搜" :saveKey="baseItemKey" :saveData="state" />
   </div>
 </template>
 <script setup lang="ts">
@@ -45,7 +45,7 @@ import SaveAlert from "./../components/SaveAlert.vue";
 import LessCSSComp from "./../components/LessCSSComp/index.vue";
 import AdsModeChoose from "./../components/AdsModeChoose.vue";
 
-const baseItemKey = 'op_google'
+const baseItemKey = 'op_haosou'
 // const baseData = JSON.parse(localStorage.getItem(baseItemKey) || '{}')
 const baseData = {}
 const scriptData = await safeFunc(() => window.AC_GM_Interface.get(baseItemKey, '{}'))
@@ -60,12 +60,12 @@ const base = reactive({
 })
 
 const defaultOptions = {
-  useBaiduLogo: false, // 默认不使用百度logo
+  optimizeHaosou: true, // 是否开启优化
 
   adsStyleEnable: true, // 是否开启默认效果优化
   adsStyleMode: '1', // 0-不带css；1-单列靠左；2-单列居中；3-双列居中
-  HuYanMode: false, // 护眼模式-必应
-  HuYanMode_Color: '#ffffff', // 护眼模式-必应-颜色
+  HuYanMode: false, // 护眼模式-好搜
+  HuYanMode_Color: '#ffffff', // 护眼模式-好搜-颜色
 
   BgEnable: false, // 背景图-是否启用
   BgUseUrl: '', // 默认背景图
@@ -80,12 +80,12 @@ const defaultOptions = {
 const state = reactive(Object.assign({}, defaultOptions, baseData, scriptData))
 
 const recommendStyleList = [
-  {
-    title: '默认推荐样式',
-    description: '本样式为个人优化样式，取名晴空，点击查看大图效果',
-    img: '',
-    link: 'https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=23.6'
-  }
+  // {
+  //   title: '默认推荐样式',
+  //   description: '本样式为个人优化样式，取名晴空，点击查看大图效果',
+  //   img: '',
+  //   link: 'https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=23.6'
+  // }
 ]
 
 watch(state, (newVal) => {

@@ -1,7 +1,7 @@
 <template>
   <div>
       <el-form :model="state" label-width="auto" style="max-width: 800px">
-        <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">显示设置项：</el-text>
+        <el-text class="mx-1" size="large" style="padding-bottom: 8px" tag="div">显示设置项：</el-text>
         
         <el-form-item for="nothing" label="独有1-必应-独有优化配置项" label-position="left">
           <el-tooltip class="box-item" effect="dark" :hide-after=20 content="启用后会优化bing，包括XXX" placement="right">

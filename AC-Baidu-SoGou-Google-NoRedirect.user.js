@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.10
+// @version    27.12
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -49,8 +49,10 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2025-03-04
+// @lastmodified  2025-03-12
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2025.03-10-V27.12 修复duckduckGO 样式表问题；新增好搜页面双列支持
+// @note    2025.03-07-V27.11 fix for less.js issue at high version browser, read html without head tag 
 // @note    2025.03-04-V27.10 fix：谷歌百度模式显示效果；Less.js被Q的问题；谷歌第二页脚本问题；
 // @note    2025.01-14-V27.09 fix：谷歌样式生效问题、谷歌显示字体问题、必应去广告失效导致的所有数据丢失问题
 // @note    2024.11-17-V27.07 fix：谷歌排版问题、谷歌翻页后图片无效问题
@@ -105,17 +107,20 @@
 // @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=27.04
 // @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=27.04
 // @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=27.04
-// @resource  duckduckgoCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=27.04
-// @resource  duckduckgoOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=27.04
-// @resource  duckduckgoTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=27.04
+// @resource  duckCommonStyle    https://ibaidu.tujidu.com/newcss/duckCommonStyle.less?t=27.04
+// @resource  duckOnePageStyle   https://ibaidu.tujidu.com/newcss/duckOnePageStyle.less?t=27.04
+// @resource  duckTwoPageStyle   https://ibaidu.tujidu.com/newcss/duckTwoPageStyle.less?t=27.04
 // @resource  dogeCommonStyle    https://ibaidu.tujidu.com/newcss/dogeCommonStyle.less?t=27.04
 // @resource  dogeOnePageStyle   https://ibaidu.tujidu.com/newcss/dogeOnePageStyle.less?t=27.04
 // @resource  dogeTwoPageStyle   https://ibaidu.tujidu.com/newcss/dogeTwoPageStyle.less?t=27.04
+// @resource  haosouCommonStyle    https://ibaidu.tujidu.com/newcss/haosouCommonStyle.less?t=27.04
+// @resource  haosouOnePageStyle   https://ibaidu.tujidu.com/newcss/haosouOnePageStyle.less?t=27.04
+// @resource  haosouTwoPageStyle   https://ibaidu.tujidu.com/newcss/haosouTwoPageStyle.less?t=27.04
 // @resource  HuYanStyle         https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=27.04
 // @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=27.04
 // @resource  HuaHua-ACDrakMode  https://ibaidu.tujidu.com/newcss/HuaHua-ACDrakMode.less?t=27.04
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
-// @require   https://cdn.jsdelivr.net/npm/less_browser_fix@4.1.2/dist/less.min.js
+// @require   https://cdn.jsdelivr.net/npm/less_browser_fix@4.2.2/dist/less.min.js
 // @require   https://lib.baomitu.com/vue/3.2.31/vue.runtime.global.prod.min.js
 // @require   https://lf6-cdn-tos.bytecdntp.com/cdn/expire-10-y/vue/3.2.31/vue.runtime.global.prod.min.js
 // @noframes
@@ -161,7 +166,7 @@
      * @param cssText CSS的内容，如果是less的话，需要编译后的
      * @param className 新增的类名，或者是一堆类名（空格隔开）
      */
-    function addStyle(cssText, className = ''){ // 添加CSS代码，不考虑文本载入时间，带有className
+    function addStyle(cssText, className = '', dataName){ // 添加CSS代码，不考虑文本载入时间，带有className
       if(className) {
         const selectorName = (' ' + className).split(' ').join('.')
         
@@ -169,6 +174,7 @@
         if(!oldNode) {
           oldNode = document.createElement("style");
           oldNode.className = className;
+          oldNode.dataset.name = dataName
           MyApi.safeFunc(() => {
             document.children[0].appendChild(oldNode);
           })
@@ -529,7 +535,7 @@
       unsafeWindow.AC_GM_Interface = {
         async get(key, dataStr) {
           if(key.includes('op_')) {
-            const trueKey = key.replace(/^op_/, '')
+            const trueKey = tureKeyFix(key)
             const config = JSON.parse(await GM.getValue('ACConfig', '{}'))
             let res = config[trueKey] || JSON.parse(dataStr)
             if(key.includes('common')) {
@@ -542,7 +548,7 @@
         },
         async save(key, dataObj) {
           if(key.includes('op_')) {
-            const trueKey = key.replace(/^op_/, '')
+            const trueKey = tureKeyFix(key)
             const config = JSON.parse(await GM.getValue('ACConfig', '{}'))
             config[trueKey] = dataObj
             GM.setValue('ACConfig', JSON.stringify(config))
@@ -553,11 +559,15 @@
           }
         },
         async change(key, dataObj) {
-          const trueKey = key.replace(/^op_/, '')
+          const trueKey = tureKeyFix(key)
           const Sync = JSON.parse(await GM.getValue('ACConfig', '{}'))
           Sync[trueKey] = dataObj
           GM.setValue('SyncConfig', JSON.stringify(Sync)) // 触发到Sync上，通过Sync通信
         },
+      }
+      
+      function tureKeyFix(key) {
+        return key.replace(/^op_/, '').replace('duckgo', '')
       }
 
       if(location.host.includes('localhost')) {
@@ -596,6 +606,7 @@
           HT_insert: ["", 2], // 1 = beforebegin; 2 = beforeend
           replaceE: "",
           stylish: "",
+          afertPagerAutoCallFunc: (pageElements, scriptElements) => {} // 执行完脚本后，执行这个函数
         }
       }
 
@@ -613,7 +624,7 @@
       this.google = this._s_google()
       this.bing = this._s_bing()
       this.haosou = this._s_haosou()
-      this.duckduckgo = this._s_duckduckgo()
+      this.duck = this._s_duck()
       this.baidu_xueshu = this._s_baidu_xueshu()
       this.google_scholar = this._s_google_scholar()
     }
@@ -698,6 +709,18 @@
           pageElement: "id('rso')|id('center_col')/style[contains(.,'relative')][id('rso')]",
           HT_insert: ["css;#res", 2], // 1 = beforebegin; 2 = beforeend
           replaceE: '//div[@id="navcnt"] | //div[@id="rcnt"]//div[@role="navigation"]',
+          afertPagerAutoCall: (pageElements, scriptElements) => {
+            // 插入scripts & style - 保证js加载
+            scriptElements.forEach((one) => {
+              const newScript = document.createElement('script')
+              newScript.textContent = one.textContent // 新建一个脚本，否则可能因为不执行导致失败
+              newScript.type = one.type
+              newScript.nonce = one.nonce
+              try{
+                toElement.appendChild(newScript)
+              }catch (e){}
+            })
+          } // 执行完脚本后，执行这个函数
         }
       }
     }
@@ -713,17 +736,20 @@
         CounterType: ".results>div",
         BlockType: "h3 a",
         // TODO 增加这个
-        MultiPageType: "????????", // 多列模式下，待选择的元素，未来再说
+        MultiPageType: ".result li", // 多列模式下，待选择的元素，未来再说
         pager: {
           nextLink: "//div[@id='page']//a[text()='下一页>'] | id('snext')",
-          pageElement: "//div[@id='container']/div",
-          HT_insert: ["//div[@id='container']", 2], // 1 = beforebegin; 2 = beforeend
-          replaceE: "id('page')"
+          pageElement: "//div[@id='container']/div[@id='main']/ul[@class='result']/li",
+          HT_insert: ["//div[@id='container']//ul[@class='result']", 2], // 1 = beforebegin; 2 = beforeend
+          replaceE: "id('page')",
+          afertPagerAutoCallFunc: (pageElements, scriptElements) => {
+            So.web.lazyLoad.init() // 加载好搜图片的
+          } // 执行完脚本后，执行这个函数
         }
       }
     }
 
-    _s_duckduckgo() {
+    _s_duck() {
       if (this.useItem.SiteTypeID === 10){}
       return {
         SiteTypeID: 10,
@@ -818,13 +844,21 @@
     add(uniqueName, cssText) {
       uniqueName = 'AC-' + uniqueName // 加上特殊前缀，标志关键词
       
-      // 如果有，并且数据还一模一样，那么跳过
+      // 如果有，并且数据还一模一样，那么跳过；如果数据不一样，那么覆盖
       if (this.cssInsertSet[uniqueName] && this.cssInsertSet[uniqueName] === cssText) {
         return
       }
       console.mylog('--->插入样式表:' + uniqueName)
       this.cssInsertSet[uniqueName] = `\n/************${uniqueName}*********/\n` + cssText
       this.hasChanged = true
+    }
+    remove(uniqueName) {
+      uniqueName = 'AC-' + uniqueName // 加上特殊前缀，标志关键词
+      if (this.cssInsertSet[uniqueName]) {
+        console.mylog('--->移除样式表:' + uniqueName)
+        delete this.cssInsertSet[uniqueName]
+        this.hasChanged = true
+      }
     }
 
     clear() {
@@ -834,7 +868,7 @@
 
     doInsert() {
       const cssText = Object.values(this.cssInsertSet).join('\n')
-      MyApi.addStyle(cssText, Object.keys(this.cssInsertSet).join(' ')) // 方便排查css插入
+      MyApi.addStyle(cssText, 'AC-CSSAutoInsertBase', Object.keys(this.cssInsertSet).join(' ')) // 方便排查css插入
       console.mylog('插入CSS完成')
     }
   }
@@ -884,9 +918,12 @@
           optimizeBing: true,
           ...new BaseConfig()
         },
-        duckduckgo: {
-          optimizeDuckDuckGo: true, // 是否开启优化
+        duck: {
+          optimizeDuck: true, // 是否开启优化
           ...new BaseConfig()
+        },
+        haosou: {
+          ...new BaseConfig(false)
         }
       };
       try {
@@ -1085,17 +1122,17 @@
       console.mylog('CSS加载开始' + +this.curConfig.adsStyleMode)
       // 加载多列
       if (this.curConfig.adsStyleEnable) {
-        if (+this.curConfig.adsStyleMode >= 4) {
-          this.adsCSSList.multiPageStyle = await this.getMultiPageStyle() // 多列效果
-        }
-        if (+this.curConfig.adsStyleMode >= 3) {
-          this.adsCSSList.twoPageStyle = await this.loadStyleByName_WithLessCache(this.options.siteName + 'TwoPageStyle') // 双列效果
+        if (+this.curConfig.adsStyleMode >= 1) {
+          this.adsCSSList.leftCommonStyle = await this.loadStyleByName_WithLessCache(this.options.siteName + 'CommonStyle') // 单列效果
         }
         if (+this.curConfig.adsStyleMode >= 2) {
           this.adsCSSList.onePageStyle = await this.loadStyleByName_WithLessCache(this.options.siteName + 'OnePageStyle') // 单列居中
         }
-        if (+this.curConfig.adsStyleMode >= 1) {
-          this.adsCSSList.leftCommonStyle = await this.loadStyleByName_WithLessCache(this.options.siteName + 'CommonStyle') // 单列效果
+        if (+this.curConfig.adsStyleMode >= 3) {
+          this.adsCSSList.twoPageStyle = await this.loadStyleByName_WithLessCache(this.options.siteName + 'TwoPageStyle') // 双列效果
+        }
+        if (+this.curConfig.adsStyleMode >= 4) {
+          this.adsCSSList.multiPageStyle = await this.getMultiPageStyle() // 多列效果
         }
       }
       // 加载百度Lite
@@ -1258,7 +1295,7 @@
       }
       let useRule = Object.keys(specialRule).find(one => location.host.includes(one))
       if(!useRule) {
-        useRule = location.host.replace(/.*(baidu|google|bing|duckduckgo).*/, '$1')
+        useRule = location.host.replace(/.*(baidu|google|bing|duck).*/, '$1')
       } else {
         return specialRule[useRule]
       }
@@ -1383,7 +1420,8 @@
     }
     InsertSettingMenu() {
       if (document.querySelector("#myuser") === null) {
-        MyApi.safeWaitFunc("#u, #gb, #b_header>#id_h, #header_wrapper .js-hl-butto", parent => {
+        MyApi.safeWaitFunc("#u, #gb, #b_header>#id_h, #header_wrapper .js-hl-butto, .header--aside, #header .inner .menu", parent => {
+          
           parent.style = "width: auto;";
           let userAdiv = document.createElement("div");
           userAdiv.id = "myuser";
@@ -1726,9 +1764,11 @@
         MyApi.safeGetNodeFunc('#myuser', node => node.remove())
         return
       }
+      
       console.mylog('即将插入CSS1')
       if (CONST.curConfig.adsStyleEnable) {
         console.mylog('即将插入CSS2')
+        
         if(+CONST.curConfig.adsStyleMode === 1) {
           console.mylog('靠左优化模式')
           CONST.cssAutoInsert.add("expandPageStyle", CONST.adsCSSList.expandPageStyle)
@@ -1753,7 +1793,7 @@
       CONST.cssAutoInsert.add("styleLogo", ".minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;} body.purecss-mode:before{display: none;}")
       CONST.cssAutoInsert.add("specialBAIDU", ".opr-recommends-merge-imgtext{display:none!important;}.res_top_banner{display:none!important;}.headBlock, body>div.result-op{display:none;}")
       CONST.cssAutoInsert.add("animationStyle", "@keyframes ani_leftToright{0%{transform:translateX(-32px);opacity:0.2;}20%{opacity:0.5;}30%{opacity:0.8;}100%{opacity:1;}}@keyframes ani_bottomTotop{0%{transform:translateY(32px);opacity:0.2;}20%{opacity:0.5;}30%{opacity:0.8;}100%{opacity:1;}}@-webkit-keyframes ani_topTobuttom{0%{transform:translateY(-32px);opacity:0.2;}20%{opacity:0.5;}30%{opacity:0.8;}100%{opacity:1;}}@-webkit-keyframes ani_hideToShow{0%{display:none;opacity:0.2;}20%{opacity:0.5;}30%{opacity:0.8;}100%{opacity:1;}}@-webkit-keyframes ani_showToHide{0%{display:none;opacity:1;}20%{opacity:0.8;}30%{opacity:0.5;}100%{opacity:0.3;}}.aniDelete{transition:all 0.15s cubic-bezier(0.4,0,1,1);opacity:0.1}")
-      CONST.cssAutoInsert.add("menuBtn", ".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #gb #myuser{margin-top:7px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;}")
+      CONST.cssAutoInsert.add("menuBtn", ".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #gb #myuser{margin-top:7px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;} body[haosou] #myuser{margin-top:-10px}")
 
       if(CONST.curConfig.baiduLiteEnable) {
         CONST.cssAutoInsert.add("baiduLiteStyle", CONST.adsCSSList.baiduLiteStyle)
@@ -1974,17 +2014,8 @@
                       per.addEventListener("click", PageFunc.ac_spfunc);
                     });
 
-                    // 插入scripts & style - 保证js加载
-                    if (CONST.options.useItem.SiteTypeID === CONST.options.google.SiteTypeID) {
-                      scriptElems.forEach((one) => {
-                        const newScript = document.createElement('script')
-                        newScript.textContent = one.textContent // 新建一个脚本，否则可能因为不执行导致失败
-                        newScript.type = one.type
-                        newScript.nonce = one.nonce
-                        try{
-                          toElement.appendChild(newScript)
-                        }catch (e){}
-                      })
+                    if(CONST.options.useItem.pager.afertPagerAutoCallFunc) {
+                      CONST.options.useItem.pager.afertPagerAutoCallFunc(pageElems, scriptElems)
                     }
 
                     // 替换待替换元素 - 一般是替换翻页的按钮
@@ -2029,8 +2060,8 @@
             if (document.documentElement.scrollHeight <= document.documentElement.clientHeight + scrollTop + scrollDelta && CONST.lock.pageLoadingLocked === false) {
               console.mylog('开始进行翻页')
               CONST.lock.pageLoadingLocked = true;
-              if (CONST.options.useItem.SiteTypeID === CONST.options.duckduckgo.SiteTypeID) { // 可以用已有的方法来实现了
-                if (!CONST.curConfig.optimizeDuckDuckGo || +CONST.curConfig.adsStyleMode >= 3) { // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
+              if (CONST.options.useItem.SiteTypeID === CONST.options.duck.SiteTypeID) { // 可以用已有的方法来实现了
+                if (!CONST.curConfig.optimizeDuck || +CONST.curConfig.adsStyleMode >= 3) { // 如果没有开启，那么手动翻页 || 如果是双列的时候，似乎并不会自动触发翻页效果
                   const node = document.querySelector("#links .result--more a")
                   node && node.click();
                   setTimeout(function() {
@@ -2551,8 +2582,8 @@
       PageFunc.bingFaviconPagerFix()
     }, 200, 10000000)
     /***DuckDuckgo***/
-    CONST.addIntervalTrigger('duckduckgo', 'body', () => {
-      if (CONST.curConfig.optimizeDuckDuckGo) {
+    CONST.addIntervalTrigger('duck', 'body', () => {
+      if (CONST.curConfig.optimizeDuck) {
         setTimeout(function() {
           MyApi.safeFunc(() => {
             DDG.settings.set("kn", 1, { // 新窗口打开页面

@@ -1,5 +1,5 @@
 <template>
-  <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">
+  <el-text class="mx-1" size="large" style="padding-bottom: 8px" tag="div">
     自定义样式表-支持Less.js：
     <el-switch inline-prompt size="large" v-model="state.commonStyleEnable" active-text="开启" inactive-text="关闭"/>
   </el-text>

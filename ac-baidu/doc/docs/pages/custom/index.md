@@ -37,6 +37,12 @@
 @custom/duckduckgo/base
 :::
 
+### 好搜配置 {#haosou}
+
+:::demo 好搜配置项
+@custom/haosou/base
+:::
+
 <style lang="scss">
 #save_hint{
   position: fixed;
@@ -53,7 +59,12 @@
 .el-drawer__header{
   margin-bottom: unset;
 }
-
+.el-form-item {
+  margin-bottom: 4px !important;
+}
+.el-divider--horizontal{
+  margin: 8px 0 !important;
+}
 .el-collapse {
   :deep(&-item__header) {
     border: unset;

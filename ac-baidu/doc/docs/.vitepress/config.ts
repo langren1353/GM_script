@@ -72,6 +72,7 @@ export default defineConfig({
             { text: "谷歌-配置", link: "/pages/custom/index.md#google" },
             { text: "必应-配置", link: "/pages/custom/index.md#bing" },
             { text: "鸭鸭-配置", link: "/pages/custom/index.md#duckduckgo" },
+            { text: "好搜-配置", link: "/pages/custom/index.md#haosou" },
           ]
         },
         {

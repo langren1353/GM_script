@@ -1,7 +1,7 @@
 <template>
   <div class="mb-4">
       <el-form :model="state" label-width="auto" style="max-width: 800px">
-        <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">调试项：</el-text>
+        <el-text class="mx-1" size="large" style="padding-bottom: 8px" tag="div">调试项：</el-text>
         <el-form-item for="nothing" label="脚本版本号" label-position="left">
           <span style="margin-left: 18px">
             V{{ state.version }}
@@ -22,7 +22,7 @@
           </el-tooltip>
           <el-input v-show="state.isLocalDevMode" v-model="state.localDebugBaseUrl" style="width: 400px; margin-left: 40px" placeholder="https://..." clearable @click.stop />
         </el-form-item>
-        <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">全局项：</el-text>
+        <el-text class="mx-1" size="large" style="padding-bottom: 8px" tag="div">全局项：</el-text>
         <el-form-item for="nothing" label="✈附加0.是否处理重定向问题-按需开启" label-position="left">
           <a-tool-tip-icon href="/pages/home/use.html#redirect" tooltipText="点击查看说明" is="QuestionFilled"></a-tool-tip-icon>
           <el-tooltip

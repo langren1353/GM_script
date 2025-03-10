@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-form :model="state" label-width="auto" style="max-width: 800px">
-      <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">显示设置项：</el-text>
+      <el-text class="mx-1" size="large" style="padding-bottom: 8px" tag="div">显示设置项：</el-text>
 
       <el-form-item for="nothing" label="独有1-鸭鸭-独有优化配置项" label-position="left">
         <el-tooltip class="box-item" effect="dark" :hide-after=20 content="启用后会优化鸭鸭，包括超链接新标签打开" placement="right">
-          <el-switch inline-prompt size="large" v-model="state.optimizeDuckDuckGo" active-text="开启" inactive-text="关闭"/>
+          <el-switch inline-prompt size="large" v-model="state.optimizeDuck" active-text="开启" inactive-text="关闭"/>
         </el-tooltip>
       </el-form-item>
 

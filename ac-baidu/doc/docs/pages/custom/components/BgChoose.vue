@@ -1,5 +1,5 @@
 <template>
-  <el-text class="mx-1" size="large" style="padding-bottom: 16px" tag="div">
+  <el-text class="mx-1" size="large" style="padding-bottom: 8px" tag="div">
     背景图选项：
     <el-switch inline-prompt size="large" v-model="state.BgEnable" active-text="开启" inactive-text="关闭"/>
     <el-button v-if="false" v-show="state.BgEnable" type="primary" plain style="margin-left: 40px" @click="getWgetData">
