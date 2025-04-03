@@ -33,7 +33,7 @@ features:
         <div>
             友情链接：
         </div>
-        <el-link type="primary" href="https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo" target="_blank">不加速-上网加速！</el-link>、        
+        <el-link type="primary" href="https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j" target="_blank">一元机场.PLUS</el-link>、        
         <el-link type="primary" href="https://tools.acdiao.com/" target="_blank">老猫工具箱</el-link>、
         <el-link type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不支持脚本定制）</el-link>、
         <el-link type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图</el-link>

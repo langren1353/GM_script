@@ -44,8 +44,9 @@ form.fm {
   margin-bottom: 0px;
 }
 
-body #container.sam_newgrid #content_left {
-  width: 80%;
+#container.sam_newgrid #content_left, 
+.pc-fresh-wrapper-con #container.sam_newgrid #content_left{
+  width: 85%;
 }
 
 #wrapper #content_left {
@@ -165,6 +166,16 @@ body[news] #wrapper #content_left > div:not([class]):not([id]) {
 
   .wrapper_new .head_wrapper #result_logo {
     margin-left: -170px;
+  }
+
+  .pc-fresh-wrapper-con #container.sam_newgrid #content_left{
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1700px) {
+  .pc-fresh-wrapper-con #container.sam_newgrid #content_left{
+    width: 80%;
   }
 }
 

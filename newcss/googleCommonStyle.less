@@ -253,13 +253,13 @@ div[two-father]{
 
   .se_com_irregular_gallery ul li,
   .op_jingyan_list,
-  .g .op-img-address-link-type {
+  div[two-child] .op-img-address-link-type {
     display: inline-block;
     margin-left: 10px;
   }
 
   .op-soft-title a,
-  .g div.r > a {
+  div[two-child] div.r > a {
     position: relative;
 
     em {
@@ -267,18 +267,18 @@ div[two-father]{
     }
   }
   
-  & > .g ~ div:not(.g) {
+  & > div[two-child] ~ div:not(div[two-child]) {
     width: 100%;
     overflow: hidden;
   }
 
   /* page nums */
-  div.g:not([class]) {
+  div[two-child]:not([class]) {
     margin-left: 18px;
     margin-right: 18px;
   }
 
-  .g .exp-outline {
+  div[two-child] .exp-outline {
     display: none;
   }
 }
@@ -290,7 +290,7 @@ div[two-father]{
   animation-timing-function: ease-out;
 }
 
-#res .g .ts {
+#res div[two-child] .ts {
   max-width: unset;
 }
 
@@ -321,8 +321,8 @@ div.res_top_banner #foot, #pag
 
 /**Google ConnectionBox*/
 #rs, 
-#rso .g, 
-div[data-micp-id="rso"] .g{
+#rso div[two-child], 
+div[data-micp-id="rso"] div[two-child]{
   font-family: -webkit-body;
   -webkit-locale: "zh-CN"; /*force CN shape*/
   margin-bottom: 20px;
@@ -346,7 +346,7 @@ div[data-micp-id="rso"]{
 }
 
 /**Rewrite main page -> web summary*/
-.c2xzTb .g, .ruTcId .g, .fm06If .g, .cUnQKe .g, .HanQmf .g {
+.c2xzTb div[two-child], .ruTcId div[two-child], .fm06If div[two-child], .cUnQKe div[two-child], .HanQmf div[two-child] {
   width: 758px;
   padding-left: 20px !important;
   padding-right: 20px !important;
@@ -368,7 +368,7 @@ div .kno-ftr a {
 
 /**Thanks to Mooncan -END**/
 #rcnt #res h3, #rcnt #extrares h3,
-.g h3{
+div[two-child] h3{
   /**reset font size**/
   font-size: 18px;
   display: block;

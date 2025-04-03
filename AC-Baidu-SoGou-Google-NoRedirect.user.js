@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.12
+// @version    27.13
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -49,8 +49,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2025-03-12
+// @lastmodified  2025-03-22
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2025.03-22-V27.13 修复google更新导致多列问题、修复百度翻页问题
 // @note    2025.03-10-V27.12 修复duckduckGO 样式表问题；新增好搜页面双列支持
 // @note    2025.03-07-V27.11 fix for less.js issue at high version browser, read html without head tag 
 // @note    2025.03-04-V27.10 fix：谷歌百度模式显示效果；Less.js被Q的问题；谷歌第二页脚本问题；
@@ -647,7 +648,7 @@
         BlockType: "h3 a",
         MultiPageType: "#container #content_left, body[news] #container #content_left>div:not([class]):not([id])",
         pager: {
-          nextLink: '//div[@id="page"]//a[contains(text(),"下一页")][@href]',
+          nextLink: '//div[@id="page"]//a[contains(span/text(), "下一页")]',
           pageElement: "css;div#content_left > *",
           HT_insert: ["css;div#content_left", 2], // 1 = beforebegin; 2 = beforeend
           replaceE: "css;#page",
@@ -2519,7 +2520,7 @@
           return null
         }
 
-        const gList = document.querySelectorAll(".g:not([two-checked*='8'])")
+        const gList = document.querySelectorAll(".g:not([two-checked*='8']), .cUnQKe:not([two-checked*='8']), .Ww4FFb:not([two-checked*='8'])")
 
         return [...gList].filter(one => MarkMine(one))
       }

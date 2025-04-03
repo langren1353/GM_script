@@ -232,12 +232,12 @@ safeWait('.container .aside .aside-curtain', node => {
         ⚡ 24/7 技术支持<br><br>
         <span style="color: #666; font-size: 0.9em;">
           限时特惠：<br>
-          <b style="font-size:1.2em;">¥4</b>/月 
+          <b style="font-size:1.2em;">¥1</b>/月 
           <span style="color:#999;">|</span> 
-          <b style="font-size:1.2em; color: black;">¥24</b>/年
+          <b style="font-size:1.2em; color: black;">¥12</b>/年
         </span>
       </div>
-      <a href="https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo" class="cta-button" target="_blank">
+      <a href="https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j" class="cta-button" target="_blank">
         <span style="margin-right: 8px;">🔥</span>立即加速 →
       </a>
     </div>
@@ -253,7 +253,7 @@ safeWait('.container .aside .aside-curtain', node => {
     document.cookie = 'ad_close=true; max-age=600'
   }
   window.jumpLink = () => {
-    window.open('https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo', '_blank')
+    window.open('https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j', '_blank')
   }
 }, 200, false)
 

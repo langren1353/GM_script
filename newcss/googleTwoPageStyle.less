@@ -16,8 +16,8 @@ div[two-child] {
   background-color: #fff;
   box-sizing: border-box;
   transition: all 0.1s ease-in;
-  
-  .g{
+
+  div[two-child]{
     width: unset !important;
   }
 
@@ -30,7 +30,7 @@ div[two-child] {
   }
 }
 
-.search > #ires #rso .g {
+.search > #ires #rso div[two-child] {
   max-width: unset;
 }
 .XqFnDf{
@@ -90,8 +90,8 @@ div[two-father], #kp-wp-tab-overview {
   }
 }
 
-#rso > .g ~ div:not(.g),
-#rcnt #botstuff > .g ~ div:not(.g) {
+#rso > div[two-child] ~ div:not(div[two-child]),
+#rcnt #botstuff > div[two-child] ~ div:not(div[two-child]) {
   margin-bottom: 10px;
 }
 

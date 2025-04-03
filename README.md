@@ -1,8 +1,8 @@
 ### 资源推荐
 1、推荐一个导购网站(淘宝、京东购物有折扣)：**N淘网 - [https://www.ntaow.com/](https://www.ntaow.com/)**
 
-2、推荐一个VPN加速的，感兴趣的冲，年付24.00元，邀请别人还能送更多：
-**VPN加速地址 - [https://jiu.bujiasu.com](https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo)**
+2、推荐一个VPN加速的一元机场，感兴趣的冲，年付24.00元，邀请别人还能送更多：
+**VPN加速地址-一元机场 - [https://V.一元机场.PLUS/b/?code=g4WEkq4j](https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j)**
 
 # AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.18-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)
@@ -93,8 +93,6 @@ QQ群-加群链接：[AC脚本交流群](https://ac.tujidu.com)
 
 如果有兴趣捐赠的话，可以点击一下捐赠，捐赠地址（建议加上备注）：**[https://pay.acdiao.com](https://pay.acdiao.com)**
 
-或者感觉还行的，愿意支持我的话，可以使用我的导购网站，你购物能更便宜：**N淘网 - [https://www.ntaow.com/](https://www.ntaow.com/)**
-
 捐赠地址：支付宝、微信
 ![捐赠-淘宝-微信](https://img.90dao.com/images/2024/06/15/666d3f045b34c.png)
 
@@ -114,3 +112,12 @@ If you have any problems on using the script, please submit an issue
 ### License
 
 [The MIT License (MIT)](https://github.com/langren1353/GM_script/edit/master/LICENSE)
+
+### 赞助说明
+本项目大力感谢YxVM提供的服务器资源，也感谢NodeSeek论坛和社区的大力支持
+
+YxVM服务器：[https://yxvm.com/aff.php?aff=762](https://yxvm.com/aff.php?aff=762)
+
+NodeSeek交流论坛提供的NodeSupport项目：[https://github.com/NodeSeekDev/NodeSupport](https://github.com/NodeSeekDev/NodeSupport) 赞助了本项目
+
+[![image](https://i.111666.best/image/C43AW3dprSlUG1sJftXPNQ.png)](https://yxvm.com/aff.php?aff=762)

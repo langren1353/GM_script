@@ -48,6 +48,16 @@ export default {
           scriptTag.src = "https://tongji.90dao.com/js/vue.js";
           document.body.appendChild(scriptTag);
 
+          window.addEventListener('load', () => {
+            fetch('/tongjiresult/getip')
+              .then(async response => {
+                if (response.ok) {
+                  const uip = await response.text();
+                  plausible('Loaded', { props: { uip } })
+                }
+              })
+          })
+
           setInterval(() => {
             const node = document.querySelector('.content-container');
 
@@ -61,7 +71,7 @@ export default {
         <div style="font-weight: bold; color: chocolate;">
             友情链接：
         </div>
-        <a type="primary" href="https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo" target="_blank">不加速-上网加速！</a>、        
+        <a type="primary" href="https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j" target="_blank">一元机场.PLUS</a>、        
         <a type="primary" href="https://tools.acdiao.com/" target="_blank">老猫工具箱</a>、
         <a type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不接脚本定制）</a>、
         <a type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图</a>

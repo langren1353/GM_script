@@ -130,7 +130,8 @@
   --el-switch-on-color: #2fbd6e;
 }
 body.tujidu .ad-container,
-body.tujidu a[href*='bujiasu'] {
+body.tujidu a[href*='bujiasu'],
+body.tujidu a[href*='plus']{
   display: none;
 }
 .VPDocFooter {

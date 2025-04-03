@@ -9,7 +9,7 @@ export default defineConfig({
   lastUpdated: true,
   head: [
     ['meta', { name: 'preconnect', content: 'https://tools.acdiao.com/' }],
-    ['meta', { name: 'preconnect', content: 'https://jiu.bujiasu.com/' }],
+    ['meta', { name: 'preconnect', content: 'https://v.xn--4gq62f52gdss.plus' }],
   ],
   themeConfig: {
     lastUpdatedText: '更新',
@@ -45,7 +45,7 @@ export default defineConfig({
           {
             text: '推荐链接',
             items: [
-              { text: '不加速-上网加速！', link: 'https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo', target: '_blank' },
+              { text: '一元机场.PLUS！', link: 'https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j', target: '_blank' },
               { text: '老猫工具箱', link: 'https://tools.acdiao.com/', target: '_blank' },
               { text: '网站定做', link: 'https://www.at8.fun/', target: '_blank' },
               { text: '背景壁纸美图', link: 'https://wallpaper.abcb.fun/', target: '_blank' },
@@ -86,7 +86,7 @@ export default defineConfig({
         {
           text: "其它推荐",
           items: [
-            { text: '不加速-上网加速！', link: 'https://jiu.bujiasu.com/#/login?q=registe&code=veG4L8Vo' },
+            { text: '一元机场.PLUS！', link: 'https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j' },
             { text: '老猫工具箱', link: 'https://tools.acdiao.com/' },
             { text: '网站定做', link: 'https://www.at8.fun/' },
             { text: '背景壁纸美图', link: 'https://wallpaper.abcb.fun/' },
