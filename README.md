@@ -120,4 +120,4 @@ YxVM服务器：[https://yxvm.com/aff.php?aff=762](https://yxvm.com/aff.php?aff=
 
 NodeSeek交流论坛提供的NodeSupport项目：[https://github.com/NodeSeekDev/NodeSupport](https://github.com/NodeSeekDev/NodeSupport) 赞助了本项目
 
-[![image](https://i.111666.best/image/C43AW3dprSlUG1sJftXPNQ.png)](https://yxvm.com/aff.php?aff=762)
+[![image](https://img.90dao.com/images/2025/04/11/67f7f3a11544c.png)](https://yxvm.com/aff.php?aff=762)

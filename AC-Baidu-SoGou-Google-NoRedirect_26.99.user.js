@@ -592,7 +592,7 @@ body[google] {
         SiteTypeID: 1,
         MainType: "#content_left>.c-container",
         Stype_Normal: "h3.t>a, .c-container article a",
-        FaviconType: ".c-showurl, .c-title a",
+        FaviconType: "h3 a",
         FaviconAddTo: "h3",
         CounterType: "#content_left>#double>div[srcid] *[class~=t]>a:first-child,[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t]>a:first-child,[class~=op_best_answer_question]",
         BlockType: "h3 a",
@@ -720,7 +720,7 @@ body[google] {
         SiteTypeID: 8,
         MainType: "#content_left .result",
         Stype_Normal: "h3.t>a, #results .c-container>.c-blocka",
-        FaviconType: ".result-op, .c-showurl", // baidu 似乎要改版了？
+        FaviconType: "h3", // baidu 似乎要改版了？
         FaviconAddTo: "h3",
         CounterType: "#content_left>#double>div[srcid] *[class~=t]>a,[class~=op_best_answer_question],#content_left>div[srcid] *[class~=t]>a,[class~=op_best_answer_question]",
         BlockType: "h3 a",
