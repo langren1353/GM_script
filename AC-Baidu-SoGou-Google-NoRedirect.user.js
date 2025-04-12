@@ -2451,6 +2451,7 @@
       }
       CONST.saveBlockRule()
       env.stopPropagation();
+      env.preventDefault()
     }
     _getBlockBtnTitle(host) {
       return `点击即可屏蔽 ${ host } 放开，需要在自定义中手动配置放开`;
