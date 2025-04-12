@@ -700,12 +700,12 @@
 
       return {
         SiteTypeID: 4,
-        MainType: "#rso .g, div[data-micp-id='rso'] .g",
-        FaviconType: ".iUh30",
+        MainType: "#rso .vt6azd, div[data-micp-id='rso'] .vt6azd",
+        FaviconType: ".zReHs",
         FaviconAddTo: "h3",
-        CounterType: "#rso .g h3:not(table h3),._yE>div[class~=_kk] h3",
-        BlockType: ".g h3", // 修复block翻页的问题
-        MultiPageType: ".srg, #rso, div[two-father], #rso>div:not(.g), #kp-wp-tab-overview",
+        CounterType: "#rso .vt6azd h3:not(table h3),._yE>div[class~=_kk] h3",
+        BlockType: ".vt6azd h3", // 修复block翻页的问题
+        MultiPageType: ".srg, #rso, div[two-father], #rso>div:not(.vt6azd), #kp-wp-tab-overview",
         pager: {
           nextLink: "id('pnnext')|id('navbar navcnt nav')//td[span]/following-sibling::td[1]/a|id('nn')/parent::a",
           pageElement: "id('rso')|id('center_col')/style[contains(.,'relative')][id('rso')]",
