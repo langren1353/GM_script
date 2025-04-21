@@ -29,9 +29,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="搜索结果中屏蔽自定义关键字脚本更新一波">
+      <change afterPath="$PROJECT_DIR$/PVE-DialogDismiss.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,9 +156,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs\pages\custom" />
       <recent name="D:\GitHome\GM_script\newcss" />
-      <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs\pages\home" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc" />
     </key>
@@ -217,8 +216,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
       </set>
     </attachedChunks>
   </component>
