@@ -124,7 +124,7 @@ form.fm {
   background-color: #fff;
   box-sizing: border-box;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  
+
   div[class*='single-card-wrapper'] {
     width: 98%;
   }
@@ -132,7 +132,7 @@ form.fm {
   div[class*='_aladdin'] {
     width: 98.5%;
     margin-top: 0.5%;
-  }  
+  }
 }
 
 #wrapper #content_left > .c-container:hover,
@@ -155,8 +155,8 @@ form.fm {
 #wrapper #content_left > .result h3[class*='title'],
 #wrapper #content_left > .c-container h3[class*='title'] {
   background-color: #f8f8f8;
-  margin: 0px -8px 10px -20px;
-  padding: 8px 20px 5px;
+  margin-bottom: 10px;
+  padding: 8px 10px 5px;
   border-radius: 5px 5px 0 0;
 }
 
@@ -257,10 +257,10 @@ form.fm {
       }
     }
   }
-  
-  .xpath-log{
-    
-  }
+
+  // .xpath-log{
+
+  // }
 }
 
 #wrapper #content_left {
@@ -376,7 +376,7 @@ body #wrapper #content_left a[href*='official'] {
 
 #content_left .cu-border{
   box-shadow: unset;
-  -webkit-box-shadow: unset;  
+  -webkit-box-shadow: unset;
 }
 
 #content_left .c-group-middle, #content_left .c-group-top {
@@ -392,9 +392,9 @@ body #wrapper #content_left a[href*='official'] {
   position: unset; // 避免重叠在一起
 }
 
-.c-container .c-result-content {
-  //padding-top: 20px;
-}
+// .c-container .c-result-content {
+//   padding-top: 20px;
+// }
 
 #wrapper #content_left > .c-container article {
   padding-top: 15px;
@@ -419,7 +419,7 @@ body .wrapper_new #head.fix-head .s_form {
 }
 
 body.showRight {
-  
+
   // 只能采用这种方案来对其进行隐藏，否则会导致百度页面加载非常缓慢
   #wrapper #content_right {
     width: 400px; // use this value as default
@@ -435,10 +435,10 @@ body.showRight {
     &.tag-fixed{
       left: 0;
     }
-    
+
     &:not(.tag-fixed) {
       overflow: hidden;
-      
+
       div[class*='tag-wrapper']{
         margin-left: unset;
 
@@ -448,14 +448,14 @@ body.showRight {
       }
     }
   }
-  
+
   #page > div {
     width: unset;
   }
 }
 
 #wrapper #content_left > .c-container {
-  
+
   &[tpl='recommend_list']{
     padding-top: 10px;
     display: flex;
@@ -495,17 +495,17 @@ body.showRight {
     justify-content: center;
     display: flex;
   }
-  
+
   body[baidu] {
     .wrapper_new #s_tab.s_tab .s_tab_inner{
       align-items: center;
       padding-left: 200px;
-      
+
       & > *:after {
         display: none; // 下划线 none掉
       }
     }
-    
+
     #container.sam_newgrid {
       padding-left: 316px;
     }
