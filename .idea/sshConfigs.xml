@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SshConfigs">
     <configs>
-      <sshConfig host="152.70.121.145" id="9b95d5cb-7cbc-4e90-b190-3d00725aa46e" keyPath="D:\GreenSoftware\.ssh_key\ssh-key-2022-01-22.key" port="622" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
+      <sshConfig host="152.70.121.145" id="9b95d5cb-7cbc-4e90-b190-3d00725aa46e" keyPath="D:\GreenSoftware\.ssh_key\ssh-key-2022-01-22.key" port="224" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
     </configs>
   </component>
 </project>

@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.14
+// @version    27.16
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -49,8 +49,10 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2025-04-11
+// @lastmodified  2025-07-12
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2025.07-12-V27.16 修复谷歌单双列样式表问题、优化百度样式表
+// @note    2025.06-04-V27.15 修复谷歌单列、双列显示问题；修复谷歌使用百度Icon问题
 // @note    2025.04-11-V27.14 修复百度灰度测试导致的重定向判定规则失效问题
 // @note    2025.03-22-V27.13 修复google更新导致多列问题、修复百度翻页问题
 // @note    2025.03-10-V27.12 修复duckduckGO 样式表问题；新增好搜页面双列支持
@@ -1356,12 +1358,16 @@
           .replace(/ - Google Search/, "_百度搜索");
       }
       MyApi.safeGetNodeFunc("head", function() {
-        let linkTarget = document.querySelector("link[type='image/x-icon']") || document.createElement('link');
-        if(!linkTarget.href.includes('baidu')) return
+        let linkTarget = document.querySelector("link[type='image/x-icon']");
+        if(linkTarget && linkTarget.href.includes('baidu')) {
+          return
+        }
+        linkTarget = document.createElement('link')
         linkTarget.type = 'image/x-icon';
         linkTarget.rel = 'shortcut icon';
         linkTarget.href = 'https://www.baidu.com/favicon.ico';
         document.head.appendChild(linkTarget);
+        document.querySelector('link[rel="icon"]').href = 'https://www.baidu.com/favicon.ico'
       })
     }
     removeAdFunc() {

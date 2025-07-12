@@ -1,4 +1,4 @@
-FROM docker.suzuran.icu/library/python:3.12-slim
+FROM docker.suzuran.vip/library/python:3.12-slim
 
 ENV PYTHONUNBUFFERED 1
 
