@@ -29,19 +29,102 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="搜索结果中屏蔽自定义关键字脚本更新一波">
-      <change afterPath="$PROJECT_DIR$/.idea/UniappTool.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/adaptive-page/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/adaptive-page/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/adaptive-page/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/button/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/button/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/button/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/chart/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/chart/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/chart/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/checkbox/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/checkbox/src/checkbox.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/checkbox/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/checkbox/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/components.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/date-picker/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/date-picker/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/date-picker/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/detail/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/detail/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/detail/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/detail/src/renderTooltip.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/detail/src/renderTooltip.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/form/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/form/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/form/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/form/src/renderComp.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/form/src/renderComp.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/layout-page-item/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/layout-page-item/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/layout-page-item/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/layout-page/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/layout-page/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/layout-page/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/src/moduleDetail.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/src/moduleDetail.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/src/moduleForm.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/src/moduleForm.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/src/renderTooltip.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/src/renderTooltip.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/query-condition/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/query-condition/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/query-condition/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/query-condition/src/renderComp.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/query-condition/src/renderComp.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/radio/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/radio/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/radio/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/radio/src/radio.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select-table/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select-table/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select-table/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select-table/src/renderCol.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select-table/src/renderCol.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/step-wizard/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/step-wizard/src/fixBtn.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/step-wizard/src/fixBtn.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/step-wizard/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/step-wizard/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/ColumnSet.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/ColumnSet.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/TTableColumn.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/TTableColumn.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/renderCol.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/renderCol.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/renderHeader.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/renderHeader.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/singleEditCell.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/src/singleEditCell.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/tabs/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/tabs/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/tabs/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/timer-btn/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/timer-btn/src/index.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/timer-btn/src/index.vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/utils/directives/click-outside/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/utils/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/withInstall.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/rebuild.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/tsconfig.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/fastapi/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/fastapi/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/fastapi/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/fastapi/rebuild.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleCommonStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcss/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,57 +205,57 @@
     <option name="abbreviatePackageNames" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "JavaScript Debug.AC-CSSCalc.html.executor": "Run",
-    "JavaScript Debug.Notepad2.html.executor": "Run",
-    "JavaScript Debug.index.html.executor": "Run",
-    "JavaScript Debug.sogoukey.html.executor": "Run",
-    "JavaScript Debug.test.html.executor": "Run",
-    "Node.js.Notepad2.js.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
-    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
-    "WebServerToolWindowPanel.toolwindow.show.date": "false",
-    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
-    "WebServerToolWindowPanel.toolwindow.show.size": "false",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "master",
-    "go.import.settings.migrated": "true",
-    "ignore_missing_gitignore": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/GitHome/GM_script",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.docs:build.executor": "Run",
-    "npm.docs:dev.executor": "Run",
-    "npm.start.executor": "Run",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.web.browsers",
-    "ts.external.directory.path": "D:\\GitHome\\GM_script\\ac-baidu\\doc\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;JavaScript Debug.AC-CSSCalc.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.Notepad2.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.index.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.sogoukey.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.test.html.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Notepad2.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;ignore_missing_gitignore&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/GitHome/GM_script/ac-baidu/doc/docs/.vitepress&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.docs:build.executor&quot;: &quot;Run&quot;,
+    &quot;npm.docs:dev.executor&quot;: &quot;Run&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.web.browsers&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\GitHome\\GM_script\\ac-baidu\\doc\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs\.vitepress" />
       <recent name="D:\GitHome\GM_script" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs\pages\custom" />
       <recent name="D:\GitHome\GM_script\newcss" />
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs\pages\home" />
-      <recent name="D:\GitHome\GM_script\ac-baidu\doc" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\GitHome\GM_script\ac-baidu\doc\docs\public" />
@@ -428,6 +511,32 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/form/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/tabs/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/chart/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/radio/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/table/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/utils/directives/click-outside/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/utils/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/button/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/detail/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/checkbox/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/timer-btn/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/date-picker/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/layout-page/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/module-form/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/step-wizard/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/select-table/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/adaptive-page/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/query-condition/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/layout-page-item/index.d.ts" />
+        <option value="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/packages/withInstall.d.ts" />
+      </list>
+    </option>
   </component>
   <component name="UnknownFeatures">
     <option featureType="dependencySupport" implementationName="javascript:npm:prettier" />

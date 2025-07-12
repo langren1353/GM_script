@@ -37,6 +37,7 @@
 //      "@/*": [
 //        "packages/*"
 //      ],
+      "@packages": ["./packages/*"],
       "@pages": ["./docs/pages/*"],
       "@comp": ["./docs/components/*"]
     },

@@ -10,7 +10,7 @@ import TVHtml from "./TVHtml.vue"
 import TIcon from "./TIcon.vue"
 import { VPDemo } from "../vitepress"
 // 基于element-plus二次封装基础组件
-import TuiPlus from "../../../packages"
+import TuiPlus from "./../packages"
 import "./index.css"
 
 

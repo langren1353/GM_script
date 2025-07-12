@@ -13,7 +13,7 @@
       <paths name="甲骨文圣何塞">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/MyBuild/GM_script" local="$PROJECT_DIR$/" web="/" />
+            <mapping deploy="/home/A_SyncBase/dockers/GM_script" local="$PROJECT_DIR$/" web="/" />
           </mappings>
         </serverdata>
       </paths>
