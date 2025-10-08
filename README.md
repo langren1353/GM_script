@@ -1,13 +1,11 @@
 ### 资源推荐
-1、推荐一个导购网站(淘宝、京东购物有折扣)：**N淘网 - [https://www.ntaow.com/](https://www.ntaow.com/)**
-
-2、推荐一个VPN加速的一元机场，感兴趣的冲，年付24.00元，邀请别人还能送更多：
+1、推荐一个VPN加速的一元机场，感兴趣的冲，年付24.00元，邀请别人还能送更多：
 **VPN加速地址-一元机场 - [https://V.一元机场.PLUS/b/?code=g4WEkq4j](https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j)**
 
 # AC-baidu:重定向优化百度搜狗谷歌搜索_去广告_favicon_双列
 ![TamperMonkey v4.5](https://img.shields.io/badge/TamperMonkey-v4.18-brightgreen.svg) ![Chrome x64 v60.4](https://img.shields.io/badge/Chrome%20x64-v73.0-brightgreen.svg) ![Safari v11.0.3](https://img.shields.io/badge/Safari%20-v12.0-brightgreen.svg)
 
-QQ群-加群链接：[AC脚本交流群](https://ac.tujidu.com)
+QQ群-加群链接：[AC脚本交流群](https://joinqq.90dao.com)
 
 ## 当前版本
 

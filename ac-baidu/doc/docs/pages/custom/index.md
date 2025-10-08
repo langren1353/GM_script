@@ -1,3 +1,9 @@
+---
+head:
+  - - meta
+    - name: keywords
+      content: AC-Baidu,页面配置,AC-Baidu优化脚本,百度优化脚本,谷歌优化脚本,必应优化脚本,搜索优化脚本,搜索结果优化,搜索结果
+---
 <Teleport to="body">
   <div id="save_hint"></div>
 </Teleport>

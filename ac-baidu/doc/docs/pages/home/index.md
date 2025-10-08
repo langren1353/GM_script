@@ -1,10 +1,17 @@
+---
+head:
+  - - meta
+    - name: keywords
+      content: AC-Baidu,脚本功能说明,AC-Baidu优化脚本,百度优化脚本,谷歌优化脚本,必应优化脚本,搜索优化脚本,搜索结果优化,搜索结果
+---
 # AC-baidu-重定向优化百度搜狗谷歌必应搜索_favicon_双列
 
 ### AC-Baidu 重定向脚本
 - 官网地址：https://ac-baidu.90dao.com/
 - GitHub地址：https://github.com/langren1353/GM_script
-- GreasyFork：https://greasyfork.org/scripts/14178
+- GreasyFork（目前被墙了）：https://greasyfork.org/zh-CN/scripts/14178
 - OpenuserJS地址：https://openuserjs.org/scripts/inDarkness/AC-baidu-%E9%87%8D%E5%AE%9A%E5%90%91%E4%BC%98%E5%8C%96%E7%99%BE%E5%BA%A6%E6%90%9C%E7%8B%97%E8%B0%B7%E6%AD%8C%E5%BF%85%E5%BA%94%E6%90%9C%E7%B4%A2_favicon_%E5%8F%8C%E5%88%97
+- ScriptCat地址：https://scriptcat.org/zh-CN/script-show-page/3002
 
 
 ## 简介
@@ -16,7 +23,7 @@
 - 百度和谷歌搜索页面可以设置为单列、双列模式
 - 添加标记数量，标记当前的id，界面更好看
 - 请求是异步请求，并不会出现一个链接没有反馈回来，其余等待的情况，每个链接的请求都是独立的，互不影响，对于网络的影响几乎没有
-- 目前支持自动翻页，所以暂时不需要安装自动翻页了，但是大部分翻页功能和原理抄袭自：https://greasyfork.org/zh-CN/scripts/33522 还是很推荐安装这个的，并且完全兼容
+- 目前支持自动翻页，所以暂时不需要安装自动翻页了，但是大部分翻页功能和原理抄袭自：https://machsix.github.io/Super-preloader/Super_preloaderPlus_one_New.user.js 还是很推荐安装这个Super_preloaderPlus的，并且完全兼容（我记得这个脚本迭代更新，出现的时间应该快要将近15年了，从Chrome48就已经有支持的）
 - 提供自定义页面背景图，让你的搜索页面更加美观实用
 
 <p>
@@ -49,7 +56,7 @@
 
 ## 功能定制 - 样式定制
 
-1. 功能定制可以尝试加群：[AC-baidu交流群-QQ](https://ac.tujidu.com/)
+1. 功能定制可以尝试加群：[AC-baidu交流群-QQ](https://joinqq.90dao.com/)
 1. 附带这里提供一个tg的聊天群：[AC-baidu交流群2-TG](https://t.me/tujidu)
 2. CSS功能定制可以提交issue或者PR
 
@@ -63,7 +70,7 @@
 
 
 ## 交流群
-反馈问题，技术交流可以加群：[AC-baidu交流群](https://ac.tujidu.com/)
+反馈问题，技术交流可以加群：[AC-baidu交流群](https://joinqq.90dao.com/)
 本人也不定期在tg上回复大家的问题：tg的地址：https://t.me/tujidu
 
 

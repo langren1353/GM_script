@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.16
+// @version    27.17
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -44,14 +44,14 @@
 // @exclude    https://*.zhidao.baidu.com/*
 // @exclude    https://www.baidu.com/img/*
 // @exclude    https://lens.google.com/*
-// @supportURL  https://ac.tujidu.com/
+// @supportURL  https://joinqq.90dao.com
 // @home-url   https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
 // @lastmodified  2025-07-12
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2025.07-12-V27.16 修复谷歌单双列样式表问题、优化百度样式表
+// @note    2025.07-12-V27.17 修复谷歌单双列样式表问题、优化百度样式表；增加less.js资源，避免jsdelivr异常无法加载
 // @note    2025.06-04-V27.15 修复谷歌单列、双列显示问题；修复谷歌使用百度Icon问题
 // @note    2025.04-11-V27.14 修复百度灰度测试导致的重定向判定规则失效问题
 // @note    2025.03-22-V27.13 修复google更新导致多列问题、修复百度翻页问题
@@ -124,7 +124,8 @@
 // @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=27.14
 // @resource  HuaHua-ACDrakMode  https://ibaidu.tujidu.com/newcss/HuaHua-ACDrakMode.less?t=27.14
 // @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
-// @require   https://cdn.jsdelivr.net/npm/less_browser_fix@4.2.2/dist/less.min.js
+// @require   https://unpkg.com/less_browser_fix@4.2.2/dist/less.min.js
+// @require   https://registry.npmmirror.com/less_browser_fix/4.2.2/files/dist/less.min.js
 // @require   https://lib.baomitu.com/vue/3.2.31/vue.runtime.global.prod.min.js
 // @require   https://lf6-cdn-tos.bytecdntp.com/cdn/expire-10-y/vue/3.2.31/vue.runtime.global.prod.min.js
 // @noframes

@@ -20,8 +20,8 @@ export default defineConfig({
       disable: false, // 不禁用压缩
       deleteOriginFile: false, // 压缩后是否删除原文件
       threshold: 10240, // 压缩前最小文件大小
-      algorithm: 'gzip', // 压缩算法
-      ext: '.gz', // 文件类型
+      algorithm: 'brotliCompress', // 压缩算法
+      ext: '.br', // 文件类型
     }),
     // visualizer({
     //   open:true,  //注意这里要设置为true，否则无效

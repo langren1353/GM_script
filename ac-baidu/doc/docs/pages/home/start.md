@@ -1,3 +1,9 @@
+---
+head:
+  - - meta
+    - name: keywords
+      content: AC-Baidu,脚本安装教程,AC-Baidu优化脚本,百度优化脚本,谷歌优化脚本,必应优化脚本,搜索优化脚本,搜索结果优化,搜索结果
+---
 # 安装详解
 
 > 安装脚本前需先安装 [油猴插件](https://www.tampermonkey.net).
@@ -5,7 +11,10 @@
 
 **安装好油猴插件后**, 点击下面的链接即可一键安装：:
 
-- **[AC-Baidu.user.js (前往安装)](https://www.greasyfork.org/scripts/14178/)**
+- **[AC-Baidu.user.js (ScriptCat-前往安装)](https://scriptcat.org/zh-CN/script-show-page/3002)**
+- **[AC-Baidu.user.js (GreasyFork-被墙了-前往安装)](https://greasyfork.org/zh-CN/scripts/14178)**
+- 针对greasyfork无法访问，走代理即可：[**`不加速.COM`**](https://v.bujiasu.com/b/?code=CPTqfgRV)
+
 
 如果你是第一次接触，各种情况下安装油猴(Tampermonkey)的方法如下：
 
@@ -37,10 +46,15 @@
 
 安装好油猴(Tampermonkey)插件后，点击下面的链接即可完成脚本的安装：
 
-- **[AC-Baidu.user.js (前往安装)](https://www.greasyfork.org/scripts/14178/)**
+- **[AC-Baidu.user.js (ScriptCat-前往安装)](https://scriptcat.org/zh-CN/script-show-page/3002)**
+- **[AC-Baidu.user.js (GreasyFork-被墙了-前往安装)](https://greasyfork.org/zh-CN/scripts/14178)**
 
 ### 不能上谷歌怎么办？
-这里推荐一个能够科学访问的加速器，具体使用方法自查：[一元机场.PLUS](https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j)
+一个优秀的互联网爱好者、一个专业的网上冲浪的人应该有足够的能力去遨游更广阔的天空。
+
+真正的互联网探索者不会因此迷失方向。就像深海潜水员不会因表面的波涛而停止探索，真正的网络冲浪者早已掌握了更深层的技能，善于构建知识体系的人，终将在信息的暗河中找到属于自己的航向
+
+这里推荐几个能够科学访问的加速器，具体使用方法自查：[**`一元机场.WIKI`**](https://www.xn--4gq62f52gdss.wiki/3-link-sites/choose-price.html)
 
 ## 3. 其他方式-离线安装（主要针对Chrome）
 
@@ -80,4 +94,5 @@ tar -xvf tampermonkey_stable.crx
 ```
 
 ### 第四步：安装AC-Baidu增强脚本
-- **[AC-Baidu.user.js (前往安装)](https://www.greasyfork.org/scripts/14178/)**
+- **[AC-Baidu.user.js (ScriptCat-前往安装)](https://scriptcat.org/zh-CN/script-show-page/3002)**
+- **[AC-Baidu.user.js (GreasyFork-被墙了-前往安装)](https://greasyfork.org/zh-CN/scripts/14178)**

@@ -1,6 +1,9 @@
 ---
 layout: home
-
+head:
+  - - meta
+    - name: keywords
+      content: AC-Baidu,AC-Baidu优化脚本,百度优化脚本,谷歌优化脚本,必应优化脚本,搜索优化脚本,搜索结果优化,搜索结果
 title: AC-Baidu
 # titleTemplate: 选项卡描述
 editLink: true
@@ -33,7 +36,7 @@ features:
         <div>
             友情链接：
         </div>
-        <el-link type="primary" href="https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j" target="_blank">一元机场.PLUS</el-link>、        
+        <el-link type="primary" href="https://www.xn--4gq62f52gdss.wiki/3-link-sites/choose-price.html" target="_blank">一元机场.WIKI</el-link>、        
         <el-link type="primary" href="https://tools.acdiao.com/" target="_blank">老猫工具箱</el-link>、
         <el-link type="primary" href="https://www.at8.fun/" target="_blank">网站定做（不支持脚本定制）</el-link>、
         <el-link type="primary" href="https://wallpaper.abcb.fun/" target="_blank">背景壁纸美图</el-link>

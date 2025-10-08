@@ -21,7 +21,7 @@ safeWait('.container .aside .aside-curtain', node => {
     position: absolute;
     top: 200px;
     left: 0;
-    width: 300px;
+    width: 333px;
     height: 650px;
     background: linear-gradient(175deg, #F2F3F5 60%, #e3e7ed 100%);
     border: 1px solid rgba(0,0,0,0.08);
@@ -93,8 +93,8 @@ safeWait('.container .aside .aside-curtain', node => {
     font-weight: 800;
     margin: 0 0 30px;
     position: relative;
-    display: inline-block;
     padding: 10px 24px;
+    line-height: 1.1;
     background: linear-gradient(135deg, #0E6CFF 0%, #05AAFE 100%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -217,13 +217,13 @@ safeWait('.container .aside .aside-curtain', node => {
   }
 </style>
 <div class="ad-container">
-  <div class="ad-hint">广告</div>
+  <div class="ad-hint">官方推荐</div>
   <div class="ad-close" onclick="closeMe(event)">×</div>
   <div class="ad-inner" onclick="jumpLink()">
     <div class="ad-main">
-      <h1 class="title">极速节点订阅</h1>
+      <h1 class="title">解决Greasyfork被墙：极速节点订阅</h1>
       <div class="content">
-        <b>50+ 高速直连稳定节点</b><br>
+        <b>80+ 高速直连稳定节点</b><br>
         <span style="display: inline-block; margin: 8px 0;">🌐 全球智能分流</span><br>
         🔒 加密直连技术<br>
         🎬 4K/HDR 流媒体解锁<br>
@@ -232,28 +232,28 @@ safeWait('.container .aside .aside-curtain', node => {
         ⚡ 24/7 技术支持<br><br>
         <span style="color: #666; font-size: 0.9em;">
           限时特惠：<br>
-          <b style="font-size:1.2em;">¥1</b>/月 
+          <b style="font-size:1.2em;">¥4</b>/月 
           <span style="color:#999;">|</span> 
-          <b style="font-size:1.2em; color: black;">¥12</b>/年
+          <b style="font-size:1.2em; color: black;">¥24</b>/年
         </span>
       </div>
-      <a href="https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j" class="cta-button" target="_blank">
+      <a href="https://v.bujiasu.com/b/?code=CPTqfgRV" class="cta-button" target="_blank">
         <span style="margin-right: 8px;">🔥</span>立即加速 →
       </a>
     </div>
   </div>
 </div>
   `
-  if(!document.cookie.includes('ad_close')) {
+  if(!document.cookie.includes('ad_close') && !document.querySelector('.ad-container')) {
     node.insertAdjacentHTML('beforeend', injectHTML)
   }
   window.closeMe = (e) => {
     e.stopPropagation();
-    e.target.closest('.ad-container').style.display = 'none';
+    e.target.closest('.aside-curtain').style.display = 'none';
     document.cookie = 'ad_close=true; max-age=600'
   }
   window.jumpLink = () => {
-    window.open('https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j', '_blank')
+    window.open('https://v.bujiasu.com/b/?code=CPTqfgRV', '_blank')
   }
 }, 200, false)
 

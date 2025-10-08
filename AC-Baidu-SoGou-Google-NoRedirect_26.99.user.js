@@ -39,7 +39,7 @@
 // @exclude    https://*.zhidao.baidu.com/*
 // @exclude    https://www.baidu.com/img/*
 // @exclude    https://lens.google.com/*
-// @supportURL  https://ac.tujidu.com/
+// @supportURL  https://joinqq.90dao.com
 // @home-url   https://greasyfork.org/zh-TW/scripts/14178
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178

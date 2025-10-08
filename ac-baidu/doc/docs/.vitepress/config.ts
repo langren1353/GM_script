@@ -9,6 +9,7 @@ export default defineConfig({
   lastUpdated: true,
   head: [
     ['meta', { name: 'preconnect', content: 'https://tools.acdiao.com/' }],
+    ['meta', { name: 'preconnect', content: 'https://www.xn--4gq62f52gdss.wiki' }],
     ['meta', { name: 'preconnect', content: 'https://v.xn--4gq62f52gdss.plus' }],
   ],
   themeConfig: {
@@ -16,7 +17,7 @@ export default defineConfig({
     logo: "/favicon.ico",
     siteTitle: "AC-重定向设置",
     outline: {
-      level: 2,
+      level: 1,
       label: '页面导航',
     },
     socialLinks: [{ icon: "github", link: "https://github.com/langren1353/GM_script" }],
@@ -45,7 +46,7 @@ export default defineConfig({
           {
             text: '推荐链接',
             items: [
-              { text: '一元机场.PLUS！', link: 'https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j', target: '_blank' },
+              { text: '一元机场.WIKI', link: 'https://www.xn--4gq62f52gdss.wiki/3-link-sites/choose-price.html', target: '_blank' },
               { text: '老猫工具箱', link: 'https://tools.acdiao.com/', target: '_blank' },
               { text: '网站定做', link: 'https://www.at8.fun/', target: '_blank' },
               { text: '背景壁纸美图', link: 'https://wallpaper.abcb.fun/', target: '_blank' },
@@ -86,7 +87,7 @@ export default defineConfig({
         {
           text: "其它推荐",
           items: [
-            { text: '一元机场.PLUS！', link: 'https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j' },
+            { text: '一元机场.WIKI', link: 'https://www.xn--4gq62f52gdss.wiki/3-link-sites/choose-price.html' },
             { text: '老猫工具箱', link: 'https://tools.acdiao.com/' },
             { text: '网站定做', link: 'https://www.at8.fun/' },
             { text: '背景壁纸美图', link: 'https://wallpaper.abcb.fun/' },
@@ -102,5 +103,8 @@ export default defineConfig({
     // light: #f9fafb, dark: --vp-code-block-bg
     theme: { light: "github-light", dark: "github-dark" },
     config: md => mdPlugin(md)
+  },
+  sitemap: {
+    hostname: 'https://ac-baidu.90dao.com/'  // 替换为你的实际域名
   }
 })
