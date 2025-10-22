@@ -49,7 +49,7 @@ body[baidu] .pagefoot.gj {
   margin-left: unset;
   margin: 0 auto;
   @media only screen and (min-resolution: 1.25dppx) {
-    width: 50% !important;
+    width: 45% !important;
   }
 }
 
@@ -211,6 +211,27 @@ form.fm .s_ipt_wr.bg {
 .wrapper_new .s_form.s_form_fresh{
   margin: 0 auto;
 }
+.smart_input_wrapper #main-wrapper{
+  width: unset;
+}
+
+.s_form > .s_form_wrapper{
+  margin-left: calc(-31.25vw + 840.00px);
+}
+
+body[baidu] #chat-input-main {
+  width: calc(46.88vw - 300px);
+}
+
+.showRight {
+  .s_form > .s_form_wrapper{
+    margin-left: unset;
+  }
+  
+  #chat-input-main {
+    width: calc(12.65vw + 501.87px);
+  }
+}
 
 @media screen and (min-width: 1921px) {
   #head .head_wrapper {
@@ -245,7 +266,39 @@ form.fm .s_ipt_wr.bg {
   form.fm .s_ipt_wr.bg {
     min-width: calc(37.5vw - 150px);
   }
+
+  #wrapper #rs,
+  #wrapper #content_left .result,
+  #wrapper #content_left .result-op,
+  #wrapper #content_left > .c-container{
+    margin-left: 20px;
+  }
+  
+  .showRight {
+    #wrapper #rs, 
+    #wrapper #content_left .result,
+    #wrapper #content_left .result-op,
+    #wrapper #content_left > .c-container{
+      margin-left: calc(12.50vw - 220px);
+    }
+  }
 }
+
+@media screen and (min-width: 1000px) and (min-resolution: 1.2dppx) and (max-resolution: 2dppx) {
+  #wrapper #content_left,
+  #wrapper #rs {
+    min-width: 700px;
+  }
+
+  #container.sam_newgrid {
+    padding-left: 0px !important;
+  }
+
+  .s_form > .s_form_wrapper {
+    margin-left: calc(-45.13vw + 916.43px); /** 1366=300px；1920=50px **/ ;
+  }
+}
+
 
 @media screen and (min-width: 1366px) and (max-width: 2560px) {
   .wrapper_new .head_wrapper #result_logo {

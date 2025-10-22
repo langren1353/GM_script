@@ -66,6 +66,10 @@ watch(state, () => {
   emits('update_state', newOptions)
 })
 
+watch(() => state.BgUseUrl, () => {
+  ElMessage.success('背景已临时生效，如果不生效，清注意使用图床')
+})
+
 watch(() => propState, () => {
   const notKeys = Object.keys(defaultOptions)
   const keys = Object.keys(propState)

@@ -27,6 +27,7 @@
 </template>
 <script setup lang="ts">
 import { defineEmits, reactive, toRefs, watch } from "vue";
+import {ElMessage} from "element-plus";
 
 const emits = defineEmits(['update_state'])
 const props = defineProps({
@@ -55,6 +56,14 @@ watch(state, () => {
   const values = keys.map(one => state[one])
   const newOptions = Object.fromEntries(keys.map((key, index) => [key, values[index]]));
   emits('update_state', newOptions)
+})
+
+watch(() => state.adsStyleMode, () => {
+  ElMessage.success('多列模式临时生效，回到搜索页面查看效果即可')
+})
+
+watch(() => state.HuYanMode_Color, () => {
+  ElMessage.success('护眼模式-临时生效，建议搭配插件：Dark Reader')
 })
 
 watch(() => propState, () => {

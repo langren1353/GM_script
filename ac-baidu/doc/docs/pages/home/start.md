@@ -13,7 +13,7 @@ head:
 
 - **[AC-Baidu.user.js (ScriptCat-前往安装)](https://scriptcat.org/zh-CN/script-show-page/3002)**
 - **[AC-Baidu.user.js (GreasyFork-被墙了-前往安装)](https://greasyfork.org/zh-CN/scripts/14178)**
-- 针对greasyfork无法访问，走代理即可：[**`不加速.COM`**](https://v.bujiasu.com/b/?code=CPTqfgRV)
+- 针对greasyfork无法访问，走代理即可：[**`一元机场.PLUS`**](https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j)
 
 
 如果你是第一次接触，各种情况下安装油猴(Tampermonkey)的方法如下：

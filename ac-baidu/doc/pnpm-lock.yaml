@@ -53,9 +53,6 @@ importers:
       consola:
         specifier: ^3.1.0
         version: 3.1.0
-      echarts:
-        specifier: ^5.4.3
-        version: 5.4.3
       element-plus:
         specifier: ^2.6.1
         version: 2.6.1(vue@3.3.4)
@@ -1330,9 +1327,6 @@ packages:
 
   duplexer@0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
-
-  echarts@5.4.3:
-    resolution: {integrity: sha512-mYKxLxhzy6zyTi/FaEbJMOZU1ULGEQHaeIeuMR5L+JnJTpz+YR03mnnpBhbR4+UYJAgiXgpyTVLffPAjOTLkZA==}
 
   electron-to-chromium@1.4.580:
     resolution: {integrity: sha512-T5q3pjQon853xxxHUq3ZP68ZpvJHuSMY2+BZaW3QzjS4HvNuvsMmZ/+lU+nCrftre1jFZ+OSlExynXWBihnXzw==}
@@ -3018,9 +3012,6 @@ packages:
     engines: {node: '>=8.0.0'}
     hasBin: true
 
-  zrender@5.4.4:
-    resolution: {integrity: sha512-0VxCNJ7AGOMCWeHVyTrGzUgrK4asT4ml9PEkeGirAkKNYXYzoPJCLvmyfdoOXcjTHPs10OZVMfD1Rwg16AZyYw==}
-
 snapshots:
 
   '@aashutoshrathi/word-wrap@1.2.6': {}
@@ -4446,11 +4437,6 @@ snapshots:
       esutils: 2.0.3
 
   duplexer@0.1.2: {}
-
-  echarts@5.4.3:
-    dependencies:
-      tslib: 2.3.0
-      zrender: 5.4.4
 
   electron-to-chromium@1.4.580: {}
 
@@ -6208,7 +6194,3 @@ snapshots:
       validator: 13.11.0
     optionalDependencies:
       commander: 9.5.0
-
-  zrender@5.4.4:
-    dependencies:
-      tslib: 2.3.0

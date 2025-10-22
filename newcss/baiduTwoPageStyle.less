@@ -189,6 +189,25 @@ body[news] #wrapper #content_left > div:not([class]):not([id]) {
   }
 }
 
+@media screen and (min-width: 1000px) and (min-resolution: 1.2dppx) and (max-resolution: 2dppx) {
+  #wrapper #content_left,
+  #wrapper #rs {
+    min-width: 700px;
+  }
+
+  #wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .result-op, #wrapper #content_left > .c-container {
+    min-width: 700px;
+  }
+
+  .s_form > .s_form_wrapper {
+    margin-left: calc(-45.13vw + 916.43px); /** 1366=300px；1920=50px **/ ;
+  }
+
+  body[baidu] .result-molecule.new-pmd[tpl="app/search-tag"] {
+    padding-left: 0;
+  }
+}
+
 @media screen and (min-width: 1921px) {
   #head .head_wrapper {
     transform: unset;

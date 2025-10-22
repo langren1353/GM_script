@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.17
+// @version    27.18
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -49,8 +49,9 @@
 // @home-url2  https://github.com/langren1353/GM_script
 // @homepageURL  https://greasyfork.org/zh-TW/scripts/14178
 // @copyright  2015-2025, AC
-// @lastmodified  2025-07-12
+// @lastmodified  2025-10-22
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2025.10-22-V27.18 修复谷歌、百度在不同缩放屏幕下导致的错位问题
 // @note    2025.07-12-V27.17 修复谷歌单双列样式表问题、优化百度样式表；增加less.js资源，避免jsdelivr异常无法加载
 // @note    2025.06-04-V27.15 修复谷歌单列、双列显示问题；修复谷歌使用百度Icon问题
 // @note    2025.04-11-V27.14 修复百度灰度测试导致的重定向判定规则失效问题
@@ -102,12 +103,12 @@
 // @note    2015.12.01-V5.0 加入搜狗的支持，但是支持不是很好
 // @note    2015.11.25-V2.0 优化，已经是真实地址的不再尝试获取
 // @note    2015.11.25-V1.0 完成去掉百度重定向的功能
-// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=27.14
-// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=27.14
-// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=27.14
-// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=27.14
-// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=27.14
-// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=27.14
+// @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=27.18
+// @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=27.18
+// @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=27.18
+// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=27.18
+// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=27.18
+// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=27.18
 // @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=27.14
 // @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=27.14
 // @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=27.14

@@ -31,22 +31,26 @@
     <list default="true" id="41e1f019-321e-4d62-959d-cadb8291309f" name="Changes" comment="搜索结果中屏蔽自定义关键字脚本更新一波">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect.user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect_26.99.user.js" beforeDir="false" afterPath="$PROJECT_DIR$/AC-Baidu-SoGou-Google-NoRedirect_26.99.user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/.vitepress/theme/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/history.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/history.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/problems.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/problems.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/articles/support.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/AdsModeChoose.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/AdsModeChoose.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BgChoose.vue" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/custom/components/BgChoose.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/start.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/start.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/use.md" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/pages/home/use.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ac-baidu/doc/docs/public/inject.js" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/docs/public/inject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/doc/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/doc/rebuild.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ac-baidu/fastapi/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ac-baidu/fastapi/rebuild.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduCommonStyle.less" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/baiduTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleOnePageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/googleTwoPageStyle.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newcss/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/newcss/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/rebuild.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,6 +142,7 @@
     &quot;Node.js.Notepad2.js.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
@@ -153,8 +158,9 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;ignore_missing_gitignore&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/GitHome/GM_script/ac-baidu/doc/docs/.vitepress&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/GreenSoftware/GitHome/GM_script&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -167,7 +173,8 @@
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.web.browsers&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\GitHome\\GM_script\\ac-baidu\\doc\\node_modules\\typescript\\lib&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\GreenSoftware\\GitHome\\GM_script\\ac-baidu\\doc\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -223,8 +230,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.docs:dev" />
-        <item itemvalue="npm.docs:build" />
         <item itemvalue="JavaScript Debug.index.html" />
+        <item itemvalue="npm.docs:build" />
         <item itemvalue="JavaScript Debug.sogoukey.html" />
         <item itemvalue="JavaScript Debug.test.html" />
       </list>
@@ -233,8 +240,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26094.121" />
-        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-IU-251.26094.121" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
       </set>
     </attachedChunks>
   </component>

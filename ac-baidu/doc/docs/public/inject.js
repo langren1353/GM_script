@@ -17,7 +17,7 @@ safeWait('.container .aside .aside-curtain', node => {
 }
 
   /* 容器增强 */
-  .ad-container {
+  .inject-container {
     position: absolute;
     top: 200px;
     left: 0;
@@ -33,13 +33,13 @@ safeWait('.container .aside .aside-curtain', node => {
     overflow: hidden;
     z-index: 100;
   }
-  .ad-container:hover {
+  .inject-container:hover {
     transform: translateY(-5px);
     box-shadow: 0 16px 50px rgba(59, 65, 255, 0.15);
   }
 
   /* 内层容器 */
-  .ad-inner {
+  .inject-inner {
     background: white;
     height: 100%;
     position: relative;
@@ -47,7 +47,7 @@ safeWait('.container .aside .aside-curtain', node => {
     overflow: hidden;
     box-shadow: inset 0 2px 8px rgba(0,0,0,0.03);
   }
-  .ad-hint{
+  .inject-hint{
     position: absolute;
     top: 16px;
     right: 45px;
@@ -55,7 +55,7 @@ safeWait('.container .aside .aside-curtain', node => {
     font-size: 12px;
   }
   /* 关闭按钮优化 */
-  .ad-close {
+  .inject-close {
     position: absolute;
     top: 16px;
     right: 16px;
@@ -73,14 +73,14 @@ safeWait('.container .aside .aside-curtain', node => {
     backdrop-filter: blur(2px);
     border: 1px solid rgba(0,0,0,0.05);
   }
-  .ad-close:hover {
+  .inject-close:hover {
     background: rgba(255,80,80,0.15);
     color: #ff5050;
     transform: rotate(90deg) scale(1.1);
   }
 
   /* 主要内容区 */
-  .ad-main {
+  .inject-main {
     padding: 40px 20px;
     text-align: center;
     position: relative;
@@ -88,7 +88,7 @@ safeWait('.container .aside .aside-curtain', node => {
   }
 
   /* 标题特效升级 */
-  .ad-main .title {
+  .inject-main .title {
     font-size: 28px;
     font-weight: 800;
     margin: 0 0 30px;
@@ -101,7 +101,7 @@ safeWait('.container .aside .aside-curtain', node => {
     -webkit-text-fill-color: transparent;
     text-shadow: 0 2px 4px rgba(14, 108, 255, 0.15);
   }
-  .ad-main .title::after {
+  .inject-main .title::after {
     content: "";
     position: absolute;
     bottom: -8px;
@@ -117,7 +117,7 @@ safeWait('.container .aside .aside-curtain', node => {
   }
 
   /* 内容区增强 */
-  .ad-main .content {
+  .inject-main .content {
     font-size: 15px;
     color: #555;
     line-height: 1.7;
@@ -129,7 +129,7 @@ safeWait('.container .aside .aside-curtain', node => {
     border: 1px solid rgba(14, 108, 255, 0.1);
     transition: all 0.3s;
   }
-  .ad-main .content::before {
+  .inject-main .content::before {
     content: "🚀";
     position: absolute;
     left: -8px;
@@ -138,14 +138,14 @@ safeWait('.container .aside .aside-curtain', node => {
     filter: drop-shadow(0 2px 4px rgba(14, 108, 255, 0.2));
     animation: float 3s ease-in-out infinite;
   }
-  .ad-main .content:hover {
+  .inject-main .content:hover {
     transform: translateY(-2px);
     background: rgba(245, 248, 255, 1);
     box-shadow: 0 6px 20px rgba(14, 108, 255, 0.08);
   }
 
   /* 价格突出显示 */
-  .ad-main .content b {
+  .inject-main .content b {
     color: #0E6CFF;
     position: relative;
     padding: 2px 6px;
@@ -154,7 +154,7 @@ safeWait('.container .aside .aside-curtain', node => {
     rgba(14, 108, 255, 0.08) 0%,
     rgba(14, 108, 255, 0.04) 100%);
   }
-  .ad-main .content b::after {
+  .inject-main .content b::after {
     content: "↓";
     color: #ff4757;
     font-size: 0.8em;
@@ -216,11 +216,11 @@ safeWait('.container .aside .aside-curtain', node => {
     z-index: 1;
   }
 </style>
-<div class="ad-container">
-  <div class="ad-hint">官方推荐</div>
-  <div class="ad-close" onclick="closeMe(event)">×</div>
-  <div class="ad-inner" onclick="jumpLink()">
-    <div class="ad-main">
+<div class="inject-container">
+  <div class="inject-hint">官方推荐</div>
+  <div class="inject-close" onclick="closeMe(event)">×</div>
+  <div class="inject-inner" onclick="jumpLink()">
+    <div class="inject-main">
       <h1 class="title">解决Greasyfork被墙：极速节点订阅</h1>
       <div class="content">
         <b>80+ 高速直连稳定节点</b><br>
@@ -237,14 +237,14 @@ safeWait('.container .aside .aside-curtain', node => {
           <b style="font-size:1.2em; color: black;">¥24</b>/年
         </span>
       </div>
-      <a href="https://v.bujiasu.com/b/?code=CPTqfgRV" class="cta-button" target="_blank">
+      <a href="https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j" class="cta-button" target="_blank">
         <span style="margin-right: 8px;">🔥</span>立即加速 →
       </a>
     </div>
   </div>
 </div>
   `
-  if(!document.cookie.includes('ad_close') && !document.querySelector('.ad-container')) {
+  if(!document.cookie.includes('ad_close') && !document.querySelector('.inject-container')) {
     node.insertAdjacentHTML('beforeend', injectHTML)
   }
   window.closeMe = (e) => {
@@ -253,7 +253,7 @@ safeWait('.container .aside .aside-curtain', node => {
     document.cookie = 'ad_close=true; max-age=600'
   }
   window.jumpLink = () => {
-    window.open('https://v.bujiasu.com/b/?code=CPTqfgRV', '_blank')
+    window.open('https://v.xn--4gq62f52gdss.plus/b/?code=g4WEkq4j', '_blank')
   }
 }, 200, false)
 

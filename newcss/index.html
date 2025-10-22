@@ -1,168 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS计算属性计算器</title>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS计算属性计算器</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
 <div id="app" style="width: 800px; margin: 0 auto; padding: 20px">
-    <h1>CSS计算属性计算器</h1>
-    <h2>数据采用最小二乘拟合，尝试进行多分辨率的兼容</h2>
-    <el-form :model="form" label-width="200px">
-        <el-form-item label="1366分辨率下元素大小(px)">
-            <el-input v-model="form.resolution1366" placeholder="0"></el-input>
-            <i class="el-icon el-icon-back"></i>
-            <el-input v-model="form.vw1366" placeholder="0%" @change="editValue('resolution1366', form.vw1366, 1366)"></el-input>
-        </el-form-item>
-        <el-form-item label="1920分辨率下元素大小(px)">
-            <el-input v-model="form.resolution1920" placeholder="0"></el-input>
-            <i class="el-icon el-icon-back"></i>
-            <el-input v-model="form.vw1920" placeholder="0%" @change="editValue('resolution1920', form.vw1920, 1920)"></el-input>
-        </el-form-item>
-        <el-form-item label="2048分辨率下元素大小(px)">
-            <el-input v-model="form.resolution2048" placeholder="0"></el-input>
-            <i class="el-icon el-icon-back"></i>
-            <el-input v-model="form.vw2048" placeholder="0%" @change="editValue('resolution2048', form.vw2048, 2048)"></el-input>
-        </el-form-item>
-        <el-form-item label="2560分辨率下元素大小(px)">
-            <el-input v-model="form.resolution2560" placeholder="0"></el-input>
-            <i class="el-icon el-icon-back"></i>
-            <el-input v-model="form.vw2560" placeholder="0%" @change="editValue('resolution2560', form.vw2560, 2560)"></el-input>
-        </el-form-item>
-        <el-form-item label="计算结果">
-            <el-input v-model="result" readonly></el-input>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="calculate">计算并复制</el-button>
-            <el-button type="primary" @click="clearAll">清空</el-button>
-            <el-button type="primary" @click="testData">重置</el-button>
-        </el-form-item>
-    </el-form>
+  <h1>CSS计算属性计算器</h1>
+  <h2>数据采用最小二乘拟合，尝试进行多分辨率的兼容</h2>
+  <el-form :model="form" label-width="200px">
+    <el-form-item label="1366分辨率下元素大小(px)">
+      <el-input v-model="form.resolution1366" placeholder="0"></el-input>
+      <i class="el-icon el-icon-back"></i>
+      <el-input v-model="form.vw1366" placeholder="0%"
+                @change="editValue('resolution1366', form.vw1366, 1366)"></el-input>
+    </el-form-item>
+    <el-form-item label="1920分辨率下元素大小(px)">
+      <el-input v-model="form.resolution1920" placeholder="0"></el-input>
+      <i class="el-icon el-icon-back"></i>
+      <el-input v-model="form.vw1920" placeholder="0%"
+                @change="editValue('resolution1920', form.vw1920, 1920)"></el-input>
+    </el-form-item>
+    <el-form-item label="2048分辨率下元素大小(px)">
+      <el-input v-model="form.resolution2048" placeholder="0"></el-input>
+      <i class="el-icon el-icon-back"></i>
+      <el-input v-model="form.vw2048" placeholder="0%"
+                @change="editValue('resolution2048', form.vw2048, 2048)"></el-input>
+    </el-form-item>
+    <el-form-item label="2560分辨率下元素大小(px)">
+      <el-input v-model="form.resolution2560" placeholder="0"></el-input>
+      <i class="el-icon el-icon-back"></i>
+      <el-input v-model="form.vw2560" placeholder="0%"
+                @change="editValue('resolution2560', form.vw2560, 2560)"></el-input>
+    </el-form-item>
+    <el-form-item label="计算结果">
+      <el-input v-model="result" readonly></el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="calculate">计算并复制</el-button>
+      <el-button type="primary" @click="clearAll">清空</el-button>
+      <el-button type="primary" @click="testData">重置</el-button>
+    </el-form-item>
+  </el-form>
 </div>
 
 <style>
-    .el-icon {
-        line-height: 40px;
-        padding: 0 20px;
-    }
-    .el-form-item__content {
-        display: flex;
-    }
+  .el-icon {
+    line-height: 40px;
+    padding: 0 20px;
+  }
+
+  .el-form-item__content {
+    display: flex;
+  }
 </style>
 <script src="https://unpkg.com/vue@2"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script>
-    new Vue({
-        el: '#app',
-        data() {
-            return {
-                form: {
-                    resolution1366: '400',
-                    resolution1920: '700',
-                    resolution2048: '800',
-                    resolution2560: '1500',
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        form: {
+          resolution1366: '400',
+          resolution1920: '700',
+          resolution2048: '800',
+          resolution2560: '1500',
 
-                    vw1366: '',
-                    vw1920: '',
-                    vw2048: '',
-                    vw2560: '',
-                },
-                result: ''
-            };
+          vw1366: '',
+          vw1920: '',
+          vw2048: '',
+          vw2560: '',
         },
-        methods: {
-            testData() {
-                this.form.resolution1366 = '400'
-                this.form.resolution1920 = '700'
-                this.form.resolution2048 = '800'
-                this.form.resolution2560 = '1500'
+        result: ''
+      };
+    },
+    methods: {
+      testData() {
+        this.form.resolution1366 = '400'
+        this.form.resolution1920 = '700'
+        this.form.resolution2048 = '800'
+        this.form.resolution2560 = '1500'
 
-                this.vw1366 = '0'
-                this.vw1920 = '0'
-                this.vw2048 = '0'
-                this.vw2560 = '0'
+        this.vw1366 = '0'
+        this.vw1920 = '0'
+        this.vw2048 = '0'
+        this.vw2560 = '0'
 
-                this.$message({
-                    message: '重置成功！',
-                    type: 'success'
-                });
-            },
-            clearAll(){
-                this.form.resolution1366 = ''
-                this.form.resolution1920 = ''
-                this.form.resolution2048 = ''
-                this.form.resolution2560 = ''
+        this.$message({
+          message: '重置成功！',
+          type: 'success'
+        });
+      },
+      clearAll() {
+        this.form.resolution1366 = ''
+        this.form.resolution1920 = ''
+        this.form.resolution2048 = ''
+        this.form.resolution2560 = ''
 
-                this.vw1366 = ''
-                this.vw1920 = ''
-                this.vw2048 = ''
-                this.vw2560 = ''
+        this.vw1366 = ''
+        this.vw1920 = ''
+        this.vw2048 = ''
+        this.vw2560 = ''
 
-                this.result = ''
+        this.result = ''
 
-                this.$message({
-                    message: '数据已qingkong',
-                    type: 'success'
-                });
-            },
-            editValue(key, value, resolution) {
-                this.form[key] = parseFloat(value) * (resolution / 100).toFixed(2);
-            },
-            calculate() {
-                const data = [
-                    { resolution: 1366, value: parseFloat(this.form.resolution1366) || null },
-                    { resolution: 1920, value: parseFloat(this.form.resolution1920) || null },
-                    { resolution: 2048, value: parseFloat(this.form.resolution2048) || null },
-                    { resolution: 2560, value: parseFloat(this.form.resolution2560) || null }
-                ].filter(item => item.value !== null);
+        this.$message({
+          message: '数据已qingkong',
+          type: 'success'
+        });
+      },
+      editValue(key, value, resolution) {
+        this.form[key] = parseFloat(value) * (resolution / 100).toFixed(2);
+      },
+      calculate() {
+        const data = [
+          { resolution: 1366, value: parseFloat(this.form.resolution1366) || null },
+          { resolution: 1920, value: parseFloat(this.form.resolution1920) || null },
+          { resolution: 2048, value: parseFloat(this.form.resolution2048) || null },
+          { resolution: 2560, value: parseFloat(this.form.resolution2560) || null }
+        ].filter(item => item.value !== null);
 
-                const { a, b } = this.linearRegression(data);
-                const aW = (a * 100).toFixed(2);
-                const bPx = b.toFixed(2);
+        const { a, b } = this.linearRegression(data);
+        const aW = (a * 100).toFixed(2);
+        const bPx = b.toFixed(2);
 
-                if(bPx > 0) {
-                    this.result = `calc(${aW}vw + ${bPx}px)`;
-                } else {
-                    this.result = `calc(${aW}vw - ${Math.abs(bPx)}px)`;
-                }
+        const commentValues = data.map(item => `${ item.resolution }=${ item.value }px`).join('；');
 
-
-                setTimeout(() => {
-                    this.copyToClipboard(this.result);
-                }, 200)
-            },
-            linearRegression(data) {
-                const n = data.length;
-                let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
-
-                for (let i = 0; i < n; i++) {
-                    sumX += data[i].resolution;
-                    sumY += data[i].value;
-                    sumXY += data[i].resolution * data[i].value;
-                    sumXX += data[i].resolution * data[i].resolution;
-                }
-
-                const a = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-                const b = (sumY - a * sumX) / n;
-
-                return { a, b };
-            },
-            copyToClipboard(text) {
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                this.$message({
-                    message: '复制成功！',
-                    type: 'success'
-                });
-            }
+        if (bPx > 0) {
+          this.result = `calc(${ aW }vw + ${ bPx }px); /** ${ commentValues } **/ `;
+        } else {
+          this.result = `calc(${ aW }vw - ${ Math.abs(bPx) }px); /** ${ commentValues } **/`;
         }
-    });
+        setTimeout(() => {
+          this.copyToClipboard(this.result);
+        }, 200)
+      },
+      linearRegression(data) {
+        const n = data.length;
+        let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+
+        for (let i = 0; i < n; i++) {
+          sumX += data[i].resolution;
+          sumY += data[i].value;
+          sumXY += data[i].resolution * data[i].value;
+          sumXX += data[i].resolution * data[i].resolution;
+        }
+
+        const a = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+        const b = (sumY - a * sumX) / n;
+
+        return { a, b };
+      },
+      copyToClipboard(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        this.$message({
+          message: '复制成功！',
+          type: 'success'
+        });
+      }
+    }
+  });
 </script>
 </body>
 </html>

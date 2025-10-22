@@ -513,8 +513,12 @@ body.showRight {
       }
     }
     
-    #container.sam_newgrid {
+    #container.sam_newgrid{
       padding-left: 316px;
+    }
+
+    .result-molecule.new-pmd[tpl="app/search-tag"] {
+      padding-left: calc(51.56vw - 810px)
     }
   }
 
@@ -526,5 +530,24 @@ body.showRight {
     #head .head_wrapper {
       transform: translateX(45px);
     }
+  }
+
+  /* 标准密度设备 */
+  @media screen and (resolution: 1dppx) {
+    #wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .result-op, #wrapper #content_left > .c-container {
+      min-width: 888px;
+      margin-left: calc(var(--wrapper-padding)* -1.3);
+    }
+  }
+
+  #wrapper #content_right table {
+    margin-left: 100px;
+  }
+}
+
+@media screen and (min-width: 1921px) and (min-resolution: 1.2dppx) and (max-resolution: 2dppx) {
+  #wrapper #rs, #wrapper #content_left .result, #wrapper #content_left .result-op, #wrapper #content_left > .c-container {
+    min-width: 888px;
+    margin-left: calc(var(--wrapper-padding)* -1.3);
   }
 }

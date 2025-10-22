@@ -131,7 +131,8 @@
 }
 body.tujidu .ad-container,
 body.tujidu a[href*='bujiasu'],
-body.tujidu a[href*='plus']{
+body.tujidu a[href*='plus'],
+body.tujidu a[href*='wiki']{
   display: none;
 }
 .VPDocFooter {
