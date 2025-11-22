@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # ========== 初始化 ==========
-# 获取脚本所在的绝对路径，用于写入 Systemd
 SCRIPT_PATH=$(readlink -f "$0")
 cd /root >/dev/null 2>&1
 export DEBIAN_FRONTEND=noninteractive
@@ -59,17 +58,16 @@ remote = "192.168.10.2:80"
 EOF
 fi
 
-# ========== 3. 核心：应用规则 ==========
+# ========== 3. 核心：应用规则 (智能本地匹配) ==========
 apply_rules() {
     check_env
-    LOCAL_IP=$(ip route get 8.8.8.8 | awk '{print $7; exit}')
-    EXTERNAL_IF=$(ip route get 8.8.8.8 | awk '{print $5; exit}')
     
-    if [ -z "$LOCAL_IP" ]; then _red "❌ 无法获取本机 IP"; return 1; fi
+    # 获取主网卡仅用于显示，逻辑不再依赖具体网卡名
+    EXTERNAL_IF=$(ip route get 8.8.8.8 2>/dev/null | awk '{print $5; exit}')
 
     _blue "正在重新加载防火墙规则..."
-    echo -e "  入口绑定 IP : \033[33m$LOCAL_IP\033[0m"
-    echo -e "  出口接口    : \033[33m$EXTERNAL_IF\033[0m"
+    echo -e "  匹配逻辑     : \033[33mfib daddr type local\033[0m (自动匹配本机所有IP)"
+    echo -e "  回环处理     : \033[33m已开启\033[0m (CT可通过公网IP访问映射端口)"
 
     nft add table ip "$CUSTOM_TABLE"
     nft flush table ip "$CUSTOM_TABLE"
@@ -77,10 +75,19 @@ apply_rules() {
     nft add chain ip "$CUSTOM_TABLE" postrouting '{ type nat hook postrouting priority 100 ; }'
     nft add chain ip "$CUSTOM_TABLE" forward '{ type filter hook forward priority 0 ; policy accept ; }'
 
-    # 状态与伪装 (使用分离写法以兼容所有版本)
+    # 放行状态
     nft add rule ip "$CUSTOM_TABLE" forward ct state { established, related } counter accept
     nft add rule ip "$CUSTOM_TABLE" forward ct status dnat counter accept
-    nft add rule ip "$CUSTOM_TABLE" postrouting oifname "$EXTERNAL_IF" counter masquerade
+    
+    # [核心修改 1] 全局伪装 (Masquerade)
+    # 只要是被本表 DNAT 过的流量，出站时都进行伪装。
+    # 这解决了 CT 访问 PVE IP 时的“回包路径不一致”问题 (Hairpin NAT)。
+    nft add rule ip "$CUSTOM_TABLE" postrouting ct status dnat counter masquerade
+
+    # [保底] 对于非 DNAT 的普通出站流量 (如 CT 访问百度)，如果从出口网卡出去，也需要伪装
+    if [ -n "$EXTERNAL_IF" ]; then
+        nft add rule ip "$CUSTOM_TABLE" postrouting oifname "$EXTERNAL_IF" counter masquerade
+    fi
 
     if tomlq -e '.endpoints' "$CONFIG_FILE" >/dev/null 2>&1; then
         count=0
@@ -95,10 +102,13 @@ apply_rules() {
             
             if [[ "$l_port" == *-* ]]; then dport_arg="{$l_port}"; else dport_arg="$l_port"; fi
 
-            echo -e "  ➕ 激活: $l_port -> $remote"
+            echo -e "  ➕ 激活: (本机):$l_port -> $remote"
 
+            # [核心修改 2] fib daddr type local
+            # 只有当数据包的目标 IP 属于本机 (Local) 时，才拦截。
+            # 这样既不需要写死 IP，也不会拦截过路的非本机流量。
             nft add rule ip "$CUSTOM_TABLE" prerouting \
-                ip daddr "$LOCAL_IP" \
+                fib daddr type local \
                 meta l4proto { tcp, udp } th dport "$dport_arg" \
                 counter dnat to "$r_ip":"$r_port"
 
@@ -162,7 +172,6 @@ EOF
         systemctl daemon-reload
         systemctl enable portjump
         _green "✔ 已设置开机自启！"
-        echo "   原理：开机后自动执行 '$SCRIPT_PATH --apply'"
     fi
     read -n 1 -s -r -p "按任意键继续..."
 }
@@ -240,23 +249,23 @@ while true; do
     echo " / ____/ /_/ / /  / /_   / /_/ / /_/ /"
     echo "/_/    \____/_/   \__/   \____/ .___/ "
     echo "                             /_/      "
-    echo -e "      \033[1;37mv10.1 修复版 (Bug Fix)\033[0m"
+    echo -e "      \033[1;37mv13.0 智能 PVE 版 (fib local)\033[0m"
     echo -e "\033[0m"
     _line
-    rule_count=$(nft list table ip "$CUSTOM_TABLE" 2>/dev/null | grep -c "dnat to")
     
+    rule_count=$(nft list table ip "$CUSTOM_TABLE" 2>/dev/null | grep -c "dnat to")
     if systemctl is-enabled portjump &>/dev/null; then boot_status="\033[32m开启\033[0m"; else boot_status="\033[31m关闭\033[0m"; fi
 
-    echo -e " 运行状态: \033[32m●\033[0m 活跃中 ($rule_count 条规则) | 开机自启: $boot_status"
+    echo -e " 运行状态: \033[32m●\033[0m 活跃中 ($rule_count 条) | 模式: \033[33m自动匹配本机 IP\033[0m | 自启: $boot_status"
     if [ "$rules_modified" -eq 1 ]; then echo -e " 配置状态: \033[33m⚠ 已变更，请执行 [4]\033[0m"; else echo -e " 配置状态: \033[32m✔ 正常\033[0m"; fi
     _line
     echo -e " \033[1;33m[1]\033[0m 添加规则  \033[90m(自动添加 # 备注:)\033[0m"
     echo -e " \033[1;33m[2]\033[0m 列表查看  \033[90m(解析文本注释显示)\033[0m"
     echo -e " \033[1;33m[3]\033[0m 删除规则  \033[90m(按块删除)\033[0m"
-    echo -e " \033[1;33m[4]\033[0m \033[1;32m应用配置\033[0m  \033[90m(重启防火墙)\033[0m"
+    echo -e " \033[1;33m[4]\033[0m \033[1;32m应用配置\033[0m  \033[90m(立即生效)\033[0m"
     echo ""
-    echo -e " \033[1;36m[5]\033[0m 手动编辑  \033[90m(自由排版分隔符)\033[0m"
-    echo -e " \033[1;35m[6]\033[0m \033[1;35m配置开机自启\033[0m \033[90m(建议开启)\033[0m"
+    echo -e " \033[1;36m[5]\033[0m 手动编辑  \033[90m(自由排版)\033[0m"
+    echo -e " \033[1;35m[6]\033[0m \033[1;35m配置开机自启\033[0m \033[90m(推荐)\033[0m"
     echo -e " \033[1;31m[0]\033[0m 退出"
     echo ""
     read -p " 请输入 [0-6]: " choice
