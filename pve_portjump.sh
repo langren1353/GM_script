@@ -1,353 +1,258 @@
 #!/bin/bash
 
+# ========== 初始化 ==========
 cd /root >/dev/null 2>&1
-
-# ========== 颜色与提示函数优化 ==========
-_info() { echo -e "$@"; }
-_red() { echo -e "\033[31m\033[01m$@\033[0m"; }
-_green() { echo -e "\033[32m\033[01m$@\033[0m"; }
-_yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
-_blue() { echo -e "\033[36m\033[01m$@\033[0m"; }
-reading() { read -rp "$(_green "$1")" "$2"; }
-
 export DEBIAN_FRONTEND=noninteractive
-utf8_locale=$(locale -a 2>/dev/null | grep -i -m 1 -E "UTF-8|utf8")
-if [[ -z "$utf8_locale" ]]; then
-    _error "No UTF-8 locale found"
-else
-    export LC_ALL="$utf8_locale"
-    export LANG="$utf8_locale"
-    export LANGUAGE="$utf8_locale"
-    _info "Locale set to $utf8_locale"
-fi
-set -euo pipefail
+set -u
 
-# 配置目录与文件
+# ========== 配置 ==========
 CONFIG_DIR="/root/_portJump"
 CONFIG_FILE="$CONFIG_DIR/config.toml"
-CUSTOM_TABLE="myportjump"
+CUSTOM_TABLE="portjump_nat"
 rules_modified=0
 
 mkdir -p "$CONFIG_DIR"
 
+# ========== 颜色函数 ==========
+_red()    { echo -e "\033[31m\033[01m$@\033[0m"; }
+_green()  { echo -e "\033[32m\033[01m$@\033[0m"; }
+_yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
+_blue()   { echo -e "\033[36m\033[01m$@\033[0m"; }
+_cyan()   { echo -e "\033[36m$@\033[0m"; }
+_line()   { echo -e "\033[90m--------------------------------------------------------\033[0m"; }
+
+# ========== 1. 依赖检查 ==========
+check_env() {
+    if [ "$(sysctl -n net.ipv4.ip_forward)" -eq 0 ]; then
+        echo "net.ipv4.ip_forward = 1" > /etc/sysctl.d/99-portjump.conf
+        sysctl -p /etc/sysctl.d/99-portjump.conf >/dev/null
+    fi
+    if ! command -v tomlq &> /dev/null; then
+        _blue "正在初始化运行环境..."
+        # 仍然需要 yq/tomlq 来保证应用规则时的绝对准确性，虽然显示时我们用 awk 解析注释
+        if command -v apt &> /dev/null; then apt update -y && apt install -y yq nftables nano
+        elif command -v dnf &> /dev/null; then dnf install -y yq nftables nano
+        elif command -v yum &> /dev/null; then yum install -y yq nftables nano
+        else _red "❌ 请手动安装 yq, nftables, nano"; exit 1; fi
+    fi
+}
+
+# ========== 2. 初始化示例配置 (你的风格) ==========
 if [ ! -f "$CONFIG_FILE" ]; then
     cat > "$CONFIG_FILE" <<EOF
-# 全局配置
-internal_ip_prefix = "192.168.10"
+[[endpoints]]
+# 备注: PBS 
+listen = "0.0.0.0:18007"
+remote = "192.168.10.100:8007"
 
-# 端口跳转规则配置文件
-# 格式示例：
-#
-# [[endpoints]]
-# # 备注: Proxmox Backup Server
-# listen = "0.0.0.0:18000-18010"
-# remote = "192.168.10.100:18000-18010"
+############ 宝塔机器 + PHP ###############
+############ 宝塔机器 + PHP ###############
+[[endpoints]]
+# 备注: Baota+PHP-SSH
+listen = "0.0.0.0:220"
+remote = "192.168.10.2:22"
+
+[[endpoints]]
+# 备注: web
+listen = "0.0.0.0:80"
+remote = "192.168.10.2:80"
 EOF
-    _green "默认配置文件已创建：$CONFIG_FILE"
 fi
 
+# ========== 3. 核心：应用规则 ==========
+apply_rules() {
+    check_env
+    # 自动获取 IP
+    LOCAL_IP=$(ip route get 8.8.8.8 | awk '{print $7; exit}')
+    EXTERNAL_IF=$(ip route get 8.8.8.8 | awk '{print $5; exit}')
+    
+    if [ -z "$LOCAL_IP" ]; then _red "❌ 无法获取本机 IP"; return 1; fi
 
-# ========== 依赖检查 ==========
-if ! command -v tomlq &> /dev/null; then
-    _info "未检测到 tomlq（来自 yq 工具），正在尝试安装..."
-    if command -v apt &> /dev/null; then
-        apt update -y && apt install -y yq nftables
-    elif command -v dnf &> /dev/null; then
-        dnf install -y yq nftables
-    elif command -v yum &> /dev/null; then
-        yum install -y yq nftables
-    else
-        _error "不支持的包管理器。"
-        exit 1
-    fi
-fi
+    _blue "正在重新加载防火墙规则..."
+    echo -e "  入口绑定 IP : \033[33m$LOCAL_IP\033[0m"
+    echo -e "  出口接口    : \033[33m$EXTERNAL_IF\033[0m"
 
-if ! command -v tomlq &> /dev/null; then
-    _error "tomlq 未安装。"
-    exit 1
-fi
-
-if ! command -v nft &> /dev/null; then
-    _error "未安装 nftables。"
-    exit 1
-fi
-
-# ========== 其余函数保持逻辑，仅替换输出 ==========
-read_internal_prefix() {
-    if ! tomlq -e '.internal_ip_prefix // empty' "$CONFIG_FILE" >/dev/null; then
-        _warn "配置文件中缺少 'internal_ip_prefix' 字段。"
-        read -p "请输入用于识别内网接口的 IP 前缀（例如 192.168.10）: " prefix
-        if [[ ! "$prefix" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){1,3}$ ]]; then
-            _error "无效的 IP 前缀格式（例如：192.168.10）"
-            exit 1
-        fi
-        tomlq --arg prefix "$prefix" '.internal_ip_prefix = $prefix' "$CONFIG_FILE" > "$CONFIG_FILE.tmp" && mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
-        _green "内网 IP 前缀已设置为: $prefix"
-    fi
-    tomlq -r '.internal_ip_prefix // "192.168.10"' "$CONFIG_FILE"
-}
-
-INTERNAL_IP_PREFIX=$(read_internal_prefix)
-
-detect_interfaces() {
-    _info "正在自动检测内网接口（匹配 $INTERNAL_IP_PREFIX.x）..."
-    SAFE_PREFIX=$(echo "$INTERNAL_IP_PREFIX" | sed 's/\./\\./g')
-    INTERNAL_INTERFACE=$(ip -o addr show 2>/dev/null | grep -E "inet ${SAFE_PREFIX}\\.[0-9]+" | awk '{print $2}' | head -n1)
-
-    if [ -z "$INTERNAL_INTERFACE" ]; then
-        INTERNAL_INTERFACE="vmbr0"
-        _warn "未找到匹配 $INTERNAL_IP_PREFIX.x 的接口，使用默认内网接口: $INTERNAL_INTERFACE"
-    else
-        _green "检测到内网接口: $INTERNAL_INTERFACE"
-    fi
-
-    if [ "$INTERNAL_INTERFACE" = "vmbr0" ]; then
-        EXTERNAL_INTERFACE=$(ip -o link show 2>/dev/null | awk -F': ' '{print $2}' | grep -v -E 'lo|vmbr0|vlan|bond|dummy' | head -n1)
-    else
-        EXTERNAL_INTERFACE=$(ip -o link show 2>/dev/null | awk -F': ' '{print $2}' | grep -v -E "lo|$INTERNAL_INTERFACE|vlan|bond|dummy" | head -n1)
-    fi
-
-    if [ -z "$EXTERNAL_INTERFACE" ]; then
-        _error "无法确定外网接口，请手动检查网络配置。"
-        exit 1
-    fi
-
-    _info "外网接口: $EXTERNAL_INTERFACE"
-    _info "内网接口: $INTERNAL_INTERFACE"
-}
-
-detect_interfaces
-
-# ========== 规则管理 ==========
-clear_nft_rules() {
-    _info "正在清空 nftables 自定义表 '$CUSTOM_TABLE'..."
-    nft delete table ip "$CUSTOM_TABLE" 2>/dev/null || true
-    _green "自定义表已清空。"
-    sleep 1
-}
-
-apply_rules_from_toml() {
-    _info "正在从 $CONFIG_FILE 加载规则并应用到表 '$CUSTOM_TABLE'..."
-    clear_nft_rules
-
+    # 重置 NFTables
     nft add table ip "$CUSTOM_TABLE"
-    nft add chain ip "$CUSTOM_TABLE" prerouting '{ type nat hook prerouting priority -100 ; }'
+    nft flush table ip "$CUSTOM_TABLE"
+    nft add chain ip "$CUSTOM_TABLE" prerouting '{ type nat hook prerouting priority -150 ; }'
     nft add chain ip "$CUSTOM_TABLE" postrouting '{ type nat hook postrouting priority 100 ; }'
     nft add chain ip "$CUSTOM_TABLE" forward '{ type filter hook forward priority 0 ; policy accept ; }'
 
-    nft add rule ip "$CUSTOM_TABLE" forward iifname "$EXTERNAL_INTERFACE" oifname "$INTERNAL_INTERFACE" counter accept
-    nft add rule ip "$CUSTOM_TABLE" forward iifname "$INTERNAL_INTERFACE" oifname "$EXTERNAL_INTERFACE" counter accept
-    nft add rule ip "$CUSTOM_TABLE" postrouting oifname "$EXTERNAL_INTERFACE" counter masquerade
+    # 放行与伪装
+    nft add rule ip "$CUSTOM_TABLE" forward ct state { established, related, dnat } counter accept
+    nft add rule ip "$CUSTOM_TABLE" postrouting oifname "$EXTERNAL_IF" counter masquerade
 
-    LOCAL_IP=$(ip -4 addr show dev "$EXTERNAL_INTERFACE" | grep -oP 'inet \K[\d.]+')
-    if [ -z "$LOCAL_IP" ]; then
-        _warn "无法获取 $EXTERNAL_INTERFACE 的 IPv4 地址，将使用 0.0.0.0 匹配所有。"
-        LOCAL_IP="0.0.0.0"
-    fi
+    # 使用 tomlq 解析数据 (确保防火墙逻辑严密，不依赖正则)
+    if tomlq -e '.endpoints' "$CONFIG_FILE" >/dev/null 2>&1; then
+        count=0
+        RAW_DATA=$(tomlq -r '.endpoints[] | "\(.listen)|\(.remote)"' "$CONFIG_FILE")
+        
+        while IFS='|' read -r listen remote; do
+            if [[ -z "$listen" || -z "$remote" || "$listen" == "null" ]]; then continue; fi
 
-    if [ -s "$CONFIG_FILE" ] && grep -q '\[\[endpoints\]\]' "$CONFIG_FILE" 2>/dev/null; then
-        tomlq -e '.endpoints // []' "$CONFIG_FILE" >/dev/null || {
-            _error "config.toml 格式无效。"
-            return 1
-        }
+            l_port="${listen#*:}"
+            r_ip="${remote%:*}"
+            r_port="${remote#*:}"
+            
+            # 端口范围处理
+            if [[ "$l_port" == *-* ]]; then dport_arg="{$l_port}"; else dport_arg="$l_port"; fi
 
-        total=$(tomlq -r '.endpoints // [] | length' "$CONFIG_FILE")
-        if [ "$total" -eq 0 ]; then
-            _info "配置文件中无有效端点规则。"
-        else
-            _info "共检测到 $total 条端点规则，正在应用..."
-            while IFS='|' read -r listen remote; do
-                listen_port_spec="${listen#*:}"
-                remote_ip="${remote%:*}"
-                remote_port_spec="${remote#*:}"
+            echo -e "  ➕ 激活: $l_port -> $remote"
 
-                if [ -z "$listen_port_spec" ] || [ -z "$remote_ip" ] || [ -z "$remote_port_spec" ]; then
-                    _warn "跳过无效规则: listen='$listen' remote='$remote'"
-                    continue
-                fi
+            # 合并 TCP/UDP + 精确 IP 匹配
+            nft add rule ip "$CUSTOM_TABLE" prerouting \
+                ip daddr "$LOCAL_IP" \
+                meta l4proto { tcp, udp } th dport "$dport_arg" \
+                counter dnat to "$r_ip":"$r_port"
 
-                if [[ "$listen_port_spec" == *-* ]]; then
-                    nft add rule ip "$CUSTOM_TABLE" prerouting iifname "$EXTERNAL_INTERFACE" \
-                        ip daddr "$LOCAL_IP" \
-                        tcp dport "{$listen_port_spec}" counter dnat to "$remote_ip":"$remote_port_spec"
-                    nft add rule ip "$CUSTOM_TABLE" prerouting iifname "$EXTERNAL_INTERFACE" \
-                        ip daddr "$LOCAL_IP" \
-                        udp dport "{$listen_port_spec}" counter dnat to "$remote_ip":"$remote_port_spec"
-                else
-                    nft add rule ip "$CUSTOM_TABLE" prerouting iifname "$EXTERNAL_INTERFACE" \
-                        ip daddr "$LOCAL_IP" \
-                        tcp dport "$listen_port_spec" counter dnat to "$remote_ip":"$remote_port_spec"
-                    nft add rule ip "$CUSTOM_TABLE" prerouting iifname "$EXTERNAL_INTERFACE" \
-                        ip daddr "$LOCAL_IP" \
-                        udp dport "$listen_port_spec" counter dnat to "$remote_ip":"$remote_port_spec"
-                fi
-            done < <(tomlq -r '.endpoints[] | @text "\(.listen)|\(.remote)"' "$CONFIG_FILE")
-        fi
+            ((count++))
+        done <<< "$RAW_DATA"
+        _green "✔ 已应用 $count 条规则"
     else
-        _info "配置文件中无 endpoints 配置。"
+        _yellow "⚠ 未读取到有效规则"
     fi
 
-    nft list ruleset > /etc/nftables.conf
-    _green "规则已成功应用并保存至 /etc/nftables.conf"
+    nft list table ip "$CUSTOM_TABLE" > /etc/nftables.portjump.conf
     rules_modified=0
     sleep 1
 }
 
-# ========== 规则编辑 ==========
-add_endpoint() {
+# ========== 4. 自定义解析器 (awk) 用于显示备注 ==========
+# 这是为了满足你“通过对应位置的注释来拿到备注”的核心需求
+parse_config_with_comments() {
+    awk '
+    BEGIN { FS="\""; OFS="|" }
+    /^\[\[endpoints\]\]/ {
+        if (l!="") print l,r,c;
+        l=""; r=""; c="-"; # 重置
+    }
+    /# *备注[:：]/ {
+        sub(/^.*# *备注[:：] */, "", $0); # 提取冒号后的文字
+        c=$0;
+    }
+    /listen *=/ { l=$2 }
+    /remote *=/ { r=$2 }
+    END { if (l!="") print l,r,c }
+    ' "$CONFIG_FILE"
+}
+
+# ========== UI 逻辑 ==========
+
+add_rule_ui() {
     clear
-    _info "请按提示输入新的端口映射规则："
-    read -p "监听地址 (格式: 0.0.0.0:端口 或 0.0.0.0:起始-结束): " listen
-    read -p "目标地址 (格式: 192.168.10.x:端口 或 192.168.10.x:起始-结束): " remote
-    read -p "备注 (可选): " comment
+    _blue "===➕ 添加转发规则 (写入文本注释) ==="
+    echo -e "将按照标准格式写入配置文件。\n"
+    
+    read -p "1. 本机端口 (如 8080): " port_in
+    [ -z "$port_in" ] && return
+    read -p "2. 目标地址 (如 192.168.1.2:80): " addr_out
+    [ -z "$addr_out" ] && return
+    read -p "3. 备注内容 (将生成 # 备注: ...): " cmt
 
-    if [[ ! "$listen" =~ ^[0-9.]+:[0-9]+(-[0-9]+)?$ ]] || [[ ! "$remote" =~ ^[0-9.]+:[0-9]+(-[0-9]+)?$ ]]; then
-        _error "格式错误！"
-        sleep 1
-        return 1
-    fi
-
+    # 写入逻辑完全改变，适配你的格式
     {
         echo ""
         echo "[[endpoints]]"
-        if [ -n "$comment" ]; then
-            echo "# 备注: $comment"
-        fi
-        echo "listen = \"$listen\""
-        echo "remote = \"$remote\""
+        if [ -n "$cmt" ]; then echo "# 备注: $cmt"; fi
+        echo "listen = \"0.0.0.0:$port_in\""
+        echo "remote = \"$addr_out\""
     } >> "$CONFIG_FILE"
 
-    _green "新规则已保存到 $CONFIG_FILE"
+    _green "\n✔ 已写入配置"
     rules_modified=1
-    sleep 1
+    read -n 1 -s -r -p "按任意键继续..."
 }
 
-list_endpoints() {
+list_rules_ui() {
     clear
-    if ! grep -q '\[\[endpoints\]\]' "$CONFIG_FILE" 2>/dev/null || [ "$(tomlq -r '.endpoints // [] | length' "$CONFIG_FILE")" -eq 0 ]; then
-        _info "📌 当前无任何端点规则。"
-        sleep 2
-        return
-    fi
-
-    _info "📌 当前已配置的端点规则："
-    idx=0
-    while IFS= read -r line; do
-        echo "  [$idx] $line"
-        ((idx++))
-    done < <(tomlq -r '.endpoints[] | @text "\(.listen) ➡ \(.remote)"' "$CONFIG_FILE")
-
-    echo
-    _info "按任意键返回主菜单..."
-    read -r _
+    _blue "===📋 规则列表 (解析 # 备注) ==="
+    echo "文件: $CONFIG_FILE"
+    _line
+    
+    printf "\033[1;37m%-20s %-25s %-20s\033[0m\n" "本机端口" "目标地址" "备注 (来自注释)"
+    _line
+    
+    # 调用自定义 awk 解析器
+    parse_config_with_comments | while IFS='|' read -r listen remote comment; do
+        disp_port="${listen#0.0.0.0:}"
+        [ "${listen}" == "${disp_port}" ] && disp_port="$listen"
+        
+        # 美化输出
+        printf "%-20s %-25s \033[36m%-20s\033[0m\n" "$disp_port" "$remote" "$comment"
+    done
+    
+    _line
+    echo -e "\033[90m提示：这里直接读取文件中的 '# 备注:' 行，所见即所得。\033[0m"
+    read -n 1 -s -r -p "按任意键返回..."
 }
 
-delete_endpoint() {
-    clear
-    list_endpoints
-    total=$(tomlq -r '.endpoints // [] | length' "$CONFIG_FILE")
-    if [ "$total" -eq 0 ]; then
-        return
-    fi
-
-    read -p "请输入要删除的规则编号: " idx_input
-    if ! [[ "$idx_input" =~ ^[0-9]+$ ]] || [ "$idx_input" -ge "$total" ]; then
-        _error "无效编号。"
-        sleep 1
-        return 1
-    fi
-
-    tomlq -r --argjson idx "$idx_input" '.endpoints |= (.[0:$idx] + .[$idx+1:])' "$CONFIG_FILE" > "$CONFIG_FILE.tmp" && mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
-    _green "规则 [$idx_input] 已删除。"
-    rules_modified=1
-    sleep 1
-}
-
-modify_internal_prefix() {
-    clear
-    current=$(tomlq -r '.internal_ip_prefix // "192.168.10"' "$CONFIG_FILE")
-    _info "当前内网 IP 前缀: $current"
-    _info "示例: 192.168.10 表示匹配 192.168.10.x 的接口"
-    read -p "请输入新的内网 IP 前缀（直接回车保持不变）: " new_prefix
-
-    if [ -n "$new_prefix" ]; then
-        if [[ ! "$new_prefix" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){1,3}$ ]]; then
-            _error "无效格式（应为类似 192.168.10）"
-            sleep 1
-            return 1
-        fi
-        tomlq --arg prefix "$new_prefix" '.internal_ip_prefix = $prefix' "$CONFIG_FILE" > "$CONFIG_FILE.tmp" && mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
-        _green "内网 IP 前缀已更新为: $new_prefix"
-        INTERNAL_IP_PREFIX="$new_prefix"
-        detect_interfaces
+delete_rule_ui() {
+    # 由于是纯文本操作，建议让用户手动删除，或者按索引删除
+    list_rules_ui
+    total=$(tomlq -r '.endpoints | length' "$CONFIG_FILE" 2>/dev/null)
+    [ -z "$total" ] && return
+    
+    echo ""
+    read -p "请输入要删除的规则序号 (从 0 开始): " idx_input
+    if [[ "$idx_input" =~ ^[0-9]+$ ]]; then
+         tomlq -r --argjson idx "$idx_input" '.endpoints |= (.[0:$idx] + .[$idx+1:])' "$CONFIG_FILE" > "$CONFIG_FILE.tmp" && mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
+         _green "✔ 规则块已移除 (注意：纯文本注释可能残留，建议手动整理)"
+         rules_modified=1
+         sleep 1
     else
-        _info "未修改内网 IP 前缀。"
+        _red "无效输入"
+        sleep 1
     fi
-    sleep 1
 }
 
-install_systemd() {
-    _info "正在安装 systemd 服务..."
-    SCRIPT_ABS_PATH="$(realpath "$0")"
-    cat > /etc/systemd/system/portjump.service <<EOF
-[Unit]
-Description=端口跳转服务 (自定义表: $CUSTOM_TABLE)
-After=network.target
-
-[Service]
-Type=oneshot
-ExecStart=/bin/bash '$SCRIPT_ABS_PATH' --apply
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-EOF
-    systemctl daemon-reload
-    systemctl enable --now portjump.service
-    _green "systemd 服务已启用。"
-    sleep 2
+edit_config_manual() {
+    if command -v nano &> /dev/null; then editor="nano"; else editor="vi"; fi
+    $editor "$CONFIG_FILE"
+    rules_modified=1
 }
 
-# ========== 非交互模式 ==========
-if [[ "${1:-}" == "--apply" ]]; then
-    apply_rules_from_toml
-    exit 0
-fi
+# ========== 主程序 ==========
+if [[ "${1:-}" == "--apply" ]]; then apply_rules; exit 0; fi
+check_env
 
-# ========== 主菜单 ==========
 while true; do
     clear
-    echo "========================================"
-    _blue "          端口跳转管理工具（自定义表: $CUSTOM_TABLE）"
-    _blue "  配置文件: $CONFIG_FILE"
-    _blue "  内网标识: $INTERNAL_IP_PREFIX.x"
-    echo "========================================"
-
+    echo -e "\033[36m"
+    echo "    ____             __     __  __  "
+    echo "   / __ \____  _____/ /_   / / / /___"
+    echo "  / /_/ / __ \/ ___/ __/  / / / / __ \\"
+    echo " / ____/ /_/ / /  / /_   / /_/ / /_/ /"
+    echo "/_/    \____/_/   \__/   \____/ .___/ "
+    echo "                             /_/      "
+    echo -e "      \033[1;37mv9.0 注释解析版 (Text-Aware)\033[0m"
+    echo -e "\033[0m"
+    
+    _line
+    rule_count=$(nft list table ip "$CUSTOM_TABLE" 2>/dev/null | grep -c "dnat to")
+    echo -e " 运行状态: \033[32m●\033[0m 活跃中 ($rule_count 条规则)"
+    
     if [ "$rules_modified" -eq 1 ]; then
-        _yellow "🔍 ⚠️  注意：配置已修改，但规则尚未生效！"
-        _yellow "   请执行【4. 重启应用】以使新规则生效。"
-        echo "----------------------------------------"
+        echo -e " 配置状态: \033[33m⚠ 已变更，请执行 [4]\033[0m"
+    else
+        echo -e " 配置状态: \033[32m✔ 正常\033[0m"
     fi
+    _line
 
-    echo "1. 添加新端口映射规则"
-    echo "2. 查看现有规则"
-    echo "3. 删除已有规则"
-    echo "4. 重启应用（加载 $CONFIG_FILE）"
-    echo "5. 安装 systemd 服务（开机自启）"
-    echo "6. 修改内网 IP 段标识（当前: $INTERNAL_IP_PREFIX）"
-    echo "9. 仅清空自定义规则表"
-    echo "0. 退出"
-    read -p "请选择操作: " choice
+    echo -e " \033[1;33m[1]\033[0m 添加规则  \033[90m(自动添加 # 备注:)\033[0m"
+    echo -e " \033[1;33m[2]\033[0m 列表查看  \033[90m(解析文本注释显示)\033[0m"
+    echo -e " \033[1;33m[3]\033[0m 删除规则  \033[90m(按块删除)\033[0m"
+    echo -e " \033[1;33m[4]\033[0m \033[1;32m应用配置\033[0m  \033[90m(重启防火墙)\033[0m"
+    echo ""
+    echo -e " \033[1;36m[5]\033[0m 手动编辑  \033[90m(推荐! 自由排版分隔符)\033[0m"
+    echo -e " \033[1;31m[0]\033[0m 退出"
+    echo ""
+    read -p " 请输入 [0-5]: " choice
 
     case "$choice" in
-        1) add_endpoint ;;
-        2) list_endpoints ;;
-        3) delete_endpoint ;;
-        4) apply_rules_from_toml ;;
-        5) install_systemd ;;
-        6) modify_internal_prefix ;;
-        9) clear_nft_rules ;;
-        0) _green "再见！"; exit 0 ;;
-        *) _error "无效选项。"; sleep 1 ;;
+        1) add_rule_ui ;; 2) list_rules_ui ;; 3) delete_rule_ui ;;
+        4) apply_rules; read -n 1 -s -r -p "按键继续..." ;;
+        5) edit_config_manual ;; 0) exit 0 ;;
+        *) ;;
     esac
 done
