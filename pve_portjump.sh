@@ -113,7 +113,6 @@ apply_rules() {
         _yellow "⚠ 未读取到有效规则"
     fi
 
-    nft list table ip "$CUSTOM_TABLE" > /etc/nftables.portjump.conf
     rules_modified=0
     sleep 1
 }
