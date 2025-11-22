@@ -46,6 +46,32 @@ EOF
     _green "默认配置文件已创建：$CONFIG_FILE"
 fi
 
+
+# ========== 依赖检查 ==========
+if ! command -v tomlq &> /dev/null; then
+    _info "未检测到 tomlq（来自 yq 工具），正在尝试安装..."
+    if command -v apt &> /dev/null; then
+        apt update -y && apt install -y yq nftables
+    elif command -v dnf &> /dev/null; then
+        dnf install -y yq nftables
+    elif command -v yum &> /dev/null; then
+        yum install -y yq nftables
+    else
+        _error "不支持的包管理器。"
+        exit 1
+    fi
+fi
+
+if ! command -v tomlq &> /dev/null; then
+    _error "tomlq 未安装。"
+    exit 1
+fi
+
+if ! command -v nft &> /dev/null; then
+    _error "未安装 nftables。"
+    exit 1
+fi
+
 # ========== 其余函数保持逻辑，仅替换输出 ==========
 read_internal_prefix() {
     if ! tomlq -e '.internal_ip_prefix // empty' "$CONFIG_FILE" >/dev/null; then
@@ -91,31 +117,6 @@ detect_interfaces() {
 }
 
 detect_interfaces
-
-# ========== 依赖检查 ==========
-if ! command -v tomlq &> /dev/null; then
-    _info "未检测到 tomlq（来自 yq 工具），正在尝试安装..."
-    if command -v apt &> /dev/null; then
-        apt update -y && apt install -y yq nftables
-    elif command -v dnf &> /dev/null; then
-        dnf install -y yq nftables
-    elif command -v yum &> /dev/null; then
-        yum install -y yq nftables
-    else
-        _error "不支持的包管理器。"
-        exit 1
-    fi
-fi
-
-if ! command -v tomlq &> /dev/null; then
-    _error "tomlq 未安装。"
-    exit 1
-fi
-
-if ! command -v nft &> /dev/null; then
-    _error "未安装 nftables。"
-    exit 1
-fi
 
 # ========== 规则管理 ==========
 clear_nft_rules() {
