@@ -45,12 +45,6 @@ listen = "0.0.0.0:18007"
 remote = "192.168.10.100:8007"
 
 ############ 宝塔机器 + PHP ###############
-############ 宝塔机器 + PHP ###############
-[[endpoints]]
-# 备注: Baota+PHP-SSH
-listen = "0.0.0.0:220"
-remote = "192.168.10.2:22"
-
 [[endpoints]]
 # 备注: web
 listen = "0.0.0.0:80"
@@ -58,16 +52,16 @@ remote = "192.168.10.2:80"
 EOF
 fi
 
-# ========== 3. 核心：应用规则 (智能本地匹配) ==========
+# ========== 3. 核心：应用规则 (智能透传真实IP) ==========
 apply_rules() {
     check_env
     
-    # 获取主网卡仅用于显示，逻辑不再依赖具体网卡名
+    # 获取出口网卡 (用于 CT 访问互联网时的 SNAT)
     EXTERNAL_IF=$(ip route get 8.8.8.8 2>/dev/null | awk '{print $5; exit}')
-
+    
     _blue "正在重新加载防火墙规则..."
-    echo -e "  匹配逻辑     : \033[33mfib daddr type local\033[0m (自动匹配本机所有IP)"
-    echo -e "  回环处理     : \033[33m已开启\033[0m (CT可通过公网IP访问映射端口)"
+    echo -e "  真实来源 IP  : \033[32m已开启\033[0m (仅对内网回环应用伪装)"
+    echo -e "  出口网卡     : \033[33m${EXTERNAL_IF:-自动检测}\033[0m"
 
     nft add table ip "$CUSTOM_TABLE"
     nft flush table ip "$CUSTOM_TABLE"
@@ -75,16 +69,17 @@ apply_rules() {
     nft add chain ip "$CUSTOM_TABLE" postrouting '{ type nat hook postrouting priority 100 ; }'
     nft add chain ip "$CUSTOM_TABLE" forward '{ type filter hook forward priority 0 ; policy accept ; }'
 
-    # 放行状态
+    # 放行转发流量
     nft add rule ip "$CUSTOM_TABLE" forward ct state { established, related } counter accept
     nft add rule ip "$CUSTOM_TABLE" forward ct status dnat counter accept
     
-    # [核心修改 1] 全局伪装 (Masquerade)
-    # 只要是被本表 DNAT 过的流量，出站时都进行伪装。
-    # 这解决了 CT 访问 PVE IP 时的“回包路径不一致”问题 (Hairpin NAT)。
-    nft add rule ip "$CUSTOM_TABLE" postrouting ct status dnat counter masquerade
+    # [核心修改 1: 真实 IP 透传逻辑]
+    # 如果源 IP 是私有地址(内网互访/回环)，则必须进行伪装(Masquerade)，否则回包会断。
+    # 如果源 IP 是公网地址，则不伪装，直接转发给 CT，CT 就能看到真实 IP。
+    nft add rule ip "$CUSTOM_TABLE" postrouting ip saddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } ct status dnat counter masquerade
 
-    # [保底] 对于非 DNAT 的普通出站流量 (如 CT 访问百度)，如果从出口网卡出去，也需要伪装
+    # [核心修改 2: CT 上网]
+    # CT 主动访问互联网的流量，必须通过出口网卡伪装
     if [ -n "$EXTERNAL_IF" ]; then
         nft add rule ip "$CUSTOM_TABLE" postrouting oifname "$EXTERNAL_IF" counter masquerade
     fi
@@ -104,9 +99,7 @@ apply_rules() {
 
             echo -e "  ➕ 激活: (本机):$l_port -> $remote"
 
-            # [核心修改 2] fib daddr type local
-            # 只有当数据包的目标 IP 属于本机 (Local) 时，才拦截。
-            # 这样既不需要写死 IP，也不会拦截过路的非本机流量。
+            # 保持 v13 的智能匹配：只拦截发往本机的流量
             nft add rule ip "$CUSTOM_TABLE" prerouting \
                 fib daddr type local \
                 meta l4proto { tcp, udp } th dport "$dport_arg" \
@@ -144,14 +137,7 @@ manage_autostart() {
     SERVICE_FILE="/etc/systemd/system/portjump.service"
     
     if systemctl is-enabled portjump &>/dev/null; then
-        read -p "检测到已开启自启。是否关闭并移除? (y/n): " confirm
-        if [[ "$confirm" == "y" ]]; then
-            systemctl stop portjump
-            systemctl disable portjump
-            rm -f "$SERVICE_FILE"
-            systemctl daemon-reload
-            _yellow "✔ 已关闭开机自启。"
-        fi
+        _green "✔ 开机自启已开启"
     else
         _blue "正在配置 Systemd 服务..."
         cat > "$SERVICE_FILE" <<EOF
@@ -174,6 +160,52 @@ EOF
         _green "✔ 已设置开机自启！"
     fi
     read -n 1 -s -r -p "按任意键继续..."
+}
+
+# ========== 6. 停止与卸载 ==========
+stop_and_uninstall() {
+    clear
+    _red "=== ⛔ 停止与卸载 ==="
+    echo "此操作将执行以下动作："
+    echo "1. 停止转发服务"
+    echo "2. 移除开机自启"
+    echo "3. 清空当前 NAT 转发规则 (网络瞬间恢复默认)[可选]"
+    echo ""
+    read -p "是否确认? (y/n): " confirm
+    if [[ "$confirm" != "y" ]]; then return; fi
+
+    # 1. 停止服务
+    if systemctl is-active portjump &>/dev/null; then
+        systemctl stop portjump
+        _yellow "服务已停止"
+    fi
+
+    # 2. 移除自启
+    if systemctl is-enabled portjump &>/dev/null; then
+        systemctl disable portjump
+        rm -f "/etc/systemd/system/portjump.service"
+        systemctl daemon-reload
+        _yellow "开机自启已移除"
+    fi
+
+    # 3. 清空 NFTables 表
+    if nft list table ip "$CUSTOM_TABLE" &>/dev/null; then
+        nft delete table ip "$CUSTOM_TABLE"
+        _green "防火墙规则已清空"
+    fi
+
+    echo ""
+    read -p "是否同时删除配置文件 ($CONFIG_FILE)? (y/n): " del_conf
+    if [[ "$del_conf" == "y" ]]; then
+        rm -rf "$CONFIG_DIR"
+        _green "配置文件已删除"
+    else
+        _blue "配置文件已保留"
+    fi
+
+    echo ""
+    _green "✔ 操作完成。"
+    read -n 1 -s -r -p "按任意键返回..."
 }
 
 # ========== UI 逻辑 ==========
@@ -249,14 +281,14 @@ while true; do
     echo " / ____/ /_/ / /  / /_   / /_/ / /_/ /"
     echo "/_/    \____/_/   \__/   \____/ .___/ "
     echo "                             /_/      "
-    echo -e "      \033[1;37mv13.0 智能 PVE 版 (fib local)\033[0m"
+    echo -e "      \033[1;37mv14.0 真实 IP 透传版\033[0m"
     echo -e "\033[0m"
     _line
     
     rule_count=$(nft list table ip "$CUSTOM_TABLE" 2>/dev/null | grep -c "dnat to")
     if systemctl is-enabled portjump &>/dev/null; then boot_status="\033[32m开启\033[0m"; else boot_status="\033[31m关闭\033[0m"; fi
 
-    echo -e " 运行状态: \033[32m●\033[0m 活跃中 ($rule_count 条) | 模式: \033[33m自动匹配本机 IP\033[0m | 自启: $boot_status"
+    echo -e " 运行状态: \033[32m●\033[0m 活跃中 ($rule_count 条) | 真实 IP: \033[32m已启用\033[0m | 自启: $boot_status"
     if [ "$rules_modified" -eq 1 ]; then echo -e " 配置状态: \033[33m⚠ 已变更，请执行 [4]\033[0m"; else echo -e " 配置状态: \033[32m✔ 正常\033[0m"; fi
     _line
     echo -e " \033[1;33m[1]\033[0m 添加规则  \033[90m(自动添加 # 备注:)\033[0m"
@@ -266,14 +298,16 @@ while true; do
     echo ""
     echo -e " \033[1;36m[5]\033[0m 手动编辑  \033[90m(自由排版)\033[0m"
     echo -e " \033[1;35m[6]\033[0m \033[1;35m配置开机自启\033[0m \033[90m(推荐)\033[0m"
-    echo -e " \033[1;31m[0]\033[0m 退出"
+    echo -e " \033[1;31m[7]\033[0m \033[1;31m停止/卸载服务\033[0m \033[90m(清空规则)\033[0m"
+    echo -e " \033[1;37m[0]\033[0m 退出"
     echo ""
-    read -p " 请输入 [0-6]: " choice
+    read -p " 请输入 [0-7]: " choice
     case "$choice" in
         1) add_rule_ui ;; 2) list_rules_ui ;; 3) delete_rule_ui ;;
         4) apply_rules; read -n 1 -s -r -p "按键继续..." ;;
         5) edit_config_manual ;; 
         6) manage_autostart ;;
+        7) stop_and_uninstall ;;
         0) exit 0 ;;
         *) ;;
     esac
