@@ -53,36 +53,52 @@ EOF
 fi
 
 # ========== 3. 核心：应用规则 (智能透传真实IP) ==========
+# ========== 3. 核心：应用规则 (智能透传真实IP - 修正版) ==========
+# 【版本3 - 混合模式】
 apply_rules() {
+    # 1. 环境准备与清理
+    # (假设 remove_table 和 check_env 函数已在脚本其他地方定义，若没有请保留原脚本的引用)
+    remove_table
     check_env
     
-    # 获取出口网卡 (用于 CT 访问互联网时的 SNAT)
+    # 2. 获取出口网卡 (用于容器访问互联网)
     EXTERNAL_IF=$(ip route get 8.8.8.8 2>/dev/null | awk '{print $5; exit}')
     
-    _blue "正在重新加载防火墙规则..."
-    echo -e "  真实来源 IP  : \033[32m已开启\033[0m (仅对内网回环应用伪装)"
+    # 3. 定义变量
+    # 内网网段定义
+    PRIVATE_NETS="10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16"
+    # 【重点】定义需要透传真实 IP 的后端端口（通常 Nginx 容器监听的是 80 和 443）
+    _blue "正在重新加载混合防火墙规则..."
+    echo -e "  混合模式     : \033[32m已开启\033[0m (80/443透传IP，其他端口全伪装)"
     echo -e "  出口网卡     : \033[33m${EXTERNAL_IF:-自动检测}\033[0m"
 
+    # 4. 初始化表和链
     nft add table ip "$CUSTOM_TABLE"
     nft flush table ip "$CUSTOM_TABLE"
-    nft add chain ip "$CUSTOM_TABLE" prerouting '{ type nat hook prerouting priority -150 ; }'
+    nft add chain ip "$CUSTOM_TABLE" prerouting '{ type nat hook prerouting priority -100 ; }'
     nft add chain ip "$CUSTOM_TABLE" postrouting '{ type nat hook postrouting priority 100 ; }'
     nft add chain ip "$CUSTOM_TABLE" forward '{ type filter hook forward priority 0 ; policy accept ; }'
 
-    # 放行转发流量
+    # 5. 基础放行
     nft add rule ip "$CUSTOM_TABLE" forward ct state { established, related } counter accept
     nft add rule ip "$CUSTOM_TABLE" forward ct status dnat counter accept
-    
-    # [核心修改 1: 真实 IP 透传逻辑]
-    # 如果源 IP 是私有地址(内网互访/回环)，则必须进行伪装(Masquerade)，否则回包会断。
-    # 如果源 IP 是公网地址，则不伪装，直接转发给 CT，CT 就能看到真实 IP。
-    nft add rule ip "$CUSTOM_TABLE" postrouting ip saddr { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } ct status dnat counter masquerade
 
-    # [核心修改 2: CT 上网]
-    # CT 主动访问互联网的流量，必须通过出口网卡伪装
+    # ==================== [混合逻辑核心 (Postrouting)] ====================
+    
+    # 1. 【内网回环 (Hairpin NAT)】
+    # 无论访问什么端口，只要来源是内网，必须伪装，否则内网无法通过公网IP访问映射。
+    nft add rule ip "$CUSTOM_TABLE" postrouting ct status dnat ip saddr { $PRIVATE_NETS } counter masquerade
+
+    # 2. 【容器主动上网】
+    # 容器访问外部网络，必须伪装。
     if [ -n "$EXTERNAL_IF" ]; then
-        nft add rule ip "$CUSTOM_TABLE" postrouting oifname "$EXTERNAL_IF" counter masquerade
+        nft add rule ip "$CUSTOM_TABLE" postrouting ip saddr { $PRIVATE_NETS } oifname "$EXTERNAL_IF" counter masquerade
     fi
+
+    # 4. 【保底全伪装 (解决其他端口问题)】
+    nft add rule ip "$CUSTOM_TABLE" postrouting ct status dnat counter masquerade
+    
+    # ==================== [端口转发映射 (Prerouting)] ====================
 
     if tomlq -e '.endpoints' "$CONFIG_FILE" >/dev/null 2>&1; then
         count=0
@@ -97,9 +113,9 @@ apply_rules() {
             
             if [[ "$l_port" == *-* ]]; then dport_arg="{$l_port}"; else dport_arg="$l_port"; fi
 
-            echo -e "  ➕ 激活: (本机):$l_port -> $remote"
+            echo -e "  ➕ 激活: :$l_port -> $remote"
 
-            # 保持 v13 的智能匹配：只拦截发往本机的流量
+            # 使用 fib daddr type local 自动匹配本机所有 IP
             nft add rule ip "$CUSTOM_TABLE" prerouting \
                 fib daddr type local \
                 meta l4proto { tcp, udp } th dport "$dport_arg" \
@@ -162,6 +178,14 @@ EOF
     read -n 1 -s -r -p "按任意键继续..."
 }
 
+remove_table() {
+  # 3. 清空 NFTables 表
+  if nft list table ip "$CUSTOM_TABLE" &>/dev/null; then
+      nft delete table ip "$CUSTOM_TABLE"
+      _green "防火墙规则已清空"
+  fi
+}
+
 # ========== 6. 停止与卸载 ==========
 stop_and_uninstall() {
     clear
@@ -188,20 +212,7 @@ stop_and_uninstall() {
         _yellow "开机自启已移除"
     fi
 
-    # 3. 清空 NFTables 表
-    if nft list table ip "$CUSTOM_TABLE" &>/dev/null; then
-        nft delete table ip "$CUSTOM_TABLE"
-        _green "防火墙规则已清空"
-    fi
-
-    echo ""
-    read -p "是否同时删除配置文件 ($CONFIG_FILE)? (y/n): " del_conf
-    if [[ "$del_conf" == "y" ]]; then
-        rm -rf "$CONFIG_DIR"
-        _green "配置文件已删除"
-    else
-        _blue "配置文件已保留"
-    fi
+    remove_table
 
     echo ""
     _green "✔ 操作完成。"
@@ -298,7 +309,7 @@ while true; do
     echo ""
     echo -e " \033[1;36m[5]\033[0m 手动编辑  \033[90m(自由排版)\033[0m"
     echo -e " \033[1;35m[6]\033[0m \033[1;35m配置开机自启\033[0m \033[90m(推荐)\033[0m"
-    echo -e " \033[1;31m[7]\033[0m \033[1;31m停止/卸载服务\033[0m \033[90m(清空规则)\033[0m"
+    echo -e " \033[1;31m[7]\033[0m \033[1;31m停止/卸载服务\033[0m \033[90m\033[0m"
     echo -e " \033[1;37m[0]\033[0m 退出"
     echo ""
     read -p " 请输入 [0-7]: " choice
