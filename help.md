@@ -12,7 +12,7 @@
 |  QQ浏览器 |  qqbrowser://extensions/search?key=Tampermonkey |
 |  UC浏览器 |  离线安装包 [Tampermonkey.crx](https://open-1252026789.cos.ap-beijing.myqcloud.com/Tampermonkey.crx?q-sign-algorithm=sha1&q-ak=AKID5vs71lFeyZfPygxk2FKr00awLkM2CtH9&q-sign-time=1552783829;1552785629&q-key-time=1552783829;1552785629&q-header-list=&q-url-param-list=&q-signature=f6af0eeaa1aec2eeb91ec733010f3a55f945876d&x-cos-security-token=4ea51c804f012501a972cdb19e18a2f6560452af10001) |
 |  遨游浏览器 |  http://extension.maxthon.cn/detail/index.php?view_id=1680&category_id=10 |
-|  Chrome浏览器 |  https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo |
+|  Chrome浏览器 |  https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo |
 |  火狐浏览器 |  https://addons.mozilla.org/zh-CN/firefox/addon/tampermonkey/ |
 |  Microsoft Edge |  https://www.microsoft.com/store/p/tampermonkey/9nblggh5162s |
 |  其他浏览器 |  同UC |

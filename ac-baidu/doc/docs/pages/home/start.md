@@ -38,7 +38,7 @@ head:
 
 如果你的网络能打开下面应用商店的地址，则直接安装即可：
 
-- [Tampermonkey - Chrome 应用商店](https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+- [Tampermonkey - Chrome 应用商店](https://chromewebstore.google.com/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo)
 - [Tampermonkey - Edge 应用商店](https://microsoftedge.microsoft.com/addons/detail/iikmkjmpaadaobahmlepeloendndfphd)
 - [Tampermonkey - Firefox 应用商店](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/)
 - [Tampermonkey - Safari 应用商店](https://apps.apple.com/us/app/tampermonkey/id1482490089)
