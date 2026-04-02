@@ -714,7 +714,7 @@
         pager: {
           nextLink: "id('pnnext')|id('navbar navcnt nav')//td[span]/following-sibling::td[1]/a|id('nn')/parent::a",
           pageElement: "id('rso')|id('center_col')/style[contains(.,'relative')][id('rso')]",
-          HT_insert: ["css;#res", 2], // 1 = beforebegin; 2 = beforeend
+          HT_insert: ["id('botstuff')", 1], // 1 = beforebegin; 2 = beforeend
           replaceE: '//div[@id="navcnt"] | //div[@id="rcnt"]//div[@role="navigation"]',
           afertPagerAutoCallFunc: (pageElements, scriptElements, toElement) => {
             // 插入scripts & style - 保证js加载
