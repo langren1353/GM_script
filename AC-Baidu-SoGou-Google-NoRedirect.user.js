@@ -688,7 +688,7 @@
         pager: {
           nextLink: "//a[contains(@class,\"sb_pagN\")]",
           pageElement: "id(\"b_results\")/li[not(contains(@class,\"b_pag\") or contains(@class,\"b_ans b_top\"))]",
-          HT_insert: ["id(\"b_results\")/li[@class=\"b_pag\"]", 1], // 1 = beforebegin; 2 = beforeend
+          HT_insert: ["id(\"b_results\")/li[contains(@class,\"b_pag\")]", 1], // 1 = beforebegin; 2 = beforeend
           replaceE: "id(\"b_results\")//nav[@role=\"navigation\"]",
         }
       }
