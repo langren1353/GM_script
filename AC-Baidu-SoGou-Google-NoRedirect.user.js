@@ -1628,6 +1628,20 @@
             hasDealHrefSet.add(linkHref);
             let len2 = hasDealHrefSet.size;
             if (len1 === len2) continue; // 说明数据已经处理过，存在相同的记录
+            // 处理Bing重定向
+            const handleBingRedirect = () => {
+              if (linkHref.search("bing.com/(ck|a|aclick)") > 0) {
+                const urlObj = new URL(linkHref);
+                const uParam = urlObj.searchParams.get('u');
+                if (uParam) {
+                  // 去掉前缀a1，并解码Base64
+                  const base64Str = uParam.substring(2).replace(/-/g, '+').replace(/_/g, '/');
+                  const trueUrl = atob(base64Str);
+                  DealRedirect(null, linkHref, trueUrl);
+                  return true;
+                }
+              }
+            }
             const isLinkNeedDeal = () => {
               // 如果当前节点存在mu参数，或者link节点存在data-mdurl，那么就算直接成功，不用重新请求一遍了
               let trueLink = curNode.getAttribute('mu') || linkNode.getAttribute('data-mdurl')
@@ -1646,7 +1660,7 @@
               return resLink
             }
             // 如果不需要处理，那么跳过后续逻辑
-            if (!isLinkNeedDeal()) {
+            if (handleBingRedirect() || isLinkNeedDeal()) {
               continue
             }
             // 走接口重定向处理
