@@ -103,7 +103,7 @@ body.showRight #wrapper #container.sam_newgrid #content_left {
 }
 
 body.showRight #wrapper #content_right {
-  right: calc(40vw - 500px);
+  right: 8vw;
 }
 
 @media screen and (max-width: 1280px) {
@@ -149,7 +149,7 @@ body.showRight #wrapper #content_right {
 
 .s_form_wrapper {
   display: flex;
-  justify-content: center;
+  /*justify-content: center;*/
 }
 
 #wrapper #s_tab {
@@ -170,7 +170,7 @@ form.fm .s_ipt_wr.bg {
   min-width: calc(37.5vw - 150px);
 }
 
-.result-molecule.new-pmd:has(#s_tab) {
+#wrapper > .result-molecule.new-pmd {
   position: relative;
   z-index: 233;
   margin-top: 6px;
@@ -181,13 +181,13 @@ form.fm .s_ipt_wr.bg {
 
 .showRight {
   .result-molecule.new-pmd {
-    &[tpl='app/rs'] {
-      margin-left: 44% !important;
-    }
+    // &[tpl='app/rs'] {
+    //   margin-left: 44% !important;
+    // }
 
     &[tpl='app/page'] {
       padding-bottom: 20px;
-      margin-left: 48% !important;
+      /*margin-left: 48% !important;*/
     }
 
     &[tpl='app/footer'] {
@@ -198,8 +198,9 @@ form.fm .s_ipt_wr.bg {
 
 .new-pmd #rs_new {
   background-color: white;
-  width: calc(100% - 20px);
+  margin-left: 40%;
   padding: 10px 0 10px 20px;
+  transform: translateX(-50%);
 }
 
 .result-molecule #page>div {
@@ -224,7 +225,7 @@ form.fm .s_ipt_wr.bg {
   margin-left: calc(-31.25vw + 840.00px);
 }
 
-body[baidu] #chat-input-main {
+#chat-input-main {
   width: calc(46.88vw - 300px);
 }
 
@@ -298,8 +299,6 @@ body[baidu] #chat-input-main {
 
   .s_form>.s_form_wrapper {
     margin-left: calc(-45.13vw + 916.43px);
-    /** 1366=300px；1920=50px **/
-    ;
   }
 }
 
