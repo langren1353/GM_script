@@ -1917,6 +1917,50 @@
           CONST.cssAutoInsert.add("multiPageStyle", CONST.adsCSSList.multiPageStyle)
         }
       }
+      // bing原生样式会把 b_wide 拉成整行、把 b_algo 固定到第 1 列
+      if (+CONST.curConfig.adsStyleMode >= 3) {
+        CONST.cssAutoInsert.add(
+          "bingGridAlignFix",
+          `
+            body #b_content > main {
+              width: 73vw !important;
+              max-width: none !important;
+            }
+
+            body #b_content .b_widemop_layout {
+              display: block !important;
+              width: 100% !important;
+              max-width: none !important;
+            }
+
+            body #b_content .b_widemop_rr {
+              display: none !important;
+            }
+
+            #b_content .b_widemop_layout > #b_results {
+              width: 100% !important;
+              grid-area: auto !important;
+              grid-template-rows: none !important;
+              grid-auto-rows: auto !important;
+              grid-auto-flow: row !important;
+            }
+
+            #b_content #b_results {
+              align-items: start !important;
+            }
+
+            #b_content #b_results > li:not(.b_pag):not(.b_msg):not(#b_msg):not(#mfa_root) {
+              align-self: start !important;
+              min-width: 0 !important;
+              grid-area: auto !important;
+              grid-column: auto / span 1 !important;
+              grid-row: auto !important;
+              width: 98% !important;
+              max-width: 100% !important;
+            }
+          `
+        )
+      }
 
       CONST.cssAutoInsert.add("styleLogo", ".minidiv #logo img{width: 100px;height: unset;margin-top: 0.3rem;} body.purecss-mode:before{display: none;}")
       CONST.cssAutoInsert.add("specialBAIDU", ".opr-recommends-merge-imgtext{display:none!important;}.res_top_banner{display:none!important;}.headBlock, body>div.result-op{display:none;}")
