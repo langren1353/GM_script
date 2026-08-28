@@ -1499,7 +1499,7 @@
       if (document.querySelector("#myuser") === null) {
         MyApi.safeWaitFunc("#u, #gb, #b_header>#id_h, #header_wrapper .js-hl-butto, .header--aside, #header .inner .menu", parent => {
 
-          parent.style = "width: auto;";
+          parent.style.width = "auto";
           let userAdiv = document.createElement("div");
           userAdiv.id = "myuser";
           userAdiv.innerHTML = `<input type='submit' class='myuserconfig' value='自定义'/><span class='ac-newversionDisplay' style='background-color: red;float: left;height: 8px;width: 8px;border-radius: 4px;display: none'>&nbsp;</span>`;
@@ -1971,7 +1971,7 @@
           pointer-events: none;
         }
       `)
-      CONST.cssAutoInsert.add("menuBtn", ".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}#u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #gb #myuser{margin-top:7px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;} body[haosou] #myuser{margin-top:-10px}")
+      CONST.cssAutoInsert.add("menuBtn", ".achide{display:none;} .newFuncHighLight{color:red;font-weight: 100;background-color: yellow;font-weight: 600;}#sp-ac-container label{display:inline;}body:not(.baidu) #u{width:319px}#u #myuser{display:inline-block;margin: 13px -10px 0 24px;}body.baidu #u{position:absolute!important;right:0!important;left:auto!important;top:0!important;width:auto!important;display:flex!important;align-items:flex-start!important;justify-content:flex-end!important;margin:0 9px 0 0!important;padding:0 24px 0 0!important;pointer-events:none!important;}body.baidu #u>*{pointer-events:auto!important;}body.baidu #u .message-center-wrapper{display:none!important;}body.baidu #u #myuser{position:fixed!important;top:54px!important;right:220px!important;flex:0 0 auto!important;margin:0!important;z-index:100000!important;pointer-events:none!important;}body.baidu #u #myuser .myuserconfig,body.baidu #u #myuser .ac-newversionDisplay{pointer-events:auto!important;}body.baidu #u #myuser .myuserconfig{padding:5px 7px!important;line-height:18px!important;}@media (max-width:1400px){body.baidu #u #myuser{top:50px!important;right:156px!important;}}@media (max-width:1050px){body.baidu #u #myuser{top:96px!important;right:16px!important;}}.site-wrapper #myuser,.sogou-set-box #myuser,#gbw #myuser{margin-right:15px;} #gb #myuser{margin-top:7px;} #myuser,#myuser .myuserconfig{padding:0;margin:0}#myuser{display:inline-block;}#myuser .myuserconfig{display:inline-block;line-height:1.5;background:#4e6ef2;color:#fff;font-weight:700;text-align:center;padding:6px;border:2px solid #E5E5E5;}#myuser .myuserconfig{box-shadow:0 0 10px 3px rgba(0,0,0,.1);border-radius: 6px}#myuser .myuserconfig:hover{background:#4662d9 !important;color:#fff;cursor:pointer;border:2px solid #73A6F8;} body[haosou] #myuser{margin-top:-10px}")
 
       if (CONST.curConfig.baiduLiteEnable) {
         CONST.cssAutoInsert.add("baiduLiteStyle", CONST.adsCSSList.baiduLiteStyle)
