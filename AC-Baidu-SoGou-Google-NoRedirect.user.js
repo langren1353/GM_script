@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.20
+// @version    27.21
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -51,6 +51,7 @@
 // @copyright  2015-2026, AC
 // @lastmodified  2026-06-18
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2026.07-18-V27.21 修复谷歌的双列问题；
 // @note    2026.06-18-V27.20 修复百度错位的问题
 // @note    2026.01-06-V27.19 修复百度、谷歌、必应的一些bug，增加页面加载动画，优化页面资源占用，避免大量的资源占用
 // @note    2025.10-22-V27.18 修复谷歌、百度在不同缩放屏幕下导致的错位问题
@@ -126,7 +127,7 @@
 // @resource  HuYanStyle         https://ibaidu.tujidu.com/newcss/HuYanStyle.less?t=27.20
 // @resource  BgAutoFit          https://ibaidu.tujidu.com/newcss/BgAutoFit.less?t=27.20
 // @resource  HuaHua-ACDrakMode  https://ibaidu.tujidu.com/newcss/HuaHua-ACDrakMode.less?t=27.20
-// @resource  baiduLiteStyle     https://gitcode.net/-/snippets/1906/raw/master/LiteStyle.css?inline=false
+// @resource  baiduLiteStyle     https://ibaidu.tujidu.com/newcss/baiduLiteStyle.less?t=27.20
 // @require   https://registry.npmmirror.com/less_browser_fix/4.2.2/files/dist/less.min.js
 // @require   https://registry.npmmirror.com/vue/3.5.26/files/dist/vue.runtime.global.prod.js
 // @noframes
@@ -1031,6 +1032,7 @@
         bodyLocked: true,
         headLocked: true,
         pageLoadingLocked: false,
+        hasStartedLoadMore: false, // 首次翻页后锁定当前多列计算结果
         isBlockChecking: false,
         isFaviconChecking: false,
         isCounterChecking: false,
@@ -2129,7 +2131,9 @@
               console.error("[AC-Script]", "翻页到达底部了 - 或者异常 - 出现异常请直接反馈作者修改");
               return;
             }// 不会重复加载相同的页面
-            console.log("加载翻页地址：" + url)
+            CONST.lock.hasStartedLoadMore = true;
+            console.mylog('翻页已启动，锁定当前多列布局');
+            console.log("加载翻页地址：" + url);
             CONST.options.useItem.pageUrl = url;
             // 注入加载指示器
             const loader = document.createElement('div');
@@ -2719,6 +2723,11 @@
         // 检查的事preNode 和 curNode
         // 但是需要先判断curNode和fatherNode有没有
         function getTrueFatherChild(preNode, curNode, fatherNode) {
+          // 翻页后的原始节点没有布局标记，继续补充标记，但不再根据高度重新选择父节点
+          if (CONST.lock.hasStartedLoadMore) {
+            return markFatherChild(curNode, fatherNode)
+          }
+
           const minItemHeight = 60
           const father_curPossible = curNode.offsetHeight > minItemHeight && fatherNode.offsetHeight / curNode.offsetHeight > 1.5
           const father_anotherPossible = [...fatherNode.children].some(one => {

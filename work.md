@@ -26,3 +26,8 @@
       
 - [ ] 似乎百度学术的搜索结果都看不见了
 - [ ] 似乎谷歌在搜索特定关键字时具有左侧栏：
+
+- [x] 2026-08-17 11:26:20 用户要求：Google 一旦开始 `loadMore` 自动翻页，就保持当前双列、三列状态，不再根据父节点高度重新计算。处理：增加永久翻页启动锁；首次有效翻页请求后停止 `findAndMarkP2Line()` 高度判定，并让后续 Google 翻页结果继承已确认的 `two-father`、`two-child` 标记。项目：AC-Baidu-SoGou-Google-NoRedirect。
+- [x] 2026-08-17 11:35:00 用户纠正：不应在 `loadMorePage()` 内修改 HTML，布局逻辑应集中在 `findAndMarkP2Line()` 附近。处理：移除翻页函数中的布局 DOM 修改和独立锁；使用已有 `pageUrl` 判断有效翻页已开始，在 `findAndMarkP2Line()` 中按首次确认的 `two-child → two-father` 层级继承标记，不再读取父节点高度。项目：AC-Baidu-SoGou-Google-NoRedirect。
+- [x] 2026-08-17 11:38:30 用户要求简化：恢复单一翻页锁，不需要层级继承逻辑。处理：首次有效 `loadMorePage()` 启动后设置 `hasStartedLoadMore`，`findAndMarkP2Line()` 检测锁后直接结束，不再计算高度或修改布局标记。项目：AC-Baidu-SoGou-Google-NoRedirect。
+- [x] 2026-08-17 11:42:18 用户指出：`two-child/two-father` 均由脚本生成，原始翻页节点没有这些属性，不能直接停止 `findAndMarkP2Line()`。处理：将锁判断下沉到 `getTrueFatherChild()`；翻页后继续遍历新节点并调用 `markFatherChild()` 补充属性，只跳过父节点高度计算。项目：AC-Baidu-SoGou-Google-NoRedirect。
