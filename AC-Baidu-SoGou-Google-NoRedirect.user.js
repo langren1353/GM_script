@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.23
+// @version    27.24
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -51,6 +51,7 @@
 // @copyright  2015-2026, AC
 // @lastmodified  2026-06-18
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2026.10-26-V27.24 隐藏 Google AI 概览并扩展双列搜索结果宽度；
 // @note    2026.10-26-V27.23 修复 AI 概览挤压双列：兼容 CSS 多栏与 Grid；
 // @note    2026.10-26-V27.22 初步处理谷歌 AI 概览与双列布局冲突；
 // @note    2026.07-18-V27.21 修复谷歌的双列问题；
@@ -2806,47 +2807,35 @@
         CONST.curConfig.enableCSS = false
         return
       }
-      // AI 概览可能处于 CSS 多栏布局中，grid-column 对 column-count 布局无效。
-      // 从 AI 模块向上寻找真正的多栏/网格容器，让 AI 所在的直接子项跨整行；
-      // 不隐藏 AI 概览，并兼容旧版 two-father 标记。
-      document.querySelectorAll('.j2luwe.pWvJNd').forEach(ai => {
-        let item = ai
-        let parent = ai.parentElement
-        let layoutParent = null
-        while (parent && parent !== document.body && parent !== document.documentElement) {
-          const style = window.getComputedStyle(parent)
-          const columnCount = Number.parseInt(style.columnCount, 10)
-          const hasColumns = (Number.isFinite(columnCount) && columnCount > 1) ||
-            (style.columnWidth !== 'auto' && style.columnWidth !== '')
-          const gridColumns = style.display.includes('grid')
-            ? style.gridTemplateColumns.split(/\\s+/).filter(Boolean).length
-            : 0
-          const hasGrid = gridColumns > 1 || parent.hasAttribute('two-father')
-          if (hasColumns || hasGrid) {
-            layoutParent = parent
-            break
-          }
-          item = parent
-          parent = parent.parentElement
-        }
-
-        if (layoutParent) {
-          item.style.setProperty('column-span', 'all', 'important')
-          item.style.setProperty('break-inside', 'avoid', 'important')
-          item.style.setProperty('width', '100%', 'important')
-          item.style.setProperty('min-width', '0', 'important')
-          item.style.setProperty('grid-column', '1 / -1', 'important')
-        }
-      })
-
-      // Google 新版页面会把 #center_col 自动放到 #rcnt 的末端窄列中。
-      // AI 概览成为独立 Grid 项后触发了自动放置错位；将主搜索结果区拉回与 AI 概览相同的主列。
+      // Google AI 概览会占据主内容区，并把 #center_col 挤到外层 Grid 的右侧。
+      // 隐藏包含 AI 概览的独立模块，同时把搜索结果区放回主列，保留两列结果。
+      const googleAI = document.querySelector('.j2luwe.pWvJNd')
       const googleRcnt = document.querySelector('#rcnt')
       const googleCenterCol = document.querySelector('#center_col')
-      if (googleRcnt && googleCenterCol && googleRcnt.querySelector('.j2luwe.pWvJNd')) {
+      if (googleAI) {
+        // 优先隐藏承载 AI 概览的完整模块，避免只隐藏文字后留下大块空白。
+        const aiModule = googleAI.closest('.SLPe5b.M8OgIe') ||
+          googleAI.closest('.FkX2oe') ||
+          googleAI
+        aiModule.style.setProperty('display', 'none', 'important')
+      }
+
+      if (googleRcnt && googleCenterCol) {
+        // 让搜索结果占据与百度双列布局接近的主内容宽度；窄屏自动收缩。
         googleCenterCol.style.setProperty('grid-column', '2 / -2', 'important')
+        googleCenterCol.style.setProperty('width', 'min(1100px, calc(100vw - 320px))', 'important')
+        googleCenterCol.style.setProperty('max-width', '100%', 'important')
         googleCenterCol.style.setProperty('min-width', '0', 'important')
-        googleCenterCol.style.setProperty('width', '100%', 'important')
+        googleCenterCol.style.setProperty('justify-self', 'center', 'important')
+
+        const googleRso = googleCenterCol.querySelector('#rso')
+        if (googleRso) {
+          googleRso.style.setProperty('width', '100%', 'important')
+          googleRso.style.setProperty('max-width', '100%', 'important')
+          googleRso.style.setProperty('grid-template-columns', 'repeat(2, minmax(0, 1fr))', 'important')
+          googleRso.style.setProperty('column-gap', '24px', 'important')
+          googleRso.style.setProperty('box-sizing', 'border-box', 'important')
+        }
       }
 
       findAndMarkP2Line()
