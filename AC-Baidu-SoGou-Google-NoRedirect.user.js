@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.21
+// @version    27.26
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -51,6 +51,11 @@
 // @copyright  2015-2026, AC
 // @lastmodified  2026-06-18
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2026.10-26-V27.26 增强 AI 概览动态插入/类名变化后的隐藏；
+// @note    2026.10-26-V27.25 参考百度宽度并兼容 Google 三列/四列；
+// @note    2026.10-26-V27.24 隐藏 Google AI 概览并扩展双列搜索结果宽度；
+// @note    2026.10-26-V27.23 修复 AI 概览挤压双列：兼容 CSS 多栏与 Grid；
+// @note    2026.10-26-V27.22 初步处理谷歌 AI 概览与双列布局冲突；
 // @note    2026.07-18-V27.21 修复谷歌的双列问题；
 // @note    2026.06-18-V27.20 修复百度错位的问题
 // @note    2026.01-06-V27.19 修复百度、谷歌、必应的一些bug，增加页面加载动画，优化页面资源占用，避免大量的资源占用
@@ -2704,6 +2709,13 @@
     CONST.addIntervalTrigger('google', 'now', (counter) => {
       function findAndMarkP2Line() {
 
+        // Google AI Overview 是动态插入的独立模块，不应被当作普通搜索结果参与双列父子节点判定。
+        // 使用页面源码中可确认的 AI 容器类名，避免误改整个搜索结果容器。
+        const isGoogleAIOverviewNode = (node) => {
+          if (!node || node.nodeType !== 1) return false
+          return node.matches('.j2luwe.pWvJNd') || !!node.querySelector('.j2luwe.pWvJNd')
+        }
+
         function markFatherChild(child, father) {
           const child_checkedAttr = child.getAttribute('two-checked') || 0
           const father_checkedAttr = father.getAttribute('two-checked') || 0
@@ -2731,7 +2743,8 @@
           const minItemHeight = 60
           const father_curPossible = curNode.offsetHeight > minItemHeight && fatherNode.offsetHeight / curNode.offsetHeight > 1.5
           const father_anotherPossible = [...fatherNode.children].some(one => {
-            return one !== curNode && one.offsetHeight > minItemHeight && fatherNode.offsetHeight / one.offsetHeight > 5;
+            return one !== curNode && !isGoogleAIOverviewNode(one) &&
+              one.offsetHeight > minItemHeight && fatherNode.offsetHeight / one.offsetHeight > 5;
           })
           const fatherNotMain = fatherNode.id === "cnt";
 
@@ -2741,7 +2754,8 @@
           } else {
             const now_curPossible = preNode.offsetHeight > minItemHeight && curNode.offsetHeight / preNode.offsetHeight > 1.5
             const now_anotherPossible = [...curNode.children].some(one => {
-              return one !== preNode && one.offsetHeight > minItemHeight && curNode.offsetHeight / one.offsetHeight > 5;
+              return one !== preNode && !isGoogleAIOverviewNode(one) &&
+                one.offsetHeight > minItemHeight && curNode.offsetHeight / one.offsetHeight > 5;
             })
             // 父节点不行的话，那么检查子节点是否符合要求
             if (now_curPossible && now_anotherPossible) {
@@ -2753,6 +2767,8 @@
 
         // 标记自身
         function MarkMine(curItem) {
+          // AI 概览内部的卡片不参与普通搜索结果的双列标记。
+          if (curItem.closest('.j2luwe.pWvJNd')) return null
           let maxHeight = 9, curHeight = 1
           let preNode = curItem
           while (curHeight < maxHeight) {
@@ -2793,6 +2809,63 @@
         CONST.curConfig.enableCSS = false
         return
       }
+      // Google 会异步插入或重新渲染 AI 概览，不能只依赖某一组会变化的 class。
+      const googleRcnt = document.querySelector('#rcnt')
+      const googleCenterCol = document.querySelector('#center_col')
+
+      // 第一层：优先使用已确认过的结构选择器。
+      const googleAI = document.querySelector(
+        '.j2luwe.pWvJNd, #m-x-content, [data-attrid="AIOverview"]'
+      )
+      if (googleAI) {
+        const aiModule = googleAI.closest('.SLPe5b.M8OgIe, .FkX2oe') || googleAI
+        aiModule.style.setProperty('display', 'none', 'important')
+      }
+
+      // 第二层：Google 更换 class 后，用标题文本识别 AI 概览，并只隐藏 #rcnt 下的独立模块。
+      // 限定在 #rcnt 内，且禁止把 #center_col / #rso 等搜索结果主容器误隐藏。
+      if (googleRcnt) {
+        const headings = googleRcnt.querySelectorAll('h1, h2, [role="heading"], span')
+        for (const heading of headings) {
+          const label = (heading.innerText || heading.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase()
+          if (!/(ai overview|ai 概览|ai 摘要|人工智能概览)/i.test(label)) continue
+
+          let module = heading
+          while (module.parentElement && module.parentElement !== googleRcnt) {
+            module = module.parentElement
+          }
+          if (module !== googleRcnt && module !== googleCenterCol &&
+              module.id !== 'center_col' && module.id !== 'rso' &&
+              !(googleCenterCol && module.contains(googleCenterCol))) {
+            module.style.setProperty('display', 'none', 'important')
+          }
+        }
+      }
+
+      if (googleRcnt && googleCenterCol) {
+        // 参考百度主内容区宽度；窄屏下自动收缩。
+        googleRcnt.style.setProperty('width', 'min(1544px, calc(100vw - 336px))', 'important')
+        googleRcnt.style.setProperty('max-width', 'calc(100vw - 32px)', 'important')
+        googleRcnt.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important')
+        googleRcnt.style.setProperty('margin-inline', 'auto', 'important')
+        googleCenterCol.style.setProperty('grid-column', '1 / -1', 'important')
+        googleCenterCol.style.setProperty('width', '100%', 'important')
+        googleCenterCol.style.setProperty('max-width', '1544px', 'important')
+        googleCenterCol.style.setProperty('min-width', '0', 'important')
+        googleCenterCol.style.setProperty('justify-self', 'stretch', 'important')
+
+        const googleRso = googleCenterCol.querySelector('#rso')
+        if (googleRso) {
+          const mode = Number(CONST.curConfig.adsStyleMode || 3)
+          const columns = mode >= 5 ? 4 : mode >= 4 ? 3 : 2
+          googleRso.style.setProperty('width', '100%', 'important')
+          googleRso.style.setProperty('max-width', '100%', 'important')
+          googleRso.style.setProperty('grid-template-columns', 'repeat(' + columns + ', minmax(0, 1fr))', 'important')
+          googleRso.style.setProperty('column-gap', '24px', 'important')
+          googleRso.style.setProperty('box-sizing', 'border-box', 'important')
+        }
+      }
+
       findAndMarkP2Line()
 
     }, 150, 10000000)
