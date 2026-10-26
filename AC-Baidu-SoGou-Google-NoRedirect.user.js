@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.22
+// @version    27.23
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -51,7 +51,8 @@
 // @copyright  2015-2026, AC
 // @lastmodified  2026-06-18
 // @feedback-url  https://github.com/langren1353/GM_script
-// @note    2026.10-26-V27.22 修复谷歌 AI 概览干扰双列布局；
+// @note    2026.10-26-V27.23 修复 AI 概览挤压双列：兼容 CSS 多栏与 Grid；
+// @note    2026.10-26-V27.22 初步处理谷歌 AI 概览与双列布局冲突；
 // @note    2026.07-18-V27.21 修复谷歌的双列问题；
 // @note    2026.06-18-V27.20 修复百度错位的问题
 // @note    2026.01-06-V27.19 修复百度、谷歌、必应的一些bug，增加页面加载动画，优化页面资源占用，避免大量的资源占用
@@ -2805,18 +2806,36 @@
         CONST.curConfig.enableCSS = false
         return
       }
-      // 若 AI 概览位于双列网格内部，将它所在的直接子项跨越整行；
-      // 不隐藏 AI 概览，也不影响普通搜索结果的双列布局。
+      // AI 概览可能处于 CSS 多栏布局中，grid-column 对 column-count 布局无效。
+      // 从 AI 模块向上寻找真正的多栏/网格容器，让 AI 所在的直接子项跨整行；
+      // 不隐藏 AI 概览，并兼容旧版 two-father 标记。
       document.querySelectorAll('.j2luwe.pWvJNd').forEach(ai => {
         let item = ai
         let parent = ai.parentElement
-        while (parent && parent !== document.body && !parent.hasAttribute('two-father')) {
+        let layoutParent = null
+        while (parent && parent !== document.body && parent !== document.documentElement) {
+          const style = window.getComputedStyle(parent)
+          const columnCount = Number.parseInt(style.columnCount, 10)
+          const hasColumns = (Number.isFinite(columnCount) && columnCount > 1) ||
+            (style.columnWidth !== 'auto' && style.columnWidth !== '')
+          const gridColumns = style.display.includes('grid')
+            ? style.gridTemplateColumns.split(/\\s+/).filter(Boolean).length
+            : 0
+          const hasGrid = gridColumns > 1 || parent.hasAttribute('two-father')
+          if (hasColumns || hasGrid) {
+            layoutParent = parent
+            break
+          }
           item = parent
           parent = parent.parentElement
         }
-        if (parent && parent.hasAttribute('two-father')) {
-          item.style.setProperty('grid-column', '1 / -1', 'important')
+
+        if (layoutParent) {
+          item.style.setProperty('column-span', 'all', 'important')
+          item.style.setProperty('break-inside', 'avoid', 'important')
+          item.style.setProperty('width', '100%', 'important')
           item.style.setProperty('min-width', '0', 'important')
+          item.style.setProperty('grid-column', '1 / -1', 'important')
         }
       })
 
