@@ -2839,6 +2839,16 @@
         }
       })
 
+      // Google 新版页面会把 #center_col 自动放到 #rcnt 的末端窄列中。
+      // AI 概览成为独立 Grid 项后触发了自动放置错位；将主搜索结果区拉回与 AI 概览相同的主列。
+      const googleRcnt = document.querySelector('#rcnt')
+      const googleCenterCol = document.querySelector('#center_col')
+      if (googleRcnt && googleCenterCol && googleRcnt.querySelector('.j2luwe.pWvJNd')) {
+        googleCenterCol.style.setProperty('grid-column', '2 / -2', 'important')
+        googleCenterCol.style.setProperty('min-width', '0', 'important')
+        googleCenterCol.style.setProperty('width', '100%', 'important')
+      }
+
       findAndMarkP2Line()
 
     }, 150, 10000000)
