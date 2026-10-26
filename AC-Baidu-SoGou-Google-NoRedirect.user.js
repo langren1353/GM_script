@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.24
+// @version    27.25
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -51,6 +51,7 @@
 // @copyright  2015-2026, AC
 // @lastmodified  2026-06-18
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2026.10-26-V27.25 参考百度宽度并兼容 Google 三列/四列；
 // @note    2026.10-26-V27.24 隐藏 Google AI 概览并扩展双列搜索结果宽度；
 // @note    2026.10-26-V27.23 修复 AI 概览挤压双列：兼容 CSS 多栏与 Grid；
 // @note    2026.10-26-V27.22 初步处理谷歌 AI 概览与双列布局冲突；
@@ -2823,16 +2824,25 @@
       if (googleRcnt && googleCenterCol) {
         // 让搜索结果占据与百度双列布局接近的主内容宽度；窄屏自动收缩。
         googleCenterCol.style.setProperty('grid-column', '2 / -2', 'important')
-        googleCenterCol.style.setProperty('width', 'min(1100px, calc(100vw - 320px))', 'important')
-        googleCenterCol.style.setProperty('max-width', '100%', 'important')
+        // 参考百度双列主内容区宽度（约 1544px），在窄屏下自动收缩。
+        // #rcnt 原生使用大量窄 Grid 轨道；重设为单一弹性主轨道，避免 #center_col 自动落到右侧窄列。
+        googleRcnt.style.setProperty('width', 'min(1544px, calc(100vw - 336px))', 'important')
+        googleRcnt.style.setProperty('max-width', 'calc(100vw - 32px)', 'important')
+        googleRcnt.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important')
+        googleRcnt.style.setProperty('margin-inline', 'auto', 'important')
+        googleCenterCol.style.setProperty('grid-column', '1 / -1', 'important')
+        googleCenterCol.style.setProperty('width', '100%', 'important')
+        googleCenterCol.style.setProperty('max-width', '1544px', 'important')
         googleCenterCol.style.setProperty('min-width', '0', 'important')
-        googleCenterCol.style.setProperty('justify-self', 'center', 'important')
+        googleCenterCol.style.setProperty('justify-self', 'stretch', 'important')
 
         const googleRso = googleCenterCol.querySelector('#rso')
         if (googleRso) {
+          const mode = Number(CONST.curConfig.adsStyleMode || 3)
+          const columns = mode >= 5 ? 4 : mode >= 4 ? 3 : 2
           googleRso.style.setProperty('width', '100%', 'important')
           googleRso.style.setProperty('max-width', '100%', 'important')
-          googleRso.style.setProperty('grid-template-columns', 'repeat(2, minmax(0, 1fr))', 'important')
+          googleRso.style.setProperty('grid-template-columns', 'repeat(' + columns + ', minmax(0, 1fr))', 'important')
           googleRso.style.setProperty('column-gap', '24px', 'important')
           googleRso.style.setProperty('box-sizing', 'border-box', 'important')
         }
