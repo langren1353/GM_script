@@ -2825,7 +2825,7 @@
       // 第二层：Google 更换 class 后，用标题文本识别 AI 概览，并只隐藏 #rcnt 下的独立模块。
       // 限定在 #rcnt 内，且禁止把 #center_col / #rso 等搜索结果主容器误隐藏。
       if (googleRcnt) {
-        const headings = googleRcnt.querySelectorAll('h1, h2, [role="heading"]')
+        const headings = googleRcnt.querySelectorAll('h1, h2, [role="heading"], span')
         for (const heading of headings) {
           const label = (heading.innerText || heading.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase()
           if (!/(ai overview|ai 概览|ai 摘要|人工智能概览)/i.test(label)) continue
