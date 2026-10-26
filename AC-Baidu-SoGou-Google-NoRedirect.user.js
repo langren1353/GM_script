@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.25
+// @version    27.26
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -51,6 +51,7 @@
 // @copyright  2015-2026, AC
 // @lastmodified  2026-06-18
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2026.10-26-V27.26 增强 AI 概览动态插入/类名变化后的隐藏；
 // @note    2026.10-26-V27.25 参考百度宽度并兼容 Google 三列/四列；
 // @note    2026.10-26-V27.24 隐藏 Google AI 概览并扩展双列搜索结果宽度；
 // @note    2026.10-26-V27.23 修复 AI 概览挤压双列：兼容 CSS 多栏与 Grid；
@@ -2808,24 +2809,41 @@
         CONST.curConfig.enableCSS = false
         return
       }
-      // Google AI 概览会占据主内容区，并把 #center_col 挤到外层 Grid 的右侧。
-      // 隐藏包含 AI 概览的独立模块，同时把搜索结果区放回主列，保留两列结果。
-      const googleAI = document.querySelector('.j2luwe.pWvJNd')
+      // Google 会异步插入或重新渲染 AI 概览，不能只依赖某一组会变化的 class。
       const googleRcnt = document.querySelector('#rcnt')
       const googleCenterCol = document.querySelector('#center_col')
+
+      // 第一层：优先使用已确认过的结构选择器。
+      const googleAI = document.querySelector(
+        '.j2luwe.pWvJNd, #m-x-content, [data-attrid="AIOverview"]'
+      )
       if (googleAI) {
-        // 优先隐藏承载 AI 概览的完整模块，避免只隐藏文字后留下大块空白。
-        const aiModule = googleAI.closest('.SLPe5b.M8OgIe') ||
-          googleAI.closest('.FkX2oe') ||
-          googleAI
+        const aiModule = googleAI.closest('.SLPe5b.M8OgIe, .FkX2oe') || googleAI
         aiModule.style.setProperty('display', 'none', 'important')
       }
 
+      // 第二层：Google 更换 class 后，用标题文本识别 AI 概览，并只隐藏 #rcnt 下的独立模块。
+      // 限定在 #rcnt 内，且禁止把 #center_col / #rso 等搜索结果主容器误隐藏。
+      if (googleRcnt) {
+        const headings = googleRcnt.querySelectorAll('h1, h2, [role="heading"]')
+        for (const heading of headings) {
+          const label = (heading.innerText || heading.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase()
+          if (!/(ai overview|ai 概览|ai 摘要|人工智能概览)/i.test(label)) continue
+
+          let module = heading
+          while (module.parentElement && module.parentElement !== googleRcnt) {
+            module = module.parentElement
+          }
+          if (module !== googleRcnt && module !== googleCenterCol &&
+              module.id !== 'center_col' && module.id !== 'rso' &&
+              !(googleCenterCol && module.contains(googleCenterCol))) {
+            module.style.setProperty('display', 'none', 'important')
+          }
+        }
+      }
+
       if (googleRcnt && googleCenterCol) {
-        // 让搜索结果占据与百度双列布局接近的主内容宽度；窄屏自动收缩。
-        googleCenterCol.style.setProperty('grid-column', '2 / -2', 'important')
-        // 参考百度双列主内容区宽度（约 1544px），在窄屏下自动收缩。
-        // #rcnt 原生使用大量窄 Grid 轨道；重设为单一弹性主轨道，避免 #center_col 自动落到右侧窄列。
+        // 参考百度主内容区宽度；窄屏下自动收缩。
         googleRcnt.style.setProperty('width', 'min(1544px, calc(100vw - 336px))', 'important')
         googleRcnt.style.setProperty('max-width', 'calc(100vw - 32px)', 'important')
         googleRcnt.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important')
