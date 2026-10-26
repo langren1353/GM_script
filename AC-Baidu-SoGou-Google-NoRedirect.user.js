@@ -11,7 +11,7 @@
 // @license    GPL-3.0-only
 // @create     2015-11-25
 // @run-at     document-start
-// @version    27.21
+// @version    27.22
 // @connect    baidu.com
 // @connect    google.com
 // @connect    google.com.hk
@@ -51,6 +51,7 @@
 // @copyright  2015-2026, AC
 // @lastmodified  2026-06-18
 // @feedback-url  https://github.com/langren1353/GM_script
+// @note    2026.10-26-V27.22 修复谷歌 AI 概览干扰双列布局；
 // @note    2026.07-18-V27.21 修复谷歌的双列问题；
 // @note    2026.06-18-V27.20 修复百度错位的问题
 // @note    2026.01-06-V27.19 修复百度、谷歌、必应的一些bug，增加页面加载动画，优化页面资源占用，避免大量的资源占用
@@ -2704,6 +2705,13 @@
     CONST.addIntervalTrigger('google', 'now', (counter) => {
       function findAndMarkP2Line() {
 
+        // Google AI Overview 是动态插入的独立模块，不应被当作普通搜索结果参与双列父子节点判定。
+        // 使用页面源码中可确认的 AI 容器类名，避免误改整个搜索结果容器。
+        const isGoogleAIOverviewNode = (node) => {
+          if (!node || node.nodeType !== 1) return false
+          return node.matches('.j2luwe.pWvJNd') || !!node.querySelector('.j2luwe.pWvJNd')
+        }
+
         function markFatherChild(child, father) {
           const child_checkedAttr = child.getAttribute('two-checked') || 0
           const father_checkedAttr = father.getAttribute('two-checked') || 0
@@ -2731,7 +2739,8 @@
           const minItemHeight = 60
           const father_curPossible = curNode.offsetHeight > minItemHeight && fatherNode.offsetHeight / curNode.offsetHeight > 1.5
           const father_anotherPossible = [...fatherNode.children].some(one => {
-            return one !== curNode && one.offsetHeight > minItemHeight && fatherNode.offsetHeight / one.offsetHeight > 5;
+            return one !== curNode && !isGoogleAIOverviewNode(one) &&
+              one.offsetHeight > minItemHeight && fatherNode.offsetHeight / one.offsetHeight > 5;
           })
           const fatherNotMain = fatherNode.id === "cnt";
 
@@ -2741,7 +2750,8 @@
           } else {
             const now_curPossible = preNode.offsetHeight > minItemHeight && curNode.offsetHeight / preNode.offsetHeight > 1.5
             const now_anotherPossible = [...curNode.children].some(one => {
-              return one !== preNode && one.offsetHeight > minItemHeight && curNode.offsetHeight / one.offsetHeight > 5;
+              return one !== preNode && !isGoogleAIOverviewNode(one) &&
+                one.offsetHeight > minItemHeight && curNode.offsetHeight / one.offsetHeight > 5;
             })
             // 父节点不行的话，那么检查子节点是否符合要求
             if (now_curPossible && now_anotherPossible) {
@@ -2753,6 +2763,8 @@
 
         // 标记自身
         function MarkMine(curItem) {
+          // AI 概览内部的卡片不参与普通搜索结果的双列标记。
+          if (curItem.closest('.j2luwe.pWvJNd')) return null
           let maxHeight = 9, curHeight = 1
           let preNode = curItem
           while (curHeight < maxHeight) {
@@ -2793,6 +2805,21 @@
         CONST.curConfig.enableCSS = false
         return
       }
+      // 若 AI 概览位于双列网格内部，将它所在的直接子项跨越整行；
+      // 不隐藏 AI 概览，也不影响普通搜索结果的双列布局。
+      document.querySelectorAll('.j2luwe.pWvJNd').forEach(ai => {
+        let item = ai
+        let parent = ai.parentElement
+        while (parent && parent !== document.body && !parent.hasAttribute('two-father')) {
+          item = parent
+          parent = parent.parentElement
+        }
+        if (parent && parent.hasAttribute('two-father')) {
+          item.style.setProperty('grid-column', '1 / -1', 'important')
+          item.style.setProperty('min-width', '0', 'important')
+        }
+      })
+
       findAndMarkP2Line()
 
     }, 150, 10000000)
