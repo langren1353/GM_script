@@ -1064,19 +1064,6 @@
         GM.setValue = GM_setValue;
         GM.getValue = GM_getValue;
       }
-      if (typeof GM_getResourceText === 'undefined') {
-        GM_getResourceText = async function (aResourceName) {
-          // 如果没有这个接口，那就是没办法缓存这个数据，所以只能用本地的数据进行缓存了
-          let res = await (await fetch(await GM.getResourceUrl(aResourceName))).text();
-          let saveRes = await GM.getValue(aResourceName);
-          if (typeof (saveRes) === 'undefined') {
-            GM.setValue(aResourceName, res);
-          } else {
-            return saveRes;
-          }
-          return res;
-        }
-      }
     }
 
     bindGM() {
@@ -1163,9 +1150,19 @@
       }
 
       async function setLocalLessData(renderCSSKeyName, getLessDataFunc) {
-        const { css = '' } = await less.render(await getLessDataFunc());
-        localStorage.setItem(renderCSSKeyName, css)
-        return css
+        try {
+          const lessText = await getLessDataFunc()
+          if (typeof lessText !== 'string' || !lessText.trim()) {
+            throw new Error('未读取到有效的样式资源')
+          }
+          const { css = '' } = await less.render(lessText);
+          localStorage.setItem(renderCSSKeyName, css)
+          return css
+        } catch (err) {
+          // 加载或编译失败时保留旧缓存，不中断脚本初始化或后台刷新。
+          console.error('[AC] 样式加载失败：' + styleName, err)
+          return ''
+        }
       }
 
       async function getDebugStyle() {
@@ -1180,7 +1177,26 @@
       }
 
       async function getRenderStyle() {
-        return GM_getResourceText(styleName)
+        if (typeof GM_getResourceText === 'function') {
+          try {
+            const text = await GM_getResourceText(styleName)
+            if (typeof text === 'string' && text.trim()) return text
+          } catch (err) {
+            console.warn('[AC] 读取样式资源失败，尝试资源 URL：' + styleName, err)
+          }
+        }
+        // 兼容资源文本 API 不存在或返回 undefined 的脚本管理器。
+        const resourceUrl = typeof GM_getResourceURL === 'function'
+          ? await GM_getResourceURL(styleName)
+          : await GM.getResourceUrl(styleName)
+        if (typeof resourceUrl !== 'string' || !resourceUrl) {
+          throw new Error('未读取到样式资源 URL：' + styleName)
+        }
+        const response = await fetch(resourceUrl)
+        if (!response.ok) {
+          throw new Error('样式资源请求失败：HTTP ' + response.status)
+        }
+        return await response.text()
       }
     }
 
