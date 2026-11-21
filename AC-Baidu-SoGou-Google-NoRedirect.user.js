@@ -114,9 +114,9 @@
 // @resource  baiduCommonStyle   https://ibaidu.tujidu.com/newcss/baiduCommonStyle.less?t=27.20
 // @resource  baiduOnePageStyle  https://ibaidu.tujidu.com/newcss/baiduOnePageStyle.less?t=27.20
 // @resource  baiduTwoPageStyle  https://ibaidu.tujidu.com/newcss/baiduTwoPageStyle.less?t=27.20
-// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=27.20
-// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=27.20
-// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=27.20
+// @resource  googleCommonStyle  https://ibaidu.tujidu.com/newcss/googleCommonStyle.less?t=27.26-organic-2
+// @resource  googleOnePageStyle https://ibaidu.tujidu.com/newcss/googleOnePageStyle.less?t=27.26-organic-2
+// @resource  googleTwoPageStyle https://ibaidu.tujidu.com/newcss/googleTwoPageStyle.less?t=27.26-organic-2
 // @resource  bingCommonStyle    https://ibaidu.tujidu.com/newcss/bingCommonStyle.less?t=27.20
 // @resource  bingOnePageStyle   https://ibaidu.tujidu.com/newcss/bingOnePageStyle.less?t=27.20
 // @resource  bingTwoPageStyle   https://ibaidu.tujidu.com/newcss/bingTwoPageStyle.less?t=27.20
@@ -712,12 +712,11 @@
 
       return {
         SiteTypeID: 4,
-        MainType: "#rso .vt6azd, div[data-micp-id='rso'] .vt6azd",
-        FaviconType: ".zReHs",
+        MainType: "[data-ac-google-result]",
+        FaviconType: "[data-ac-google-title]",
         FaviconAddTo: "h3",
-        CounterType: "#rso .vt6azd h3:not(table h3),._yE>div[class~=_kk] h3",
-        BlockType: ".vt6azd h3", // 修复block翻页的问题
-        MultiPageType: ".srg, #rso, div[two-father], #rso>div:not(.vt6azd), #kp-wp-tab-overview",
+        CounterType: "[data-ac-google-title] h3",
+        BlockType: "[data-ac-google-title] h3", // 修复block翻页的问题
         pager: {
           nextLink: "id('pnnext')|id('navbar navcnt nav')//td[span]/following-sibling::td[1]/a|id('nn')/parent::a",
           pageElement: "id('rso')|id('center_col')/style[contains(.,'relative')][id('rso')]",
@@ -997,13 +996,15 @@
       }
 
       // 增加加载动画元素 - 5档极速模式
-      const loader = document.createElement('div')
-      loader.className = 'ac-loading-spinner'
-      loader.innerHTML = '<div></div><div></div><div></div><div></div><div></div>';
-      // 改为等待 body 出现后注入，以此保证合法的 DOM 结构，且 20ms 的频率足以保证加载速度
-      MyApi.safeWaitFunc('body', (bodyNode) => {
-        bodyNode.insertBefore(loader, bodyNode.firstChild);
-      }, 20, true);
+      if (this._getSiteName() !== 'google') {
+        const loader = document.createElement('div')
+        loader.className = 'ac-loading-spinner'
+        loader.innerHTML = '<div></div><div></div><div></div><div></div><div></div>';
+        // 改为等待 body 出现后注入，以此保证合法的 DOM 结构，且 20ms 的频率足以保证加载速度
+        MyApi.safeWaitFunc('body', (bodyNode) => {
+          bodyNode.insertBefore(loader, bodyNode.firstChild);
+        }, 20, true);
+      }
 
       this.sortIndex = 1
       this.bingScrollPos = 0
@@ -1148,7 +1149,9 @@
       }
 
       async function cacheStyle(styleName, getLessDataFunc) {
-        const renderCSSKeyName = '__AC.RenderCSS__' + styleName
+        // The previous CSS contains unscoped rules that collapse native source links on first load.
+        const revision = ['googleCommonStyle', 'googleOnePageStyle', 'googleTwoPageStyle'].includes(styleName) ? '.organic-2' : ''
+        const renderCSSKeyName = '__AC.RenderCSS__' + styleName + revision
         const localData = localStorage.getItem(renderCSSKeyName)
         if (localData) {
           setTimeout(() => {
@@ -1237,6 +1240,7 @@
     }
 
     getMultiPageStyle() {
+      if (this.options.siteName === 'google') return ''
       return this.options.useItem.MultiPageType +
         (+this.curConfig.adsStyleMode === 4 ?
           "{grid-template-columns: repeat(3, 33.3%); grid-template-areas:'xmain xmain xmain';}" :
@@ -1551,9 +1555,7 @@
 
       function removeOnMouseDownFunc() {
         MyApi.safeFunc(() => {
-          let resultNodes = document.querySelectorAll(".g .rc a, #rs, #rso .g a");
-          for (let i = 0; i < resultNodes.length; i++) {
-            let one = resultNodes[i];
+          for (const one of document.querySelectorAll('[data-ac-google-title]')) {
             one.setAttribute("onmousedown", ""); // 谷歌去重定向干扰
             one.setAttribute("target", "_blank"); // 谷歌链接新标签打开
             one.setAttribute("data-jsarwt", "0"); // Firefox谷歌去重定向干扰
@@ -2034,7 +2036,8 @@
       }
 
       if (CONST.curConfig.isALineDisable) {
-        CONST.cssAutoInsert.add("alinkEnable", "a,a em{text-decoration:none !important}")
+        const links = CONST.options.siteName === 'google' ? '[data-ac-google-title], [data-ac-google-title] em' : 'a, a em'
+        CONST.cssAutoInsert.add("alinkEnable", links + "{text-decoration:none !important}")
       }
 
       if (CONST.curConfig.isCounterEnable) {
@@ -2521,6 +2524,131 @@
     }
   }
 
+  // Google inserts both standalone result slots and anonymous lists under #rso.
+  // A list may also contain invisible placeholders, videos or People also ask.
+  function updateGoogleResults(roots, mode) {
+    const viewport = document.documentElement.clientWidth
+    const gap = 24
+    const width = Math.min(1544, Math.max(1, viewport - 32))
+    const columns = Math.max(1, Math.min(mode - 1, 4, Math.floor((width + gap) / (320 + gap))))
+    const resultSelector = '.A6K0A, .vt6azd, .g'
+    const owners = new Set()
+    const titles = new Set()
+    const slots = new Set()
+    const rows = []
+    const observed = new Set()
+    const overview = '[data-attrid="AIOverview"], #Odp5De, #eKIzJc, #m-x-content, .j2luwe.pWvJNd'
+
+    function setLength(node, name, number) {
+      const value = number + 'px'
+      if (node.style.getPropertyValue(name) !== value) node.style.setProperty(name, value)
+    }
+
+    for (const root of roots) {
+      const lists = [root, ...root.querySelectorAll(':scope > div:not([class]):not([id]), :scope > .srg')]
+      for (const list of lists) {
+        observed.add(list)
+        const parentBox = list.getBoundingClientRect()
+        const singleWidth = Math.min(parentBox.width, width)
+        const rowWidth = mode <= 2 ? singleWidth : width
+        const cardWidth = (rowWidth - (columns - 1) * gap) / columns
+        const left = mode === 1 ? 0 : (viewport - rowWidth) / 2 - parentBox.left
+        let row = []
+        for (const slot of list.children) {
+          // Match a result title inside its ordinary card. An arbitrary heading or a
+          // source citation anywhere else in the search page is not a result.
+          const card = slot.matches(resultSelector) ? slot :
+            slot.matches('.MjjYud') ? slot.querySelector(':scope > .A6K0A, :scope > .vt6azd, :scope > .g') : null
+          const title = card?.querySelector('a.zReHs[href]:has(h3), .yuRUbf > a[href]:has(h3), .rc > a[href]:has(h3)')
+          if (!title || card.closest(overview) || card.querySelector(overview)) {
+            if (slot.getBoundingClientRect().height > 0) row = []
+            continue
+          }
+          owners.add(card)
+          titles.add(title)
+          const heading = title.querySelector('h3')
+          if (!mode || !heading.getBoundingClientRect().height || getComputedStyle(heading).visibility !== 'visible') continue
+          // Do not make a shared slot (with a separate visible widget) a layout unit.
+          if (slot !== card && Array.from(slot.children).some(e => e !== card && e.getBoundingClientRect().height > 0)) {
+            row = []
+            continue
+          }
+          if (!row.length) rows.push(row)
+          setLength(slot, '--ac-result-left', left + row.length * (cardWidth + gap))
+          setLength(slot, '--ac-result-width', cardWidth)
+          slots.add(slot)
+          observed.add(slot)
+          row.push(slot)
+          if (row.length === columns) row = []
+        }
+      }
+    }
+
+    // Leave every native node, link and event handler at its original DOM position.
+    for (const [attr, current] of [['data-ac-google-result', owners], ['data-ac-google-title', titles], ['data-ac-google-slot', slots]]) {
+      for (const node of document.querySelectorAll('[' + attr + ']')) {
+        if (current.has(node)) continue
+        node.removeAttribute(attr)
+        if (attr === 'data-ac-google-slot') {
+          for (const name of ['--ac-result-width', '--ac-result-left', '--ac-result-after']) node.style.removeProperty(name)
+        }
+      }
+      for (const node of current) node.toggleAttribute(attr, true)
+    }
+
+    // A positive block margin on the last card reserves the tallest card's height.
+    // Other siblings in that row share its block start, even across empty slots.
+    const heights = new Map()
+    for (const slot of slots) heights.set(slot, slot.getBoundingClientRect().height)
+    for (const row of rows) {
+      const rowHeight = Math.max(...row.map(slot => heights.get(slot)))
+      row.forEach((slot, i) => setLength(slot, '--ac-result-after', (i === row.length - 1 ? rowHeight + 20 : 0) - heights.get(slot)))
+    }
+    return observed
+  }
+
+  function watchGoogleResults() {
+    const selector = '#rso, [data-micp-id="rso"]'
+    let roots = []
+    let observed = new Set()
+    let mode
+    let frame
+    const changes = new MutationObserver(schedule)
+    const sizes = new ResizeObserver(schedule)
+
+    function schedule() {
+      if (frame) return
+      frame = requestAnimationFrame(() => {
+        frame = 0
+        const current = updateGoogleResults(roots, mode)
+        for (const node of observed) if (!current.has(node)) sizes.unobserve(node)
+        for (const node of current) if (!observed.has(node)) sizes.observe(node)
+        observed = current
+      })
+    }
+
+    window.addEventListener('resize', schedule)
+    return nextMode => {
+      // Search and autopaging can replace or append whole #rso trees. Between such
+      // changes only a DOM edit inside a list, a resize or a mode change relays it out.
+      const next = Array.from(document.querySelectorAll(selector))
+      const replaced = next.length !== roots.length || next.some((root, i) => root !== roots[i])
+      if (replaced) {
+        changes.disconnect()
+        roots = next
+        for (const root of roots) {
+          changes.observe(root, {childList: true, subtree: true, characterData: true, attributes: true,
+            attributeFilter: ['class', 'style', 'hidden', 'href', 'aria-hidden']})
+        }
+      }
+      if (mode !== nextMode || replaced) {
+        mode = nextMode
+        schedule()
+      }
+    }
+
+  }
+
   class PageBlockClass {
     constructor() {
       this.curSite = CONST.options.useItem
@@ -2536,6 +2664,7 @@
         let curNode = checkNodes[i];
         try {
           if (curNode.hasAttribute('bhandle')) continue;
+
 
           // 增加进入动画类，并错开延迟
           curNode.classList.add('ac-entry-ani');
@@ -2595,6 +2724,7 @@
         for (; currentIndex < limit; currentIndex++) {
           try {
             let curNode = checkNodes[currentIndex];
+
             if (curNode.querySelector("button[ac-user-alter]") != null) continue; // 用户手动点过显示的，那么跳过check
 
             // 减少数据计算
@@ -2706,93 +2836,8 @@
 
   await (async function () {
     /***Google双列修复***/
+    const refreshGoogle = CONST.options.siteName === 'google' ? watchGoogleResults() : null
     CONST.addIntervalTrigger('google', 'now', (counter) => {
-      function findAndMarkP2Line() {
-
-        // Google AI Overview 是动态插入的独立模块，不应被当作普通搜索结果参与双列父子节点判定。
-        // 使用页面源码中可确认的 AI 容器类名，避免误改整个搜索结果容器。
-        const isGoogleAIOverviewNode = (node) => {
-          if (!node || node.nodeType !== 1) return false
-          return node.matches('.j2luwe.pWvJNd') || !!node.querySelector('.j2luwe.pWvJNd')
-        }
-
-        function markFatherChild(child, father) {
-          const child_checkedAttr = child.getAttribute('two-checked') || 0
-          const father_checkedAttr = father.getAttribute('two-checked') || 0
-
-          const trueChild = child.querySelector('.A6K0A')
-          if(trueChild) {
-            trueChild.setAttribute('two-child', 1)
-            trueChild.setAttribute('two-checked', +child_checkedAttr + 1)
-            father.setAttribute('two-father', 1)
-            father.setAttribute('two-checked', +father_checkedAttr + 1)
-            return father
-          } else {
-            return null
-          }
-        }
-
-        // 检查的事preNode 和 curNode
-        // 但是需要先判断curNode和fatherNode有没有
-        function getTrueFatherChild(preNode, curNode, fatherNode) {
-          // 翻页后的原始节点没有布局标记，继续补充标记，但不再根据高度重新选择父节点
-          if (CONST.lock.hasStartedLoadMore) {
-            return markFatherChild(curNode, fatherNode)
-          }
-
-          const minItemHeight = 60
-          const father_curPossible = curNode.offsetHeight > minItemHeight && fatherNode.offsetHeight / curNode.offsetHeight > 1.5
-          const father_anotherPossible = [...fatherNode.children].some(one => {
-            return one !== curNode && !isGoogleAIOverviewNode(one) &&
-              one.offsetHeight > minItemHeight && fatherNode.offsetHeight / one.offsetHeight > 5;
-          })
-          const fatherNotMain = fatherNode.id === "cnt";
-
-          // 先检查当前父节点是否符合要求
-          if (!fatherNotMain && father_curPossible && father_anotherPossible) {
-            return markFatherChild(curNode, fatherNode)
-          } else {
-            const now_curPossible = preNode.offsetHeight > minItemHeight && curNode.offsetHeight / preNode.offsetHeight > 1.5
-            const now_anotherPossible = [...curNode.children].some(one => {
-              return one !== preNode && !isGoogleAIOverviewNode(one) &&
-                one.offsetHeight > minItemHeight && curNode.offsetHeight / one.offsetHeight > 5;
-            })
-            // 父节点不行的话，那么检查子节点是否符合要求
-            if (now_curPossible && now_anotherPossible) {
-              return markFatherChild(preNode, curNode)
-            }
-            return null
-          }
-        }
-
-        // 标记自身
-        function MarkMine(curItem) {
-          // AI 概览内部的卡片不参与普通搜索结果的双列标记。
-          if (curItem.closest('.j2luwe.pWvJNd')) return null
-          let maxHeight = 9, curHeight = 1
-          let preNode = curItem
-          while (curHeight < maxHeight) {
-            const fatherNode = curItem.parentNode
-            let attrV = curItem.getAttribute('two-checked') || 0
-            if (!curItem.hasAttribute('two-checked') || +attrV < 8) {
-              const node = getTrueFatherChild(preNode, curItem, fatherNode)
-              if (node) {
-                return node
-              }
-            }
-            curItem.setAttribute('two-checked', +attrV + 1)
-            preNode = curItem
-            curItem = fatherNode
-            curHeight++
-          }
-          return null
-        }
-
-        const gList = document.querySelectorAll(".g:not([two-checked*='8']), .cUnQKe:not([two-checked*='8']), .Ww4FFb:not([two-checked*='8'])")
-
-        return [...gList].filter(one => MarkMine(one))
-      }
-
       const valid = location.href.search(/(&|\?)(q|kw)=/) >= 0 ||
         document.querySelector(".g, div[two-father]")
 
@@ -2809,64 +2854,8 @@
         CONST.curConfig.enableCSS = false
         return
       }
-      // Google 会异步插入或重新渲染 AI 概览，不能只依赖某一组会变化的 class。
-      const googleRcnt = document.querySelector('#rcnt')
-      const googleCenterCol = document.querySelector('#center_col')
-
-      // 第一层：优先使用已确认过的结构选择器。
-      const googleAI = document.querySelector(
-        '.j2luwe.pWvJNd, #m-x-content, [data-attrid="AIOverview"]'
-      )
-      if (googleAI) {
-        const aiModule = googleAI.closest('.SLPe5b.M8OgIe, .FkX2oe') || googleAI
-        aiModule.style.setProperty('display', 'none', 'important')
-      }
-
-      // 第二层：Google 更换 class 后，用标题文本识别 AI 概览，并只隐藏 #rcnt 下的独立模块。
-      // 限定在 #rcnt 内，且禁止把 #center_col / #rso 等搜索结果主容器误隐藏。
-      if (googleRcnt) {
-        const headings = googleRcnt.querySelectorAll('h1, h2, [role="heading"], span')
-        for (const heading of headings) {
-          const label = (heading.innerText || heading.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase()
-          if (!/(ai overview|ai 概览|ai 摘要|人工智能概览)/i.test(label)) continue
-
-          let module = heading
-          while (module.parentElement && module.parentElement !== googleRcnt) {
-            module = module.parentElement
-          }
-          if (module !== googleRcnt && module !== googleCenterCol &&
-              module.id !== 'center_col' && module.id !== 'rso' &&
-              !(googleCenterCol && module.contains(googleCenterCol))) {
-            module.style.setProperty('display', 'none', 'important')
-          }
-        }
-      }
-
-      if (googleRcnt && googleCenterCol) {
-        // 参考百度主内容区宽度；窄屏下自动收缩。
-        googleRcnt.style.setProperty('width', 'min(1544px, calc(100vw - 336px))', 'important')
-        googleRcnt.style.setProperty('max-width', 'calc(100vw - 32px)', 'important')
-        googleRcnt.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important')
-        googleRcnt.style.setProperty('margin-inline', 'auto', 'important')
-        googleCenterCol.style.setProperty('grid-column', '1 / -1', 'important')
-        googleCenterCol.style.setProperty('width', '100%', 'important')
-        googleCenterCol.style.setProperty('max-width', '1544px', 'important')
-        googleCenterCol.style.setProperty('min-width', '0', 'important')
-        googleCenterCol.style.setProperty('justify-self', 'stretch', 'important')
-
-        const googleRso = googleCenterCol.querySelector('#rso')
-        if (googleRso) {
-          const mode = Number(CONST.curConfig.adsStyleMode || 3)
-          const columns = mode >= 5 ? 4 : mode >= 4 ? 3 : 2
-          googleRso.style.setProperty('width', '100%', 'important')
-          googleRso.style.setProperty('max-width', '100%', 'important')
-          googleRso.style.setProperty('grid-template-columns', 'repeat(' + columns + ', minmax(0, 1fr))', 'important')
-          googleRso.style.setProperty('column-gap', '24px', 'important')
-          googleRso.style.setProperty('box-sizing', 'border-box', 'important')
-        }
-      }
-
-      findAndMarkP2Line()
+      const mode = CONST.curConfig.enableCSS && CONST.curConfig.adsStyleEnable ? Number(CONST.curConfig.adsStyleMode) : 0
+      refreshGoogle(mode)
 
     }, 150, 10000000)
     /***Baidu***/
@@ -2974,7 +2963,8 @@
         PageFunc.dataChangeFireCallback()
       })
       watch(CONST.cssFavionList, () => {
-        const baseCSS = 'h3::before, h2::before {content: " ";display:inline-block} *[data-favicon-t]:before{width: 16px; height: 16px; margin-right: 4px; background-size: 100% 100%; vertical-align: text-top;}'
+        const headings = CONST.options.siteName === 'google' ? '[data-ac-google-title] h3::before' : 'h3::before, h2::before'
+        const baseCSS = headings + ' {content: " ";display:inline-block} *[data-favicon-t]:before{width: 16px; height: 16px; margin-right: 4px; background-size: 100% 100%; vertical-align: text-top;}'
         CONST.adsCSSList.faviconStyle = Object.entries(CONST.cssFavionList.list).reduce((preCSS, cur) => {
           const [, { tagName = '', url = '' }] = cur
           let nowCSS = ''
