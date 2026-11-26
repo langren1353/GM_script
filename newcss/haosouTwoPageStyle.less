@@ -25,9 +25,12 @@
       grid-template-columns: repeat(2, 50%);
       grid-template-areas: "xmain xmain";
       grid-column-gap: 20px;
+      /* 同百度/必应：整行等高，避免短卡下面漏出页面底色（好搜默认不加载双列，这里保持与其它引擎一致） */
+      align-items: stretch;
 
       >li{
         width: 100%;
+        align-self: stretch;
       }
     }
   }

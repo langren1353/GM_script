@@ -41,12 +41,14 @@ body #b_content .b_widemop_rr {
   grid-auto-flow: row !important;
 }
 
+/* 整行等高：双列里同一行的两张卡必须同高，否则短卡下面会漏出页面底色。
+   这里容器和子项都显式写 stretch，防止必应自身样式把我们改回 start */
 #b_content #b_results {
-  align-items: start !important;
+  align-items: stretch !important;
 }
 
 #b_content #b_results > li:not(.b_pag):not(.b_msg):not(#b_msg):not(#mfa_root):not(.b_top) {
-  align-self: start !important;
+  align-self: stretch !important;
   min-width: 0 !important;
   grid-area: auto !important;
   grid-column: auto / span 1 !important;
@@ -73,7 +75,7 @@ body #b_content .b_widemop_rr {
 /* 顶部 AI 答案卡（b_ans b_top）是整块内容，压进单列会把正文折成几字一行的窄条；
    上面那条「强制 span 1」已经把 .b_top 排除，这里显式让它横跨两列 */
 #b_content #b_results > li.b_ans.b_top {
-  align-self: start !important;
+  align-self: stretch !important;
   min-width: 0 !important;
   grid-area: auto !important;
   grid-column: 1 / -1 !important;

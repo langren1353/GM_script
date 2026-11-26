@@ -68,6 +68,22 @@ section[data-area="sidebar"] {
   }  
 }
 
+/* 双列等高：li 是栅格项（只有边框），白底在内层 article。
+   拉伸 li 后必须让 article 一起撑满，否则白底停在内容末尾，卡片内部仍会漏出页面底色
+   （981 双列实测其中一张 article 比 li 矮 22px） */
+#react-layout .react-results--main {
+  align-items: stretch;
+}
+
+#react-layout .react-results--main > li {
+  align-self: stretch;
+
+  > article {
+    height: 100%;
+    box-sizing: border-box;
+  }
+}
+
 .body--serp .footer {
   display: flex;
   justify-content: center;

@@ -314,6 +314,7 @@ form.fm {
   padding: 8px 20px 5px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  overflow: hidden;
 }
 
 .title-box_4YBsj {
@@ -410,11 +411,12 @@ body[baidu] #wrapper #content_left h3 > button.ghhider.ghhb {
   min-height: 88px !important;
 }
 
-/* 多列栅格默认 align-items:stretch 会把同一行里较短的卡片拉成与最高卡片等高，
-   卡片带白底和边框时下面就是一整块空白（1170 双列实测短卡多出 90~150px 空白）。
-   改成 start 让卡片贴合自身内容，行内底部参差不齐是正常的多列观感 */
+/* 双列/多列要求「同一行左右两张卡等高」：用户明确不要各自按内容自适应高度，
+   否则较矮的一张下面会漏出页面底色（981 双列实测缺口 30~215px，长卡旁边尤其明显）。
+   栅格默认就是 stretch，这里显式写死，避免百度自身样式或后续改动把整行拆散；
+   代价是短卡底部留白，但白底和边框会把这块空白留在卡片内部，整行底边仍然对齐 */
 #container #content_left {
-  align-items: start;
+  align-items: stretch;
 }
 
 .xpath-log .cosc-card{
@@ -463,6 +465,7 @@ body[baidu] #wrapper #content_left h3 > button.ghhider.ghhb {
     h3[class*='t'] {
       font-weight: bold;
       font-size: medium;
+      width: 100%;
     }
 
     a {
