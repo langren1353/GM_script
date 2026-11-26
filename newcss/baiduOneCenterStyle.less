@@ -1,0 +1,382 @@
+/**Store BaiduOneCenterStyle**/
+/* 单列居中（adsStyleMode=2）专用样式。
+   本文件只由脚本在模式 2 下加载，所以选择器里不再需要 [ac-style-mode='2'] 这层模式门槛，
+   调整单列居中的布局只改这里；单列靠左见 baiduOnePageStyle.less，所有模式共用见 baiduCommonStyle.less */
+
+/* 顶部搜索框宽度 = 结果列宽度。
+   结果列在显示右侧栏时会被左移、宽度也不固定，靠 CSS 复刻太脆，所以由脚本
+   syncHeadAlignment() 量出来写进 --ac-head-width（已按「不压 logo、不压右侧菜单」夹过），
+   同时给 body 打上 ac-col-metrics 属性；没有这个属性（脚本没跑 / 首帧）就用 Common 里的视口公式 */
+body[ac-col-metrics] #head .head_wrapper .chat-input-anchor {
+  width: var(--ac-head-width, 100%) !important;
+  /* 列宽可能比 320 还窄（窄视口收窄后），放开硬下限免得顶出列外 */
+  min-width: 0;
+}
+
+#wrapper_wrapper #container {
+  width: 100%;
+  margin-left: unset;
+}
+
+form.fm {
+  position: relative;
+  background-color: unset;
+}
+
+body[baidu] .pagefoot.gj {
+  margin-top: 100px;
+}
+
+#s_tab b,
+#s_tab a {
+  position: relative;
+}
+
+#wrapper .head_nums_cont_outer {
+  position: absolute;
+  left: 20%;
+  width: 60%;
+}
+
+#wrapper #content_left {
+  margin: 0 auto !important;
+  padding-left: unset !important;
+}
+
+#wrapper_wrapper #container #header_top_bar {
+  margin: 0 auto;
+}
+
+#wrapper #content_left,
+#wrapper #container.sam_newgrid #rs,
+#wrapper #page {
+  position: relative;
+  padding-left: 0px;
+  width: 45% !important;
+  max-width: 900px;
+  min-width: 670px;
+  float: unset;
+  margin-left: unset;
+  margin: 0 auto;
+
+  @media only screen and (min-resolution: 1.25dppx) {
+    width: 50% !important;
+  }
+
+  @media screen and (max-width: 1280px) {
+    width: 80% !important;
+  }
+}
+
+#wrapper #page {
+  background: unset;
+}
+
+#wrapper #rs th {
+  text-align: center;
+}
+
+#wrapper #rs {
+  position: relative;
+  margin: 30px auto -20px auto;
+}
+
+#wrapper #content_left .result,
+#wrapper #content_left .result-op,
+#wrapper #content_left div[class*='vmp-project'],
+#wrapper #content_left>.c-container {
+  width: 100% !important;
+  min-width: 650px;
+}
+
+@media screen and (min-width: 1000px) {
+
+  #wrapper #content_left,
+  #wrapper #rs {
+    min-width: 800px;
+  }
+}
+
+#wrapper #container.sam_newgrid #content_left {
+  padding-left: 20px;
+  display: block;
+}
+
+#wrapper #content_right {
+  float: unset;
+  position: absolute;
+}
+
+body.showRight #wrapper #container.sam_newgrid #content_left {
+  /* 大屏下 10vw-320 会变成正值把整列推到右边，这里钳制为最多不位移 */
+  transform: ~"translateX(min(0px, calc(10vw - 320px)))";
+}
+
+body.showRight #wrapper #content_right {
+  /* 原写法 calc(40vw - 500px) 在 2550 以上会把右栏压到结果列上；
+     这里按“结果列右边缘 + 20px”定位，并保留 20px 的最小右边距 */
+  right: ~"max(20px, calc(50vw - 885px))";
+}
+
+/* 1281~1434 是「右栏已经占位、结果列又被 10vw-320px 左移」的区间：
+   列左沿被推到 108~120（1381~1434）甚至 72（1320），已经钻到 logo（右沿 125）下面，
+   而顶部搜索框为了不压 logo 只能停在 141，两边错开 17~57px（1399 实测 120 vs 141、1360 实测 96 vs 141）。
+   这里让列左沿恒等于 141（logo 右沿 + 16）：
+     · 宽度取 min(800, vw-581)，保证列右沿与右栏（左沿恒为 vw-420）至少留 20px；
+     · 列是 margin:auto 居中的，自身留白 = (vw - 宽度)/2，
+       所以位移 = 141 - (vw - 宽度)/2 就能精确落到 141（1434 以上自然左沿已 ≥141，不需要再管）。
+   分页/相关搜索/页脚是整行宽块（左沿 0、内部内容居中），用同一位移让它们的中心与列中心重合。
+   本文件只在模式 2（单列居中）加载，多列走 baiduTwoPageStyle.less，所以不用再额外限定模式 */
+@media screen and (min-width: 1281px) and (max-width: 1434px) {
+  body.showRight #wrapper #container.sam_newgrid #content_left {
+    /* less 会把 min() 当函数求值，必须整条转义 */
+    width: ~"min(800px, calc(100vw - 581px))" !important;
+    /* 本文件上面把 min-width 写死 800，不收掉这里就压不住 */
+    min-width: 0 !important;
+    transform: ~"translateX(calc(141px - (100vw - min(800px, 100vw - 581px)) / 2))" !important;
+  }
+
+  .showRight .result-molecule.new-pmd {
+
+    &[tpl='app/rs'],
+    &[tpl='app/page'],
+    &[tpl='app/footer'] {
+      transform: ~"translateX(calc(141px - (100vw - min(800px, 100vw - 581px)) / 2))";
+    }
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  body.showRight #wrapper #container.sam_newgrid #content_left {
+    transform: unset;
+  }
+
+  /* 位移同步取消，否则分页/页脚会与结果列错开 */
+  .showRight .result-molecule.new-pmd {
+
+    &[tpl='app/rs'],
+    &[tpl='app/page'],
+    &[tpl='app/footer'] {
+      transform: unset;
+    }
+  }
+
+  body.showRight #wrapper #content_right {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+  }
+}
+
+#wrapper #page a,
+#wrapper #page strong {
+  margin-right: 22px !important;
+}
+
+#wrapper #page .page-inner {
+  padding-left: 22px;
+  display: flex;
+  justify-content: center;
+}
+
+#container .hint_common_restop {
+  position: absolute;
+  left: calc(45vw - 500px);
+  margin-top: 25px;
+}
+
+.AC.sp-separator {
+  width: auto;
+}
+
+/*search engine jump*/
+#sej-container {
+  padding-left: 0;
+  margin-left: 0;
+  text-align: center;
+}
+
+.s_form_wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+#wrapper #s_tab {
+  padding-left: 0;
+  margin-left: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#wrapper #container .head_nums_cont_outer .search_tool_conter,
+#wrapper #container .head_nums_cont_outer .nums {
+  width: 69%;
+  margin-left: 16%;
+}
+
+form.fm .s_ipt_wr.bg {
+  min-width: calc(37.5vw - 150px);
+}
+
+.result-molecule.new-pmd:has(#s_tab) {
+  position: relative;
+  z-index: 233;
+  margin-top: 6px;
+  padding-left: 0 !important;
+  transform: translateX(-50%);
+  margin-left: 50% !important;
+}
+
+/* 单列居中：标签栏（综合/文心/图片/资讯/视频/笔记/地图）与结果列同一左沿、同一宽度。
+   原来靠「margin-left:50% + translateX(-50%)」按自身宽度居中，落点和结果列对不上
+   （1905 宽实测标签栏 [576,1440] 而结果列 [528,1392]）。
+   变量由脚本 syncHeadAlignment() 量出来写入；ac-col-metrics 是兜底开关，
+   脚本没跑（老版本/首帧）时保持原来的居中逻辑，不会跳到屏幕左侧 */
+body[ac-col-metrics] .result-molecule.new-pmd:has(#s_tab) {
+  margin-left: var(--ac-col-left, 0px) !important;
+  transform: none !important;
+  width: var(--ac-col-width, 100%) !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+body[ac-col-metrics] #wrapper #s_tab {
+  width: 100% !important;
+  margin-left: 0 !important;
+  /* 竖向位置全靠 #s_tab 自带的 padding-top:65px（百度用它把标签顶到固定头部下方），
+     所以这里必须保持 content-box：一旦变成 border-box，65px 内边距会被从 height 里扣掉，
+     内容盒只剩约 1px，36px 高的标签行被 flex 居中外溢到 y≈53~89，
+     正好钻到固定头部（0~70）下面 —— 视觉上就是「标签栏被遮挡、挤成一条」。
+     height:auto 让内容盒跟着标签实际高度走，下边框也落回文字下方而不是切过标签 */
+  box-sizing: content-box !important;
+  height: auto !important;
+}
+
+/* 标签行在列内左对齐（首项与搜索框/结果列同一左沿）。
+   百度把每一项的 margin-right 清零了，靠 gap 撑开原生约 22px 的疏密 */
+body[ac-col-metrics] #wrapper #s_tab .s_tab_inner {
+  width: 100% !important;
+  /* 左右内边距都必须清零：≥1921 时百度是 padding: 0 var(--container-left-gap)，
+     2048 下该变量 = calc(50vw - 538px) ≈ 486px，只清左边会把内容盒挤到 414px，
+     11 个标签被 flex-shrink 压成 16px 宽、两字竖排折行 —— 必须 padding 整体归零 */
+  padding: 0 !important;
+  justify-content: flex-start !important;
+  gap: 22px !important;
+  box-sizing: border-box !important;
+}
+
+.showRight {
+  .result-molecule.new-pmd {
+    /* 分页/相关搜索/页脚是独立的整行容器，旧写法用 44%/48% 的 margin 把它们推到右侧，
+       现版百度 DOM 下会压到右侧栏；改为与 #content_left 相同的位移，保证与结果列对齐 */
+    &[tpl='app/rs'],
+    &[tpl='app/page'],
+    &[tpl='app/footer'] {
+      margin-left: 0 !important;
+      transform: ~"translateX(min(0px, calc(10vw - 320px)))";
+    }
+
+    &[tpl='app/page'] {
+      padding-bottom: 20px;
+    }
+  }
+}
+
+.new-pmd #rs_new {
+  background-color: white;
+  width: calc(100% - 20px);
+  padding: 10px 0 10px 20px;
+}
+
+.result-molecule #page>div {
+  width: unset;
+  padding-left: unset;
+}
+
+.new-pmd #rs_new table {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.wrapper_new .s_form.s_form_fresh {
+  margin: 0 auto;
+}
+
+.smart_input_wrapper #main-wrapper {
+  width: unset;
+}
+
+/* 顶部搜索框的位移/宽度统一由 baiduCommonStyle.less 的「顶部搜索区」段落决定，
+   这里不再按 vw 推 margin/width，避免和居中规则打架 */
+
+@media screen and (min-width: 1921px) {
+  body[baidu] {
+    #wrapper #s_tab {
+      margin-left: 10vw;
+
+      .s_tab_inner {
+        display: flex;
+        justify-content: space-evenly;
+        padding-left: 0;
+
+        >* {
+          margin-right: 0;
+          text-align: center;
+        }
+      }
+    }
+
+    #container.sam_newgrid {
+      padding-left: 80px;
+    }
+
+    /* 2048（物理 2560 / dpr 1.25）实测：上面通用规则给 #container 的 width:100%
+       叠加百度 2K 布局自带的 margin-right:-150px，会把 #container 撑到 2198，
+       整页横向滚动 150px（文档宽 2198 > 视口 2048）；收回成 auto 让容器贴合可用宽度即可归零 */
+    #wrapper_wrapper #container {
+      width: auto;
+      margin-right: 0;
+    }
+  }
+
+  form.fm .s_ipt_wr.bg {
+    min-width: calc(37.5vw - 150px);
+  }
+
+  #wrapper #rs,
+  #wrapper #content_left .result,
+  #wrapper #content_left .result-op,
+  #wrapper #content_left>.c-container {
+    /* 旧写法在 .showRight 下用 calc(15vw - 250px) 把卡片往右推，2550 下会压到右栏；
+       现在卡片一律在所在列内居中，列的横向位移统一交给 #content_left 的 transform */
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (min-width: 1921px) and (min-resolution: 1.2dppx) and (max-resolution: 2dppx) {
+  #container.sam_newgrid {
+    padding-left: 0px !important;
+  }
+}
+
+@media screen and (max-width: 1920px) {
+  body[baidu] {
+    #wrapper #s_tab {
+      margin-left: 96px;
+
+      .s_tab_inner {
+        display: flex;
+        justify-content: space-evenly;
+        padding-left: 0;
+
+        >* {
+          margin-right: 0;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

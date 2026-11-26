@@ -58,7 +58,8 @@ body[baidu].pc-fresh-wrapper-con #container.sam_newgrid #content_left{
 
 #wrapper #content_left {
   display: grid;
-  grid-template-columns: repeat(2, 48%);
+  /* 用 1fr 而不是 48%：百分比列宽不参与 20px gap 计算，双列会整体偏左、右列溢出 */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-gap: 0 20px;
   grid-template-areas: "xmain xmain";
   margin: 0 auto;
@@ -108,13 +109,22 @@ body[news] #wrapper #content_left > div:not([class]):not([id]) {
   div[class*='vmp-project'],
   & > .c-container {
     width: 100% !important;
+    /* 覆盖 Common 在 1921px 以上、1dppx 下给结果卡片的 888px 最小宽度，
+       否则双列/三列/四列时卡片会撑破所在栅格列，出现列间重叠 */
+    min-width: 0;
     max-width: unset;
     margin-left: 0;
     margin-right: 0;
   }
 
+  /* 聚合卡片原生有 610px 最小宽度，在多列栅格里会溢出，这里允许它跟随列宽收缩 */
+  .c-group-wrapper {
+    min-width: 0;
+  }
+
   > *:not([class*='result']):not([class*='c-group-wrapper']) {
-    grid-column: 1 / span 2;
+    /* 2 列时与 span 2 等价；3/4 列时必须跨满整行，否则右侧留下空列 */
+    grid-column: 1 / -1;
   }
 }
 
@@ -180,10 +190,6 @@ body[baidu] .result-molecule.new-pmd:has(#s_tab) {
     min-width: 450px
   }
 
-  .wrapper_new .head_wrapper #result_logo {
-    margin-left: -170px;
-  }
-
   body[baidu].pc-fresh-wrapper-con #container.sam_newgrid #content_left{
     width: 100%;
   }
@@ -196,24 +202,12 @@ body[baidu] .result-molecule.new-pmd:has(#s_tab) {
 }
 
 @media screen and (min-width: 1921px) and (min-resolution: 1.2dppx) and (max-resolution: 2dppx) {
-  .s_form > .s_form_wrapper {
-    margin-left: calc(-45.13vw + 916.43px); /** 1366=300px；1920=50px **/ ;
-  }
-
   body[baidu] .result-molecule.new-pmd[tpl="app/search-tag"] {
     padding-left: 0;
   }
 }
 
 @media screen and (min-width: 1921px) {
-  #head .head_wrapper {
-    transform: unset;
-
-    #u {
-      right: 130px;
-    }
-  }
-
   form.fm .s_ipt_wr.bg {
     min-width: 850px
   }

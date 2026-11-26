@@ -3,7 +3,8 @@ div[two-father] {
   position: relative;
   float: unset;
   width: unset;
-  min-width: 800px;
+  /* 原来写死 800px：结果列仅 652px 时会把网格撑破，右列溢到容器外 */
+  min-width: 0;
 }
 div[two-child] {
   width: 100% !important;
@@ -49,7 +50,10 @@ div[two-child] {
 }
 
 #main #cnt, #cnt #center_col, #cnt #foot, .HdCKGe {
-  width: calc(54vw + 360px);
+  /* 54vw+360 在窄屏会超过视口（720 下得 749），右列被裁，这里再夹一道 100vw-16 的上限 */
+  width: min(calc(54vw + 360px), calc(100vw - 16px));
+  /* 新版谷歌给 #center_col 加了 max-width:652px，会把上面的宽度裁掉，导致双列只剩 652 且向右溢出 */
+  max-width: unset;
   margin: 0 auto;
   grid-column: unset;
 }
@@ -74,7 +78,8 @@ margin-left: unset !important;
 
 div[two-father], #kp-wp-tab-overview {
 display: grid;
-grid-template-columns: repeat(2, 50%);
+/* 50% + 20px 间距 = 超出容器 20px，改 1fr 让列宽自适应 */
+grid-template-columns: repeat(2, minmax(0, 1fr));
 grid-template-areas: "xmain xmain";
 grid-gap: 20px !important;
 margin-bottom: 20px;
@@ -122,5 +127,22 @@ g-section-with-header {
 }
 
 body[google] .rZj61{
-  margin-left: 40%;
+  /* 原来写 margin-left:40%：新版谷歌这个节点是标签栏外层块，右移后容器只剩 423px，
+     720 宽时标签条 672px 直接溢出到视口外。改成按内容宽度居中；
+     max-width:100% 保证更窄时收回到容器内，交给谷歌自己的横向滚动容器处理 */
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---------- 窄屏补丁 ---------- */
+/* 谷歌把 logo 绝对定位在搜索框左侧 160px（.logo{left:-160px}），脚本清掉搜索框左外边距后
+   这份空间就没了，窗口一窄 logo 直接被推出视口；1400 以下把这段空间还回去，并让搜索框吃掉剩余宽度 */
+@media (max-width: 1400px) {
+  body[google] .A8SBwf {
+    width: calc(100% - 168px);
+    max-width: none;
+    margin-left: 168px;
+  }
 }

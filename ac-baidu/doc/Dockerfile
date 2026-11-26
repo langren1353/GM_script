@@ -12,7 +12,7 @@ COPY ./ac-baidu/doc/package-lock.json /app/
 RUN npm install && npm run docs:build
 
 # 第二阶段：使用Nginx镜像部署
-FROM docker.suzuran.vip/peytonyip/nginx-brotli
+FROM docker.suzuran.vip/langren1353/docker-nginx-brotli
 
 ENV TZ=Asia/Shanghai
 

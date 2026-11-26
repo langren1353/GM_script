@@ -1,0 +1,50 @@
+/*Store DuckDuckGoOneCenterStyle*/
+/* 单列居中（adsStyleMode = 2）专用：内容原来是 duckOnePageStyle.less 的逐字副本。
+   拆分原因：单列居中与单列靠左以前共用一份文件，调居中布局必然影响靠左，反之亦然。
+   以后这里只放「居中」相关规则；靠左相关规则写 duckOnePageStyle.less。
+   加载门槛由脚本控制（本文件只在模式 2 加载），文件内不需要写 body[ac-style-mode='2']。 */
+.js-sidebar-ads, #organic-module, .pinned-to-bottom {
+  display: none;
+}
+
+.js-result-hidden-el {
+  display: none !important;
+}
+
+.site-wrapper #web_content_wrapper .cw {
+  justify-content: center;
+  display: flex;
+  max-width: unset;
+  margin-left: -150px;
+}
+
+#header_wrapper #header,
+#web_content_wrapper #react-layout.search-filters-wrap,
+#web_content_wrapper #react-layout.results--message {
+  justify-content: center;
+  display: grid;
+}
+
+#header_wrapper #header {
+  max-width: unset;
+}
+
+
+#header_wrapper #header .header__search-wrap {
+  width: 500px;
+}
+
+#react-layout{
+  display: inline-flex;
+  justify-content: center;
+}
+
+#react-layout.react-results--main {
+  float: unset;
+}
+
+.body--serp .footer {
+  display: flex;
+  justify-content: center;
+  padding-left: unset;
+}

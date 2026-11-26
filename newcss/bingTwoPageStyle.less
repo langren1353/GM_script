@@ -45,7 +45,7 @@ body #b_content .b_widemop_rr {
   align-items: start !important;
 }
 
-#b_content #b_results > li:not(.b_pag):not(.b_msg):not(#b_msg):not(#mfa_root) {
+#b_content #b_results > li:not(.b_pag):not(.b_msg):not(#b_msg):not(#mfa_root):not(.b_top) {
   align-self: start !important;
   min-width: 0 !important;
   grid-area: auto !important;
@@ -68,6 +68,40 @@ body #b_content .b_widemop_rr {
 
 #b_results li:nth-child(even)[class*="b_ans"] {
   grid-column: 1 / -1;
+}
+
+/* 顶部 AI 答案卡（b_ans b_top）是整块内容，压进单列会把正文折成几字一行的窄条；
+   上面那条「强制 span 1」已经把 .b_top 排除，这里显式让它横跨两列 */
+#b_content #b_results > li.b_ans.b_top {
+  align-self: start !important;
+  min-width: 0 !important;
+  grid-area: auto !important;
+  grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+  width: 98% !important;
+  max-width: 100% !important;
+}
+
+/* www.bing.com 的 Copilot 答案卡内有个绝对定位的展开控件（.b_acf_*），
+   它按必应默认的宽容器摆放（720 视口实测 left=73 / width=696 / right=769），
+   双列窄卡下会伸出视口，把整页撑出 49px 横向滚动条（bodyW=769）；
+   这里把它夹回所在容器宽度，宽屏本来就是满宽，不改变显示 */
+#b_content #b_results .b_acf_answer_expansion_control,
+#b_content #b_results .b_acf_expansion_gradient_overlay {
+  left: 0 !important;
+  right: 0 !important;
+  width: auto !important;
+  max-width: 100% !important;
+}
+
+/* 双列卡片只有 300~500px 宽，站点 URL 会折成两行并顶到标题上；
+   Bing 单列时本来就不折行，这里显式保持单行省略 */
+#b_content #b_results li cite {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 #b_content #b_pole {
@@ -95,7 +129,25 @@ body #b_content {
 }
 
 body #b_header {
-  width: 72vw;
+  /* 72vw 在 720 视口只有 518px，必应搜索框内部会塌成竖排（放大镜/输入框/麦克风各占一行）；
+     下限 700px 才回到它常见的单行布局，超过视口时再由 max-width 夹回 */
+  width: clamp(700px, 72vw, 100vw);
   text-align: center;
   margin: 0 auto;
+  /* 必应头部（logo + 搜索框 + 工具区 + 导航）内容最小宽度约 1164px：
+     头部作为 flex 项时 min-width:auto 会把它撑到内容宽度，窗口一窄就撑出横向滚动条（981 下溢出 183px）。
+     这里放开收缩 + 夹死上限，让导航自己在容器内横向滚动（不用 clip，避免裁掉搜索建议下拉） */
+  min-width: 0;
+  max-width: 100vw;
+}
+
+#b_header nav.b_scopebar {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

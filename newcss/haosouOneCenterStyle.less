@@ -1,0 +1,65 @@
+/*Store HaoSoOneCenterStyle*/
+/* 单列居中（adsStyleMode = 2）专用：内容原来是 haosouOnePageStyle.less 的逐字副本。
+   拆分原因：单列居中与单列靠左以前共用一份文件，调居中布局必然影响靠左，反之亦然。
+   以后这里只放「居中」相关规则；靠左相关规则写 haosouOnePageStyle.less。
+   加载门槛由脚本控制（本文件只在模式 2 加载），文件内不需要写 body[ac-style-mode='2']。 */
+#header {
+  #g-hd-nav{
+    display: flex;
+    justify-content: center;
+    float: unset;
+    margin-left: -150px;
+  }
+}
+#tabs-wrap{
+  display: flex;
+  justify-content: center;
+  margin-right: 420px;
+}
+
+#container{
+  display: flex;
+  justify-content: center;
+  padding-left: unset;
+  
+  #main {
+    width: 650px;
+    
+    .result{
+
+      >li{
+        width: 770px;
+      }
+    }
+  }
+  #side{
+    left: 200px;
+    padding: 20px;
+    background-color: white;
+  }
+}
+
+#warper {
+  .mod-relation{
+    padding-left: unset;
+    position: relative;
+
+    #rs{
+      width: 770px;
+      position: relative;
+      left: 50%;
+      transform: translateX(-68%);
+    }
+  }
+  #page{
+    display: flex;
+    justify-content: center;
+    margin-left: -200px;
+  }
+}
+
+#footer{
+  display: flex;
+  justify-content: center;
+  margin-left: -200px;
+}

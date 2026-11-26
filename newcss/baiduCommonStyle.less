@@ -50,6 +50,161 @@ body #head {
   backdrop-filter: blur(10px)
 }
 
+/* 视口 < 1366 时百度把 body 锁成 min-width:1260px（实测 1170 视口下 body 仍 1260），
+   #s_tab / #page / .result-molecule 也都是写死 1240~1260，
+   于是 1366 以下整页横向滚动、双列右列被切掉。这里统一改成跟随视口，结果列继续居中 */
+@media (max-width: 1365px) {
+  body {
+    min-width: 0 !important;
+  }
+
+  #wrapper,
+  #wrapper_wrapper,
+  #container,
+  #foot,
+  #content_style,
+  .result-molecule,
+  #aging-tools-wrapper,
+  #aging-tools-pc {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #head .head_wrapper .s_form,
+  #head .head_wrapper .s_form_wrapper {
+    width: auto !important;
+    max-width: 100% !important;
+  }
+
+  /* 标签栏、分页条、相关搜索条原本写死 1240~1260；宽视口下线上效果是「与视口同宽、结果列居中」，
+     这里保持同样的关系，不要硬压成结果列宽。
+     注意 #s_tab 自带 height:66px + padding-top:65px，这里绝不能加 box-sizing:border-box，
+     否则高度被压成 66（少了 65 的内边距），标签整行会被固定头部盖住 */
+  #wrapper #s_tab,
+  #wrapper #page,
+  .result-molecule.new-pmd {
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  #wrapper #page {
+    box-sizing: border-box !important;
+  }
+
+  /* 页脚内层写死 1076px 宽 + 150px 左内边距（合计 1226）会把整页顶宽，
+     窄视口下取消这段缩进，跟随页脚宽度 */
+  #foot .foot-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* 视口 < 1280 时四列（adsStyleMode=5）每张卡只剩 190~241px（1024 宽实测 190px），
+   标题被截成半句、摘要没有可读性，降成两列；三列（adsStyleMode=4）在 1024 下还有 260px，保持不动。
+   脚本的列样式由 getMultiPageStyle() 注入到文档末尾，同特异性会被它压住，所以这里必须 !important */
+@media (max-width: 1279px) {
+  body[ac-style-mode='5'] #container #content_left {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-areas: 'xmain xmain' !important;
+  }
+
+  /* 新闻页的列样式挂在 #content_left 的子项上，同步降列 */
+  body[news][ac-style-mode='5'] #container #content_left>div:not([class]):not([id]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-areas: 'xmain xmain' !important;
+  }
+}
+
+/* 顶部搜索区：百度自身 + 脚本历史补丁都在用 vw 混算（-100px / 45px / ±31vw / 46.88vw-300px），
+   1360~3840 之间会把搜索框推偏，宽屏下还会钻到右侧菜单下面（实测 2550 重叠 271px、3840 重叠 147px）。
+   这里改成「logo 贴左 24px、搜索框钉在视口正中、右侧菜单贴右 24px」的确定布局，
+   搜索框宽度按视口夹紧，给右侧菜单（实测 382px）和 logo（101px）留出空间 */
+#head .head_wrapper {
+  position: relative;
+  width: 100% !important;
+  transform: none !important;
+}
+
+/* 选择器必须带 #head .head_wrapper 前缀：页面里还有一份由 Violentmonkey 以扩展样式表
+   （chrome-extension:// 的 link，页面脚本读不到 cssRules）加载的同名 `.chat-input-anchor` 规则，
+   单类选择器 + !important 也压不过它，实测 left 会被按 50% 覆盖 */
+#head .head_wrapper .chat-input-anchor {
+  position: absolute !important;
+  left: 50% !important;
+  top: 12px;
+  /* 位移量由脚本 syncHeadAlignment() 写入（搜索框左沿对齐结果列左沿，已夹在 logo 与菜单之间），
+     单页+右侧栏时结果列会被左移，搜索框按视口居中就与底部结果错位（1360 差 184px、1920 差 128px）。
+     JS 未就绪时变量缺省 0px，等同于按视口居中 */
+  transform: ~"translateX(-50%) translateX(var(--ac-head-offset, 0px))" !important;
+  /* 用 ~"..." 转义，否则 less 会把 min() 当函数求值、直接拍成 760px */
+  width: ~"min(760px, calc(100vw - 860px))" !important;
+  min-width: 320px;
+  margin: 0 !important;
+}
+
+#chat-input-main {
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* 视口 < 1400 时百度把 #head 锁成 1200px 最小宽（.head-min-width-1200），
+   于是 .head_wrapper 的 50% 不是视口中点：1024 宽下搜索框中心偏右 88px、右侧菜单被顶出视口 149px。
+   这里让固定头部跟随视口，位置计算才有正确基准 */
+@media (max-width: 1399px) {
+  #head,
+  #head.head-min-width-1200 {
+    min-width: 0 !important;
+  }
+}
+
+/* 视口 < 1340 时「居中 + 右侧菜单 382px + logo 101px」放不下：
+   居中宽度会掉到 480 以下（1180 宽实测只剩 320，输入文字被截断，并与菜单压在一起）。
+   改为紧跟 logo 左对齐、吃掉 logo 与菜单之间的剩余空间，宽度上限 680px 以免和居中档差太多 */
+@media (max-width: 1339px) {
+  #head .head_wrapper .chat-input-anchor {
+    /* 这里只换宽度档位，位置继续走「居中 + --ac-head-offset」由 JS 跟随结果列左沿。
+       原先硬钉 left:141px 会让 1280（列左沿 190、右栏已隐藏）固定错开 49px；
+       JS 侧把位移夹在 logo 右沿 +16，所以窄视口下也不会压到 logo */
+    width: ~"min(680px, calc(100vw - 583px))" !important;
+    min-width: 260px;
+  }
+}
+
+/* 各模式下「搜索框宽度 = 结果列宽度」的覆盖已按模式拆走：
+   单列靠左在 baiduOnePageStyle.less，单列居中在 baiduOneCenterStyle.less，
+   都读脚本 syncHeadAlignment() 量出来的 --ac-head-width */
+
+#head .head_wrapper #u {
+  right: 24px !important;
+  left: auto !important;
+  width: auto !important;
+}
+
+.s_form>.s_form_wrapper {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 结果页 logo 是 <a id="result_logo">，首页是 <a class="result_logo">，两种都钉到左边距，
+   否则宽屏下百度会把它摆到搜索框左沿附近，和搜索框叠在一起 */
+.wrapper_new .head_wrapper #result_logo,
+#head #result_logo,
+#head .result_logo {
+  position: absolute !important;
+  left: 24px !important;
+  top: 18px !important;
+  margin: 0 !important;
+}
+
 form.fm {
   background-color: unset;
 
@@ -101,9 +256,8 @@ form.fm {
   width: 630px;
 }
 
-#wrapper #content_left {
-  animation: ani_topTobuttom 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
+/* 单列靠左（模式 1）的结果列宽度 670px 已挪到 baiduOnePageStyle.less，
+   与单列居中的 baiduOneCenterStyle.less 分开维护 */
 
 #head .head_wrapper {
   animation: ani_leftToright 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -199,6 +353,68 @@ form.fm {
 
 #wrapper #wrapper_wrapper #content_left .cosc-title-a{
   display: inline-flex !important;
+  /* 百度新版标题是 inline-flex，没有宽度约束时按 max-content 一行排开，
+     双列/多列下会整行顶出所在列（377px 列内实测 938px）；
+     钳到 100% 并允许 flex 子项收缩后，标题在列内正常换行 */
+  max-width: 100%;
+  min-width: 0;
+}
+
+#wrapper #wrapper_wrapper #content_left .cosc-title-slot{
+  min-width: 0;
+}
+
+/* 脚本把 block（屏蔽）按钮插在 h3 末尾。百度部分卡片模板的标题链接是块级元素
+   （.cosc-title-a 实测 display:flex / block），会把按钮挤到标题下方单独一行，
+   双列下看起来像一枚错位的标签（实测 49 张卡里 35 张不在标题行）。
+   这里只把「带按钮的标题行」改成不换行的 flex：标题按内容收缩，按钮贴到行尾；
+   不改 h3 的 padding/行高，也不影响没有按钮的标题。 */
+body[baidu] #wrapper #content_left h3:has(> button.ghhider.ghhb) {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
+body[baidu] #wrapper #content_left h3:has(> button.ghhider.ghhb) > a {
+  /* 按钮掉到第二行时标题链接会被撑成整行宽，这里让它按内容宽度收缩，避免整行变成可点击区域 */
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+body[baidu] #wrapper #content_left .cosc-title + a{
+  display: none;
+}
+body[baidu] #wrapper #content_left .xpath-log .cosc-card {
+  margin-top: 0px;
+}
+body[baidu] #wrapper #content_left .cu-border {
+  padding-top: 0px;
+}
+
+body[baidu] #wrapper #content_left h3 > button.ghhider.ghhb {
+  flex: 0 0 auto;
+  /* 覆盖 customBlockStyle 里的 margin:auto 2px，否则 flex 下按钮会被居中而不是贴行尾 */
+  margin: 2px 0 0 auto;
+}
+
+/* 单图结果卡片把「摘要 + 站点行」放在图片列右侧，整行高度由图片高度决定（实测 58.5px）。
+   双列/多列把列宽收到 350~520px 后，摘要需要 2~3 行，文字会压到站点名上；
+   这里按摘要行数给文字列兜底最小高度（行高 21px：2 行 42+22=64，3 行 63+22=85），
+   让行高反过来由内容决定。:has() 用于只命中真有摘要的卡片，两条规则顺序不能颠倒 */
+#wrapper #content_left .cos-row.cos-gutter > .cos-col:not(:first-child):has(.cos-line-clamp-2){
+  min-height: 68px !important;
+}
+
+#wrapper #content_left .cos-row.cos-gutter > .cos-col:not(:first-child):has(.cos-line-clamp-3){
+  min-height: 88px !important;
+}
+
+/* 多列栅格默认 align-items:stretch 会把同一行里较短的卡片拉成与最高卡片等高，
+   卡片带白底和边框时下面就是一整块空白（1170 双列实测短卡多出 90~150px 空白）。
+   改成 start 让卡片贴合自身内容，行内底部参差不齐是正常的多列观感 */
+#container #content_left {
+  align-items: start;
 }
 
 .xpath-log .cosc-card{
@@ -553,13 +769,6 @@ body[baidu].pc-fresh-wrapper-con .new-pmd .c-span12 {
 
 @media screen and (min-width: 1921px) {
 
-  /*Baidu in 2K screen default in : center*/
-  #head .head_wrapper {
-    transform: translateX(-100px);
-    justify-content: center;
-    display: flex;
-  }
-
   body[baidu] {
     .wrapper_new #s_tab.s_tab .s_tab_inner {
       align-items: center;
@@ -583,12 +792,6 @@ body[baidu].pc-fresh-wrapper-con .new-pmd .c-span12 {
     min-width: 480px;
   }
 
-  body.showRight {
-    #head .head_wrapper {
-      transform: translateX(45px);
-    }
-  }
-
   /* 标准密度设备 */
   @media screen and (resolution: 1dppx) {
 
@@ -596,8 +799,10 @@ body[baidu].pc-fresh-wrapper-con .new-pmd .c-span12 {
     #wrapper #content_left .result,
     #wrapper #content_left .result-op,
     #wrapper #content_left>.c-container {
-      min-width: 888px;
-      margin-left: calc(var(--wrapper-padding)* -1.3);
+      /* 用 min() 兜底：2K 及以上保持 888px，容器更窄时跟随容器，避免结果卡片横向溢出 */
+      min-width: min(888px, 100%);
+      /* 百度的 --wrapper-padding 若未定义会让整条 calc 失效，这里给出 0px 兜底值 */
+      margin-left: calc(var(--wrapper-padding, 0px)* -1.3);
     }
   }
 
@@ -612,6 +817,6 @@ body[baidu].pc-fresh-wrapper-con .new-pmd .c-span12 {
   #wrapper #content_left .result,
   #wrapper #content_left .result-op,
   #wrapper #content_left>.c-container {
-    margin-left: calc(var(--wrapper-padding)* -1.3);
+    margin-left: calc(var(--wrapper-padding, 0px)* -1.3);
   }
 }
